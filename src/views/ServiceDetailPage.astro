@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import PageHero from '../components/PageHero.astro';
+import Hero from '../components/Hero.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import FAQSection from '../components/FAQSection.astro';
 import CTASection from '../components/CTASection.astro';
@@ -43,6 +43,7 @@ const serviceSchema = {
   canonical={route('service', locale, { slug: service.slug })}
   image={service.image}
   schema={serviceSchema}
+  fullWidth
 >
   <div class="container page-top">
     <Breadcrumbs
@@ -54,13 +55,7 @@ const serviceSchema = {
     />
   </div>
 
-  <PageHero
-    title={service.h1}
-    subtitle={service.intro}
-    image={service.image}
-    imageAlt={service.imageAlt}
-    fullWidth
-  />
+  <Hero title={service.h1} intro={service.intro} />
 
   <section class="section">
     <div class="container content-grid">

@@ -6,6 +6,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import LangPreference from '../components/LangPreference.astro';
+import Hero from '../components/Hero.astro';
+import type { HeroProps } from '../components/hero.types';
 import { useTranslations } from '../i18n';
 import '../styles/global.css';
 
@@ -18,6 +20,8 @@ interface LayoutProps {
   schema?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
   fullWidth?: boolean;
+  /** Star Local Hero v1 — rendered automatically when provided. */
+  hero?: HeroProps;
 }
 
 const {
@@ -29,9 +33,11 @@ const {
   schema,
   noindex = false,
   fullWidth = false,
+  hero,
 } = Astro.props as LayoutProps;
 
 const dict = useTranslations(locale);
+const layoutFullWidth = fullWidth || !!hero;
 ---
 
 <!doctype html>
@@ -51,7 +57,8 @@ const dict = useTranslations(locale);
   <body>
     <a href="#main-content" class="skip-link">{dict.skipLink}</a>
     <Header locale={locale} />
-    <main id="main-content" class:list={['main-content', { 'main-content--full': fullWidth }]}>
+    <main id="main-content" class:list={['main-content', { 'main-content--full': layoutFullWidth }]}>
+      {hero && <Hero {...hero} />}
       <slot />
     </main>
     <Footer locale={locale} />
@@ -66,7 +73,7 @@ const dict = useTranslations(locale);
   }
 
   .main-content:not(.main-content--full) > :global(.container:first-child),
-  .main-content:not(.main-content--full) > :global(section > .container) {
+  .main-content:not(.main-content--full) > :global(section:not(.star-hero) > .container) {
     padding-top: 2rem;
   }
 </style>

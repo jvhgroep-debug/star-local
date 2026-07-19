@@ -26,12 +26,13 @@ const legalLinks = getFooterLegal(locale, dict);
   title={dict.sitemap.title}
   description={dict.sitemap.description}
   canonical={route('sitemap', locale)}
+  hero={{
+    title: dict.sitemap.h1,
+    intro: dict.sitemap.intro,
+  }}
 >
   <section class="section">
     <div class="container">
-      <h1>{dict.sitemap.h1}</h1>
-      <p class="intro">{dict.sitemap.intro}</p>
-
       <div class="sitemap-grid">
         <section>
           <h2>{dict.sitemap.main}</h2>
@@ -94,16 +95,6 @@ const legalLinks = getFooterLegal(locale, dict);
 </BaseLayout>
 
 <style>
-  h1 {
-    color: var(--gold);
-    margin: 0 0 0.5rem;
-  }
-
-  .intro {
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-  }
-
   .sitemap-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

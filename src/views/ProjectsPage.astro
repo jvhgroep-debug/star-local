@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Hero from '../components/Hero.astro';
 import ProjectsGrid from '../components/projects/ProjectsGrid.astro';
 import CTASection from '../components/CTASection.astro';
 import type { Locale } from '../i18n/config';
@@ -59,6 +60,7 @@ const breadcrumbSchema = {
   description={page.description}
   canonical={route('projects', locale)}
   schema={[collectionSchema, itemListSchema, breadcrumbSchema]}
+  fullWidth
 >
   <div class="container page-top">
     <Breadcrumbs items={[
@@ -67,13 +69,11 @@ const breadcrumbSchema = {
     ]} />
   </div>
 
-  <section class="projects-hero section">
-    <div class="container hero-inner">
-      <p class="eyebrow">Star Local</p>
-      <h1>{page.h1}</h1>
-      <p class="lead">{page.intro}</p>
-    </div>
-  </section>
+  <Hero
+    title={page.h1}
+    subtitle={dict.home.heroLabel}
+    intro={page.intro}
+  />
 
   <section class="section">
     <div class="container">
@@ -104,28 +104,5 @@ const breadcrumbSchema = {
 <style>
   .page-top {
     padding-top: 1.5rem;
-  }
-
-  .projects-hero {
-    border-bottom: 1px solid var(--border);
-    background: linear-gradient(180deg, rgba(205, 184, 128, 0.05), transparent);
-  }
-
-  .hero-inner {
-    max-width: 760px;
-  }
-
-  h1 {
-    color: var(--gold);
-    font-size: clamp(2rem, 4vw, 2.8rem);
-    margin: 0 0 1rem;
-    line-height: 1.15;
-  }
-
-  .lead {
-    color: var(--text-muted);
-    font-size: 1.08rem;
-    line-height: 1.75;
-    margin: 0;
   }
 </style>

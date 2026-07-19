@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import PageHero from '../components/PageHero.astro';
+import Hero from '../components/Hero.astro';
 import CTASection from '../components/CTASection.astro';
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n';
@@ -23,6 +23,7 @@ const dict = useTranslations(locale);
   description={project.summary}
   canonical={route('portfolioItem', locale, { slug: project.slug })}
   image={project.image}
+  fullWidth
 >
   <div class="container page-top">
     <Breadcrumbs
@@ -34,7 +35,7 @@ const dict = useTranslations(locale);
     />
   </div>
 
-  <PageHero title={project.name} subtitle={project.summary} image={project.image} imageAlt={project.imageAlt} />
+  <Hero title={project.name} intro={project.summary} />
 
   <section class="section">
     <div class="container content">
@@ -51,13 +52,15 @@ const dict = useTranslations(locale);
       <div class="tags">
         {project.status.map((item) => <span class="tag">{item}</span>)}
       </div>
-      {project.website && (
-        <p>
-          <a href={project.website} target="_blank" rel="noopener noreferrer">
-            {dict.portfolioPage.visitWebsite} →
-          </a>
-        </p>
-      )}
+      {
+        project.website && (
+          <p>
+            <a href={project.website} target="_blank" rel="noopener noreferrer">
+              {dict.portfolioPage.visitWebsite} →
+            </a>
+          </p>
+        )
+      }
     </div>
   </section>
 

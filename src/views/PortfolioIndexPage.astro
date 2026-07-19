@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
 import PortfolioCard from '../components/PortfolioCard.astro';
 import CTASection from '../components/CTASection.astro';
 import type { Locale } from '../i18n/config';
@@ -22,9 +21,11 @@ const projects = getPortfolioProjects(locale);
   title={dict.portfolioPage.title}
   description={dict.portfolioPage.description}
   canonical={route('portfolio', locale)}
+  hero={{
+    title: dict.portfolioPage.h1,
+    intro: dict.portfolioPage.intro,
+  }}
 >
-  <PageHero title={dict.portfolioPage.h1} subtitle={dict.portfolioPage.intro} />
-
   <section class="section">
     <div class="container grid-3">
       {projects.map((project) => (

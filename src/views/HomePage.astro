@@ -27,6 +27,20 @@ const projects = getPortfolioProjects(locale);
 const featuredServices = services.filter((service) =>
   ['website-laten-maken', 'lokale-seo', 'google-bedrijfsprofiel'].includes(service.slug)
 );
+const featuredServiceImages: Record<string, { image: string; imageAlt: string }> = {
+  'website-laten-maken': {
+    image: '/images/services/service-website-design.png',
+    imageAlt: 'Website laten maken door Star Local',
+  },
+  'lokale-seo': {
+    image: IMAGES.serviceLocalSeoCard,
+    imageAlt: 'Lokale SEO door Star Local',
+  },
+  'google-bedrijfsprofiel': {
+    image: IMAGES.serviceGoogleBusinessProfile,
+    imageAlt: 'Google Bedrijfsprofiel optimalisatie door Star Local',
+  },
+};
 const featuredProjects = projects.slice(0, 3);
 ---
 
@@ -36,26 +50,18 @@ const featuredProjects = projects.slice(0, 3);
   description={dict.home.description}
   canonical={route('home', locale)}
   image={IMAGES.heroHome}
-  fullWidth
+  hero={{
+    title: dict.home.h1,
+    subtitle: dict.home.heroLabel,
+    intro: dict.home.lead,
+    ariaLabel: dict.home.heroLabel,
+    ctas: [
+      { label: dict.buttons.freeConsultation, href: route('contact', locale), variant: 'primary' },
+      { label: dict.buttons.viewWork, href: route('portfolio', locale), variant: 'secondary' },
+    ],
+    usps: dict.home.usps,
+  }}
 >
-  <header class="hero" style={`--hero-image: url(${IMAGES.heroHome})`} aria-label={dict.home.heroLabel}>
-    <div class="hero-overlay" aria-hidden="true"></div>
-    <div class="container hero-inner">
-      <div class="hero-copy">
-        <p class="eyebrow">{dict.home.heroLabel}</p>
-        <h1>{dict.home.h1}</h1>
-        <p class="hero-lead">{dict.home.lead}</p>
-        <div class="hero-actions">
-          <a href={route('contact', locale)} class="btn btn-primary">{dict.buttons.freeConsultation}</a>
-          <a href={route('portfolio', locale)} class="btn btn-secondary">{dict.buttons.viewWork}</a>
-        </div>
-        <ul class="usp-list">
-          {dict.home.usps.map((usp) => <li>{usp}</li>)}
-        </ul>
-      </div>
-    </div>
-  </header>
-
   <section class="trust-bar" aria-label={dict.home.visibilityEyebrow}>
     <div class="container trust-grid">
       {dict.home.trust.map((item) => (
@@ -74,14 +80,14 @@ const featuredProjects = projects.slice(0, 3);
         title={dict.home.servicesTitle}
         description={dict.home.servicesDesc}
       />
-      <div class="grid-3">
+      <div class="grid-3 home-services-grid">
         {featuredServices.map((service) => (
           <ServiceCard
             title={service.h1}
             description={service.positioning}
             href={route('service', locale, { slug: service.slug })}
-            image={service.image}
-            imageAlt={service.imageAlt}
+            image={featuredServiceImages[service.slug]?.image ?? service.image}
+            imageAlt={featuredServiceImages[service.slug]?.imageAlt ?? service.imageAlt}
             learnMore={dict.buttons.learnMore}
           />
         ))}
@@ -102,15 +108,16 @@ const featuredProjects = projects.slice(0, 3);
           {dict.home.visibilityPoints.map((point) => <li>{point}</li>)}
         </ul>
       </div>
-      <img
-        src={IMAGES.heroSeo}
-        alt={dict.home.seoVisibilityAlt}
-        width="800"
-        height="500"
-        loading="lazy"
-        decoding="async"
-        class="section-image"
-      />
+      <div class="visibility-image">
+        <img
+          src="/images/services/service-seo-optimization.png"
+          alt="SEO optimalisatie en online vindbaarheid door Star Local"
+          width="1200"
+          height="800"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
     </div>
   </section>
 
@@ -205,77 +212,6 @@ const featuredProjects = projects.slice(0, 3);
 </BaseLayout>
 
 <style>
-  .hero {
-    position: relative;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    min-height: 780px;
-    background: var(--bg) var(--hero-image) center right / cover no-repeat;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, rgba(10, 14, 20, 0.93) 0%, rgba(10, 14, 20, 0.72) 45%, rgba(10, 14, 20, 0.25) 100%);
-  }
-
-  .hero-inner {
-    position: relative;
-    z-index: 1;
-    padding: 4rem 0;
-  }
-
-  .hero-copy {
-    max-width: 620px;
-  }
-
-  h1 {
-    color: var(--gold);
-    font-size: clamp(2rem, 4.5vw, 3rem);
-    line-height: 1.12;
-    margin: 0 0 1rem;
-  }
-
-  .hero-lead {
-    color: #fff;
-    font-size: 1.1rem;
-    line-height: 1.75;
-    margin: 0 0 1.75rem;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem;
-    margin-bottom: 1.75rem;
-  }
-
-  .usp-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.5rem 1rem;
-  }
-
-  .usp-list li {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    padding-left: 1rem;
-    position: relative;
-  }
-
-  .usp-list li::before {
-    content: '•';
-    position: absolute;
-    left: 0;
-    color: var(--gold);
-  }
-
   .trust-bar {
     border-bottom: 1px solid var(--border);
     background: rgba(205, 184, 128, 0.03);
@@ -310,6 +246,25 @@ const featuredProjects = projects.slice(0, 3);
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
     align-items: center;
+  }
+
+  .visibility-image {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: #0a0e14;
+    border: 1px solid var(--border);
+    border-bottom: 1px solid rgba(205, 184, 128, 0.3);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .visibility-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
   }
 
   .section-image {
@@ -349,6 +304,18 @@ const featuredProjects = projects.slice(0, 3);
     margin-top: 1.75rem;
   }
 
+  @media (min-width: 601px) and (max-width: 900px) {
+    .home-services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .home-services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .reviews-empty {
     text-align: center;
   }
@@ -366,19 +333,9 @@ const featuredProjects = projects.slice(0, 3);
   }
 
   @media (max-width: 900px) {
-    .hero {
-      min-height: 620px;
-      background-position: 75% center;
-    }
-
-    .hero-overlay {
-      background: linear-gradient(180deg, rgba(10, 14, 20, 0.92) 0%, rgba(10, 14, 20, 0.7) 60%, rgba(10, 14, 20, 0.45) 100%);
-    }
-
     .trust-grid,
     .split,
-    .contact-block,
-    .usp-list {
+    .contact-block {
       grid-template-columns: 1fr;
     }
   }

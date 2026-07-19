@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
 import CTASection from '../components/CTASection.astro';
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n';
@@ -19,8 +18,11 @@ const dict = useTranslations(locale);
   title={dict.pricing.title}
   description={dict.pricing.description}
   canonical={route('pricing', locale)}
+  hero={{
+    title: dict.pricing.h1,
+    intro: dict.pricing.intro,
+  }}
 >
-  <PageHero title={dict.pricing.h1} subtitle={dict.pricing.intro} />
   <section class="section">
     <div class="container grid-3">
       {dict.pricing.tiers.map((tier) => (

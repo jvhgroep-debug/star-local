@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
 import BlogCard from '../components/BlogCard.astro';
 import CTASection from '../components/CTASection.astro';
 import type { Locale } from '../i18n/config';
@@ -20,9 +19,11 @@ const dict = useTranslations(locale);
   title={dict.blog.title}
   description={dict.blog.description}
   canonical={route('blog', locale)}
+  hero={{
+    title: dict.blog.h1,
+    intro: dict.blog.intro,
+  }}
 >
-  <PageHero title={dict.blog.h1} subtitle={dict.blog.intro} />
-
   <section class="section">
     <div class="container">
       <div class="categories" aria-label={dict.blog.h1}>

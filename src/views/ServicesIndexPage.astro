@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import CTASection from '../components/CTASection.astro';
 import type { Locale } from '../i18n/config';
@@ -22,9 +21,11 @@ const services = getServices(locale);
   title={dict.servicesPage.title}
   description={dict.servicesPage.description}
   canonical={route('services', locale)}
+  hero={{
+    title: dict.servicesPage.h1,
+    intro: dict.servicesPage.intro,
+  }}
 >
-  <PageHero title={dict.servicesPage.h1} subtitle={dict.servicesPage.intro} />
-
   <section class="section">
     <div class="container">
       <div class="grid-3">

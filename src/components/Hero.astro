@@ -1,0 +1,204 @@
+---
+/**
+ * Star Local Hero v1
+ *
+ * Official hero for all marketing and content pages.
+ * Import this component on every page that needs a page header.
+ */
+import { IMAGES } from '../data/images';
+import type { HeroCta, HeroProps } from './hero.types';
+
+interface Props extends HeroProps {}
+
+const {
+  title,
+  subtitle,
+  intro,
+  ctas = [],
+  usps = [],
+  backgroundImage = IMAGES.heroHomeReference,
+  ariaLabel = title,
+} = Astro.props;
+
+const ctaClass = (variant: HeroCta['variant'] = 'primary') => {
+  if (variant === 'secondary') return 'btn btn-secondary';
+  if (variant === 'whatsapp') return 'btn btn-whatsapp';
+  return 'btn btn-primary';
+};
+---
+
+<section class="star-hero" aria-label={ariaLabel} style={`--star-hero-bg: url('${backgroundImage}')`}>
+  <div class="container star-hero__shell">
+    <div class="star-hero__content">
+      {subtitle && <p class="eyebrow">{subtitle}</p>}
+      <h1>{title}</h1>
+      {intro && <p class="star-hero__lead">{intro}</p>}
+      {
+        ctas.length > 0 && (
+          <div class="star-hero__actions">
+            {ctas.map((cta) => (
+              <a
+                href={cta.href}
+                class={ctaClass(cta.variant)}
+                {...(cta.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                {cta.label}
+              </a>
+            ))}
+          </div>
+        )
+      }
+      {
+        usps.length > 0 && (
+          <ul class="star-hero__usps">
+            {usps.map((usp) => (
+              <li>{usp}</li>
+            ))}
+          </ul>
+        )
+      }
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .star-hero {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    min-height: 850px;
+    overflow: hidden;
+    background: #070a0f var(--star-hero-bg) no-repeat center right;
+    background-size: cover;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .star-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(7, 10, 15, 0.92) 0%,
+      rgba(7, 10, 15, 0.82) 30%,
+      rgba(7, 10, 15, 0.42) 40%,
+      transparent 45%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .star-hero__shell {
+    position: relative;
+    z-index: 2;
+    min-height: 850px;
+    display: flex;
+    align-items: center;
+    padding: 3.5rem 0 2.5rem;
+  }
+
+  .star-hero__content {
+    position: relative;
+    z-index: 2;
+    width: 45%;
+    max-width: 620px;
+  }
+
+  h1 {
+    color: var(--gold);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: 1.12;
+    margin: 0 0 1rem;
+  }
+
+  .star-hero__lead {
+    color: #fff;
+    font-size: 1.1rem;
+    line-height: 1.75;
+    margin: 0 0 1.75rem;
+  }
+
+  .star-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .star-hero__usps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem 1rem;
+  }
+
+  .star-hero__usps li {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .star-hero__usps li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+
+  @media (max-width: 1200px) {
+    .star-hero__content {
+      width: 48%;
+      max-width: 580px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .star-hero {
+      min-height: min(760px, 130vw);
+      background-position: 68% center;
+    }
+
+    .star-hero::before {
+      background: linear-gradient(
+        180deg,
+        rgba(7, 10, 15, 0.92) 0%,
+        rgba(7, 10, 15, 0.72) 42%,
+        rgba(7, 10, 15, 0.28) 62%,
+        transparent 78%
+      );
+    }
+
+    .star-hero__shell {
+      min-height: auto;
+      padding: 2.5rem 0 1.25rem;
+    }
+
+    .star-hero__content {
+      width: 100%;
+      max-width: none;
+    }
+
+    .star-hero__usps {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .star-hero {
+      min-height: min(680px, 145vw);
+      background-position: 72% center;
+    }
+
+    .star-hero__shell {
+      padding: 2rem 0 1rem;
+    }
+
+    .star-hero__lead {
+      font-size: 1rem;
+    }
+  }
+</style>

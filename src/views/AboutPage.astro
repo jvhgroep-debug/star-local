@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
 import CTASection from '../components/CTASection.astro';
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n';
@@ -22,14 +21,11 @@ const aboutSections = Object.values(dict.about.sections);
   description={dict.about.description}
   canonical={route('about', locale)}
   image={IMAGES.heroSeo}
+  hero={{
+    title: dict.about.h1,
+    intro: dict.about.intro,
+  }}
 >
-  <PageHero
-    title={dict.about.h1}
-    subtitle={dict.about.intro}
-    image={IMAGES.heroSeo}
-    imageAlt={dict.home.localSeoAlt}
-  />
-
   <section class="section">
     <div class="container content">
       {aboutSections.map((section) => (
