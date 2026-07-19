@@ -11,7 +11,7 @@ export const portfolioEn: PortfolioProject[] = [
     approach: 'We combined a premium brand identity with clear service structure and conversion-focused pages.',
     work: ['website development', 'SEO structure', 'branding', 'content'],
     status: ['website development', 'SEO structure'],
-    image: IMAGES.heroHome,
+    image: IMAGES.portfolioStarLocal,
     imageAlt: 'Star Local website project',
   },
   {
@@ -24,7 +24,7 @@ export const portfolioEn: PortfolioProject[] = [
     work: ['website development', 'branding', 'content'],
     status: ['website development', 'content'],
     website: 'https://www.dutchfooddubai.com',
-    image: IMAGES.heroWebdesign,
+    image: IMAGES.portfolioDutchFoodDubai,
     imageAlt: 'Dutch Food Dubai website project',
   },
   {
@@ -36,7 +36,7 @@ export const portfolioEn: PortfolioProject[] = [
     approach: 'We built a visually strong site with clear navigation and contact options.',
     work: ['website development', 'branding', 'content'],
     status: ['website development'],
-    image: IMAGES.heroWebdesign,
+    image: IMAGES.portfolioCaptainCrabbys,
     imageAlt: "Captain Crabby's website project",
   },
   {

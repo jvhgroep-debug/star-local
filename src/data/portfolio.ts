@@ -26,7 +26,7 @@ export const portfolioProjects: PortfolioProject[] = [
     approach: 'We combineerden een luxe huisstijl met duidelijke dienstverdeling en conversiegerichte pagina’s.',
     work: ['websiteontwikkeling', 'SEO-structuur', 'branding', 'content'],
     status: ['websiteontwikkeling', 'SEO-structuur'],
-    image: IMAGES.heroHome,
+    image: IMAGES.portfolioStarLocal,
     imageAlt: 'Star Local website project',
   },
   {
@@ -39,7 +39,7 @@ export const portfolioProjects: PortfolioProject[] = [
     work: ['websiteontwikkeling', 'branding', 'content'],
     status: ['websiteontwikkeling', 'content'],
     website: 'https://www.dutchfooddubai.com',
-    image: IMAGES.heroWebdesign,
+    image: IMAGES.portfolioDutchFoodDubai,
     imageAlt: 'Dutch Food Dubai website project',
   },
   {
@@ -51,7 +51,7 @@ export const portfolioProjects: PortfolioProject[] = [
     approach: 'We bouwden een visueel sterke site met heldere navigatie en contactmogelijkheden.',
     work: ['websiteontwikkeling', 'branding', 'content'],
     status: ['websiteontwikkeling'],
-    image: IMAGES.heroWebdesign,
+    image: IMAGES.portfolioCaptainCrabbys,
     imageAlt: "Captain Crabby's website project",
   },
   {

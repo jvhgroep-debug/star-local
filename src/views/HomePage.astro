@@ -5,15 +5,14 @@ import ServiceCard from '../components/ServiceCard.astro';
 import PortfolioCard from '../components/PortfolioCard.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
 import FAQSection from '../components/FAQSection.astro';
-import CTASection from '../components/CTASection.astro';
 import ContactForm from '../components/ContactForm.astro';
+import ReviewCard from '../components/ReviewCard.astro';
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n';
 import { route } from '../i18n/routes';
 import { getServices } from '../data/services';
 import { getPortfolioProjects } from '../data/portfolio';
 import { IMAGES } from '../data/images';
-import { SITE } from '../data/site';
 
 interface Props {
   locale: Locale;
@@ -110,7 +109,7 @@ const featuredProjects = projects.slice(0, 3);
       </div>
       <div class="visibility-image">
         <img
-          src="/images/services/service-seo-optimization.png"
+          src="/images/services/service-seo-optimization.png?v=2"
           alt="SEO optimalisatie en online vindbaarheid door Star Local"
           width="1200"
           height="800"
@@ -124,7 +123,7 @@ const featuredProjects = projects.slice(0, 3);
   <section class="section">
     <div class="container split">
       <img
-        src={IMAGES.serviceLocalSeo}
+        src="/images/hero-seo-services.png"
         alt={dict.home.localSeoAlt}
         width="800"
         height="500"
@@ -138,9 +137,7 @@ const featuredProjects = projects.slice(0, 3);
           title={dict.home.whyTitle}
           description={dict.home.whyDesc}
         />
-        <ul class="check-list">
-          {dict.home.whyPoints.map((point) => <li>{point}</li>)}
-        </ul>
+        <p class="why-note">{dict.home.whyNote}</p>
       </div>
     </div>
   </section>
@@ -182,29 +179,31 @@ const featuredProjects = projects.slice(0, 3);
   </section>
 
   <section class="section alt-section">
-    <div class="container reviews-empty">
+    <div class="container">
       <SectionHeading eyebrow={dict.home.reviewsEyebrow} title={dict.home.reviewsTitle} />
-      <p>{dict.home.reviewsEmpty}</p>
-      <a href={route('contact', locale)} class="btn btn-primary">{dict.buttons.contactUs}</a>
+      <div class="reviews-grid">
+        {dict.home.reviewsItems.map((review) => (
+          <ReviewCard
+            name={review.name}
+            text={review.text}
+            service={review.service}
+            starsLabel={dict.home.reviewsStarsLabel}
+          />
+        ))}
+      </div>
+      <p class="reviews-cta">
+        <a href={route('projects', locale)} class="btn btn-primary">{dict.buttons.viewProjects}</a>
+      </p>
     </div>
   </section>
 
   <FAQSection title={dict.faq.title} faqs={dict.faq.home} />
-  <CTASection locale={locale} />
 
-  <section class="section">
-    <div class="container contact-block">
-      <div>
-        <SectionHeading
-          eyebrow={dict.home.contactEyebrow}
-          title={dict.home.contactTitle}
-          description={dict.home.contactDesc}
-        />
-        <p>
-          <a href={SITE.whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
-            {dict.buttons.whatsappDirect}
-          </a>
-        </p>
+  <section class="section contact-section">
+    <div class="container contact-form-section">
+      <div class="contact-form-intro">
+        <h2>{dict.home.formTitle}</h2>
+        <p>{dict.home.formDesc}</p>
       </div>
       <ContactForm locale={locale} />
     </div>
@@ -276,6 +275,13 @@ const featuredProjects = projects.slice(0, 3);
     box-shadow: var(--shadow);
   }
 
+  .why-note {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
   .check-list {
     list-style: none;
     padding: 0;
@@ -316,27 +322,73 @@ const featuredProjects = projects.slice(0, 3);
     }
   }
 
-  .reviews-empty {
-    text-align: center;
-  }
-
-  .reviews-empty p {
-    color: var(--text-muted);
-    margin-bottom: 1.25rem;
-  }
-
-  .contact-block {
+  .reviews-grid {
     display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: 2rem;
-    align-items: start;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .reviews-cta {
+    text-align: center;
+    margin: 1.75rem 0 0;
+  }
+
+  @media (min-width: 601px) and (max-width: 900px) {
+    .reviews-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .reviews-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .contact-section {
+    padding: 2rem 0 4rem;
+  }
+
+  .contact-form-section {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .contact-form-intro {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .contact-form-intro h2 {
+    color: var(--gold);
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.4rem, 3vw, 1.85rem);
+  }
+
+  .contact-form-intro p {
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.7;
   }
 
   @media (max-width: 900px) {
     .trust-grid,
-    .split,
-    .contact-block {
+    .split {
       grid-template-columns: 1fr;
+    }
+
+    .contact-section {
+      padding: 1.75rem 0 3.5rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .contact-section {
+      padding: 1.5rem 0 3rem;
+    }
+
+    .contact-form-intro {
+      margin-bottom: 1.5rem;
     }
   }
 </style>

@@ -33,8 +33,14 @@
     "services": "Diensten",
     "company": "Bedrijf",
     "legal": "Juridisch",
+    "copyright": "Star Local. Alle rechten voorbehouden."
+  },
+  "footerBar": {
     "copyright": "Star Local. Alle rechten voorbehouden.",
-    "previewNote": "De website wordt momenteel verder uitgebreid."
+    "privacy": "Privacy",
+    "cookies": "Cookies",
+    "terms": "Voorwaarden",
+    "disclaimer": "Disclaimer"
   },
   "footerCompany": {
     "about": "Over ons",
@@ -46,7 +52,7 @@
     "contact": "Contact"
   },
   "footerLegal": {
-    "privacy": "Privacybeleid",
+    "privacy": "Privacyverklaring",
     "terms": "Algemene voorwaarden",
     "cookies": "Cookiebeleid",
     "disclaimer": "Disclaimer",
@@ -60,6 +66,7 @@
     "viewFullApproach": "Bekijk de volledige werkwijze",
     "learnMore": "Meer informatie",
     "viewProject": "Bekijk project",
+    "viewProjects": "Bekijk onze projecten",
     "whatsappDirect": "WhatsApp direct",
     "sendMessage": "Verstuur bericht",
     "getQuote": "Vraag een vrijblijvende offerte aan",
@@ -103,13 +110,8 @@
     ],
     "whyEyebrow": "Vertrouwen",
     "whyTitle": "Waarom Star Local?",
-    "whyDesc": "Wij helpen ondernemers met een professionele online basis en een groeistrategie die past bij hun markt.",
-    "whyPoints": [
-      "Jarenlange ervaring in webdesign en SEO",
-      "Focus op lokale én landelijke vindbaarheid",
-      "Persoonlijke samenwerking en heldere communicatie",
-      "Langetermijnvisie op online groei"
-    ],
+    "whyDesc": "Wij bouwen professionele websites en SEO-oplossingen voor bedrijven in Nederland én internationaal. Vanuit één sterke basis helpen wij ondernemers groeien met modern webdesign, lokale SEO en schaalbare online oplossingen.",
+    "whyNote": "🌍 Actief in Nederland én internationale projecten, waaronder Dubai en Marokko.",
     "processEyebrow": "Werkwijze",
     "processTitle": "Zo werken wij",
     "processDesc": "Een helder proces van kennismaking tot doorlopende groei.",
@@ -124,7 +126,26 @@
     "portfolioDesc": "Een selectie van projecten waaraan Star Local heeft gewerkt.",
     "reviewsEyebrow": "Reviews",
     "reviewsTitle": "Ervaringen van klanten",
-    "reviewsEmpty": "Binnenkort delen wij hier ervaringen van onze klanten.",
+    "reviewsStarsLabel": "5 van 5 sterren",
+    "reviewsItems": [
+      {
+        "name": "Eigenaar Dutch Food Dubai",
+        "text": "Star Local heeft onze website professioneler, sneller en overzichtelijker gemaakt. De samenwerking verloopt duidelijk en persoonlijk.",
+        "service": "Webdesign & online groei"
+      },
+      {
+        "name": "Captain Crabby's Dubai",
+        "text": "Wij zijn erg tevreden over de uitstraling en structuur van onze website. Alles is professioneel opgebouwd en gericht op meer klanten.",
+        "service": "Website & lokale vindbaarheid"
+      },
+      {
+        "name": "Tropicana Breda",
+        "text": "Vanaf het eerste ontwerp werd goed geluisterd naar onze wensen. Het resultaat past uitstekend bij onze zaak en doelgroep.",
+        "service": "Websiteontwikkeling"
+      }
+    ],
+    "formTitle": "Vertel ons over uw project",
+    "formDesc": "Laat uw gegevens en wensen achter. Wij nemen zo snel mogelijk contact met u op.",
     "contactEyebrow": "Contact",
     "contactTitle": "Klaar om te starten?",
     "contactDesc": "Vertel ons over uw plannen. We reageren zo snel mogelijk.",
@@ -352,8 +373,8 @@
         "answer": "Nee. Naast webdesign bieden we SEO, Google Bedrijfsprofiel optimalisatie, technische optimalisatie, onderhoud en doorlopende online groei."
       },
       {
-        "question": "Werken jullie door heel Nederland?",
-        "answer": "Ja. We ondersteunen bedrijven in heel Nederland met online strategie, webdesign en vindbaarheid."
+        "question": "Werken jullie ook internationaal?",
+        "answer": "Ja. Hoewel onze grootste focus op Nederland ligt, bouwen wij websites en SEO-oplossingen voor klanten over de hele wereld.\n\nWij hebben onder andere projecten gerealiseerd in:\n🇳🇱 Nederland\n🇦🇪 Dubai (Verenigde Arabische Emiraten)\n🇲🇦 Marokko\n\nDaarnaast is het Star Local-platform speciaal ontwikkeld om eenvoudig uit te breiden naar nieuwe landen en regio's. Daardoor kunnen wij ook internationale bedrijven ondersteunen met professionele websites, lokale SEO en schaalbare online oplossingen."
       }
     ]
   },

@@ -1,0 +1,83 @@
+---
+interface Props {
+  name: string;
+  text: string;
+  service: string;
+  starsLabel: string;
+}
+
+const { name, text, service, starsLabel } = Astro.props;
+---
+
+<article class="review-card">
+  <div class="review-stars" aria-label={starsLabel} role="img">
+    <span aria-hidden="true">★★★★★</span>
+  </div>
+  <blockquote class="review-text">
+    <p>{text}</p>
+  </blockquote>
+  <footer class="review-footer">
+    <strong class="review-name">{name}</strong>
+    <p class="review-service">{service}</p>
+  </footer>
+</article>
+
+<style>
+  .review-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem;
+    background: rgba(205, 184, 128, 0.04);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .review-stars {
+    color: var(--gold);
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .review-text {
+    margin: 0 0 1.25rem;
+    flex: 1;
+  }
+
+  .review-text p {
+    margin: 0;
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 0.98rem;
+  }
+
+  .review-text p::before {
+    content: '\201C';
+  }
+
+  .review-text p::after {
+    content: '\201D';
+  }
+
+  .review-footer {
+    margin-top: auto;
+  }
+
+  .review-name {
+    display: block;
+    color: var(--text);
+    font-size: 1rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .review-service {
+    margin: 0;
+    color: var(--gold);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+</style>

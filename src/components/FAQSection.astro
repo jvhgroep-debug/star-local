@@ -29,7 +29,18 @@ const faqSchema = {
       {faqs.map((faq) => (
         <details class="faq-item">
           <summary>{faq.question}</summary>
-          <p>{faq.answer}</p>
+          <div class="faq-answer">
+            {faq.answer.split('\n\n').map((block) => (
+              <p>
+                {block.split('\n').map((line, index) => (
+                  <>
+                    {index > 0 && <br />}
+                    {line}
+                  </>
+                ))}
+              </p>
+            ))}
+          </div>
         </details>
       ))}
     </div>
@@ -73,9 +84,13 @@ const faqSchema = {
     display: none;
   }
 
-  p {
+  .faq-answer p {
     color: var(--text-muted);
     margin: 0 0 1rem;
     line-height: 1.7;
+  }
+
+  .faq-answer p:last-child {
+    margin-bottom: 0;
   }
 </style>

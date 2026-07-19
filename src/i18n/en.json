@@ -33,8 +33,14 @@
     "services": "Services",
     "company": "Company",
     "legal": "Legal",
+    "copyright": "Star Local. All rights reserved."
+  },
+  "footerBar": {
     "copyright": "Star Local. All rights reserved.",
-    "previewNote": "This website is currently being expanded."
+    "privacy": "Privacy",
+    "cookies": "Cookies",
+    "terms": "Terms",
+    "disclaimer": "Disclaimer"
   },
   "footerCompany": {
     "about": "About",
@@ -60,6 +66,7 @@
     "viewFullApproach": "View full approach",
     "learnMore": "Learn more",
     "viewProject": "View project",
+    "viewProjects": "View our projects",
     "whatsappDirect": "WhatsApp direct",
     "sendMessage": "Send message",
     "getQuote": "Request a no-obligation quote",
@@ -103,13 +110,8 @@
     ],
     "whyEyebrow": "Trust",
     "whyTitle": "Why Star Local?",
-    "whyDesc": "We help entrepreneurs build a professional online foundation and a growth strategy that fits their market.",
-    "whyPoints": [
-      "Years of experience in web design and SEO",
-      "Focus on local and national visibility",
-      "Personal collaboration and clear communication",
-      "Long-term vision for online growth"
-    ],
+    "whyDesc": "We build professional websites and SEO solutions for businesses in the Netherlands and internationally. From one strong foundation, we help entrepreneurs grow with modern web design, local SEO and scalable online solutions.",
+    "whyNote": "🌍 Active in the Netherlands and international projects, including Dubai and Morocco.",
     "processEyebrow": "Approach",
     "processTitle": "How we work",
     "processDesc": "A clear process from introduction to ongoing growth.",
@@ -124,7 +126,26 @@
     "portfolioDesc": "A selection of projects Star Local has worked on.",
     "reviewsEyebrow": "Reviews",
     "reviewsTitle": "Client experiences",
-    "reviewsEmpty": "We will share client experiences here soon.",
+    "reviewsStarsLabel": "5 out of 5 stars",
+    "reviewsItems": [
+      {
+        "name": "Owner Dutch Food Dubai",
+        "text": "Star Local made our website more professional, faster and clearer. The collaboration is clear and personal.",
+        "service": "Web design & online growth"
+      },
+      {
+        "name": "Captain Crabby's Dubai",
+        "text": "We are very satisfied with the appearance and structure of our website. Everything is professionally built and focused on more customers.",
+        "service": "Website & local visibility"
+      },
+      {
+        "name": "Tropicana Breda",
+        "text": "From the first design, our wishes were listened to carefully. The result fits our business and target audience perfectly.",
+        "service": "Website development"
+      }
+    ],
+    "formTitle": "Tell us about your project",
+    "formDesc": "Leave your details and requirements. We will contact you as soon as possible.",
     "contactEyebrow": "Contact",
     "contactTitle": "Ready to get started?",
     "contactDesc": "Tell us about your plans. We will respond as soon as possible.",
@@ -352,8 +373,8 @@
         "answer": "No. In addition to web design, we offer SEO, Google Business Profile optimisation, technical optimisation, maintenance, and ongoing online growth."
       },
       {
-        "question": "Do you work across the Netherlands?",
-        "answer": "Yes. We support businesses throughout the Netherlands with online strategy, web design, and visibility."
+        "question": "Do you also work internationally?",
+        "answer": "Yes. Although our main focus is on the Netherlands, we build websites and SEO solutions for clients around the world.\n\nWe have completed projects in:\n🇳🇱 Netherlands\n🇦🇪 Dubai (United Arab Emirates)\n🇲🇦 Morocco\n\nFurthermore, the Star Local platform was specially developed to expand easily to new countries and regions. This allows us to support international businesses with professional websites, local SEO and scalable online solutions."
       }
     ]
   },

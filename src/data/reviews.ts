@@ -17,9 +17,9 @@ export const homeFaqs: FAQ[] = [
       'Nee. Naast webdesign bieden we SEO, Google Bedrijfsprofiel optimalisatie, technische optimalisatie, onderhoud en doorlopende online groei.',
   },
   {
-    question: 'Werken jullie door heel Nederland?',
+    question: 'Werken jullie ook internationaal?',
     answer:
-      'Ja. We ondersteunen bedrijven in heel Nederland met online strategie, webdesign en vindbaarheid.',
+      "Ja. Hoewel onze grootste focus op Nederland ligt, bouwen wij websites en SEO-oplossingen voor klanten over de hele wereld.\n\nWij hebben onder andere projecten gerealiseerd in:\n🇳🇱 Nederland\n🇦🇪 Dubai (Verenigde Arabische Emiraten)\n🇲🇦 Marokko\n\nDaarnaast is het Star Local-platform speciaal ontwikkeld om eenvoudig uit te breiden naar nieuwe landen en regio's. Daardoor kunnen wij ook internationale bedrijven ondersteunen met professionele websites, lokale SEO en schaalbare online oplossingen.",
   },
 ];
 

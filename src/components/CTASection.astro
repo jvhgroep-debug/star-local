@@ -10,6 +10,7 @@ interface Props {
   text?: string;
   showWhatsapp?: boolean;
   whatsappUrl?: string;
+  consultationHref?: string;
 }
 
 const {
@@ -18,9 +19,11 @@ const {
   text,
   showWhatsapp = true,
   whatsappUrl = SITE.whatsappUrl,
+  consultationHref,
 } = Astro.props;
 
 const dict = useTranslations(locale);
+const primaryHref = consultationHref ?? route('contact', locale);
 ---
 
 <section class="cta-section" aria-labelledby="cta-section-title">
@@ -28,7 +31,7 @@ const dict = useTranslations(locale);
     <h2 id="cta-section-title">{title ?? dict.cta.title}</h2>
     <p>{text ?? dict.cta.text}</p>
     <div class="cta-actions">
-      <a href={route('contact', locale)} class="btn btn-primary">{dict.buttons.freeConsultation}</a>
+      <a href={primaryHref} class="btn btn-primary">{dict.buttons.freeConsultation}</a>
       {showWhatsapp && (
         <a href={whatsappUrl} class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
           {dict.buttons.whatsappDirect}

@@ -7,12 +7,12 @@ interface Props {
   showNotice?: boolean;
 }
 
-const { locale, showNotice = true } = Astro.props;
+const { locale, showNotice = false } = Astro.props;
 const dict = useTranslations(locale);
 const form = dict.form;
 ---
 
-<form class="contact-form" id="contact-form" novalidate>
+<form class="contact-form" id="contactformulier" novalidate>
   {showNotice && (
     <p class="form-notice" role="status">{form.notice}</p>
   )}
@@ -68,7 +68,7 @@ const form = dict.form;
 </form>
 
 <script define:vars={{ errors: form.errors, successAlert: form.successAlert }}>
-  const form = document.getElementById('contact-form');
+  const form = document.getElementById('contactformulier');
 
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -107,6 +107,7 @@ const form = dict.form;
 
 <style>
   .contact-form {
+    scroll-margin-top: 120px;
     background: rgba(205, 184, 128, 0.04);
     border: 1px solid var(--border);
     border-radius: var(--radius);

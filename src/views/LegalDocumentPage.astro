@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalDocumentLayout from '../components/LegalDocumentLayout.astro';
+import type { Locale } from '../i18n/config';
+import type { LegalPageKey } from '../data/legal/types';
+import { getLegalPage } from '../data/legal';
+import { route } from '../i18n/routes';
+
+interface Props {
+  locale: Locale;
+  pageKey: LegalPageKey;
+}
+
+const { locale, pageKey } = Astro.props;
+const page = getLegalPage(pageKey, locale);
+
+const routeKey = pageKey === 'terms' ? 'terms' : pageKey;
+---
+
+<BaseLayout
+  locale={locale}
+  title={page.seoTitle}
+  description={page.seoDescription}
+  canonical={route(routeKey, locale)}
+>
+  <LegalDocumentLayout locale={locale} page={page} />
+</BaseLayout>

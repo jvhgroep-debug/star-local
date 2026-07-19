@@ -11,4 +11,7 @@ export const IMAGES = {
   serviceLocalSeoCard: '/images/services/service-local-seo.png',
   serviceGoogleBusinessProfile: '/images/services/service-google-business-profile.png',
   serviceSeoOptimization: '/images/services/service-seo-optimization.png',
+  portfolioStarLocal: '/images/portfolio/portfolio-star-local.png',
+  portfolioDutchFoodDubai: '/images/portfolio/portfolio-dutch-food-dubai.png',
+  portfolioCaptainCrabbys: '/images/portfolio/portfolio-captain-crabbys.png',
 } as const;

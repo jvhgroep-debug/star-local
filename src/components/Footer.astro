@@ -2,6 +2,7 @@
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n';
 import { SITE } from '../data/site';
+import { route } from '../i18n/routes';
 import { getFooterServices, getFooterCompany, getFooterLegal } from '../data/navigation';
 
 interface Props {
@@ -13,7 +14,15 @@ const dict = useTranslations(locale);
 const footerServices = getFooterServices(locale, dict);
 const footerCompany = getFooterCompany(locale, dict);
 const footerLegal = getFooterLegal(locale, dict);
+const bar = dict.footerBar;
 const year = new Date().getFullYear();
+
+const legalBarLinks = [
+  { label: bar.privacy, href: route('privacy', locale) },
+  { label: bar.cookies, href: route('cookies', locale) },
+  { label: bar.terms, href: route('terms', locale) },
+  { label: bar.disclaimer, href: route('disclaimer', locale) },
+];
 ---
 
 <footer class="site-footer">
@@ -54,18 +63,27 @@ const year = new Date().getFullYear();
     </div>
   </div>
 
-  <div class="container footer-bottom">
-    <p class="preview-note">{dict.footer.previewNote}</p>
-    <p>&copy; {year} {dict.footer.copyright}</p>
+  <div class="footer-bar">
+    <div class="container footer-bar__inner">
+      <p class="footer-bar__copy">&copy; {year} {bar.copyright}</p>
+      <nav class="footer-bar__links" aria-label={dict.footer.legal}>
+        {legalBarLinks.map((item, index) => (
+          <span class="footer-bar__item">
+            {index > 0 && <span class="footer-bar__sep" aria-hidden="true">·</span>}
+            <a href={item.href}>{item.label}</a>
+          </span>
+        ))}
+      </nav>
+    </div>
   </div>
 </footer>
 
 <style>
   .site-footer {
     background: #060a10;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid #cdb880;
     margin-top: 3rem;
-    padding: 3.5rem 0 1.5rem;
+    padding: 3.5rem 0 0;
   }
 
   .footer-grid {
@@ -113,20 +131,53 @@ const year = new Date().getFullYear();
     margin-bottom: 0.45rem;
   }
 
-  li a:hover {
+  li a:hover,
+  .footer-bar__links a:hover {
     color: var(--gold);
   }
 
-  .footer-bottom {
-    padding-top: 1.25rem;
+  .footer-bar {
+    padding: 1.35rem 0 1.5rem;
+  }
+
+  .footer-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-bar__copy {
+    margin: 0;
     color: var(--text-soft);
     font-size: 0.85rem;
   }
 
-  .preview-note {
-    margin: 0 0 0.35rem;
+  .footer-bar__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.35rem 0.55rem;
+  }
+
+  .footer-bar__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .footer-bar__links a {
     color: var(--text-muted);
-    font-size: 0.82rem;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+
+  .footer-bar__sep {
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    user-select: none;
   }
 
   @media (max-width: 900px) {
@@ -139,9 +190,19 @@ const year = new Date().getFullYear();
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 640px) {
     .footer-grid {
       grid-template-columns: 1fr;
+    }
+
+    .footer-bar__inner {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .footer-bar__links {
+      justify-content: center;
     }
   }
 </style>

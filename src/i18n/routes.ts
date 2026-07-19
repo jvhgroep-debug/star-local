@@ -34,9 +34,9 @@ const paths: Record<RouteKey, Record<Locale, string>> = {
   reviews: { nl: '/reviews/', en: '/en/reviews/' },
   blog: { nl: '/blog/', en: '/en/blog/' },
   sitemap: { nl: '/sitemap/', en: '/en/sitemap/' },
-  privacy: { nl: '/privacybeleid/', en: '/en/privacy-policy/' },
-  cookies: { nl: '/cookiebeleid/', en: '/en/cookie-policy/' },
-  terms: { nl: '/algemene-voorwaarden/', en: '/en/terms/' },
+  privacy: { nl: '/privacy/', en: '/en/privacy/' },
+  cookies: { nl: '/cookies/', en: '/en/cookies/' },
+  terms: { nl: '/voorwaarden/', en: '/en/terms/' },
   disclaimer: { nl: '/disclaimer/', en: '/en/disclaimer/' },
   notFound: { nl: '/404', en: '/en/404' },
 };
@@ -61,9 +61,9 @@ const nlToKey: [RegExp, RouteKey, (m: RegExpMatchArray) => { slug?: string } | u
   [/^\/reviews\/$/, 'reviews', () => undefined],
   [/^\/blog\/$/, 'blog', () => undefined],
   [/^\/sitemap\/$/, 'sitemap', () => undefined],
-  [/^\/privacybeleid\/$/, 'privacy', () => undefined],
-  [/^\/cookiebeleid\/$/, 'cookies', () => undefined],
-  [/^\/algemene-voorwaarden\/$/, 'terms', () => undefined],
+  [/^\/privacy\/$/, 'privacy', () => undefined],
+  [/^\/cookies\/$/, 'cookies', () => undefined],
+  [/^\/voorwaarden\/$/, 'terms', () => undefined],
   [/^\/disclaimer\/$/, 'disclaimer', () => undefined],
 ];
 
@@ -81,8 +81,8 @@ const enToKey: [RegExp, RouteKey, (m: RegExpMatchArray) => { slug?: string } | u
   [/^\/en\/reviews\/$/, 'reviews', () => undefined],
   [/^\/en\/blog\/$/, 'blog', () => undefined],
   [/^\/en\/sitemap\/$/, 'sitemap', () => undefined],
-  [/^\/en\/privacy-policy\/$/, 'privacy', () => undefined],
-  [/^\/en\/cookie-policy\/$/, 'cookies', () => undefined],
+  [/^\/en\/privacy\/$/, 'privacy', () => undefined],
+  [/^\/en\/cookies\/$/, 'cookies', () => undefined],
   [/^\/en\/terms\/$/, 'terms', () => undefined],
   [/^\/en\/disclaimer\/$/, 'disclaimer', () => undefined],
 ];
