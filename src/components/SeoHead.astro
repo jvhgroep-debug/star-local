@@ -1,0 +1,88 @@
+---
+import { SITE, canonical } from '../data/site';
+import type { Locale } from '../i18n/config';
+import { localeLabels, locales } from '../i18n/config';
+import { translatePath } from '../i18n/routes';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description?: string;
+  canonicalPath?: string;
+  image?: string;
+  robots?: string;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const {
+  locale,
+  title,
+  description = SITE.defaultDescription,
+  canonicalPath = '/',
+  image = SITE.ogImage,
+  robots = 'index, follow',
+  schema,
+  noindex = false,
+} = Astro.props;
+
+const canonicalUrl = canonical(canonicalPath);
+const ogImage = image.startsWith('http') ? image : `${SITE.url}${image}`;
+const { ogLocale, hreflang } = localeLabels[locale];
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE.name,
+  url: SITE.url,
+  logo: `${SITE.url}${SITE.logo}`,
+  email: SITE.email,
+  telephone: SITE.phoneRaw,
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE.name,
+  url: SITE.url,
+  inLanguage: locales.map((l) => localeLabels[l].hreflang),
+};
+
+const schemas = [organizationSchema, websiteSchema, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])];
+
+const hreflangLinks = locales.map((l) => ({
+  hreflang: localeLabels[l].hreflang,
+  href: canonical(translatePath(canonicalPath, l)),
+}));
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content={description} />
+<meta name="robots" content={noindex ? 'noindex, nofollow' : robots} />
+<link rel="canonical" href={canonicalUrl} />
+<title>{title}</title>
+<link rel="icon" href={SITE.logo} type="image/svg+xml" />
+
+{hreflangLinks.map((link) => (
+  <link rel="alternate" hreflang={link.hreflang} href={link.href} />
+))}
+<link rel="alternate" hreflang="x-default" href={canonical(translatePath(canonicalPath, 'nl'))} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content={ogLocale} />
+{locales.filter((l) => l !== locale).map((l) => (
+  <meta property="og:locale:alternate" content={localeLabels[l].ogLocale} />
+))}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script type="application/ld+json" set:html={JSON.stringify(schemas)} />

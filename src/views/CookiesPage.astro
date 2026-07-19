@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalBanner from '../components/LegalBanner.astro';
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { route } from '../i18n/routes';
+import { SITE } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = useTranslations(locale);
+const page = dict.legal.pages.cookies;
+
+const sectionContent: Record<Locale, string[]> = {
+  nl: [
+    'Cookies zijn kleine tekstbestanden die op uw apparaat worden opgeslagen wanneer u onze website bezoekt.',
+    'Noodzakelijke cookies zijn vereist voor basisfunctionaliteit en beveiliging van de website.',
+    'Analytische cookies helpen ons te begrijpen hoe bezoekers de website gebruiken en hoe wij de site kunnen verbeteren.',
+    'Marketingcookies kunnen worden gebruikt om campagnes te meten of relevantere advertenties te tonen. Deze worden alleen geplaatst als dat wettelijk is toegestaan en nodig is.',
+    'Waar wettelijk vereist vragen wij toestemming voordat niet-noodzakelijke cookies worden geplaatst.',
+    'U kunt cookievoorkeuren beheren via uw browserinstellingen. Het uitschakelen van cookies kan invloed hebben op de werking van de website.',
+    `Vragen over cookies? Neem contact op via ${SITE.email}.`,
+  ],
+  en: [
+    'Cookies are small text files stored on your device when you visit our website.',
+    'Essential cookies are required for core functionality and security of the website.',
+    'Analytics cookies help us understand how visitors use the website and how we can improve it.',
+    'Marketing cookies may be used to measure campaigns or show more relevant ads. These are only placed when legally allowed and required.',
+    'Where legally required, we ask for consent before placing non-essential cookies.',
+    'You can manage cookie preferences through your browser settings. Disabling cookies may affect website functionality.',
+    `Questions about cookies? Contact us at ${SITE.email}.`,
+  ],
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${page.title} | ${SITE.name}`}
+  description={`${page.title}. ${dict.meta.defaultDescription}`}
+  canonical={route('cookies', locale)}
+>
+  <section class="section legal">
+    <div class="container content">
+      <LegalBanner banner={dict.legal.banner} title={page.title} />
+      <p class="updated">{dict.legal.updated}</p>
+
+      {page.sections.map((sectionTitle, index) => (
+        <article>
+          <h2>{sectionTitle}</h2>
+          <p>{sectionContent[locale][index]}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal .content h2 {
+    color: var(--gold);
+    margin: 2rem 0 0.75rem;
+    font-size: 1.15rem;
+  }
+
+  .legal .content p {
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  .updated {
+    color: var(--text-soft);
+    font-size: 0.9rem;
+  }
+</style>

@@ -1,0 +1,47 @@
+---
+interface Props {
+  comingSoon: string;
+  title: string;
+  category: string;
+  excerpt: string;
+}
+
+const { title, category, excerpt, comingSoon } = Astro.props;
+---
+
+<article class="blog-card card">
+  <div class="card-body">
+    <p class="blog-category">{category}</p>
+    <h3>{title}</h3>
+    <p>{excerpt}</p>
+    <span class="coming-soon">{comingSoon}</span>
+  </div>
+</article>
+
+<style>
+  .blog-category {
+    color: var(--gold);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 0.5rem;
+  }
+
+  h3 {
+    color: var(--text);
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  p {
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+    line-height: 1.65;
+  }
+
+  .coming-soon {
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+</style>

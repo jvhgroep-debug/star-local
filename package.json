@@ -1,0 +1,15 @@
+{
+  "name": "star-local-project",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/generate-gemeente-page.mjs && astro build",
+    "preview": "astro preview",
+    "generate:gemeentes": "node scripts/generate-gemeentes.mjs && node scripts/generate-gemeente-page.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^5.7.0"
+  }
+}

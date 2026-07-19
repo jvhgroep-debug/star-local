@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { route } from '../i18n/routes';
+import { SITE } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = useTranslations(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  title={dict.notFound.title}
+  description={dict.notFound.description}
+  canonical={route('notFound', locale)}
+  noindex={true}
+>
+  <section class="section not-found">
+    <div class="container">
+      <h1>{dict.notFound.h1}</h1>
+      <p>{dict.notFound.text}</p>
+      <div class="actions">
+        <a href={route('home', locale)} class="btn btn-primary">{dict.notFound.backHome}</a>
+        <a href={route('services', locale)} class="btn btn-secondary">{dict.notFound.viewServices}</a>
+        <a href={SITE.whatsappUrl} class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
+          {dict.buttons.whatsappDirect}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    text-align: center;
+    padding: 4rem 0;
+  }
+
+  h1 {
+    color: var(--gold);
+    font-size: 4rem;
+    margin: 0 0 0.5rem;
+  }
+
+  p {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+  }
+</style>

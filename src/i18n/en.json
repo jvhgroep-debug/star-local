@@ -1,0 +1,454 @@
+{
+  "meta": {
+    "defaultDescription": "Star Local builds professional websites and helps businesses get found on Google.",
+    "siteName": "Star Local"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "projects": "Projects",
+    "approach": "Approach",
+    "about": "About",
+    "blog": "Blog",
+    "contact": "Contact",
+    "freeAdvice": "Free consultation",
+    "mainNav": "Main navigation",
+    "mobileNav": "Mobile menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "logoAria": "Star Local – back to homepage"
+  },
+  "navServices": {
+    "website": "Website development",
+    "webshop": "E-commerce development",
+    "localSeo": "Local SEO",
+    "nationalSeo": "National SEO",
+    "googleBusiness": "Google Business Profile",
+    "maintenance": "Website maintenance",
+    "seoAudit": "SEO audit"
+  },
+  "footer": {
+    "tagline": "Star Local helps entrepreneurs with professional websites, strong visibility, and a scalable online growth strategy.",
+    "services": "Services",
+    "company": "Company",
+    "legal": "Legal",
+    "copyright": "Star Local. All rights reserved.",
+    "previewNote": "This website is currently being expanded."
+  },
+  "footerCompany": {
+    "about": "About",
+    "portfolio": "Portfolio",
+    "projects": "Projects",
+    "approach": "Approach",
+    "reviews": "Reviews",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "footerLegal": {
+    "privacy": "Privacy policy",
+    "terms": "Terms and conditions",
+    "cookies": "Cookie policy",
+    "disclaimer": "Disclaimer",
+    "sitemap": "Sitemap"
+  },
+  "buttons": {
+    "freeConsultation": "Free consultation",
+    "viewWork": "View our work",
+    "viewAllServices": "View all services",
+    "viewFullPortfolio": "View full portfolio",
+    "viewFullApproach": "View full approach",
+    "learnMore": "Learn more",
+    "viewProject": "View project",
+    "whatsappDirect": "WhatsApp direct",
+    "sendMessage": "Send message",
+    "getQuote": "Request a no-obligation quote",
+    "backHome": "Back to home",
+    "contactUs": "Contact us",
+    "visitWebsite": "Visit website"
+  },
+  "cta": {
+    "title": "Ready to get found online?",
+    "text": "Tell us where you want to grow. We are happy to advise you on the best website and SEO approach."
+  },
+  "home": {
+    "title": "Star Local | Websites that get found and win customers",
+    "description": "Star Local builds fast, professional websites and helps businesses become more visible on Google — locally and nationally.",
+    "heroLabel": "Star Local",
+    "h1": "Websites that get found and win customers",
+    "lead": "Star Local builds fast, professional websites and helps businesses become more visible on Google — locally and nationally.",
+    "usps": [
+      "Professional web design",
+      "Strong Google visibility",
+      "Fast and secure websites",
+      "Personal guidance"
+    ],
+    "trust": [
+      { "value": "348+", "label": "regions covered" },
+      { "value": "Web design", "label": "+ SEO + growth" },
+      { "value": "Personal", "label": "advice & guidance" },
+      { "value": "Results", "label": "driven online" }
+    ],
+    "servicesEyebrow": "What we do",
+    "servicesTitle": "Our services",
+    "servicesDesc": "From professional websites to local and national SEO — everything for a strong online presence.",
+    "visibilityEyebrow": "Visibility",
+    "visibilityTitle": "Websites that get found",
+    "visibilityDesc": "A beautiful website is only valuable if your target audience can actually find you. Star Local combines design, technology, and SEO for sustainable online growth.",
+    "visibilityPoints": [
+      "Local and national visibility",
+      "Technically strong website foundation",
+      "Content and structure aligned with search intent",
+      "Measurable improvements and clear reporting"
+    ],
+    "whyEyebrow": "Trust",
+    "whyTitle": "Why Star Local?",
+    "whyDesc": "We help entrepreneurs build a professional online foundation and a growth strategy that fits their market.",
+    "whyPoints": [
+      "Years of experience in web design and SEO",
+      "Focus on local and national visibility",
+      "Personal collaboration and clear communication",
+      "Long-term vision for online growth"
+    ],
+    "processEyebrow": "Approach",
+    "processTitle": "How we work",
+    "processDesc": "A clear process from introduction to ongoing growth.",
+    "processSteps": [
+      { "title": "Introduction", "text": "We discuss your goals, target audience, and desired results." },
+      { "title": "Analysis", "text": "We map your current online position and opportunities." },
+      { "title": "Strategy", "text": "We determine the best approach for website, SEO, and growth." },
+      { "title": "Development", "text": "We build and optimise with a focus on performance." }
+    ],
+    "portfolioEyebrow": "Portfolio",
+    "portfolioTitle": "Recent work",
+    "portfolioDesc": "A selection of projects Star Local has worked on.",
+    "reviewsEyebrow": "Reviews",
+    "reviewsTitle": "Client experiences",
+    "reviewsEmpty": "We will share client experiences here soon.",
+    "contactEyebrow": "Contact",
+    "contactTitle": "Ready to get started?",
+    "contactDesc": "Tell us about your plans. We will respond as soon as possible.",
+    "seoVisibilityAlt": "SEO and online visibility with Star Local",
+    "localSeoAlt": "About Star Local: local expertise across the Netherlands"
+  },
+  "servicesPage": {
+    "title": "Services | Star Local",
+    "description": "Star Local combines web design, SEO, content, technology, and local visibility for a strong online presence.",
+    "h1": "Everything for strong online visibility",
+    "intro": "Star Local combines web design, SEO, content, technology, and local visibility.",
+    "whyService": "Why this service?",
+    "ourApproach": "Our approach",
+    "whyStarLocal": "Why Star Local?",
+    "relatedServices": "Related services"
+  },
+  "portfolioPage": {
+    "title": "Portfolio | Star Local",
+    "description": "View a selection of websites and online projects Star Local has worked on.",
+    "h1": "Portfolio",
+    "intro": "View a selection of websites and online projects Star Local has worked on.",
+    "type": "Type",
+    "challenge": "Challenge",
+    "approach": "Approach",
+    "workDone": "Work completed",
+    "status": "Status",
+    "visitWebsite": "Visit website"
+  },
+  "projectsPage": {
+    "title": "Our website projects | Star Local",
+    "description": "Explore websites, online stores and digital platforms developed and optimized by Star Local.",
+    "h1": "Explore our projects",
+    "intro": "A selection of websites, online stores and digital platforms we have developed and optimized.",
+    "viewWebsite": "Visit website",
+    "placeholderNote": "Screenshot pending",
+    "filters": {
+      "all": "All",
+      "website": "Websites",
+      "webshop": "Online stores",
+      "seo": "SEO",
+      "platform": "Platforms"
+    },
+    "cta": {
+      "title": "Need a professional website too?",
+      "text": "Tell us what you want to build. We will help you create a professional website designed for stronger online visibility."
+    }
+  },
+  "about": {
+    "title": "About | Star Local",
+    "description": "Star Local helps entrepreneurs with professional websites, strong visibility, and a scalable online growth strategy.",
+    "h1": "About Star Local",
+    "intro": "Star Local helps entrepreneurs with professional websites, strong visibility, and a scalable online growth strategy.",
+    "sections": {
+      "story": {
+        "title": "Our story",
+        "text": "Star Local was founded on the belief that entrepreneurs deserve more than a standard website. We combine design, technology, and visibility in one cohesive approach."
+      },
+      "mission": {
+        "title": "Our mission",
+        "text": "To help businesses get found online, build trust, and reach more customers."
+      },
+      "why": {
+        "title": "Why Star Local",
+        "text": "We work in a results-driven, transparent, and personal way — with attention to both local and national growth."
+      },
+      "approach": {
+        "title": "Our approach",
+        "text": "We start with insight, build a clear strategy, and translate it into a professional website and SEO foundation."
+      },
+      "values": {
+        "title": "What we stand for",
+        "text": "Clarity, quality, results focus, personal collaboration, and long-term growth."
+      },
+      "vision": {
+        "title": "Future vision",
+        "text": "Star Local continues to invest in modern web technology, SEO, and content quality to position entrepreneurs for long-term online success."
+      }
+    }
+  },
+  "approach": {
+    "title": "Approach | Star Local",
+    "description": "Discover the Star Local approach: from introduction to ongoing online growth.",
+    "h1": "Our approach",
+    "intro": "A clear process from introduction to ongoing growth.",
+    "steps": [
+      { "title": "Introduction", "text": "We discuss your goals, market, and desired results." },
+      { "title": "Analysis", "text": "We examine your current online position and opportunities." },
+      { "title": "Strategy", "text": "We define structure, content, and SEO priorities." },
+      { "title": "Design", "text": "We translate the strategy into a professional design." },
+      { "title": "Development", "text": "We build a fast, secure, and scalable website." },
+      { "title": "Optimisation", "text": "We improve technology, content, and conversion." },
+      { "title": "Launch", "text": "After review and testing, everything goes live." },
+      { "title": "Ongoing growth", "text": "We continue to monitor, optimise, and expand." }
+    ]
+  },
+  "pricing": {
+    "title": "Pricing | Star Local",
+    "description": "No-obligation quotes for websites, online growth, and custom solutions from Star Local.",
+    "h1": "Pricing",
+    "intro": "Every project is unique. The investment depends on your goals, scope, and desired results.",
+    "tiers": [
+      {
+        "name": "Website",
+        "description": "Professional websites with a strong foundation for visibility and conversion.",
+        "features": ["Design and structure", "Technical quality", "Basic SEO"]
+      },
+      {
+        "name": "Online growth",
+        "description": "SEO, content, and optimisation for more visitors and enquiries.",
+        "features": ["Local and national SEO", "Technical improvements", "Ongoing optimisation"]
+      },
+      {
+        "name": "Custom",
+        "description": "More complex projects with integrations, webshops, or specific requirements.",
+        "features": ["Functional extensions", "Integrations", "Maintenance and support"]
+      }
+    ],
+    "factorsTitle": "What determines the price?",
+    "factors": [
+      "Scope and number of pages",
+      "Features and integrations",
+      "Content and SEO scope",
+      "Maintenance and ongoing growth"
+    ],
+    "cta": "Request a no-obligation quote"
+  },
+  "reviews": {
+    "title": "Reviews | Star Local",
+    "description": "Client experiences with Star Local.",
+    "h1": "Reviews",
+    "intro": "What clients say about Star Local.",
+    "empty": "We will share client experiences here soon."
+  },
+  "blog": {
+    "title": "Blog | Star Local",
+    "description": "Tips and insights on web design, SEO, Google, and online growth from Star Local.",
+    "h1": "Blog",
+    "intro": "Tips and insights on web design, SEO, and online growth.",
+    "categories": ["SEO", "Web design", "Google", "Online marketing", "AI", "Website management"],
+    "comingSoon": "Coming soon",
+    "note": "Articles will appear here soon. The structure is ready for future content.",
+    "posts": [
+      {
+        "title": "How to improve your local visibility on Google",
+        "category": "SEO",
+        "excerpt": "Practical steps for better visibility in your region."
+      },
+      {
+        "title": "What makes a professional website convincing?",
+        "category": "Web design",
+        "excerpt": "Design, structure, and trust for more enquiries."
+      },
+      {
+        "title": "Optimising your Google Business Profile: where to start",
+        "category": "Google",
+        "excerpt": "The foundation for better visibility in Maps and local search results."
+      },
+      {
+        "title": "From visitor to customer: conversion on your website",
+        "category": "Online marketing",
+        "excerpt": "How to get more value from your existing website traffic."
+      },
+      {
+        "title": "Modern search experiences and your website",
+        "category": "AI",
+        "excerpt": "Why structure and content are becoming increasingly important."
+      },
+      {
+        "title": "Website maintenance: why it pays off",
+        "category": "Website management",
+        "excerpt": "Keeping updates, security, and performance on track."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contact | Star Local",
+    "description": "Contact Star Local for web design, SEO, and online growth. No-obligation consultation.",
+    "h1": "Contact",
+    "intro": "Tell us about your plans. We are happy to advise you on the best website and SEO approach.",
+    "directContact": "Direct contact",
+    "phone": "Phone / WhatsApp",
+    "email": "Email",
+    "website": "Website"
+  },
+  "form": {
+    "notice": "The form is visually ready. Integration with Formspree, Resend, or a custom API will follow.",
+    "name": "Name",
+    "company": "Company name",
+    "email": "Email",
+    "phone": "Phone",
+    "subject": "Subject",
+    "message": "Message",
+    "privacy": "I agree to the processing of my data in accordance with the privacy policy.",
+    "chooseSubject": "Choose a subject",
+    "subjects": [
+      "Website development",
+      "SEO",
+      "Google Business Profile",
+      "Website maintenance",
+      "E-commerce",
+      "Other"
+    ],
+    "errors": {
+      "name": "Please enter your name.",
+      "email": "Please enter a valid email address.",
+      "subject": "Please choose a subject.",
+      "message": "Please enter a message.",
+      "privacy": "You must agree to the privacy policy."
+    },
+    "successAlert": "Thank you for your message. The form is not yet connected to a delivery service."
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "home": [
+      {
+        "question": "Which businesses is Star Local suitable for?",
+        "answer": "Star Local helps entrepreneurs and businesses that want to combine a professional website with better visibility on Google, both locally and nationally."
+      },
+      {
+        "question": "How quickly can I get started?",
+        "answer": "After a no-obligation introductory meeting, you will receive a clear proposal with next steps and planning."
+      },
+      {
+        "question": "Do you only build websites?",
+        "answer": "No. In addition to web design, we offer SEO, Google Business Profile optimisation, technical optimisation, maintenance, and ongoing online growth."
+      },
+      {
+        "question": "Do you work across the Netherlands?",
+        "answer": "Yes. We support businesses throughout the Netherlands with online strategy, web design, and visibility."
+      }
+    ]
+  },
+  "legal": {
+    "banner": "Draft – have this document reviewed legally before use.",
+    "updated": "Last updated: [enter date]",
+    "pages": {
+      "privacy": {
+        "title": "Privacy policy",
+        "sections": [
+          "1. Who are we?",
+          "2. What data do we process?",
+          "3. Purposes of processing",
+          "4. Contact forms",
+          "5. Analytics and cookies",
+          "6. Server logs",
+          "7. Email",
+          "8. Retention periods",
+          "9. Rights of data subjects",
+          "10. Security",
+          "11. External service providers",
+          "12. Changes"
+        ]
+      },
+      "terms": {
+        "title": "Terms and conditions",
+        "sections": [
+          "1. Applicability",
+          "2. Quotes",
+          "3. Payments",
+          "4. Performance",
+          "5. Changes",
+          "6. Maintenance",
+          "7. Hosting and domain",
+          "8. Intellectual property",
+          "9. Liability",
+          "10. Termination",
+          "11. Force majeure",
+          "12. Applicable law",
+          "13. Contact"
+        ]
+      },
+      "cookies": {
+        "title": "Cookie policy",
+        "sections": [
+          "1. What are cookies?",
+          "2. Essential cookies",
+          "3. Analytics cookies",
+          "4. Marketing cookies",
+          "5. Consent",
+          "6. Managing preferences",
+          "7. Contact"
+        ]
+      },
+      "disclaimer": {
+        "title": "Disclaimer",
+        "sections": [
+          "1. Information on this website",
+          "2. Liability",
+          "3. External links",
+          "4. Copyright",
+          "5. Contact"
+        ]
+      }
+    }
+  },
+  "notFound": {
+    "title": "Page not found | Star Local",
+    "description": "This page could not be found.",
+    "h1": "404",
+    "text": "We could not find this page.",
+    "backHome": "Back to home",
+    "viewServices": "View our services"
+  },
+  "sitemap": {
+    "title": "Sitemap | Star Local",
+    "description": "Overview of all pages on starlocal.nl.",
+    "h1": "Sitemap",
+    "intro": "Overview of all pages on the Star Local website.",
+    "main": "Main pages",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "projects": "Projects",
+    "legal": "Legal"
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "projects": "Projects"
+  },
+  "lang": {
+    "switch": "Change language",
+    "nl": "Nederlands",
+    "en": "English"
+  },
+  "skipLink": "Skip to content"
+}

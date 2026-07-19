@@ -1,0 +1,272 @@
+---
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { route } from '../i18n/routes';
+import { getMainNav } from '../data/navigation';
+import { SITE } from '../data/site';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = useTranslations(locale);
+const mainNav = getMainNav(locale, dict);
+const currentPath = Astro.url.pathname;
+const homeHref = route('home', locale);
+---
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a href={homeHref} class="logo-link" aria-label={dict.nav.logoAria}>
+      <img src={SITE.logo} alt="Star Local logo" class="logo-img" width="180" height="48" />
+    </a>
+
+    <div class="header-actions">
+      <LanguageSwitcher locale={locale} />
+
+      <nav class="desktop-nav" aria-label={dict.nav.mainNav}>
+        {mainNav.map((item) =>
+          'children' in item ? (
+            <div class="nav-dropdown">
+              <button
+                class="nav-dropdown-trigger"
+                aria-expanded="false"
+                aria-haspopup="true"
+                id="diensten-trigger"
+              >
+                {item.label}
+                <span aria-hidden="true">▾</span>
+              </button>
+              <div class="nav-dropdown-menu" role="menu" aria-labelledby="diensten-trigger">
+                {item.children.map((child) => (
+                  <a href={child.href} role="menuitem">{child.label}</a>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <a
+              href={item.href}
+              class:list={[{ active: currentPath === item.href || (item.href !== homeHref && currentPath.startsWith(item.href)) }]}
+            >
+              {item.label}
+            </a>
+          )
+        )}
+        <a href={route('contact', locale)} class="btn btn-primary header-cta">{dict.nav.freeAdvice}</a>
+      </nav>
+
+      <button class="menu-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label={dict.nav.openMenu}>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-menu" class="mobile-menu" aria-label={dict.nav.mobileNav} hidden>
+    <div class="container mobile-menu-inner">
+      <LanguageSwitcher locale={locale} />
+      {mainNav.map((item) =>
+        'children' in item ? (
+          <div class="mobile-group">
+            <p class="mobile-group-title">{item.label}</p>
+            {item.children.map((child) => (
+              <a href={child.href}>{child.label}</a>
+            ))}
+          </div>
+        ) : (
+          <a href={item.href}>{item.label}</a>
+        )
+      )}
+      <a href={route('contact', locale)} class="btn btn-primary mobile-cta">{dict.nav.freeAdvice}</a>
+    </div>
+  </nav>
+</header>
+
+<script define:vars={{ openLabel: dict.nav.openMenu, closeLabel: dict.nav.closeMenu }}>
+  const header = document.getElementById('site-header');
+  const toggle = document.querySelector('.menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  window.addEventListener('scroll', () => {
+    header?.classList.toggle('scrolled', window.scrollY > 12);
+  }, { passive: true });
+
+  toggle?.addEventListener('click', () => {
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    toggle.setAttribute('aria-label', expanded ? openLabel : closeLabel);
+    if (mobileMenu) mobileMenu.hidden = expanded;
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--header-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: background var(--transition);
+  }
+
+  .site-header.scrolled {
+    background: var(--header-bg-scrolled);
+    box-shadow: var(--shadow);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 72px;
+    gap: 1rem;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo-img {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .desktop-nav > a,
+  .nav-dropdown-trigger {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 0;
+  }
+
+  .desktop-nav > a:hover,
+  .nav-dropdown-trigger:hover,
+  .desktop-nav > a.active {
+    color: var(--gold);
+  }
+
+  .header-cta {
+    padding: 0.65rem 1.1rem;
+    font-size: 0.88rem;
+  }
+
+  .nav-dropdown {
+    position: relative;
+  }
+
+  .nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    left: 0;
+    min-width: 240px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: all var(--transition);
+    box-shadow: var(--shadow);
+  }
+
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown:focus-within .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .nav-dropdown-menu a {
+    display: block;
+    padding: 0.65rem 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+
+  .nav-dropdown-menu a:hover {
+    background: rgba(205, 184, 128, 0.08);
+    color: var(--gold);
+  }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .menu-toggle span {
+    width: 24px;
+    height: 2px;
+    background: var(--gold);
+    display: block;
+  }
+
+  .mobile-menu {
+    border-top: 1px solid var(--border);
+    background: var(--header-bg-scrolled);
+  }
+
+  .mobile-menu-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem 0 1.5rem;
+  }
+
+  .mobile-menu a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.35rem 0;
+  }
+
+  .mobile-group-title {
+    color: var(--gold);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0.5rem 0 0.25rem;
+  }
+
+  .mobile-cta {
+    margin-top: 0.5rem;
+    width: fit-content;
+  }
+
+  @media (max-width: 1024px) {
+    .desktop-nav {
+      display: none;
+    }
+
+    .menu-toggle {
+      display: flex;
+    }
+
+    .header-actions > :global(.lang-switcher) {
+      display: none;
+    }
+  }
+</style>

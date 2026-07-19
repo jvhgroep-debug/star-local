@@ -1,0 +1,385 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import PortfolioCard from '../components/PortfolioCard.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import FAQSection from '../components/FAQSection.astro';
+import CTASection from '../components/CTASection.astro';
+import ContactForm from '../components/ContactForm.astro';
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { route } from '../i18n/routes';
+import { getServices } from '../data/services';
+import { getPortfolioProjects } from '../data/portfolio';
+import { IMAGES } from '../data/images';
+import { SITE } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = useTranslations(locale);
+
+const services = getServices(locale);
+const projects = getPortfolioProjects(locale);
+const featuredServices = services.filter((service) =>
+  ['website-laten-maken', 'lokale-seo', 'google-bedrijfsprofiel'].includes(service.slug)
+);
+const featuredProjects = projects.slice(0, 3);
+---
+
+<BaseLayout
+  locale={locale}
+  title={dict.home.title}
+  description={dict.home.description}
+  canonical={route('home', locale)}
+  image={IMAGES.heroHome}
+  fullWidth
+>
+  <header class="hero" style={`--hero-image: url(${IMAGES.heroHome})`} aria-label={dict.home.heroLabel}>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">{dict.home.heroLabel}</p>
+        <h1>{dict.home.h1}</h1>
+        <p class="hero-lead">{dict.home.lead}</p>
+        <div class="hero-actions">
+          <a href={route('contact', locale)} class="btn btn-primary">{dict.buttons.freeConsultation}</a>
+          <a href={route('portfolio', locale)} class="btn btn-secondary">{dict.buttons.viewWork}</a>
+        </div>
+        <ul class="usp-list">
+          {dict.home.usps.map((usp) => <li>{usp}</li>)}
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <section class="trust-bar" aria-label={dict.home.visibilityEyebrow}>
+    <div class="container trust-grid">
+      {dict.home.trust.map((item) => (
+        <div>
+          <strong>{item.value}</strong>
+          <span>{item.label}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        eyebrow={dict.home.servicesEyebrow}
+        title={dict.home.servicesTitle}
+        description={dict.home.servicesDesc}
+      />
+      <div class="grid-3">
+        {featuredServices.map((service) => (
+          <ServiceCard
+            title={service.h1}
+            description={service.positioning}
+            href={route('service', locale, { slug: service.slug })}
+            image={service.image}
+            imageAlt={service.imageAlt}
+            learnMore={dict.buttons.learnMore}
+          />
+        ))}
+      </div>
+      <p class="center-link"><a href={route('services', locale)}>{dict.buttons.viewAllServices} →</a></p>
+    </div>
+  </section>
+
+  <section class="section alt-section">
+    <div class="container split">
+      <div>
+        <SectionHeading
+          eyebrow={dict.home.visibilityEyebrow}
+          title={dict.home.visibilityTitle}
+          description={dict.home.visibilityDesc}
+        />
+        <ul class="check-list">
+          {dict.home.visibilityPoints.map((point) => <li>{point}</li>)}
+        </ul>
+      </div>
+      <img
+        src={IMAGES.heroSeo}
+        alt={dict.home.seoVisibilityAlt}
+        width="800"
+        height="500"
+        loading="lazy"
+        decoding="async"
+        class="section-image"
+      />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <img
+        src={IMAGES.serviceLocalSeo}
+        alt={dict.home.localSeoAlt}
+        width="800"
+        height="500"
+        loading="lazy"
+        decoding="async"
+        class="section-image"
+      />
+      <div>
+        <SectionHeading
+          eyebrow={dict.home.whyEyebrow}
+          title={dict.home.whyTitle}
+          description={dict.home.whyDesc}
+        />
+        <ul class="check-list">
+          {dict.home.whyPoints.map((point) => <li>{point}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt-section">
+    <div class="container">
+      <SectionHeading
+        eyebrow={dict.home.processEyebrow}
+        title={dict.home.processTitle}
+        description={dict.home.processDesc}
+      />
+      <ProcessSteps steps={dict.home.processSteps} />
+      <p class="center-link"><a href={route('approach', locale)}>{dict.buttons.viewFullApproach} →</a></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        eyebrow={dict.home.portfolioEyebrow}
+        title={dict.home.portfolioTitle}
+        description={dict.home.portfolioDesc}
+      />
+      <div class="grid-3">
+        {featuredProjects.map((project) => (
+          <PortfolioCard
+            name={project.name}
+            type={project.type}
+            summary={project.summary}
+            href={route('portfolioItem', locale, { slug: project.slug })}
+            image={project.image}
+            imageAlt={project.imageAlt}
+            viewProject={dict.buttons.viewProject}
+          />
+        ))}
+      </div>
+      <p class="center-link"><a href={route('portfolio', locale)}>{dict.buttons.viewFullPortfolio} →</a></p>
+    </div>
+  </section>
+
+  <section class="section alt-section">
+    <div class="container reviews-empty">
+      <SectionHeading eyebrow={dict.home.reviewsEyebrow} title={dict.home.reviewsTitle} />
+      <p>{dict.home.reviewsEmpty}</p>
+      <a href={route('contact', locale)} class="btn btn-primary">{dict.buttons.contactUs}</a>
+    </div>
+  </section>
+
+  <FAQSection title={dict.faq.title} faqs={dict.faq.home} />
+  <CTASection locale={locale} />
+
+  <section class="section">
+    <div class="container contact-block">
+      <div>
+        <SectionHeading
+          eyebrow={dict.home.contactEyebrow}
+          title={dict.home.contactTitle}
+          description={dict.home.contactDesc}
+        />
+        <p>
+          <a href={SITE.whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+            {dict.buttons.whatsappDirect}
+          </a>
+        </p>
+      </div>
+      <ContactForm locale={locale} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    min-height: 780px;
+    background: var(--bg) var(--hero-image) center right / cover no-repeat;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(10, 14, 20, 0.93) 0%, rgba(10, 14, 20, 0.72) 45%, rgba(10, 14, 20, 0.25) 100%);
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    padding: 4rem 0;
+  }
+
+  .hero-copy {
+    max-width: 620px;
+  }
+
+  h1 {
+    color: var(--gold);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: 1.12;
+    margin: 0 0 1rem;
+  }
+
+  .hero-lead {
+    color: #fff;
+    font-size: 1.1rem;
+    line-height: 1.75;
+    margin: 0 0 1.75rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .usp-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem 1rem;
+  }
+
+  .usp-list li {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .usp-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+
+  .trust-bar {
+    border-bottom: 1px solid var(--border);
+    background: rgba(205, 184, 128, 0.03);
+    padding: 1.25rem 0;
+  }
+
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .trust-grid strong {
+    display: block;
+    color: var(--gold);
+    font-size: 1.05rem;
+  }
+
+  .trust-grid span {
+    color: var(--text-soft);
+    font-size: 0.85rem;
+  }
+
+  .alt-section {
+    background: rgba(205, 184, 128, 0.03);
+    border-block: 1px solid var(--border);
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .section-image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .check-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .check-list li {
+    color: var(--text-muted);
+    padding-left: 1.3rem;
+    position: relative;
+  }
+
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .center-link {
+    text-align: center;
+    margin-top: 1.75rem;
+  }
+
+  .reviews-empty {
+    text-align: center;
+  }
+
+  .reviews-empty p {
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .contact-block {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      min-height: 620px;
+      background-position: 75% center;
+    }
+
+    .hero-overlay {
+      background: linear-gradient(180deg, rgba(10, 14, 20, 0.92) 0%, rgba(10, 14, 20, 0.7) 60%, rgba(10, 14, 20, 0.45) 100%);
+    }
+
+    .trust-grid,
+    .split,
+    .contact-block,
+    .usp-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

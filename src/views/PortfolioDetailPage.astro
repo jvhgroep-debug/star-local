@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import PageHero from '../components/PageHero.astro';
+import CTASection from '../components/CTASection.astro';
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { route } from '../i18n/routes';
+import type { PortfolioProject } from '../data/portfolio';
+
+interface Props {
+  locale: Locale;
+  project: PortfolioProject;
+}
+
+const { locale, project } = Astro.props;
+const dict = useTranslations(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${project.name} | ${dict.portfolioPage.h1}`}
+  description={project.summary}
+  canonical={route('portfolioItem', locale, { slug: project.slug })}
+  image={project.image}
+>
+  <div class="container page-top">
+    <Breadcrumbs
+      items={[
+        { label: dict.breadcrumbs.home, href: route('home', locale) },
+        { label: dict.breadcrumbs.portfolio, href: route('portfolio', locale) },
+        { label: project.name },
+      ]}
+    />
+  </div>
+
+  <PageHero title={project.name} subtitle={project.summary} image={project.image} imageAlt={project.imageAlt} />
+
+  <section class="section">
+    <div class="container content">
+      <p class="meta"><strong>{dict.portfolioPage.type}:</strong> {project.type}</p>
+      <h2>{dict.portfolioPage.challenge}</h2>
+      <p>{project.challenge}</p>
+      <h2>{dict.portfolioPage.approach}</h2>
+      <p>{project.approach}</p>
+      <h2>{dict.portfolioPage.workDone}</h2>
+      <ul>
+        {project.work.map((item) => <li>{item}</li>)}
+      </ul>
+      <h2>{dict.portfolioPage.status}</h2>
+      <div class="tags">
+        {project.status.map((item) => <span class="tag">{item}</span>)}
+      </div>
+      {project.website && (
+        <p>
+          <a href={project.website} target="_blank" rel="noopener noreferrer">
+            {dict.portfolioPage.visitWebsite} →
+          </a>
+        </p>
+      )}
+    </div>
+  </section>
+
+  <CTASection locale={locale} />
+</BaseLayout>
+
+<style>
+  .page-top {
+    padding-top: 1.5rem;
+  }
+
+  .content h2 {
+    color: var(--gold);
+    margin: 2rem 0 0.75rem;
+  }
+
+  .content h2:first-of-type {
+    margin-top: 0;
+  }
+
+  .content p,
+  .content li {
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  .meta {
+    color: var(--text-muted);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    background: rgba(205, 184, 128, 0.1);
+    border: 1px solid var(--border);
+    color: var(--gold);
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+  }
+</style>

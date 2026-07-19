@@ -1,0 +1,182 @@
+---
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  showNotice?: boolean;
+}
+
+const { locale, showNotice = true } = Astro.props;
+const dict = useTranslations(locale);
+const form = dict.form;
+---
+
+<form class="contact-form" id="contact-form" novalidate>
+  {showNotice && (
+    <p class="form-notice" role="status">{form.notice}</p>
+  )}
+
+  <div class="form-row">
+    <div class="field">
+      <label for="naam">{form.name}</label>
+      <input type="text" id="naam" name="naam" required autocomplete="name" />
+      <span class="error" data-error-for="naam"></span>
+    </div>
+    <div class="field">
+      <label for="bedrijfsnaam">{form.company}</label>
+      <input type="text" id="bedrijfsnaam" name="bedrijfsnaam" autocomplete="organization" />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="field">
+      <label for="email">{form.email}</label>
+      <input type="email" id="email" name="email" required autocomplete="email" />
+      <span class="error" data-error-for="email"></span>
+    </div>
+    <div class="field">
+      <label for="telefoon">{form.phone}</label>
+      <input type="tel" id="telefoon" name="telefoon" autocomplete="tel" />
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="onderwerp">{form.subject}</label>
+    <select id="onderwerp" name="onderwerp" required>
+      <option value="">{form.chooseSubject}</option>
+      {form.subjects.map((subject) => <option>{subject}</option>)}
+    </select>
+    <span class="error" data-error-for="onderwerp"></span>
+  </div>
+
+  <div class="field">
+    <label for="bericht">{form.message}</label>
+    <textarea id="bericht" name="bericht" rows="6" required></textarea>
+    <span class="error" data-error-for="bericht"></span>
+  </div>
+
+  <div class="field checkbox">
+    <label>
+      <input type="checkbox" id="privacy" name="privacy" required />
+      {form.privacy}
+    </label>
+    <span class="error" data-error-for="privacy"></span>
+  </div>
+
+  <button type="submit" class="btn btn-primary">{dict.buttons.sendMessage}</button>
+</form>
+
+<script define:vars={{ errors: form.errors, successAlert: form.successAlert }}>
+  const form = document.getElementById('contact-form');
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    let valid = true;
+
+    const fields = [
+      { id: 'naam', message: errors.name },
+      { id: 'email', message: errors.email },
+      { id: 'onderwerp', message: errors.subject },
+      { id: 'bericht', message: errors.message },
+      { id: 'privacy', message: errors.privacy },
+    ];
+
+    fields.forEach(({ id, message }) => {
+      const input = document.getElementById(id);
+      const error = document.querySelector(`[data-error-for="${id}"]`);
+      let fieldValid = true;
+
+      if (!input) return;
+
+      if (input.type === 'checkbox') {
+        fieldValid = input.checked;
+      } else if (input.type === 'email') {
+        fieldValid = input.value.trim() !== '' && input.value.includes('@');
+      } else {
+        fieldValid = input.value.trim() !== '';
+      }
+
+      if (error) error.textContent = fieldValid ? '' : message;
+      if (!fieldValid) valid = false;
+    });
+
+    if (valid) alert(successAlert);
+  });
+</script>
+
+<style>
+  .contact-form {
+    background: rgba(205, 184, 128, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+  }
+
+  .form-notice {
+    background: rgba(205, 184, 128, 0.08);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .field {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    display: block;
+    color: var(--gold);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 1rem;
+  }
+
+  .checkbox label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .checkbox input {
+    width: auto;
+    margin-top: 0.2rem;
+  }
+
+  .error {
+    display: block;
+    color: #f87171;
+    font-size: 0.82rem;
+    margin-top: 0.35rem;
+    min-height: 1rem;
+  }
+
+  @media (max-width: 700px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalBanner from '../components/LegalBanner.astro';
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { route } from '../i18n/routes';
+import { SITE } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = useTranslations(locale);
+const page = dict.legal.pages.terms;
+
+const sectionContent: Record<Locale, string[]> = {
+  nl: [
+    'Deze voorwaarden zijn van toepassing op alle offertes, overeenkomsten en diensten van Star Local, tenzij schriftelijk anders overeengekomen.',
+    'Offertes zijn vrijblijvend en geldig voor de termijn die in de offerte is vermeld, tenzij anders aangegeven.',
+    'Betalingstermijnen en voorwaarden worden in de offerte of overeenkomst vastgelegd. Bij niet-tijdige betaling kunnen werkzaamheden worden opgeschort.',
+    'Star Local voert werkzaamheden uit naar beste inzicht en vakmanschap. Termijnen zijn indicatief, tenzij schriftelijk als fataal overeengekomen.',
+    'Wijzigingen in scope, planning of functionaliteiten kunnen leiden tot aanvullende kosten en aangepaste levertijden.',
+    'Onderhouds- en supportdiensten worden apart overeengekomen en vallen niet automatisch onder een eenmalig project.',
+    'Hosting en domeinregistratie kunnen via Star Local of derden worden geregeld. Verantwoordelijkheden worden contractueel vastgelegd.',
+    'Rechten op opgeleverde materialen worden overgedragen na volledige betaling, voor zover afgesproken. Rechten van derden blijven onder hun eigen licenties.',
+    'Aansprakelijkheid van Star Local is beperkt tot het bedrag dat voor de betreffende dienst is overeengekomen, behalve bij opzet of grove schuld.',
+    'Doorlopende diensten kunnen worden opgezegd volgens de opzegtermijn in de overeenkomst.',
+    'Star Local is niet aansprakelijk voor vertraging of niet-nakoming door overmacht.',
+    'Op deze voorwaarden is Nederlands recht van toepassing. Geschillen worden voorgelegd aan de bevoegde rechter in Nederland.',
+    `Vragen over deze voorwaarden? Neem contact op via ${SITE.email}.`,
+  ],
+  en: [
+    'These terms apply to all quotes, agreements, and services provided by Star Local, unless agreed otherwise in writing.',
+    'Quotes are non-binding and valid for the period stated in the quote, unless indicated otherwise.',
+    'Payment terms are defined in the quote or agreement. Work may be suspended in case of late payment.',
+    'Star Local performs services to the best of its knowledge and professional standards. Timelines are indicative unless agreed as strict deadlines in writing.',
+    'Changes in scope, planning, or functionality may result in additional costs and adjusted delivery timelines.',
+    'Maintenance and support services are agreed separately and are not automatically included in one-off projects.',
+    'Hosting and domain registration may be arranged through Star Local or third parties. Responsibilities are defined in the agreement.',
+    'Rights to delivered materials are transferred after full payment where agreed. Third-party components remain under their own licenses.',
+    'Star Local liability is limited to the amount agreed for the relevant service, except in cases of intent or gross negligence.',
+    'Ongoing services can be terminated according to the notice period specified in the agreement.',
+    'Star Local is not liable for delays or non-performance caused by force majeure.',
+    'These terms are governed by Dutch law. Disputes are submitted to the competent court in the Netherlands.',
+    `Questions about these terms? Contact us at ${SITE.email}.`,
+  ],
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${page.title} | ${SITE.name}`}
+  description={`${page.title}. ${dict.meta.defaultDescription}`}
+  canonical={route('terms', locale)}
+>
+  <section class="section legal">
+    <div class="container content">
+      <LegalBanner banner={dict.legal.banner} title={page.title} />
+      <p class="updated">{dict.legal.updated}</p>
+
+      {page.sections.map((sectionTitle, index) => (
+        <article>
+          <h2>{sectionTitle}</h2>
+          <p>{sectionContent[locale][index]}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal .content h2 {
+    color: var(--gold);
+    margin: 2rem 0 0.75rem;
+    font-size: 1.15rem;
+  }
+
+  .legal .content p {
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  .updated {
+    color: var(--text-soft);
+    font-size: 0.9rem;
+  }
+</style>

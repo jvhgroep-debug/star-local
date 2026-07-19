@@ -1,0 +1,147 @@
+---
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { SITE } from '../data/site';
+import { getFooterServices, getFooterCompany, getFooterLegal } from '../data/navigation';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = useTranslations(locale);
+const footerServices = getFooterServices(locale, dict);
+const footerCompany = getFooterCompany(locale, dict);
+const footerLegal = getFooterLegal(locale, dict);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <img src={SITE.logo} alt="Star Local" class="footer-logo" width="150" height="40" />
+      <p>{dict.footer.tagline}</p>
+      <p><a href={SITE.whatsappUrl} target="_blank" rel="noopener noreferrer">{SITE.phone}</a></p>
+      <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+      <p><a href={SITE.url}>{SITE.url.replace('https://', '')}</a></p>
+    </div>
+
+    <div>
+      <h3>{dict.footer.services}</h3>
+      <ul>
+        {footerServices.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <h3>{dict.footer.company}</h3>
+      <ul>
+        {footerCompany.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <h3>{dict.footer.legal}</h3>
+      <ul>
+        {footerLegal.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <p class="preview-note">{dict.footer.previewNote}</p>
+    <p>&copy; {year} {dict.footer.copyright}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: #060a10;
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    padding: 3.5rem 0 1.5rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+    gap: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .footer-logo {
+    height: 38px;
+    width: auto;
+    margin-bottom: 1rem;
+  }
+
+  .footer-brand p,
+  .site-footer li a {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    text-decoration: none;
+  }
+
+  .footer-brand p {
+    margin: 0 0 0.5rem;
+    max-width: 320px;
+  }
+
+  h3 {
+    color: var(--gold);
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    margin-bottom: 0.45rem;
+  }
+
+  li a:hover {
+    color: var(--gold);
+  }
+
+  .footer-bottom {
+    padding-top: 1.25rem;
+    color: var(--text-soft);
+    font-size: 0.85rem;
+  }
+
+  .preview-note {
+    margin: 0 0 0.35rem;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+
+  @media (max-width: 900px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

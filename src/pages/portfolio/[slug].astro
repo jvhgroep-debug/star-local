@@ -1,0 +1,14 @@
+---
+import PortfolioDetailPage from '../../views/PortfolioDetailPage.astro';
+import { getPortfolioProjects } from '../../data/portfolio';
+
+export function getStaticPaths() {
+  return getPortfolioProjects('nl').map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+---
+<PortfolioDetailPage locale="nl" project={project} />

@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import CTASection from '../components/CTASection.astro';
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { route } from '../i18n/routes';
+import { getServices } from '../data/services';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = useTranslations(locale);
+const services = getServices(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  title={dict.servicesPage.title}
+  description={dict.servicesPage.description}
+  canonical={route('services', locale)}
+>
+  <PageHero title={dict.servicesPage.h1} subtitle={dict.servicesPage.intro} />
+
+  <section class="section">
+    <div class="container">
+      <div class="grid-3">
+        {services.map((service) => (
+          <ServiceCard
+            title={service.h1}
+            description={service.positioning}
+            href={route('service', locale, { slug: service.slug })}
+            image={service.image}
+            imageAlt={service.imageAlt}
+            learnMore={dict.buttons.learnMore}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTASection locale={locale} />
+</BaseLayout>

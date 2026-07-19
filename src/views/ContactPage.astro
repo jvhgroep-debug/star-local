@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { route } from '../i18n/routes';
+import { SITE } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = useTranslations(locale);
+
+const contactSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: `${dict.contact.h1} Star Local`,
+  url: `${SITE.url}${route('contact', locale)}`,
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title={dict.contact.title}
+  description={dict.contact.description}
+  canonical={route('contact', locale)}
+  schema={contactSchema}
+>
+  <PageHero title={dict.contact.h1} subtitle={dict.contact.intro} />
+
+  <section class="section">
+    <div class="container contact-grid">
+      <div class="contact-info">
+        <h2>{dict.contact.directContact}</h2>
+        <p>
+          <strong>{dict.contact.phone}:</strong>
+          {' '}
+          <a href={SITE.whatsappUrl} target="_blank" rel="noopener noreferrer">{SITE.phone}</a>
+        </p>
+        <p><strong>{dict.contact.email}:</strong> <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+        <p><strong>{dict.contact.website}:</strong> <a href={SITE.url}>{SITE.url.replace('https://', '')}</a></p>
+        <a href={SITE.whatsappUrl} class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
+          {dict.buttons.whatsappDirect}
+        </a>
+      </div>
+      <ContactForm locale={locale} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  h2 {
+    color: var(--gold);
+    margin: 0 0 1rem;
+  }
+
+  .contact-info p {
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

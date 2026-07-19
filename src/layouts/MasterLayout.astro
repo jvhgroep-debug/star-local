@@ -1,0 +1,286 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Star Local – Lokale dienstverlening in heel Nederland' } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <title>{title}</title>
+    <link rel="icon" href="/logo.png" type="image/png" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="/" class="logo-link" aria-label="Star Local – naar homepage">
+          <img src="/logo.png" alt="Star Local logo" class="logo-img" width="180" height="48" />
+        </a>
+        <nav class="main-nav" aria-label="Hoofdnavigatie">
+          <a href="/">Home</a>
+          <a href="/boekingspagina">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container main-content">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <img src="/logo.png" alt="Star Local" class="footer-logo" width="150" height="40" />
+          <p class="footer-tagline">
+            Star Local helpt ondernemers en bewoners in heel Nederland met betrouwbare,
+            lokale dienstverlening en professionele online zichtbaarheid.
+          </p>
+        </div>
+        <div class="footer-links">
+          <h3>Navigatie</h3>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/boekingspagina">Contact &amp; boeking</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h3>Contact</h3>
+          <p>info@starlocal.nl</p>
+          <p>Nederland</p>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p>&copy; {year} Star Local. Alle rechten voorbehouden.</p>
+        <p class="footer-legal">KvK-ready · Privacyvriendelijk · SEO-geoptimaliseerd</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: #0a0e14;
+    --header-bg: #060a10;
+    --gold: #c5a059;
+    --gold-light: #d4b36a;
+    --cta: #25d366;
+    --cta-hover: #1fb855;
+    --text: #ffffff;
+    --text-muted: #c8d0dc;
+    --border: rgba(197, 160, 89, 0.28);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .site-header {
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 72px;
+    gap: 1.5rem;
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .logo-img {
+    height: 44px;
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .main-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+  }
+
+  .main-nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .main-nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: width 0.2s;
+  }
+
+  .main-nav a:hover {
+    color: var(--gold);
+  }
+
+  .main-nav a:hover::after {
+    width: 100%;
+  }
+
+  .main-content {
+    min-height: 60vh;
+    padding: 2.5rem 0 4rem;
+  }
+
+  .site-footer {
+    background: var(--header-bg);
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+    padding: 3rem 0 1.5rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .footer-logo {
+    height: 38px;
+    width: auto;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .footer-tagline {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin: 0;
+    max-width: 360px;
+  }
+
+  .footer-links h3,
+  .footer-contact h3 {
+    color: var(--gold);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+  }
+
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-links li {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-links a,
+  .footer-contact p {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.92rem;
+    margin: 0 0 0.4rem;
+  }
+
+  .footer-links a:hover {
+    color: var(--gold);
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-top: 1.5rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .footer-bottom p {
+    margin: 0;
+  }
+
+  .footer-legal {
+    opacity: 0.75;
+  }
+
+  a {
+    color: var(--gold);
+  }
+
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+  }
+
+  @media (max-width: 768px) {
+    .header-inner {
+      min-height: 64px;
+    }
+
+    .logo-img {
+      height: 36px;
+    }
+
+    .main-nav {
+      gap: 1rem;
+    }
+
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

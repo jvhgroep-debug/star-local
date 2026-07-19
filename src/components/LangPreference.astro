@@ -1,0 +1,64 @@
+<script is:inline>
+  (function () {
+    var KEY = 'starlocal-lang';
+    var path = window.location.pathname;
+    var isEn = path === '/en' || path.startsWith('/en/');
+    var stored = null;
+    try { stored = localStorage.getItem(KEY); } catch (e) {}
+    if (!stored) {
+      var match = document.cookie.match(/(?:^|; )starlocal-lang=([^;]+)/);
+      stored = match ? match[1] : null;
+    }
+    if (!stored || stored === (isEn ? 'en' : 'nl')) return;
+    if (path.startsWith('/gemeentes/')) return;
+    var nlMap = [
+      [/^\/$/, '/en/'],
+      [/^\/diensten\/([^/]+)\/$/, '/en/services/$1/'],
+      [/^\/diensten\/$/, '/en/services/'],
+      [/^\/portfolio\/([^/]+)\/$/, '/en/portfolio/$1/'],
+      [/^\/portfolio\/$/, '/en/portfolio/'],
+      [/^\/projecten\/$/, '/en/projects/'],
+      [/^\/contact\/$/, '/en/contact/'],
+      [/^\/over-ons\/$/, '/en/about/'],
+      [/^\/werkwijze\/$/, '/en/approach/'],
+      [/^\/tarieven\/$/, '/en/pricing/'],
+      [/^\/reviews\/$/, '/en/reviews/'],
+      [/^\/blog\/$/, '/en/blog/'],
+      [/^\/sitemap\/$/, '/en/sitemap/'],
+      [/^\/privacybeleid\/$/, '/en/privacy-policy/'],
+      [/^\/cookiebeleid\/$/, '/en/cookie-policy/'],
+      [/^\/algemene-voorwaarden\/$/, '/en/terms/'],
+      [/^\/disclaimer\/$/, '/en/disclaimer/']
+    ];
+    var enMap = [
+      [/^\/en\/?$/, '/'],
+      [/^\/en\/services\/([^/]+)\/$/, '/diensten/$1/'],
+      [/^\/en\/services\/$/, '/diensten/'],
+      [/^\/en\/portfolio\/([^/]+)\/$/, '/portfolio/$1/'],
+      [/^\/en\/portfolio\/$/, '/portfolio/'],
+      [/^\/en\/projects\/$/, '/projecten/'],
+      [/^\/en\/contact\/$/, '/contact/'],
+      [/^\/en\/about\/$/, '/over-ons/'],
+      [/^\/en\/approach\/$/, '/werkwijze/'],
+      [/^\/en\/pricing\/$/, '/tarieven/'],
+      [/^\/en\/reviews\/$/, '/reviews/'],
+      [/^\/en\/blog\/$/, '/blog/'],
+      [/^\/en\/sitemap\/$/, '/sitemap/'],
+      [/^\/en\/privacy-policy\/$/, '/privacybeleid/'],
+      [/^\/en\/cookie-policy\/$/, '/cookiebeleid/'],
+      [/^\/en\/terms\/$/, '/algemene-voorwaarden/'],
+      [/^\/en\/disclaimer\/$/, '/disclaimer/']
+    ];
+    var table = stored === 'en' ? nlMap : enMap;
+    for (var i = 0; i < table.length; i++) {
+      var m = path.match(table[i][0]);
+      if (m) {
+        var target = table[i][1].replace('$1', m[1] || '');
+        if (target !== path) window.location.replace(target);
+        return;
+      }
+    }
+    if (stored === 'en' && !isEn) window.location.replace('/en/');
+    if (stored === 'nl' && isEn) window.location.replace('/');
+  })();
+</script>

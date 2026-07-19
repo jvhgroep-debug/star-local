@@ -1,0 +1,454 @@
+{
+  "meta": {
+    "defaultDescription": "Star Local bouwt professionele websites en helpt bedrijven beter gevonden te worden in Google.",
+    "siteName": "Star Local"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Diensten",
+    "portfolio": "Portfolio",
+    "projects": "Projecten",
+    "approach": "Werkwijze",
+    "about": "Over ons",
+    "blog": "Blog",
+    "contact": "Contact",
+    "freeAdvice": "Gratis advies",
+    "mainNav": "Hoofdnavigatie",
+    "mobileNav": "Mobiel menu",
+    "openMenu": "Menu openen",
+    "closeMenu": "Menu sluiten",
+    "logoAria": "Star Local – naar homepage"
+  },
+  "navServices": {
+    "website": "Website laten maken",
+    "webshop": "Webshop laten maken",
+    "localSeo": "Lokale SEO",
+    "nationalSeo": "Landelijke SEO",
+    "googleBusiness": "Google Bedrijfsprofiel",
+    "maintenance": "Website onderhoud",
+    "seoAudit": "SEO Audit"
+  },
+  "footer": {
+    "tagline": "Star Local helpt ondernemers met professionele websites, sterke vindbaarheid en een schaalbare online groeistrategie.",
+    "services": "Diensten",
+    "company": "Bedrijf",
+    "legal": "Juridisch",
+    "copyright": "Star Local. Alle rechten voorbehouden.",
+    "previewNote": "De website wordt momenteel verder uitgebreid."
+  },
+  "footerCompany": {
+    "about": "Over ons",
+    "portfolio": "Portfolio",
+    "projects": "Projecten",
+    "approach": "Werkwijze",
+    "reviews": "Reviews",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "footerLegal": {
+    "privacy": "Privacybeleid",
+    "terms": "Algemene voorwaarden",
+    "cookies": "Cookiebeleid",
+    "disclaimer": "Disclaimer",
+    "sitemap": "Sitemap"
+  },
+  "buttons": {
+    "freeConsultation": "Gratis adviesgesprek",
+    "viewWork": "Bekijk ons werk",
+    "viewAllServices": "Bekijk alle diensten",
+    "viewFullPortfolio": "Bekijk volledig portfolio",
+    "viewFullApproach": "Bekijk de volledige werkwijze",
+    "learnMore": "Meer informatie",
+    "viewProject": "Bekijk project",
+    "whatsappDirect": "WhatsApp direct",
+    "sendMessage": "Verstuur bericht",
+    "getQuote": "Vraag een vrijblijvende offerte aan",
+    "backHome": "Terug naar home",
+    "contactUs": "Neem contact op",
+    "visitWebsite": "Bekijk website"
+  },
+  "cta": {
+    "title": "Klaar om online beter gevonden te worden?",
+    "text": "Vertel ons waar u naartoe wilt groeien. We denken graag met u mee over de beste website- en SEO-aanpak."
+  },
+  "home": {
+    "title": "Star Local | Websites die gevonden worden en klanten opleveren",
+    "description": "Star Local bouwt snelle, professionele websites en helpt bedrijven lokaal én landelijk beter zichtbaar te worden in Google.",
+    "heroLabel": "Star Local",
+    "h1": "Websites die gevonden worden en klanten opleveren",
+    "lead": "Star Local bouwt snelle, professionele websites en helpt bedrijven lokaal én landelijk beter zichtbaar te worden in Google.",
+    "usps": [
+      "Professioneel webdesign",
+      "Sterke Google-vindbaarheid",
+      "Snelle en veilige websites",
+      "Persoonlijke begeleiding"
+    ],
+    "trust": [
+      { "value": "348+", "label": "regio's bereikbaar" },
+      { "value": "Webdesign", "label": "+ SEO + groei" },
+      { "value": "Persoonlijk", "label": "advies & begeleiding" },
+      { "value": "Resultaat", "label": "gericht online" }
+    ],
+    "servicesEyebrow": "Wat we doen",
+    "servicesTitle": "Onze diensten",
+    "servicesDesc": "Van professionele websites tot lokale en landelijke SEO — alles voor een sterke online aanwezigheid.",
+    "visibilityEyebrow": "Vindbaarheid",
+    "visibilityTitle": "Websites die worden gevonden",
+    "visibilityDesc": "Een mooie website is pas waardevol als uw doelgroep u ook daadwerkelijk vindt. Star Local combineert design, techniek en SEO voor duurzame online groei.",
+    "visibilityPoints": [
+      "Lokale en landelijke vindbaarheid",
+      "Technisch sterke websitebasis",
+      "Content en structuur afgestemd op zoekintentie",
+      "Meetbare verbeteringen en heldere rapportage"
+    ],
+    "whyEyebrow": "Vertrouwen",
+    "whyTitle": "Waarom Star Local?",
+    "whyDesc": "Wij helpen ondernemers met een professionele online basis en een groeistrategie die past bij hun markt.",
+    "whyPoints": [
+      "Jarenlange ervaring in webdesign en SEO",
+      "Focus op lokale én landelijke vindbaarheid",
+      "Persoonlijke samenwerking en heldere communicatie",
+      "Langetermijnvisie op online groei"
+    ],
+    "processEyebrow": "Werkwijze",
+    "processTitle": "Zo werken wij",
+    "processDesc": "Een helder proces van kennismaking tot doorlopende groei.",
+    "processSteps": [
+      { "title": "Kennismaking", "text": "We bespreken uw doelen, doelgroep en gewenste resultaten." },
+      { "title": "Analyse", "text": "We brengen uw huidige online positie en kansen in kaart." },
+      { "title": "Strategie", "text": "We bepalen de beste aanpak voor website, SEO en groei." },
+      { "title": "Ontwikkeling", "text": "We bouwen en optimaliseren met focus op prestaties." }
+    ],
+    "portfolioEyebrow": "Portfolio",
+    "portfolioTitle": "Recent werk",
+    "portfolioDesc": "Een selectie van projecten waaraan Star Local heeft gewerkt.",
+    "reviewsEyebrow": "Reviews",
+    "reviewsTitle": "Ervaringen van klanten",
+    "reviewsEmpty": "Binnenkort delen wij hier ervaringen van onze klanten.",
+    "contactEyebrow": "Contact",
+    "contactTitle": "Klaar om te starten?",
+    "contactDesc": "Vertel ons over uw plannen. We reageren zo snel mogelijk.",
+    "seoVisibilityAlt": "SEO en online vindbaarheid met Star Local",
+    "localSeoAlt": "Over Star Local: lokale expertise in heel Nederland"
+  },
+  "servicesPage": {
+    "title": "Diensten | Star Local",
+    "description": "Star Local combineert webdesign, SEO, content, techniek en lokale vindbaarheid voor een sterke online aanwezigheid.",
+    "h1": "Alles voor een sterke online zichtbaarheid",
+    "intro": "Star Local combineert webdesign, SEO, content, techniek en lokale vindbaarheid.",
+    "whyService": "Waarom deze dienst?",
+    "ourApproach": "Onze aanpak",
+    "whyStarLocal": "Waarom Star Local?",
+    "relatedServices": "Gerelateerde diensten"
+  },
+  "portfolioPage": {
+    "title": "Portfolio | Star Local",
+    "description": "Bekijk een selectie van websites en online projecten waaraan Star Local heeft gewerkt.",
+    "h1": "Portfolio",
+    "intro": "Bekijk een selectie van websites en online projecten waaraan Star Local heeft gewerkt.",
+    "type": "Type",
+    "challenge": "Uitdaging",
+    "approach": "Aanpak",
+    "workDone": "Uitgevoerde werkzaamheden",
+    "status": "Status",
+    "visitWebsite": "Bekijk website"
+  },
+  "projectsPage": {
+    "title": "Onze projecten en websites | Star Local",
+    "description": "Bekijk websites, webshops en online platformen die Star Local heeft ontwikkeld en geoptimaliseerd.",
+    "h1": "Bekijk onze projecten",
+    "intro": "Een selectie van websites, webshops en online platformen die wij hebben ontwikkeld en geoptimaliseerd.",
+    "viewWebsite": "Bekijk website",
+    "placeholderNote": "Screenshot nog toevoegen",
+    "filters": {
+      "all": "Alles",
+      "website": "Websites",
+      "webshop": "Webshops",
+      "seo": "SEO",
+      "platform": "Platforms"
+    },
+    "cta": {
+      "title": "Ook een professionele website nodig?",
+      "text": "Vertel ons wat je wilt bouwen. Wij denken graag mee over een website die er professioneel uitziet én beter gevonden wordt."
+    }
+  },
+  "about": {
+    "title": "Over ons | Star Local",
+    "description": "Star Local helpt ondernemers met professionele websites, sterke vindbaarheid en een schaalbare online groeistrategie.",
+    "h1": "Over Star Local",
+    "intro": "Star Local helpt ondernemers met professionele websites, sterke vindbaarheid en een schaalbare online groeistrategie.",
+    "sections": {
+      "story": {
+        "title": "Ons verhaal",
+        "text": "Star Local is ontstaan vanuit de overtuiging dat ondernemers meer verdienen dan een standaard website. Wij combineren design, techniek en vindbaarheid in één samenhangende aanpak."
+      },
+      "mission": {
+        "title": "Onze missie",
+        "text": "Bedrijven helpen om online beter gevonden te worden, vertrouwen op te bouwen en meer klanten te bereiken."
+      },
+      "why": {
+        "title": "Waarom Star Local",
+        "text": "Wij werken resultaatgericht, transparant en persoonlijk — met oog voor zowel lokale als landelijke groei."
+      },
+      "approach": {
+        "title": "Onze aanpak",
+        "text": "We starten met inzicht, bouwen een heldere strategie en zetten die om in een professionele website en SEO-fundament."
+      },
+      "values": {
+        "title": "Waar wij voor staan",
+        "text": "Duidelijkheid, kwaliteit, resultaatgerichtheid, persoonlijke samenwerking en langetermijngroei."
+      },
+      "vision": {
+        "title": "Toekomstvisie",
+        "text": "Star Local blijft investeren in moderne webtechnologie, SEO en contentkwaliteit om ondernemers future-proof online te positioneren."
+      }
+    }
+  },
+  "approach": {
+    "title": "Werkwijze | Star Local",
+    "description": "Ontdek de werkwijze van Star Local: van kennismaking tot doorlopende online groei.",
+    "h1": "Onze werkwijze",
+    "intro": "Een helder proces van kennismaking tot doorlopende groei.",
+    "steps": [
+      { "title": "Kennismaking", "text": "We bespreken uw doelen, markt en gewenste resultaten." },
+      { "title": "Analyse", "text": "We onderzoeken uw huidige online positie en kansen." },
+      { "title": "Strategie", "text": "We bepalen structuur, content en SEO-prioriteiten." },
+      { "title": "Ontwerp", "text": "We vertalen de strategie naar een professioneel design." },
+      { "title": "Ontwikkeling", "text": "We bouwen een snelle, veilige en schaalbare website." },
+      { "title": "Optimalisatie", "text": "We verbeteren techniek, content en conversie." },
+      { "title": "Lancering", "text": "Na controle en testen gaat alles live." },
+      { "title": "Doorlopende groei", "text": "We blijven monitoren, optimaliseren en uitbreiden." }
+    ]
+  },
+  "pricing": {
+    "title": "Tarieven | Star Local",
+    "description": "Vrijblijvende offertes voor website, online groei en maatwerk door Star Local.",
+    "h1": "Tarieven",
+    "intro": "Elk project is uniek. De investering hangt af van uw doelen, omvang en gewenste resultaten.",
+    "tiers": [
+      {
+        "name": "Website",
+        "description": "Professionele websites met sterke basis voor vindbaarheid en conversie.",
+        "features": ["Design en structuur", "Technische kwaliteit", "Basis-SEO"]
+      },
+      {
+        "name": "Online groei",
+        "description": "SEO, content en optimalisatie voor meer bezoekers en aanvragen.",
+        "features": ["Lokale en landelijke SEO", "Technische verbeteringen", "Doorlopende optimalisatie"]
+      },
+      {
+        "name": "Maatwerk",
+        "description": "Complexere projecten met integraties, webshops of specifieke wensen.",
+        "features": ["Functionele uitbreidingen", "Integraties", "Onderhoud en support"]
+      }
+    ],
+    "factorsTitle": "Wat bepaalt de prijs?",
+    "factors": [
+      "Omvang en aantal pagina's",
+      "Functionaliteiten en integraties",
+      "Content en SEO-omvang",
+      "Onderhoud en doorlopende groei"
+    ],
+    "cta": "Vraag een vrijblijvende offerte aan"
+  },
+  "reviews": {
+    "title": "Reviews | Star Local",
+    "description": "Ervaringen van klanten van Star Local.",
+    "h1": "Reviews",
+    "intro": "Wat klanten zeggen over Star Local.",
+    "empty": "Binnenkort delen wij hier ervaringen van onze klanten."
+  },
+  "blog": {
+    "title": "Blog | Star Local",
+    "description": "Tips en inzichten over webdesign, SEO, Google en online groei van Star Local.",
+    "h1": "Blog",
+    "intro": "Tips en inzichten over webdesign, SEO en online groei.",
+    "categories": ["SEO", "Webdesign", "Google", "Online marketing", "AI", "Websitebeheer"],
+    "comingSoon": "Binnenkort beschikbaar",
+    "note": "Binnenkort verschijnen hier artikelen. De structuur is voorbereid voor toekomstige content.",
+    "posts": [
+      {
+        "title": "Hoe verbetert u uw lokale vindbaarheid in Google?",
+        "category": "SEO",
+        "excerpt": "Praktische stappen voor betere zichtbaarheid in uw regio."
+      },
+      {
+        "title": "Wat maakt een professionele website overtuigend?",
+        "category": "Webdesign",
+        "excerpt": "Design, structuur en vertrouwen voor meer aanvragen."
+      },
+      {
+        "title": "Google Bedrijfsprofiel optimaliseren: waar te beginnen",
+        "category": "Google",
+        "excerpt": "De basis voor betere zichtbaarheid in Maps en lokale zoekresultaten."
+      },
+      {
+        "title": "Van bezoeker naar klant: conversie op uw website",
+        "category": "Online marketing",
+        "excerpt": "Hoe u meer waarde haalt uit bestaand websiteverkeer."
+      },
+      {
+        "title": "Moderne zoekervaringen en uw website",
+        "category": "AI",
+        "excerpt": "Waarom structuur en content steeds belangrijker worden."
+      },
+      {
+        "title": "Websiteonderhoud: waarom het loont",
+        "category": "Websitebeheer",
+        "excerpt": "Updates, beveiliging en prestaties op peil houden."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contact | Star Local",
+    "description": "Neem contact op met Star Local voor webdesign, SEO en online groei. Vrijblijvend adviesgesprek.",
+    "h1": "Contact",
+    "intro": "Vertel ons over uw plannen. We denken graag met u mee over de beste website- en SEO-aanpak.",
+    "directContact": "Direct contact",
+    "phone": "Telefoon / WhatsApp",
+    "email": "E-mail",
+    "website": "Website"
+  },
+  "form": {
+    "notice": "Formulier is visueel gereed. Integratie met Formspree, Resend of eigen API volgt.",
+    "name": "Naam",
+    "company": "Bedrijfsnaam",
+    "email": "E-mail",
+    "phone": "Telefoon",
+    "subject": "Onderwerp",
+    "message": "Bericht",
+    "privacy": "Ik ga akkoord met de verwerking van mijn gegevens volgens het privacybeleid.",
+    "chooseSubject": "Kies een onderwerp",
+    "subjects": [
+      "Website laten maken",
+      "SEO",
+      "Google Bedrijfsprofiel",
+      "Website onderhoud",
+      "Webshop",
+      "Anders"
+    ],
+    "errors": {
+      "name": "Vul uw naam in.",
+      "email": "Vul een geldig e-mailadres in.",
+      "subject": "Kies een onderwerp.",
+      "message": "Vul een bericht in.",
+      "privacy": "U moet akkoord gaan met het privacybeleid."
+    },
+    "successAlert": "Bedankt voor uw bericht. Het formulier is nog niet gekoppeld aan een verzendservice."
+  },
+  "faq": {
+    "title": "Veelgestelde vragen",
+    "home": [
+      {
+        "question": "Voor welke bedrijven is Star Local geschikt?",
+        "answer": "Star Local helpt ondernemers en bedrijven die een professionele website willen combineren met betere vindbaarheid in Google, zowel lokaal als landelijk."
+      },
+      {
+        "question": "Hoe snel kan ik starten?",
+        "answer": "Na een vrijblijvend kennismakingsgesprek ontvangt u een helder voorstel met vervolgstappen en planning."
+      },
+      {
+        "question": "Bouwen jullie alleen websites?",
+        "answer": "Nee. Naast webdesign bieden we SEO, Google Bedrijfsprofiel optimalisatie, technische optimalisatie, onderhoud en doorlopende online groei."
+      },
+      {
+        "question": "Werken jullie door heel Nederland?",
+        "answer": "Ja. We ondersteunen bedrijven in heel Nederland met online strategie, webdesign en vindbaarheid."
+      }
+    ]
+  },
+  "legal": {
+    "banner": "Concept – laat dit document juridisch controleren voordat het wordt gebruikt.",
+    "updated": "Laatst bijgewerkt: [datum invullen]",
+    "pages": {
+      "privacy": {
+        "title": "Privacybeleid",
+        "sections": [
+          "1. Wie zijn wij?",
+          "2. Welke gegevens verwerken wij?",
+          "3. Doeleinden van verwerking",
+          "4. Contactformulieren",
+          "5. Analytics en cookies",
+          "6. Serverlogs",
+          "7. E-mail",
+          "8. Bewaartermijnen",
+          "9. Rechten van betrokkenen",
+          "10. Beveiliging",
+          "11. Externe dienstverleners",
+          "12. Wijzigingen"
+        ]
+      },
+      "terms": {
+        "title": "Algemene voorwaarden",
+        "sections": [
+          "1. Toepasselijkheid",
+          "2. Offertes",
+          "3. Betalingen",
+          "4. Uitvoering",
+          "5. Wijzigingen",
+          "6. Onderhoud",
+          "7. Hosting en domein",
+          "8. Intellectueel eigendom",
+          "9. Aansprakelijkheid",
+          "10. Opzegging",
+          "11. Overmacht",
+          "12. Toepasselijk recht",
+          "13. Contact"
+        ]
+      },
+      "cookies": {
+        "title": "Cookiebeleid",
+        "sections": [
+          "1. Wat zijn cookies?",
+          "2. Noodzakelijke cookies",
+          "3. Analytische cookies",
+          "4. Marketingcookies",
+          "5. Toestemming",
+          "6. Voorkeuren aanpassen",
+          "7. Contact"
+        ]
+      },
+      "disclaimer": {
+        "title": "Disclaimer",
+        "sections": [
+          "1. Informatie op deze website",
+          "2. Aansprakelijkheid",
+          "3. Externe links",
+          "4. Auteursrecht",
+          "5. Contact"
+        ]
+      }
+    }
+  },
+  "notFound": {
+    "title": "Pagina niet gevonden | Star Local",
+    "description": "Deze pagina kon niet worden gevonden.",
+    "h1": "404",
+    "text": "Deze pagina konden we niet vinden.",
+    "backHome": "Terug naar home",
+    "viewServices": "Bekijk onze diensten"
+  },
+  "sitemap": {
+    "title": "Sitemap | Star Local",
+    "description": "Overzicht van alle pagina's op starlocal.nl.",
+    "h1": "Sitemap",
+    "intro": "Overzicht van alle pagina's op de Star Local website.",
+    "main": "Hoofdpagina's",
+    "services": "Diensten",
+    "portfolio": "Portfolio",
+    "projects": "Projecten",
+    "legal": "Juridisch"
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "services": "Diensten",
+    "portfolio": "Portfolio",
+    "projects": "Projecten"
+  },
+  "lang": {
+    "switch": "Taal wijzigen",
+    "nl": "Nederlands",
+    "en": "English"
+  },
+  "skipLink": "Ga naar inhoud"
+}

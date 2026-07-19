@@ -1,0 +1,101 @@
+---
+import type { Locale } from '../i18n/config';
+import { localeLabels } from '../i18n/config';
+import { translatePath } from '../i18n/routes';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<div class="lang-switcher" data-lang-switcher>
+  <a
+    href={translatePath(currentPath, 'nl')}
+    class:list={['lang-option', { active: locale === 'nl' }]}
+    hreflang="nl-NL"
+    lang="nl"
+    data-locale="nl"
+    aria-current={locale === 'nl' ? 'true' : undefined}
+  >
+    <span class="lang-flag" aria-hidden="true">{localeLabels.nl.flag}</span>
+    <span class="lang-name">{localeLabels.nl.name}</span>
+  </a>
+  <a
+    href={translatePath(currentPath, 'en')}
+    class:list={['lang-option', { active: locale === 'en' }]}
+    hreflang="en"
+    lang="en"
+    data-locale="en"
+    aria-current={locale === 'en' ? 'true' : undefined}
+  >
+    <span class="lang-flag" aria-hidden="true">{localeLabels.en.flag}</span>
+    <span class="lang-name">{localeLabels.en.name}</span>
+  </a>
+</div>
+
+<script>
+  document.querySelectorAll('[data-lang-switcher] [data-locale]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const locale = link.getAttribute('data-locale');
+      if (locale) {
+        localStorage.setItem('starlocal-lang', locale);
+        document.cookie = `starlocal-lang=${locale};path=/;max-age=31536000;SameSite=Lax`;
+      }
+    });
+  });
+</script>
+
+<style>
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(205, 184, 128, 0.06);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.2rem;
+  }
+
+  .lang-option {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: all var(--transition);
+  }
+
+  .lang-option:hover {
+    color: var(--gold);
+    background: rgba(205, 184, 128, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .lang-option.active {
+    color: var(--gold);
+    background: rgba(205, 184, 128, 0.14);
+    box-shadow: 0 0 0 1px rgba(205, 184, 128, 0.2);
+  }
+
+  .lang-flag {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  @media (max-width: 1024px) {
+    .lang-name {
+      display: none;
+    }
+
+    .lang-option {
+      padding: 0.45rem 0.55rem;
+    }
+  }
+</style>

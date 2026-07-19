@@ -1,0 +1,31 @@
+---
+interface Props {
+  banner: string;
+  title: string;
+}
+
+const { banner, title } = Astro.props;
+---
+
+<div class="legal-banner" role="note">
+  <strong>{banner.split(' – ')[0]}</strong> – {banner.split(' – ').slice(1).join(' – ')}
+</div>
+
+<h1>{title}</h1>
+
+<style>
+  .legal-banner {
+    background: rgba(205, 184, 128, 0.08);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    color: var(--gold);
+    margin: 0 0 0.5rem;
+  }
+</style>

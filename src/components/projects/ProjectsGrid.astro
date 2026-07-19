@@ -1,0 +1,128 @@
+---
+import type { Project } from '../../data/projects';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props {
+  projects: Project[];
+  lang: 'nl' | 'en';
+  labels: {
+    all: string;
+    website: string;
+    webshop: string;
+    seo: string;
+    platform: string;
+    viewWebsite: string;
+    placeholderNote: string;
+  };
+}
+
+const { projects, lang, labels } = Astro.props;
+
+const filters = [
+  { id: 'all', label: labels.all },
+  { id: 'website', label: labels.website },
+  { id: 'webshop', label: labels.webshop },
+  { id: 'seo', label: labels.seo },
+  { id: 'platform', label: labels.platform },
+];
+---
+
+<div class="projects-grid-wrap" data-projects-grid>
+  <div class="filters" role="tablist" aria-label={lang === 'nl' ? 'Filter projecten' : 'Filter projects'}>
+    {filters.map((filter, index) => (
+      <button
+        type="button"
+        class:list={['filter-btn', { active: index === 0 }]}
+        data-filter={filter.id}
+        role="tab"
+        aria-selected={index === 0 ? 'true' : 'false'}
+      >
+        {filter.label}
+      </button>
+    ))}
+  </div>
+
+  <div class="projects-grid">
+    {projects.map((project) => (
+      <ProjectCard
+        project={project}
+        lang={lang}
+        viewWebsite={labels.viewWebsite}
+        placeholderNote={labels.placeholderNote}
+      />
+    ))}
+  </div>
+</div>
+
+<script>
+  const wrap = document.querySelector('[data-projects-grid]');
+  const buttons = wrap?.querySelectorAll('[data-filter]');
+  const cards = wrap?.querySelectorAll('.project-card');
+
+  buttons?.forEach((button) => {
+    button.addEventListener('click', () => {
+      const filter = button.getAttribute('data-filter');
+      buttons.forEach((btn) => {
+        btn.classList.toggle('active', btn === button);
+        btn.setAttribute('aria-selected', btn === button ? 'true' : 'false');
+      });
+
+      cards?.forEach((card) => {
+        const filters = card.getAttribute('data-filters')?.split(' ') ?? [];
+        const show = filter === 'all' || filters.includes(filter || '');
+        (card as HTMLElement).style.display = show ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .filter-btn {
+    background: rgba(205, 184, 128, 0.06);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 0.45rem 0.95rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    color: var(--gold);
+    border-color: var(--border-strong);
+    background: rgba(205, 184, 128, 0.12);
+  }
+
+  .filter-btn:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 1024px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,189 @@
+---
+import type { Project } from '../../data/projects';
+import { PROJECT_PLACEHOLDER } from '../../data/projects';
+import ProjectStatusBadge from './ProjectStatusBadge.astro';
+
+interface Props {
+  project: Project;
+  lang: 'nl' | 'en';
+  viewWebsite: string;
+  placeholderNote: string;
+}
+
+const { project, lang, viewWebsite, placeholderNote } = Astro.props;
+
+const category = lang === 'nl' ? project.categoryNl : project.categoryEn;
+const description = lang === 'nl' ? project.descriptionNl : project.descriptionEn;
+const imageSrc = project.fallbackImage || PROJECT_PLACEHOLDER;
+const usingFallback = imageSrc !== project.image;
+const missingImageName = project.image.split('/').pop() || project.image;
+const placeholderText = usingFallback
+  ? `${placeholderNote}: ${missingImageName}`
+  : placeholderNote;
+const hasLink = Boolean(project.website);
+const Tag = hasLink ? 'a' : 'article';
+---
+
+<Tag
+  class:list={['project-card', { 'project-card--static': !hasLink }]}
+  href={hasLink ? project.website : undefined}
+  target={hasLink ? '_blank' : undefined}
+  rel={hasLink ? 'noopener noreferrer' : undefined}
+  data-filters={project.filters.join(' ')}
+  aria-label={hasLink ? `${project.name} – ${viewWebsite}` : project.name}
+>
+  <div class="project-card-media">
+    <img
+      src={imageSrc}
+      alt={`${project.name} – ${category}`}
+      width="800"
+      height="600"
+      loading="lazy"
+      decoding="async"
+      class="project-card-image"
+    />
+    {usingFallback && <span class="placeholder-note">{placeholderText}</span>}
+    {project.status && (
+      <div class="status-wrap">
+        <ProjectStatusBadge status={project.status} lang={lang} />
+      </div>
+    )}
+  </div>
+
+  <div class="project-card-body">
+    <p class="project-category">{category}</p>
+    <h2 class="project-name">{project.name}</h2>
+    <p class="project-description">{description}</p>
+    {project.displayUrl && <p class="project-url">{project.displayUrl}</p>}
+
+    {hasLink ? (
+      <span class="project-action">
+        {viewWebsite}
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M7 17L17 7M17 7H8M17 7V16"/>
+        </svg>
+      </span>
+    ) : (
+      <span class="project-action project-action--muted">
+        {lang === 'nl' ? 'Binnenkort beschikbaar' : 'Coming soon'}
+      </span>
+    )}
+  </div>
+</Tag>
+
+<style>
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    background: rgba(205, 184, 128, 0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    height: 100%;
+  }
+
+  .project-card:hover,
+  .project-card:focus-visible {
+    transform: translateY(-4px);
+    border-color: var(--border-strong);
+    box-shadow: 0 0 0 1px rgba(205, 184, 128, 0.25), 0 18px 40px rgba(0, 0, 0, 0.35);
+    outline: none;
+  }
+
+  .project-card--static {
+    cursor: default;
+  }
+
+  .project-card--static:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .project-card-media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: var(--bg-elevated);
+    overflow: hidden;
+  }
+
+  .project-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .placeholder-note {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    background: rgba(10, 14, 20, 0.82);
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+    font-size: 0.72rem;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+  }
+
+  .status-wrap {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .project-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    flex: 1;
+  }
+
+  .project-category {
+    margin: 0;
+    color: var(--gold);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .project-name {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.2rem;
+    line-height: 1.2;
+  }
+
+  .project-description {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .project-url {
+    margin: 0;
+    color: var(--gold-light);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  .project-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.5rem;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+
+  .project-action--muted {
+    color: var(--text-soft);
+    font-weight: 600;
+  }
+</style>

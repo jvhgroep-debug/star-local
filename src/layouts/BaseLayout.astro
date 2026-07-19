@@ -1,0 +1,72 @@
+---
+import type { Locale } from '../i18n/config';
+import { localeLabels } from '../i18n/config';
+import SeoHead from '../components/SeoHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import LangPreference from '../components/LangPreference.astro';
+import { useTranslations } from '../i18n';
+import '../styles/global.css';
+
+interface LayoutProps {
+  locale: Locale;
+  title: string;
+  description?: string;
+  canonical?: string;
+  image?: string;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+  fullWidth?: boolean;
+}
+
+const {
+  locale,
+  title,
+  description,
+  canonical = Astro.url.pathname,
+  image,
+  schema,
+  noindex = false,
+  fullWidth = false,
+} = Astro.props as LayoutProps;
+
+const dict = useTranslations(locale);
+---
+
+<!doctype html>
+<html lang={localeLabels[locale].htmlLang}>
+  <head>
+    <SeoHead
+      locale={locale}
+      title={title}
+      description={description ?? dict.meta.defaultDescription}
+      canonicalPath={canonical}
+      image={image}
+      schema={schema}
+      noindex={noindex}
+    />
+    <LangPreference />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">{dict.skipLink}</a>
+    <Header locale={locale} />
+    <main id="main-content" class:list={['main-content', { 'main-content--full': fullWidth }]}>
+      <slot />
+    </main>
+    <Footer locale={locale} />
+    <WhatsAppButton />
+  </body>
+</html>
+
+<style>
+  .main-content {
+    min-height: 60vh;
+    padding: 0 0 2rem;
+  }
+
+  .main-content:not(.main-content--full) > :global(.container:first-child),
+  .main-content:not(.main-content--full) > :global(section > .container) {
+    padding-top: 2rem;
+  }
+</style>

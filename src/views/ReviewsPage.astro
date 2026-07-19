@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import CTASection from '../components/CTASection.astro';
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { route } from '../i18n/routes';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = useTranslations(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  title={dict.reviews.title}
+  description={dict.reviews.description}
+  canonical={route('reviews', locale)}
+>
+  <PageHero title={dict.reviews.h1} subtitle={dict.reviews.intro} />
+  <section class="section">
+    <div class="container">
+      <div class="empty">
+        <p>{dict.reviews.empty}</p>
+        <a href={route('contact', locale)} class="btn btn-primary">{dict.buttons.contactUs}</a>
+      </div>
+    </div>
+  </section>
+  <CTASection locale={locale} />
+</BaseLayout>
+
+<style>
+  .empty {
+    text-align: center;
+  }
+
+  .empty p {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+</style>

@@ -1,0 +1,205 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import PageHero from '../components/PageHero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import FAQSection from '../components/FAQSection.astro';
+import CTASection from '../components/CTASection.astro';
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { route } from '../i18n/routes';
+import { getServices, type Service } from '../data/services';
+
+interface Props {
+  locale: Locale;
+  service: Service;
+}
+
+const { locale, service } = Astro.props;
+const dict = useTranslations(locale);
+
+const relatedServices = getServices(locale).filter((item) =>
+  service.relatedSlugs.includes(item.slug)
+);
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.h1,
+  description: service.description,
+  provider: {
+    '@type': 'Organization',
+    name: 'Star Local',
+    url: 'https://www.starlocal.nl',
+  },
+  areaServed: 'NL',
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title={service.title}
+  description={service.description}
+  canonical={route('service', locale, { slug: service.slug })}
+  image={service.image}
+  schema={serviceSchema}
+>
+  <div class="container page-top">
+    <Breadcrumbs
+      items={[
+        { label: dict.breadcrumbs.home, href: route('home', locale) },
+        { label: dict.breadcrumbs.services, href: route('services', locale) },
+        { label: service.h1 },
+      ]}
+    />
+  </div>
+
+  <PageHero
+    title={service.h1}
+    subtitle={service.intro}
+    image={service.image}
+    imageAlt={service.imageAlt}
+    fullWidth
+  />
+
+  <section class="section">
+    <div class="container content-grid">
+      <div>
+        <h2>{dict.servicesPage.whyService}</h2>
+        <p class="lead">{service.positioning}</p>
+        <ul class="check-list">
+          {service.benefits.map((benefit) => <li>{benefit}</li>)}
+        </ul>
+      </div>
+      <div class="highlight-box">
+        <h3>{dict.servicesPage.ourApproach}</h3>
+        {service.approach.map((step) => (
+          <div class="step">
+            <h4>{step.title}</h4>
+            <p>{step.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt-section">
+    <div class="container">
+      <h2>{dict.servicesPage.whyStarLocal}</h2>
+      <ul class="check-list">
+        {service.whyUs.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  {relatedServices.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <h2>{dict.servicesPage.relatedServices}</h2>
+        <div class="grid-3">
+          {relatedServices.map((item) => (
+            <ServiceCard
+              title={item.h1}
+              description={item.positioning}
+              href={route('service', locale, { slug: item.slug })}
+              image={item.image}
+              imageAlt={item.imageAlt}
+              learnMore={dict.buttons.learnMore}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <FAQSection title={dict.faq.title} faqs={service.faqs} />
+  <CTASection locale={locale} />
+</BaseLayout>
+
+<style>
+  .page-top {
+    padding-top: 1.5rem;
+  }
+
+  h2 {
+    color: var(--gold);
+    margin: 0 0 1rem;
+  }
+
+  .lead {
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin: 0 0 1.5rem;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .check-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .check-list li {
+    color: var(--text-muted);
+    padding-left: 1.4rem;
+    position: relative;
+  }
+
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .highlight-box {
+    background: rgba(205, 184, 128, 0.05);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+
+  .highlight-box h3 {
+    color: var(--gold);
+    margin: 0 0 1rem;
+  }
+
+  .step + .step {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .step h4 {
+    margin: 0 0 0.35rem;
+    color: var(--text);
+  }
+
+  .step p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .alt-section {
+    background: rgba(205, 184, 128, 0.03);
+    border-block: 1px solid var(--border);
+  }
+
+  @media (max-width: 900px) {
+    .content-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

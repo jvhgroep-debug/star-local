@@ -1,0 +1,76 @@
+---
+interface Props {
+  items: { label: string; href?: string }[];
+}
+
+const { items } = Astro.props;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.label,
+    ...(item.href ? { item: `https://www.starlocal.nl${item.href}` } : {}),
+  })),
+};
+---
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    {items.map((item, index) => (
+      <li>
+        {item.href ? (
+          <a href={item.href}>{item.label}</a>
+        ) : (
+          <span aria-current="page">{item.label}</span>
+        )}
+        {index < items.length - 1 && <span class="sep" aria-hidden="true">/</span>}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+<style>
+  .breadcrumbs {
+    margin-bottom: 1.5rem;
+  }
+
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    align-items: center;
+    font-size: 0.88rem;
+  }
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-soft);
+  }
+
+  a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--gold);
+  }
+
+  span[aria-current='page'] {
+    color: var(--gold);
+  }
+
+  .sep {
+    opacity: 0.5;
+  }
+</style>

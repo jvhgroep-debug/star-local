@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalBanner from '../components/LegalBanner.astro';
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { route } from '../i18n/routes';
+import { SITE } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = useTranslations(locale);
+const page = dict.legal.pages.privacy;
+
+const sectionContent: Record<Locale, string[]> = {
+  nl: [
+    `Star Local (${SITE.url}) helpt ondernemers met webdesign, SEO en online groei. Contact: ${SITE.email}, ${SITE.phone}.`,
+    'Wij verwerken persoonsgegevens die u via contactformulieren, e-mail, telefoon of WhatsApp met ons deelt, zoals naam, bedrijfsnaam, e-mailadres, telefoonnummer en berichtinhoud.',
+    'Wij gebruiken deze gegevens om vragen en aanvragen te beantwoorden, offertes en opdrachten uit te voeren, onze dienstverlening te verbeteren en te voldoen aan wettelijke verplichtingen.',
+    'Gegevens uit contactformulieren worden uitsluitend gebruikt om uw aanvraag te behandelen. Zolang het formulier nog niet is gekoppeld aan een verzendservice, worden gegevens niet automatisch opgeslagen.',
+    'Wij kunnen analytische tools gebruiken om websitegebruik te meten. Voor details over cookies en toestemming verwijzen wij naar het cookiebeleid.',
+    'Onze hostingprovider kan technische loggegevens bewaren, zoals IP-adres, browsertype en tijdstip van bezoek, voor beveiliging en foutopsporing.',
+    'Correspondentie via e-mail bewaren wij zolang dat nodig is voor onze dienstverlening of wettelijke verplichtingen.',
+    'Wij bewaren persoonsgegevens niet langer dan noodzakelijk voor het doel waarvoor ze zijn verzameld, tenzij een langere bewaartermijn wettelijk verplicht is.',
+    `U heeft recht op inzage, correctie, verwijdering, beperking, bezwaar en dataportabiliteit. U kunt hiervoor contact opnemen via ${SITE.email}.`,
+    'Wij nemen passende technische en organisatorische maatregelen om persoonsgegevens te beschermen tegen verlies, misbruik en ongeoorloofde toegang.',
+    'Wij kunnen externe partijen inschakelen voor hosting, e-mail, analytics of formulierverwerking. Met verwerkers maken wij afspraken over gegevensbescherming.',
+    'Dit privacybeleid kan worden aangepast. De meest actuele versie staat altijd op deze pagina.',
+  ],
+  en: [
+    `Star Local (${SITE.url}) supports businesses with web design, SEO, and online growth. Contact: ${SITE.email}, ${SITE.phone}.`,
+    'We process personal data that you share via contact forms, email, phone, or WhatsApp, such as your name, company name, email address, phone number, and message content.',
+    'We use this data to answer questions and enquiries, prepare and execute quotes and projects, improve our services, and comply with legal obligations.',
+    'Data submitted through contact forms is used only to handle your enquiry. Until the form is connected to a sending service, data is not stored automatically.',
+    'We may use analytics tools to measure website usage. See the cookie policy for details about cookies and consent.',
+    'Our hosting provider may retain technical logs, such as IP address, browser type, and visit timestamp, for security and troubleshooting.',
+    'Email correspondence is retained as long as needed for service delivery or legal obligations.',
+    'We do not retain personal data longer than necessary for the purpose for which it was collected, unless a longer retention period is required by law.',
+    `You have rights to access, correct, delete, restrict, object, and data portability. To exercise these rights, contact us via ${SITE.email}.`,
+    'We apply appropriate technical and organisational safeguards to protect personal data against loss, misuse, and unauthorised access.',
+    'We may engage external providers for hosting, email, analytics, or form processing. We make data protection agreements with these processors.',
+    'This privacy policy may be updated. The latest version is always available on this page.',
+  ],
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${page.title} | ${SITE.name}`}
+  description={`${page.title}. ${dict.meta.defaultDescription}`}
+  canonical={route('privacy', locale)}
+>
+  <section class="section legal">
+    <div class="container content">
+      <LegalBanner banner={dict.legal.banner} title={page.title} />
+      <p class="updated">{dict.legal.updated}</p>
+
+      {page.sections.map((sectionTitle, index) => (
+        <article>
+          <h2>{sectionTitle}</h2>
+          <p>{sectionContent[locale][index]}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal .content h2 {
+    color: var(--gold);
+    margin: 2rem 0 0.75rem;
+    font-size: 1.15rem;
+  }
+
+  .legal .content p {
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  .updated {
+    color: var(--text-soft);
+    font-size: 0.9rem;
+  }
+</style>

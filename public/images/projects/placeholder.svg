@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Project preview placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0e14"/>
+      <stop offset="100%" stop-color="#121820"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect x="40" y="40" width="720" height="520" rx="16" fill="none" stroke="#cdb880" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="8 8"/>
+  <text x="400" y="270" fill="#cdb880" font-family="Segoe UI, system-ui, sans-serif" font-size="28" font-weight="700" text-anchor="middle">Star Local</text>
+  <text x="400" y="310" fill="#8fa0b8" font-family="Segoe UI, system-ui, sans-serif" font-size="16" text-anchor="middle">Website preview volgt</text>
+</svg>

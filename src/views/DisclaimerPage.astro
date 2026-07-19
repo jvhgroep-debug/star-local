@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalBanner from '../components/LegalBanner.astro';
+import type { Locale } from '../i18n/config';
+import { useTranslations } from '../i18n';
+import { route } from '../i18n/routes';
+import { SITE } from '../data/site';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = useTranslations(locale);
+const page = dict.legal.pages.disclaimer;
+
+const sectionContent: Record<Locale, string[]> = {
+  nl: [
+    `De informatie op ${SITE.url} is met zorg samengesteld. Toch kunnen wij niet garanderen dat alle informatie altijd volledig, juist of actueel is.`,
+    'Star Local is niet aansprakelijk voor directe of indirecte schade die voortvloeit uit het gebruik van deze website of vertrouwen op de verstrekte informatie, behoudens wettelijke uitzonderingen.',
+    'Deze website kan links bevatten naar externe websites. Star Local is niet verantwoordelijk voor de inhoud, beschikbaarheid of het privacybeleid van die websites.',
+    'Alle teksten, afbeeldingen en overige content op deze website zijn eigendom van Star Local of worden met toestemming gebruikt. Overname zonder schriftelijke toestemming is niet toegestaan.',
+    `Vragen over deze disclaimer? Neem contact op via ${SITE.email}.`,
+  ],
+  en: [
+    `The information on ${SITE.url} has been compiled with care. However, we cannot guarantee that all information is always complete, accurate, or up to date.`,
+    'Star Local is not liable for direct or indirect damage resulting from the use of this website or reliance on the information provided, except where required by law.',
+    'This website may contain links to external websites. Star Local is not responsible for the content, availability, or privacy practices of those websites.',
+    'All texts, images, and other content on this website are owned by Star Local or used with permission. Reuse without written permission is not allowed.',
+    `Questions about this disclaimer? Contact us at ${SITE.email}.`,
+  ],
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${page.title} | ${SITE.name}`}
+  description={`${page.title}. ${dict.meta.defaultDescription}`}
+  canonical={route('disclaimer', locale)}
+>
+  <section class="section legal">
+    <div class="container content">
+      <LegalBanner banner={dict.legal.banner} title={page.title} />
+      <p class="updated">{dict.legal.updated}</p>
+
+      {page.sections.map((sectionTitle, index) => (
+        <article>
+          <h2>{sectionTitle}</h2>
+          <p>{sectionContent[locale][index]}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal .content h2 {
+    color: var(--gold);
+    margin: 2rem 0 0.75rem;
+    font-size: 1.15rem;
+  }
+
+  .legal .content p {
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  .updated {
+    color: var(--text-soft);
+    font-size: 0.9rem;
+  }
+</style>

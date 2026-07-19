@@ -1,0 +1,657 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  const gemeentes = [
+  { naam: "Aa en Hunze", slug: "aa-en-hunze", provincie: "Drenthe" },
+  { naam: "Aalsmeer", slug: "aalsmeer", provincie: "Noord-Holland" },
+  { naam: "Aalten", slug: "aalten", provincie: "Gelderland" },
+  { naam: "Achtkarspelen", slug: "achtkarspelen", provincie: "Fryslân" },
+  { naam: "Alblasserdam", slug: "alblasserdam", provincie: "Zuid-Holland" },
+  { naam: "Albrandswaard", slug: "albrandswaard", provincie: "Zuid-Holland" },
+  { naam: "Alkmaar", slug: "alkmaar", provincie: "Nederland" },
+  { naam: "Almelo", slug: "almelo", provincie: "Overijssel" },
+  { naam: "Almere", slug: "almere", provincie: "Nederland" },
+  { naam: "Alphen aan den Rijn", slug: "alphen-aan-den-rijn", provincie: "Zuid-Holland" },
+  { naam: "Alphen-Chaam", slug: "alphen-chaam", provincie: "Noord-Brabant" },
+  { naam: "Altena", slug: "altena", provincie: "Noord-Brabant" },
+  { naam: "Ameland", slug: "ameland", provincie: "Fryslân" },
+  { naam: "Amersfoort", slug: "amersfoort", provincie: "Nederland" },
+  { naam: "Amstelveen", slug: "amstelveen", provincie: "Noord-Holland" },
+  { naam: "Amsterdam", slug: "amsterdam", provincie: "Nederland" },
+  { naam: "Apeldoorn", slug: "apeldoorn", provincie: "Nederland" },
+  { naam: "Arnhem", slug: "arnhem", provincie: "Nederland" },
+  { naam: "Assen", slug: "assen", provincie: "Drenthe" },
+  { naam: "Asten", slug: "asten", provincie: "Noord-Brabant" },
+  { naam: "Baarle-Nassau", slug: "baarle-nassau", provincie: "Noord-Brabant" },
+  { naam: "Baarn", slug: "baarn", provincie: "Utrecht" },
+  { naam: "Barendrecht", slug: "barendrecht", provincie: "Zuid-Holland" },
+  { naam: "Barneveld", slug: "barneveld", provincie: "Gelderland" },
+  { naam: "Beek", slug: "beek", provincie: "Nederland" },
+  { naam: "Beek (L.)", slug: "beek-l", provincie: "Limburg" },
+  { naam: "Beekdaelen", slug: "beekdaelen", provincie: "Limburg" },
+  { naam: "Beesel", slug: "beesel", provincie: "Limburg" },
+  { naam: "Berg en Dal", slug: "berg-en-dal", provincie: "Gelderland" },
+  { naam: "Bergeijk", slug: "bergeijk", provincie: "Noord-Brabant" },
+  { naam: "Bergen (L.)", slug: "bergen-l", provincie: "Limburg" },
+  { naam: "Bergen (NH.)", slug: "bergen-nh", provincie: "Noord-Holland" },
+  { naam: "Bergen op Zoom", slug: "bergen-op-zoom", provincie: "Nederland" },
+  { naam: "Berkelland", slug: "berkelland", provincie: "Gelderland" },
+  { naam: "Bernheze", slug: "bernheze", provincie: "Noord-Brabant" },
+  { naam: "Best", slug: "best", provincie: "Noord-Brabant" },
+  { naam: "Beuningen", slug: "beuningen", provincie: "Gelderland" },
+  { naam: "Beverwijk", slug: "beverwijk", provincie: "Noord-Holland" },
+  { naam: "Bladel", slug: "bladel", provincie: "Noord-Brabant" },
+  { naam: "Blaricum", slug: "blaricum", provincie: "Noord-Holland" },
+  { naam: "Bloemendaal", slug: "bloemendaal", provincie: "Noord-Holland" },
+  { naam: "Bodegraven-Reeuwijk", slug: "bodegraven-reeuwijk", provincie: "Zuid-Holland" },
+  { naam: "Boekel", slug: "boekel", provincie: "Noord-Brabant" },
+  { naam: "Borger-Odoorn", slug: "borger-odoorn", provincie: "Drenthe" },
+  { naam: "Borne", slug: "borne", provincie: "Overijssel" },
+  { naam: "Borsele", slug: "borsele", provincie: "Zeeland" },
+  { naam: "Boxtel", slug: "boxtel", provincie: "Noord-Brabant" },
+  { naam: "Breda", slug: "breda", provincie: "Nederland" },
+  { naam: "Bronckhorst", slug: "bronckhorst", provincie: "Gelderland" },
+  { naam: "Brummen", slug: "brummen", provincie: "Gelderland" },
+  { naam: "Brunssum", slug: "brunssum", provincie: "Limburg" },
+  { naam: "Bunnik", slug: "bunnik", provincie: "Utrecht" },
+  { naam: "Bunschoten", slug: "bunschoten", provincie: "Utrecht" },
+  { naam: "Buren", slug: "buren", provincie: "Gelderland" },
+  { naam: "Capelle aan den IJssel", slug: "capelle-aan-den-ijssel", provincie: "Zuid-Holland" },
+  { naam: "Castricum", slug: "castricum", provincie: "Noord-Holland" },
+  { naam: "Coevorden", slug: "coevorden", provincie: "Drenthe" },
+  { naam: "Cranendonck", slug: "cranendonck", provincie: "Noord-Brabant" },
+  { naam: "Culemborg", slug: "culemborg", provincie: "Gelderland" },
+  { naam: "Dalfsen", slug: "dalfsen", provincie: "Overijssel" },
+  { naam: "Dantumadiel", slug: "dantumadiel", provincie: "Fryslân" },
+  { naam: "De Bilt", slug: "de-bilt", provincie: "Utrecht" },
+  { naam: "De Fryske Marren", slug: "de-fryske-marren", provincie: "Fryslân" },
+  { naam: "De Ronde Venen", slug: "de-ronde-venen", provincie: "Utrecht" },
+  { naam: "De Wolden", slug: "de-wolden", provincie: "Drenthe" },
+  { naam: "Delft", slug: "delft", provincie: "Nederland" },
+  { naam: "Den Helder", slug: "den-helder", provincie: "Noord-Holland" },
+  { naam: "Deurne", slug: "deurne", provincie: "Noord-Brabant" },
+  { naam: "Deventer", slug: "deventer", provincie: "Nederland" },
+  { naam: "Diemen", slug: "diemen", provincie: "Noord-Holland" },
+  { naam: "Dijk en Waard", slug: "dijk-en-waard", provincie: "Noord-Holland" },
+  { naam: "Dinkelland", slug: "dinkelland", provincie: "Overijssel" },
+  { naam: "Doesburg", slug: "doesburg", provincie: "Gelderland" },
+  { naam: "Doetinchem", slug: "doetinchem", provincie: "Gelderland" },
+  { naam: "Dongen", slug: "dongen", provincie: "Nederland" },
+  { naam: "Dordrecht", slug: "dordrecht", provincie: "Nederland" },
+  { naam: "Drechterland", slug: "drechterland", provincie: "Noord-Holland" },
+  { naam: "Drimmelen", slug: "drimmelen", provincie: "Noord-Brabant" },
+  { naam: "Dronten", slug: "dronten", provincie: "Flevoland" },
+  { naam: "Druten", slug: "druten", provincie: "Gelderland" },
+  { naam: "Duiven", slug: "duiven", provincie: "Gelderland" },
+  { naam: "Echt-Susteren", slug: "echt-susteren", provincie: "Limburg" },
+  { naam: "Edam-Volendam", slug: "edam-volendam", provincie: "Noord-Holland" },
+  { naam: "Ede", slug: "ede", provincie: "Gelderland" },
+  { naam: "Eemnes", slug: "eemnes", provincie: "Utrecht" },
+  { naam: "Eemsdelta", slug: "eemsdelta", provincie: "Groningen" },
+  { naam: "Eersel", slug: "eersel", provincie: "Noord-Brabant" },
+  { naam: "Eijsden-Margraten", slug: "eijsden-margraten", provincie: "Limburg" },
+  { naam: "Eindhoven", slug: "eindhoven", provincie: "Nederland" },
+  { naam: "Elburg", slug: "elburg", provincie: "Gelderland" },
+  { naam: "Emmen", slug: "emmen", provincie: "Drenthe" },
+  { naam: "Enkhuizen", slug: "enkhuizen", provincie: "Noord-Holland" },
+  { naam: "Enschede", slug: "enschede", provincie: "Nederland" },
+  { naam: "Epe", slug: "epe", provincie: "Gelderland" },
+  { naam: "Ermelo", slug: "ermelo", provincie: "Gelderland" },
+  { naam: "Etten-Leur", slug: "etten-leur", provincie: "Nederland" },
+  { naam: "Geertruidenberg", slug: "geertruidenberg", provincie: "Noord-Brabant" },
+  { naam: "Geldrop-Mierlo", slug: "geldrop-mierlo", provincie: "Noord-Brabant" },
+  { naam: "Gemert-Bakel", slug: "gemert-bakel", provincie: "Noord-Brabant" },
+  { naam: "Gennep", slug: "gennep", provincie: "Limburg" },
+  { naam: "Gerwen en Nederwetten", slug: "gerwen-en-nederwetten", provincie: "Nederland" },
+  { naam: "Gilze en Rijen", slug: "gilze-en-rijen", provincie: "Noord-Brabant" },
+  { naam: "Goeree-Overflakkee", slug: "goeree-overflakkee", provincie: "Zuid-Holland" },
+  { naam: "Goes", slug: "goes", provincie: "Zeeland" },
+  { naam: "Goirle", slug: "goirle", provincie: "Noord-Brabant" },
+  { naam: "Gooise Meren", slug: "gooise-meren", provincie: "Noord-Holland" },
+  { naam: "Gorinchem", slug: "gorinchem", provincie: "Zuid-Holland" },
+  { naam: "Gouda", slug: "gouda", provincie: "Zuid-Holland" },
+  { naam: "Groningen", slug: "groningen", provincie: "Nederland" },
+  { naam: "Gulpen-Wittem", slug: "gulpen-wittem", provincie: "Limburg" },
+  { naam: "Haaksbergen", slug: "haaksbergen", provincie: "Overijssel" },
+  { naam: "Haarlem", slug: "haarlem", provincie: "Nederland" },
+  { naam: "Haarlemmermeer", slug: "haarlemmermeer", provincie: "Noord-Holland" },
+  { naam: "Halderberge", slug: "halderberge", provincie: "Noord-Brabant" },
+  { naam: "Hardenberg", slug: "hardenberg", provincie: "Overijssel" },
+  { naam: "Harderwijk", slug: "harderwijk", provincie: "Gelderland" },
+  { naam: "Hardinxveld-Giessendam", slug: "hardinxveld-giessendam", provincie: "Zuid-Holland" },
+  { naam: "Harlingen", slug: "harlingen", provincie: "Fryslân" },
+  { naam: "Hattem", slug: "hattem", provincie: "Gelderland" },
+  { naam: "Heemskerk", slug: "heemskerk", provincie: "Noord-Holland" },
+  { naam: "Heemstede", slug: "heemstede", provincie: "Noord-Holland" },
+  { naam: "Heerde", slug: "heerde", provincie: "Gelderland" },
+  { naam: "Heerenveen", slug: "heerenveen", provincie: "Fryslân" },
+  { naam: "Heerlen", slug: "heerlen", provincie: "Nederland" },
+  { naam: "Heeze-Leende", slug: "heeze-leende", provincie: "Noord-Brabant" },
+  { naam: "Heiloo", slug: "heiloo", provincie: "Noord-Holland" },
+  { naam: "Hellendoorn", slug: "hellendoorn", provincie: "Overijssel" },
+  { naam: "Helmond", slug: "helmond", provincie: "Nederland" },
+  { naam: "Hendrik-Ido-Ambacht", slug: "hendrik-ido-ambacht", provincie: "Zuid-Holland" },
+  { naam: "Hengelo", slug: "hengelo", provincie: "Nederland" },
+  { naam: "Hengelo (O.)", slug: "hengelo-o", provincie: "Overijssel" },
+  { naam: "Het Hogeland", slug: "het-hogeland", provincie: "Groningen" },
+  { naam: "Heumen", slug: "heumen", provincie: "Gelderland" },
+  { naam: "Heusden", slug: "heusden", provincie: "Noord-Brabant" },
+  { naam: "Hillegom", slug: "hillegom", provincie: "Zuid-Holland" },
+  { naam: "Hilvarenbeek", slug: "hilvarenbeek", provincie: "Noord-Brabant" },
+  { naam: "Hilversum", slug: "hilversum", provincie: "Nederland" },
+  { naam: "Hoeksche Waard", slug: "hoeksche-waard", provincie: "Zuid-Holland" },
+  { naam: "Hof van Twente", slug: "hof-van-twente", provincie: "Overijssel" },
+  { naam: "Hollands Kroon", slug: "hollands-kroon", provincie: "Noord-Holland" },
+  { naam: "Hoogeveen", slug: "hoogeveen", provincie: "Drenthe" },
+  { naam: "Hoorn", slug: "hoorn", provincie: "Nederland" },
+  { naam: "Horst aan de Maas", slug: "horst-aan-de-maas", provincie: "Limburg" },
+  { naam: "Houten", slug: "houten", provincie: "Utrecht" },
+  { naam: "Huizen", slug: "huizen", provincie: "Noord-Holland" },
+  { naam: "Hulst", slug: "hulst", provincie: "Zeeland" },
+  { naam: "IJsselstein", slug: "ijsselstein", provincie: "Utrecht" },
+  { naam: "Kaag en Braassem", slug: "kaag-en-braassem", provincie: "Zuid-Holland" },
+  { naam: "Kampen", slug: "kampen", provincie: "Overijssel" },
+  { naam: "Kapelle", slug: "kapelle", provincie: "Zeeland" },
+  { naam: "Katwijk", slug: "katwijk", provincie: "Zuid-Holland" },
+  { naam: "Kerkrade", slug: "kerkrade", provincie: "Limburg" },
+  { naam: "Koggenland", slug: "koggenland", provincie: "Noord-Holland" },
+  { naam: "Krimpen aan den IJssel", slug: "krimpen-aan-den-ijssel", provincie: "Zuid-Holland" },
+  { naam: "Krimpenerwaard", slug: "krimpenerwaard", provincie: "Zuid-Holland" },
+  { naam: "Laarbeek", slug: "laarbeek", provincie: "Noord-Brabant" },
+  { naam: "Land van Cuijk", slug: "land-van-cuijk", provincie: "Noord-Brabant" },
+  { naam: "Landgraaf", slug: "landgraaf", provincie: "Limburg" },
+  { naam: "Landsmeer", slug: "landsmeer", provincie: "Noord-Holland" },
+  { naam: "Lansingerland", slug: "lansingerland", provincie: "Zuid-Holland" },
+  { naam: "Laren", slug: "laren", provincie: "Nederland" },
+  { naam: "Laren (NH.)", slug: "laren-nh", provincie: "Noord-Holland" },
+  { naam: "Leeuwarden", slug: "leeuwarden", provincie: "Nederland" },
+  { naam: "Leiden", slug: "leiden", provincie: "Nederland" },
+  { naam: "Leiderdorp", slug: "leiderdorp", provincie: "Zuid-Holland" },
+  { naam: "Leidschendam-Voorburg", slug: "leidschendam-voorburg", provincie: "Zuid-Holland" },
+  { naam: "Lelystad", slug: "lelystad", provincie: "Flevoland" },
+  { naam: "Leudal", slug: "leudal", provincie: "Limburg" },
+  { naam: "Leusden", slug: "leusden", provincie: "Utrecht" },
+  { naam: "Lingewaard", slug: "lingewaard", provincie: "Gelderland" },
+  { naam: "Lisse", slug: "lisse", provincie: "Zuid-Holland" },
+  { naam: "Lochem", slug: "lochem", provincie: "Gelderland" },
+  { naam: "Loon op Zand", slug: "loon-op-zand", provincie: "Noord-Brabant" },
+  { naam: "Lopik", slug: "lopik", provincie: "Utrecht" },
+  { naam: "Losser", slug: "losser", provincie: "Overijssel" },
+  { naam: "Maasdriel", slug: "maasdriel", provincie: "Gelderland" },
+  { naam: "Maasgouw", slug: "maasgouw", provincie: "Limburg" },
+  { naam: "Maashorst", slug: "maashorst", provincie: "Noord-Brabant" },
+  { naam: "Maassluis", slug: "maassluis", provincie: "Zuid-Holland" },
+  { naam: "Maastricht", slug: "maastricht", provincie: "Nederland" },
+  { naam: "Medemblik", slug: "medemblik", provincie: "Noord-Holland" },
+  { naam: "Meerssen", slug: "meerssen", provincie: "Limburg" },
+  { naam: "Meierijstad", slug: "meierijstad", provincie: "Noord-Brabant" },
+  { naam: "Meppel", slug: "meppel", provincie: "Drenthe" },
+  { naam: "Middelburg", slug: "middelburg", provincie: "Nederland" },
+  { naam: "Middelburg (Z.)", slug: "middelburg-z", provincie: "Zeeland" },
+  { naam: "Midden-Delfland", slug: "midden-delfland", provincie: "Zuid-Holland" },
+  { naam: "Midden-Drenthe", slug: "midden-drenthe", provincie: "Drenthe" },
+  { naam: "Midden-Groningen", slug: "midden-groningen", provincie: "Groningen" },
+  { naam: "Moerdijk", slug: "moerdijk", provincie: "Nederland" },
+  { naam: "Molenlanden", slug: "molenlanden", provincie: "Zuid-Holland" },
+  { naam: "Montferland", slug: "montferland", provincie: "Gelderland" },
+  { naam: "Montfoort", slug: "montfoort", provincie: "Utrecht" },
+  { naam: "Mook en Middelaar", slug: "mook-en-middelaar", provincie: "Limburg" },
+  { naam: "Neder-Betuwe", slug: "neder-betuwe", provincie: "Gelderland" },
+  { naam: "Nederweert", slug: "nederweert", provincie: "Limburg" },
+  { naam: "Nieuwegein", slug: "nieuwegein", provincie: "Nederland" },
+  { naam: "Nieuwkoop", slug: "nieuwkoop", provincie: "Zuid-Holland" },
+  { naam: "Nijkerk", slug: "nijkerk", provincie: "Gelderland" },
+  { naam: "Nijmegen", slug: "nijmegen", provincie: "Nederland" },
+  { naam: "Nissewaard", slug: "nissewaard", provincie: "Zuid-Holland" },
+  { naam: "Noardeast-Fryslân", slug: "noardeast-fryslan", provincie: "Fryslân" },
+  { naam: "Noord-Beveland", slug: "noord-beveland", provincie: "Zeeland" },
+  { naam: "Noordenveld", slug: "noordenveld", provincie: "Drenthe" },
+  { naam: "Noordoostpolder", slug: "noordoostpolder", provincie: "Flevoland" },
+  { naam: "Noordwijk", slug: "noordwijk", provincie: "Zuid-Holland" },
+  { naam: "Nuenen", slug: "nuenen", provincie: "Nederland" },
+  { naam: "Nuenen, Gerwen en Nederwetten", slug: "nuenen-gerwen-en-nederwetten", provincie: "Noord-Brabant" },
+  { naam: "Nunspeet", slug: "nunspeet", provincie: "Gelderland" },
+  { naam: "Oegstgeest", slug: "oegstgeest", provincie: "Zuid-Holland" },
+  { naam: "Oirschot", slug: "oirschot", provincie: "Noord-Brabant" },
+  { naam: "Oisterwijk", slug: "oisterwijk", provincie: "Noord-Brabant" },
+  { naam: "Oldambt", slug: "oldambt", provincie: "Groningen" },
+  { naam: "Oldebroek", slug: "oldebroek", provincie: "Gelderland" },
+  { naam: "Oldenzaal", slug: "oldenzaal", provincie: "Overijssel" },
+  { naam: "Olst-Wijhe", slug: "olst-wijhe", provincie: "Overijssel" },
+  { naam: "Ommen", slug: "ommen", provincie: "Overijssel" },
+  { naam: "Oost Gelre", slug: "oost-gelre", provincie: "Gelderland" },
+  { naam: "Oosterhout", slug: "oosterhout", provincie: "Nederland" },
+  { naam: "Ooststellingwerf", slug: "ooststellingwerf", provincie: "Fryslân" },
+  { naam: "Oostzaan", slug: "oostzaan", provincie: "Noord-Holland" },
+  { naam: "Opmeer", slug: "opmeer", provincie: "Noord-Holland" },
+  { naam: "Opsterland", slug: "opsterland", provincie: "Fryslân" },
+  { naam: "Oss", slug: "oss", provincie: "Nederland" },
+  { naam: "Oude IJsselstreek", slug: "oude-ijsselstreek", provincie: "Gelderland" },
+  { naam: "Ouder-Amstel", slug: "ouder-amstel", provincie: "Noord-Holland" },
+  { naam: "Oudewater", slug: "oudewater", provincie: "Utrecht" },
+  { naam: "Overbetuwe", slug: "overbetuwe", provincie: "Gelderland" },
+  { naam: "Papendrecht", slug: "papendrecht", provincie: "Zuid-Holland" },
+  { naam: "Peel en Maas", slug: "peel-en-maas", provincie: "Limburg" },
+  { naam: "Pekela", slug: "pekela", provincie: "Groningen" },
+  { naam: "Pijnacker-Nootdorp", slug: "pijnacker-nootdorp", provincie: "Zuid-Holland" },
+  { naam: "Purmerend", slug: "purmerend", provincie: "Nederland" },
+  { naam: "Putten", slug: "putten", provincie: "Gelderland" },
+  { naam: "Raalte", slug: "raalte", provincie: "Overijssel" },
+  { naam: "Reimerswaal", slug: "reimerswaal", provincie: "Zeeland" },
+  { naam: "Renkum", slug: "renkum", provincie: "Gelderland" },
+  { naam: "Renswoude", slug: "renswoude", provincie: "Utrecht" },
+  { naam: "Reusel-De Mierden", slug: "reusel-de-mierden", provincie: "Noord-Brabant" },
+  { naam: "Rheden", slug: "rheden", provincie: "Gelderland" },
+  { naam: "Rhenen", slug: "rhenen", provincie: "Utrecht" },
+  { naam: "Ridderkerk", slug: "ridderkerk", provincie: "Zuid-Holland" },
+  { naam: "Rijssen-Holten", slug: "rijssen-holten", provincie: "Overijssel" },
+  { naam: "Rijswijk", slug: "rijswijk", provincie: "Nederland" },
+  { naam: "Rijswijk (ZH.)", slug: "rijswijk-zh", provincie: "Zuid-Holland" },
+  { naam: "Roerdalen", slug: "roerdalen", provincie: "Limburg" },
+  { naam: "Roermond", slug: "roermond", provincie: "Limburg" },
+  { naam: "Roosendaal", slug: "roosendaal", provincie: "Nederland" },
+  { naam: "Rotterdam", slug: "rotterdam", provincie: "Nederland" },
+  { naam: "Rozendaal", slug: "rozendaal", provincie: "Gelderland" },
+  { naam: "Rucphen", slug: "rucphen", provincie: "Noord-Brabant" },
+  { naam: "Schagen", slug: "schagen", provincie: "Noord-Holland" },
+  { naam: "Scherpenzeel", slug: "scherpenzeel", provincie: "Gelderland" },
+  { naam: "Schiedam", slug: "schiedam", provincie: "Zuid-Holland" },
+  { naam: "Schiermonnikoog", slug: "schiermonnikoog", provincie: "Fryslân" },
+  { naam: "Schouwen-Duiveland", slug: "schouwen-duiveland", provincie: "Zeeland" },
+  { naam: "Simpelveld", slug: "simpelveld", provincie: "Limburg" },
+  { naam: "Sint-Michielsgestel", slug: "sint-michielsgestel", provincie: "Noord-Brabant" },
+  { naam: "Sittard-Geleen", slug: "sittard-geleen", provincie: "Limburg" },
+  { naam: "Sliedrecht", slug: "sliedrecht", provincie: "Zuid-Holland" },
+  { naam: "Sluis", slug: "sluis", provincie: "Zeeland" },
+  { naam: "Smallingerland", slug: "smallingerland", provincie: "Fryslân" },
+  { naam: "Soest", slug: "soest", provincie: "Utrecht" },
+  { naam: "Someren", slug: "someren", provincie: "Noord-Brabant" },
+  { naam: "Son en Breugel", slug: "son-en-breugel", provincie: "Noord-Brabant" },
+  { naam: "Stadskanaal", slug: "stadskanaal", provincie: "Groningen" },
+  { naam: "Staphorst", slug: "staphorst", provincie: "Overijssel" },
+  { naam: "Stede Broec", slug: "stede-broec", provincie: "Noord-Holland" },
+  { naam: "Steenbergen", slug: "steenbergen", provincie: "Noord-Brabant" },
+  { naam: "Steenwijkerland", slug: "steenwijkerland", provincie: "Overijssel" },
+  { naam: "Stein", slug: "stein", provincie: "Nederland" },
+  { naam: "Stein (L.)", slug: "stein-l", provincie: "Limburg" },
+  { naam: "Stichtse Vecht", slug: "stichtse-vecht", provincie: "Utrecht" },
+  { naam: "Súdwest-Fryslân", slug: "sudwest-fryslan", provincie: "Fryslân" },
+  { naam: "Terneuzen", slug: "terneuzen", provincie: "Zeeland" },
+  { naam: "Terschelling", slug: "terschelling", provincie: "Fryslân" },
+  { naam: "Texel", slug: "texel", provincie: "Noord-Holland" },
+  { naam: "Teylingen", slug: "teylingen", provincie: "Zuid-Holland" },
+  { naam: "Tholen", slug: "tholen", provincie: "Zeeland" },
+  { naam: "Tiel", slug: "tiel", provincie: "Gelderland" },
+  { naam: "Tilburg", slug: "tilburg", provincie: "Nederland" },
+  { naam: "Tubbergen", slug: "tubbergen", provincie: "Overijssel" },
+  { naam: "Twenterand", slug: "twenterand", provincie: "Overijssel" },
+  { naam: "Tynaarlo", slug: "tynaarlo", provincie: "Drenthe" },
+  { naam: "Tytsjerksteradiel", slug: "tytsjerksteradiel", provincie: "Fryslân" },
+  { naam: "Uitgeest", slug: "uitgeest", provincie: "Noord-Holland" },
+  { naam: "Uithoorn", slug: "uithoorn", provincie: "Noord-Holland" },
+  { naam: "Urk", slug: "urk", provincie: "Flevoland" },
+  { naam: "Utrecht", slug: "utrecht", provincie: "Nederland" },
+  { naam: "Utrechtse Heuvelrug", slug: "utrechtse-heuvelrug", provincie: "Utrecht" },
+  { naam: "Vaals", slug: "vaals", provincie: "Limburg" },
+  { naam: "Valkenburg aan de Geul", slug: "valkenburg-aan-de-geul", provincie: "Limburg" },
+  { naam: "Valkenswaard", slug: "valkenswaard", provincie: "Noord-Brabant" },
+  { naam: "Veendam", slug: "veendam", provincie: "Groningen" },
+  { naam: "Veenendaal", slug: "veenendaal", provincie: "Nederland" },
+  { naam: "Veere", slug: "veere", provincie: "Zeeland" },
+  { naam: "Veldhoven", slug: "veldhoven", provincie: "Noord-Brabant" },
+  { naam: "Velsen", slug: "velsen", provincie: "Noord-Holland" },
+  { naam: "Venlo", slug: "venlo", provincie: "Nederland" },
+  { naam: "Venray", slug: "venray", provincie: "Limburg" },
+  { naam: "Vijfheerenlanden", slug: "vijfheerenlanden", provincie: "Utrecht" },
+  { naam: "Vlaardingen", slug: "vlaardingen", provincie: "Zuid-Holland" },
+  { naam: "Vlieland", slug: "vlieland", provincie: "Fryslân" },
+  { naam: "Vlissingen", slug: "vlissingen", provincie: "Zeeland" },
+  { naam: "Voerendaal", slug: "voerendaal", provincie: "Limburg" },
+  { naam: "Voorne aan Zee", slug: "voorne-aan-zee", provincie: "Zuid-Holland" },
+  { naam: "Voorschoten", slug: "voorschoten", provincie: "Zuid-Holland" },
+  { naam: "Voorst", slug: "voorst", provincie: "Gelderland" },
+  { naam: "Vught", slug: "vught", provincie: "Noord-Brabant" },
+  { naam: "Waadhoeke", slug: "waadhoeke", provincie: "Fryslân" },
+  { naam: "Waalre", slug: "waalre", provincie: "Noord-Brabant" },
+  { naam: "Waalwijk", slug: "waalwijk", provincie: "Noord-Brabant" },
+  { naam: "Waddinxveen", slug: "waddinxveen", provincie: "Zuid-Holland" },
+  { naam: "Wageningen", slug: "wageningen", provincie: "Gelderland" },
+  { naam: "Wassenaar", slug: "wassenaar", provincie: "Zuid-Holland" },
+  { naam: "Waterland", slug: "waterland", provincie: "Noord-Holland" },
+  { naam: "Weert", slug: "weert", provincie: "Limburg" },
+  { naam: "West Betuwe", slug: "west-betuwe", provincie: "Gelderland" },
+  { naam: "West Maas en Waal", slug: "west-maas-en-waal", provincie: "Gelderland" },
+  { naam: "Westerkwartier", slug: "westerkwartier", provincie: "Groningen" },
+  { naam: "Westerveld", slug: "westerveld", provincie: "Drenthe" },
+  { naam: "Westervoort", slug: "westervoort", provincie: "Gelderland" },
+  { naam: "Westerwolde", slug: "westerwolde", provincie: "Groningen" },
+  { naam: "Westland", slug: "westland", provincie: "Zuid-Holland" },
+  { naam: "Weststellingwerf", slug: "weststellingwerf", provincie: "Fryslân" },
+  { naam: "Wierden", slug: "wierden", provincie: "Overijssel" },
+  { naam: "Wijchen", slug: "wijchen", provincie: "Gelderland" },
+  { naam: "Wijdemeren", slug: "wijdemeren", provincie: "Noord-Holland" },
+  { naam: "Wijk bij Duurstede", slug: "wijk-bij-duurstede", provincie: "Utrecht" },
+  { naam: "Winterswijk", slug: "winterswijk", provincie: "Gelderland" },
+  { naam: "Woensdrecht", slug: "woensdrecht", provincie: "Noord-Brabant" },
+  { naam: "Woerden", slug: "woerden", provincie: "Utrecht" },
+  { naam: "Wormerland", slug: "wormerland", provincie: "Noord-Holland" },
+  { naam: "Woudenberg", slug: "woudenberg", provincie: "Utrecht" },
+  { naam: "Zaanstad", slug: "zaanstad", provincie: "Noord-Holland" },
+  { naam: "Zaltbommel", slug: "zaltbommel", provincie: "Gelderland" },
+  { naam: "Zandvoort", slug: "zandvoort", provincie: "Noord-Holland" },
+  { naam: "Zeewolde", slug: "zeewolde", provincie: "Flevoland" },
+  { naam: "Zeist", slug: "zeist", provincie: "Utrecht" },
+  { naam: "Zevenaar", slug: "zevenaar", provincie: "Gelderland" },
+  { naam: "Zoetermeer", slug: "zoetermeer", provincie: "Nederland" },
+  { naam: "Zoeterwoude", slug: "zoeterwoude", provincie: "Zuid-Holland" },
+  { naam: "Zuidplas", slug: "zuidplas", provincie: "Zuid-Holland" },
+  { naam: "Zundert", slug: "zundert", provincie: "Noord-Brabant" },
+  { naam: "Zutphen", slug: "zutphen", provincie: "Gelderland" },
+  { naam: "Zwartewaterland", slug: "zwartewaterland", provincie: "Overijssel" },
+  { naam: "Zwijndrecht", slug: "zwijndrecht", provincie: "Zuid-Holland" },
+  { naam: "Zwolle", slug: "zwolle", provincie: "Nederland" }
+  ];
+
+  return gemeentes.map((gemeente) => ({
+    params: { gemeente: gemeente.slug },
+    props: { gemeente },
+  }));
+}
+
+const { gemeente } = Astro.props;
+
+function hashSlug(slug: string): number {
+  return [...slug].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+}
+
+const variant = hashSlug(gemeente.slug) % 6;
+
+const introTemplates = [
+  `Bent u op zoek naar een betrouwbare partner in ${gemeente.naam}? Star Local ondersteunt lokale ondernemers en bewoners in ${gemeente.provincie} met professionele dienstverlening, heldere communicatie en een persoonlijke aanpak. Wij begrijpen de lokale markt en helpen u snel verder.`,
+  `Star Local is uw lokale specialist in ${gemeente.naam}. Van eerste contact tot afgeronde opdracht: wij combineren regionale kennis in ${gemeente.provincie} met een moderne, klantgerichte werkwijze. Vraag vandaag nog vrijblijvend informatie aan.`,
+  `In ${gemeente.naam} verdient u een partner die meedenkt. Star Local levert maatwerk voor particulieren en ondernemers in ${gemeente.provincie}, met focus op kwaliteit, transparantie en snelle opvolging van elke aanvraag.`,
+  `Welkom bij Star Local ${gemeente.naam}. Wij zijn actief in ${gemeente.provincie} en helpen u met betrouwbare lokale dienstverlening. Of het nu gaat om een eerste afspraak of een concreet project — wij staan klaar met deskundig advies.`,
+  `Star Local maakt het verschil in ${gemeente.naam}. Dankzij onze aanwezigheid in ${gemeente.provincie} kunnen wij snel schakelen, duidelijke afspraken maken en u ontzorgen van begin tot eind.`,
+  `Op zoek naar lokale expertise in ${gemeente.naam}? Star Local verbindt bewoners en bedrijven in ${gemeente.provincie} met professionele service, heldere prijsafspraken en een team dat bereikbaar is wanneer u ons nodig heeft.`,
+];
+
+const bodyTemplates = [
+  `Als lokale speler in ${gemeente.naam} weten wij wat er speelt in ${gemeente.provincie}. Star Local biedt een compleet pakket aan diensten voor wie kwaliteit, betrouwbaarheid en persoonlijk contact belangrijk vindt. Wij werken transparant en houden u bij elke stap op de hoogte.`,
+  `Star Local in ${gemeente.naam} staat bekend om een no-nonsense aanpak en resultaatgerichte service. Wij ondersteunen zowel particulieren als ondernemers in ${gemeente.provincie} met oplossingen die aansluiten bij uw situatie en budget.`,
+  `Vanuit ${gemeente.naam} bedienen wij de volledige regio ${gemeente.provincie}. Star Local combineert lokale betrokkenheid met professionele processen, zodat u altijd weet waar u aan toe bent. Neem contact op voor een vrijblijvend gesprek.`,
+  `In ${gemeente.naam} en omgeving kiest steeds meer klanten voor Star Local vanwege onze snelle reactietijd en duidelijke communicatie. Wij helpen u graag verder met advies, planning en uitvoering — volledig afgestemd op ${gemeente.provincie}.`,
+  `Star Local is uw aanspreekpunt in ${gemeente.naam} voor betrouwbare lokale dienstverlening. Met kennis van ${gemeente.provincie} en oog voor detail leveren wij service waar u op kunt vertrouwen, keer op keer.`,
+  `Wij zijn trots op onze aanwezigheid in ${gemeente.naam}. Star Local ondersteunt de lokale gemeenschap in ${gemeente.provincie} met professionele begeleiding, heldere afspraken en een team dat luistert naar uw wensen.`,
+];
+
+const seoKeywords = [
+  `lokale dienstverlening ${gemeente.naam}`,
+  `Star Local ${gemeente.naam}`,
+  `professionele service ${gemeente.provincie}`,
+  `betrouwbare partner ${gemeente.naam}`,
+];
+
+const intro = introTemplates[variant];
+const body = bodyTemplates[(variant + 2) % 6];
+const pageTitle = `Star Local ${gemeente.naam} | Lokale dienstverlening in ${gemeente.provincie}`;
+const pageDescription = `Star Local in ${gemeente.naam}, ${gemeente.provincie}. Professionele lokale dienstverlening, snelle opvolging en persoonlijk contact. Vraag vrijblijvend een offerte aan.`;
+---
+
+<BaseLayout locale="nl" title={pageTitle} description={pageDescription} canonical={`/gemeentes/${gemeente.slug}/`}>
+  <article class="gemeente-page" itemscope itemtype="https://schema.org/LocalBusiness">
+    <meta itemprop="name" content={`Star Local ${gemeente.naam}`} />
+    <meta itemprop="areaServed" content={gemeente.naam} />
+
+    <header class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">Star Local · {gemeente.provincie}</p>
+        <h1 itemprop="headline">Star Local in {gemeente.naam}</h1>
+        <p class="lead" itemprop="description">{intro}</p>
+        <a href="/contact/" class="btn-cta">Gratis offerte aanvragen</a>
+      </div>
+      <figure class="hero-media">
+        <img
+          src="/images/hero-local-business.svg"
+          alt={`Lokale business en professionele service in ${gemeente.naam}`}
+          width="800"
+          height="500"
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
+    </header>
+
+    <section class="gallery" aria-label="Diensten en lokale expertise">
+      <div class="gallery-grid">
+        <figure class="gallery-card">
+          <img
+            src="/images/seo-growth.svg"
+            alt={`SEO en online vindbaarheid voor ondernemers in ${gemeente.naam}`}
+            width="600"
+            height="400"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>SEO &amp; vindbaarheid in {gemeente.naam}</figcaption>
+        </figure>
+        <figure class="gallery-card">
+          <img
+            src="/images/personal-service.svg"
+            alt={`Persoonlijke service en contact in ${gemeente.provincie}`}
+            width="600"
+            height="400"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>Persoonlijk contact &amp; service</figcaption>
+        </figure>
+        <figure class="gallery-card">
+          <img
+            src="/images/regional-expertise.svg"
+            alt={`Regionale expertise van Star Local in ${gemeente.naam}`}
+            width="600"
+            height="400"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>Regionale expertise in {gemeente.provincie}</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="content">
+      <h2>Professionele lokale service in {gemeente.naam}</h2>
+      <p>{body}</p>
+      <ul class="benefits">
+        <li>Lokale kennis van {gemeente.naam} en {gemeente.provincie}</li>
+        <li>Snelle opvolging en transparante communicatie</li>
+        <li>Persoonlijk advies afgestemd op uw situatie</li>
+        <li>SEO-vriendelijke online aanwezigheid voor lokale groei</li>
+      </ul>
+      <p class="keywords" aria-label="Zoekwoorden">
+        {seoKeywords.join(' · ')}
+      </p>
+    </section>
+
+    <section class="cta-block">
+      <h2>Klaar om te starten in {gemeente.naam}?</h2>
+      <p>
+        Neem vandaag nog contact op met Star Local. Wij reageren snel op aanvragen uit
+        {gemeente.naam} en {gemeente.provincie} en denken graag met u mee.
+      </p>
+      <a href="/contact/" class="btn-cta btn-cta-large">Direct contact opnemen</a>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .gemeente-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 2rem;
+    align-items: center;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(197, 160, 89, 0.25);
+  }
+
+  .eyebrow {
+    color: #c5a059;
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 0.75rem;
+    font-weight: 600;
+  }
+
+  h1 {
+    color: #ffffff;
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    margin: 0 0 1rem;
+    line-height: 1.2;
+  }
+
+  h1::after {
+    content: '';
+    display: block;
+    width: 64px;
+    height: 3px;
+    background: #c5a059;
+    margin-top: 0.75rem;
+    border-radius: 2px;
+  }
+
+  .lead {
+    color: #c8d0dc;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin: 0 0 1.5rem;
+  }
+
+  .hero-media,
+  .gallery-card {
+    margin: 0;
+  }
+
+  .hero-media img,
+  .gallery-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 14px;
+    border: 1px solid rgba(197, 160, 89, 0.22);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    object-fit: cover;
+    aspect-ratio: 16 / 10;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .gallery-card {
+    background: rgba(197, 160, 89, 0.04);
+    border: 1px solid rgba(197, 160, 89, 0.18);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gallery-card figcaption {
+    padding: 0.9rem 1rem 1.1rem;
+    color: #c5a059;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .content h2,
+  .cta-block h2 {
+    color: #c5a059;
+    font-size: 1.5rem;
+    margin: 0 0 1rem;
+  }
+
+  .content p,
+  .cta-block p,
+  .benefits li {
+    color: #e2e8f0;
+    line-height: 1.75;
+  }
+
+  .benefits {
+    padding-left: 1.25rem;
+    margin: 1.25rem 0;
+  }
+
+  .keywords {
+    font-size: 0.82rem;
+    color: #8fa0b8;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(197, 160, 89, 0.15);
+  }
+
+  .cta-block {
+    background: linear-gradient(135deg, rgba(37, 211, 102, 0.08), rgba(197, 160, 89, 0.08));
+    border: 1px solid rgba(197, 160, 89, 0.28);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .btn-cta {
+    display: inline-block;
+    background: #25d366;
+    color: #ffffff;
+    padding: 0.9rem 1.6rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 4px 18px rgba(37, 211, 102, 0.25);
+  }
+
+  .btn-cta:hover {
+    background: #1fb855;
+    transform: translateY(-1px);
+  }
+
+  .btn-cta-large {
+    padding: 1rem 2rem;
+    font-size: 1.05rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+
+    .gallery-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hero-text {
+      order: 1;
+    }
+
+    .hero-media {
+      order: 2;
+    }
+  }
+</style>
