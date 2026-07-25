@@ -1,0 +1,55 @@
+---
+import type { GemeenteStat } from '../../data/gemeentes/types';
+
+interface Props {
+  stats: GemeenteStat[];
+}
+
+const { stats } = Astro.props;
+---
+
+<ul class="stats-grid">
+  {
+    stats.map((stat) => (
+      <li class="stat-card">
+        <strong class="stat-value">{stat.value}</strong>
+        <span class="stat-label">{stat.label}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .stats-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+
+  .stat-card {
+    background: linear-gradient(135deg, rgba(205, 184, 128, 0.1), rgba(205, 184, 128, 0.03));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .stat-value {
+    color: var(--gold);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.1;
+    font-weight: 700;
+  }
+
+  .stat-label {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+</style>

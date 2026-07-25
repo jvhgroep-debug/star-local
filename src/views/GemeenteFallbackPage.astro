@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { GemeenteRecord } from '../data/gemeentes/types';
+import { IMAGES } from '../data/images';
+
+interface Props {
+  gemeente: GemeenteRecord;
+}
+
+const { gemeente } = Astro.props;
+
+function hashSlug(slug: string): number {
+  return [...slug].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+}
+
+const variant = hashSlug(gemeente.slug) % 6;
+
+const introTemplates = [
+  `Bent u op zoek naar een betrouwbare partner voor uw online groei in ${gemeente.naam}? Star Local ondersteunt ondernemers in ${gemeente.provincie} met professionele websites, lokale SEO en heldere communicatie.`,
+  `Star Local helpt bedrijven in ${gemeente.naam} met websites die snel laden, goed vindbaar zijn en aanvragen opleveren. Wij combineren regionale kennis in ${gemeente.provincie} met een moderne, klantgerichte werkwijze.`,
+  `In ${gemeente.naam} verdient u een online partner die meedenkt. Star Local levert maatwerk voor ondernemers in ${gemeente.provincie}, met focus op kwaliteit, transparantie en meetbare groei.`,
+  `Welkom bij Star Local ${gemeente.naam}. Wij zijn actief in ${gemeente.provincie} en helpen u met professionele websites en SEO. Vraag vrijblijvend informatie aan.`,
+  `Star Local maakt het verschil in ${gemeente.naam}. Met kennis van ${gemeente.provincie} bouwen wij websites die lokaal zichtbaar zijn en klaar voor landelijke groei.`,
+  `Op zoek naar webdesign of SEO in ${gemeente.naam}? Star Local verbindt bedrijven in ${gemeente.provincie} met professionele online oplossingen en persoonlijk contact.`,
+];
+
+const intro = introTemplates[variant];
+const pageTitle = `Star Local ${gemeente.naam} | Website & lokale SEO in ${gemeente.provincie}`;
+const pageDescription = `Star Local in ${gemeente.naam}, ${gemeente.provincie}. Professionele websites, lokale SEO en online groei. Vraag vrijblijvend een offerte aan.`;
+---
+
+<BaseLayout
+  locale="nl"
+  title={pageTitle}
+  description={pageDescription}
+  canonical={`/gemeentes/${gemeente.slug}/`}
+  fullWidth
+  hero={{
+    title: `Website & SEO in ${gemeente.naam}`,
+    subtitle: `Star Local · ${gemeente.provincie}`,
+    intro,
+    backgroundImage: IMAGES.heroHomeReference,
+    ctas: [{ label: 'Gratis offerte aanvragen', href: '/contact/', variant: 'primary' }],
+  }}
+>
+  <section class="section">
+    <div class="container content-narrow">
+      <h2>Online groeien in {gemeente.naam}</h2>
+      <p class="prose">
+        Star Local bouwt snelle, professionele websites en helpt ondernemers in {gemeente.naam} beter
+        gevonden te worden — lokaal en landelijk. Neem contact op voor een vrijblijvend gesprek over
+        uw website, SEO of Google Bedrijfsprofiel.
+      </p>
+      <p class="center-link">
+        <a href="/contact/" class="btn btn-primary">Direct contact opnemen</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .content-narrow {
+    max-width: 760px;
+  }
+
+  h2 {
+    color: var(--gold);
+    margin: 0 0 1rem;
+  }
+
+  .prose {
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin: 0 0 1.5rem;
+  }
+
+  .center-link {
+    text-align: center;
+    margin: 0;
+  }
+</style>

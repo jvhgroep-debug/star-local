@@ -1,0 +1,432 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import FAQSection from '../components/FAQSection.astro';
+import GemeenteUspGrid from '../components/gemeente/GemeenteUspGrid.astro';
+import GemeenteSteps from '../components/gemeente/GemeenteSteps.astro';
+import type { IndustryLocalServicePageContent } from '../data/local-industries/types';
+import { getLocalIndustryPath } from '../data/local-industries/config';
+import { getLocalServicePath, getLocalServiceImagePath } from '../data/local-services/config';
+import { IMAGES } from '../data/images';
+import { SITE } from '../data/site';
+
+interface Props {
+  content: IndustryLocalServicePageContent;
+}
+
+const { content } = Astro.props;
+const canonicalPath = getLocalIndustryPath(content.citySlug, content.serviceSlug, content.industrySlug);
+const pageUrl = `${SITE.url}${canonicalPath}`;
+const servicePageUrl = getLocalServicePath(content.citySlug, content.serviceSlug);
+const nationalServiceUrl = `/diensten/${content.nationalServiceSlug}/`;
+const gemeenteUrl = `/gemeentes/${content.citySlug}/`;
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: content.seo.title,
+  description: content.seo.description,
+  url: pageUrl,
+  inLanguage: 'nl-NL',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: SITE.url,
+  },
+  about: {
+    '@type': 'Place',
+    name: content.city,
+    containedInPlace: {
+      '@type': 'AdministrativeArea',
+      name: content.province,
+    },
+  },
+};
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: `${content.serviceName} voor ${content.industryName} in ${content.city}`,
+  description: content.seo.description,
+  provider: {
+    '@type': 'Organization',
+    name: SITE.name,
+    url: SITE.url,
+  },
+  areaServed: content.city,
+  url: pageUrl,
+  image: `${SITE.url}${content.image}`,
+  audience: {
+    '@type': 'Audience',
+    audienceType: content.industryName,
+  },
+};
+---
+
+<BaseLayout
+  locale="nl"
+  title={content.seo.title}
+  description={content.seo.description}
+  canonical={canonicalPath}
+  image={content.image}
+  schema={[webPageSchema, serviceSchema]}
+  fullWidth
+  hero={{
+    title: content.hero.h1,
+    subtitle: content.hero.label,
+    intro: content.hero.intro,
+    ariaLabel: content.hero.h1,
+    backgroundImage: IMAGES.heroHomeReference,
+    ctas: [
+      { label: 'Gratis advies aanvragen', href: '/contact/', variant: 'primary' },
+      { label: 'Bekijk onze werkwijze', href: '/werkwijze/', variant: 'secondary' },
+    ],
+  }}
+>
+  <div class="container page-top">
+    <Breadcrumbs
+      items={[
+        { label: 'Home', href: '/' },
+        { label: content.city, href: gemeenteUrl },
+        { label: content.serviceName, href: servicePageUrl },
+        { label: content.industryName },
+      ]}
+    />
+  </div>
+
+  <section class="section section-flow">
+    <div class="container service-intro-grid">
+      <div class="content-prose">
+        <SectionHeading title={content.localIntro.title} />
+        {content.localIntro.paragraphs.map((paragraph) => (
+          <p class="prose">{paragraph}</p>
+        ))}
+        <p class="inline-links">
+          <a href={servicePageUrl}>{content.serviceName} in {content.city}</a>
+          <span aria-hidden="true"> · </span>
+          <a href={gemeenteUrl}>Meer over ondernemen in {content.city}</a>
+          <span aria-hidden="true"> · </span>
+          <a href={nationalServiceUrl}>Landelijke dienst</a>
+        </p>
+      </div>
+      <figure class="service-visual">
+        <img
+          src={content.image}
+          alt={content.imageAlt}
+          width="1200"
+          height="800"
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <section class="section alt-section section-flow">
+    <div class="container content-prose">
+      <SectionHeading title={`Waarom een goede website belangrijk is voor ${content.industryName.toLowerCase()} in ${content.city}`} />
+      {content.whyImportant.paragraphs.map((paragraph) => (
+        <p class="prose">{paragraph}</p>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section-flow">
+    <div class="container content-prose">
+      <SectionHeading title={content.industryChallenges.title} />
+      {content.industryChallenges.paragraphs.map((paragraph) => (
+        <p class="prose">{paragraph}</p>
+      ))}
+    </div>
+  </section>
+
+  <section class="section alt-section section-flow">
+    <div class="container content-prose">
+      <SectionHeading title={content.websiteRequirements.title} />
+      {content.websiteRequirements.paragraphs.map((paragraph) => (
+        <p class="prose">{paragraph}</p>
+      ))}
+      <ul class="feature-list">
+        {content.websiteRequirements.items.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section alt-section section-flow visual-section">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Voordelen"
+        title={`Voordelen voor ${content.industryName.toLowerCase()} in ${content.city}`}
+      />
+      <GemeenteUspGrid items={content.benefits} />
+    </div>
+  </section>
+
+  <section class="section section-flow">
+    <div class="container content-prose">
+      <SectionHeading title={content.features.title} />
+      <ul class="feature-list feature-grid">
+        {content.features.items.map((item) => (
+          <li class="feature-card">{item}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-flow visual-section">
+    <div class="container">
+      <p class="visual-eyebrow">Onze werkwijze</p>
+      <GemeenteSteps steps={content.processSteps} />
+    </div>
+  </section>
+
+  <section class="section alt-section section-flow">
+    <div class="container">
+      <SectionHeading title={content.localAreas.title} description={content.localAreas.intro} />
+      <ul class="district-grid">
+        {content.localAreas.items.map((area) => (
+          <li class="district-card">{area}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-flow" id="gerelateerde-branches">
+    <div class="container">
+      <SectionHeading
+        title={`Gerelateerde branches in ${content.city}`}
+        description={`Bekijk ook onze websites voor andere branches in ${content.city}.`}
+      />
+      <div class="grid-3 related-services-grid">
+        {content.relatedIndustries.map((industry) => (
+          <ServiceCard
+            title={industry.title}
+            description={industry.description}
+            href={industry.href}
+            image={content.image}
+            imageAlt={industry.title}
+            learnMore="Meer informatie"
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt-section section-flow">
+    <div class="container">
+      <SectionHeading
+        title={`Gerelateerde diensten in ${content.city}`}
+        description="Combineer uw website met lokale SEO, conversie-optimalisatie of technische SEO."
+      />
+      <div class="grid-3 related-services-grid">
+        {content.relatedLocalServices.map((service) => {
+          const relatedSlug = service.href.split('/').filter(Boolean).pop() ?? '';
+          return (
+            <ServiceCard
+              title={service.title}
+              description={service.description}
+              href={service.href}
+              image={getLocalServiceImagePath(relatedSlug)}
+              imageAlt={service.title}
+              learnMore="Meer informatie"
+            />
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <FAQSection
+    title={`Veelgestelde vragen over websites voor ${content.industryName.toLowerCase()} in ${content.city}`}
+    faqs={content.faqs}
+  />
+
+  <section class="section local-service-bottom-cta" aria-labelledby="industry-bottom-cta-title">
+    <div class="container cta-inner">
+      <h2 id="industry-bottom-cta-title">{content.bottomCta.title}</h2>
+      <p>{content.bottomCta.text}</p>
+      <div class="cta-actions">
+        <a href="/contact/" class="btn btn-primary">{content.bottomCta.primaryLabel}</a>
+        <a href="/werkwijze/" class="btn btn-secondary">{content.bottomCta.secondaryLabel}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-top {
+    padding-top: 1.25rem;
+  }
+
+  .content-prose {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .prose {
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin: 0 0 1.15rem;
+    font-size: 1.02rem;
+  }
+
+  .service-intro-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .service-visual {
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #0a0e14;
+  }
+
+  .service-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .inline-links {
+    margin: 0.5rem 0 0;
+    font-size: 0.95rem;
+  }
+
+  .inline-links a {
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .visual-section {
+    padding-top: 0.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .visual-eyebrow {
+    text-align: center;
+    color: var(--gold);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+  }
+
+  .feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .feature-list li {
+    color: var(--text-muted);
+    padding-left: 1.4rem;
+    position: relative;
+    line-height: 1.65;
+  }
+
+  .feature-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.85rem;
+  }
+
+  .feature-card {
+    background: rgba(205, 184, 128, 0.06);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .feature-card::before {
+    display: none;
+  }
+
+  .district-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.85rem;
+  }
+
+  .district-card {
+    background: rgba(205, 184, 128, 0.06);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1rem;
+    text-align: center;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .related-services-grid :global(.service-card) {
+    height: 100%;
+  }
+
+  .local-service-bottom-cta .cta-inner {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(205, 184, 128, 0.08), rgba(37, 211, 102, 0.05));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: clamp(2rem, 5vw, 3rem) 1.5rem;
+  }
+
+  .local-service-bottom-cta h2 {
+    color: var(--gold);
+    font-size: clamp(1.45rem, 2.8vw, 2rem);
+    text-align: center;
+    margin-bottom: 1rem;
+    line-height: 1.25;
+  }
+
+  .local-service-bottom-cta p {
+    color: var(--text-muted);
+    max-width: 640px;
+    margin: 0 auto 1.75rem;
+    line-height: 1.75;
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .cta-actions .btn {
+    min-width: min(100%, 15rem);
+  }
+
+  @media (max-width: 900px) {
+    .service-intro-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

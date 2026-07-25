@@ -1,0 +1,12 @@
+---
+import LocalServicePage from '../../views/LocalServicePage.astro';
+import { getLocalServiceStaticPaths } from '../../data/local-services/registry';
+
+export function getStaticPaths() {
+  return getLocalServiceStaticPaths();
+}
+
+const { content } = Astro.props;
+---
+
+<LocalServicePage content={content} />

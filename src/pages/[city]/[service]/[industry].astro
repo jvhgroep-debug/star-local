@@ -1,0 +1,12 @@
+---
+import IndustryLocalServicePage from '../../../views/IndustryLocalServicePage.astro';
+import { getIndustryLocalServiceStaticPaths } from '../../../data/local-industries/registry';
+
+export function getStaticPaths() {
+  return getIndustryLocalServiceStaticPaths();
+}
+
+const { content } = Astro.props;
+---
+
+<IndustryLocalServicePage content={content} />

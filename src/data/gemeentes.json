@@ -330,6 +330,11 @@
     "provincie": "Nederland"
   },
   {
+    "naam": "Den Haag",
+    "slug": "den-haag",
+    "provincie": "Zuid-Holland"
+  },
+  {
     "naam": "Den Helder",
     "slug": "den-helder",
     "provincie": "Noord-Holland"
@@ -1252,6 +1257,11 @@
   {
     "naam": "Rucphen",
     "slug": "rucphen",
+    "provincie": "Noord-Brabant"
+  },
+  {
+    "naam": "'s-Hertogenbosch",
+    "slug": "s-hertogenbosch",
     "provincie": "Noord-Brabant"
   },
   {

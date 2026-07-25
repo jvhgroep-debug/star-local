@@ -1,0 +1,766 @@
+---
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+import SectionHeading from '../components/SectionHeading.astro';
+
+import ServiceCard from '../components/ServiceCard.astro';
+
+import FAQSection from '../components/FAQSection.astro';
+
+import GemeenteUspGrid from '../components/gemeente/GemeenteUspGrid.astro';
+
+import GemeenteSteps from '../components/gemeente/GemeenteSteps.astro';
+
+import GemeenteStats from '../components/gemeente/GemeenteStats.astro';
+
+import GemeenteHighlightGrid from '../components/gemeente/GemeenteHighlightGrid.astro';
+
+import type { GemeentePageContent } from '../data/gemeentes/types';
+
+import { IMAGES } from '../data/images';
+
+import { SITE } from '../data/site';
+
+
+
+interface Props {
+
+  content: GemeentePageContent;
+
+}
+
+
+
+const { content } = Astro.props;
+
+const canonicalPath = `/gemeentes/${content.slug}/`;
+
+const pageUrl = `${SITE.url}${canonicalPath}`;
+
+
+
+const webPageSchema = {
+
+  '@context': 'https://schema.org',
+
+  '@type': 'WebPage',
+
+  name: content.seo.title,
+
+  description: content.seo.description,
+
+  url: pageUrl,
+
+  inLanguage: 'nl-NL',
+
+  isPartOf: {
+
+    '@type': 'WebSite',
+
+    name: SITE.name,
+
+    url: SITE.url,
+
+  },
+
+  about: {
+
+    '@type': 'Place',
+
+    name: content.naam,
+
+    containedInPlace: {
+
+      '@type': 'AdministrativeArea',
+
+      name: content.provincie,
+
+    },
+
+  },
+
+};
+
+
+
+const serviceSchemas = content.services.map((service) => ({
+
+  '@context': 'https://schema.org',
+
+  '@type': 'Service',
+
+  name: `${service.title} in ${content.naam}`,
+
+  description: service.description,
+
+  provider: {
+
+    '@type': 'Organization',
+
+    name: SITE.name,
+
+    url: SITE.url,
+
+  },
+
+  areaServed: content.naam,
+
+  url: `${SITE.url}${service.href}`,
+
+}));
+
+---
+
+
+
+<BaseLayout
+
+  locale="nl"
+
+  title={content.seo.title}
+
+  description={content.seo.description}
+
+  canonical={canonicalPath}
+
+  image={IMAGES.heroHomeReference}
+
+  schema={[webPageSchema, ...serviceSchemas]}
+
+  fullWidth
+
+  hero={{
+
+    title: content.hero.h1,
+
+    subtitle: content.hero.eyebrow,
+
+    intro: content.hero.intro,
+
+    ariaLabel: content.hero.h1,
+
+    backgroundImage: IMAGES.heroHomeReference,
+
+    ctas: [
+
+      { label: 'Gratis offerte aanvragen', href: '/contact/', variant: 'primary' },
+
+      { label: 'Bekijk onze diensten', href: '/diensten/', variant: 'secondary' },
+
+    ],
+
+  }}
+
+>
+
+  <div class="container page-top">
+
+    <Breadcrumbs
+
+      items={[
+
+        { label: 'Home', href: '/' },
+
+        { label: content.naam },
+
+      ]}
+
+    />
+
+  </div>
+
+
+
+  <section class="section section-flow" id="diensten">
+
+    <div class="container">
+
+      <SectionHeading
+
+        eyebrow="Diensten"
+
+        title={`Onze diensten in ${content.naam}`}
+
+        description={`Van website tot lokale SEO: alles wat u nodig heeft om online te groeien in ${content.naam}.`}
+
+      />
+
+      <div class="grid-3 gemeente-services-grid">
+
+        {content.services.map((service) => (
+
+          <ServiceCard
+
+            title={service.title}
+
+            description={service.description}
+
+            href={service.href}
+
+            image={service.image}
+
+            imageAlt={service.imageAlt}
+
+            learnMore="Meer informatie"
+
+          />
+
+        ))}
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section alt-section section-flow">
+
+    <div class="container content-prose">
+
+      <SectionHeading title={content.localIntro.title} />
+
+      {content.localIntro.paragraphs.map((paragraph) => (
+
+        <p class="prose">{paragraph}</p>
+
+      ))}
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section section-flow visual-section">
+
+    <div class="container">
+
+      <GemeenteUspGrid items={content.usps} />
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section alt-section section-flow">
+
+    <div class="container content-prose">
+
+      <SectionHeading title={content.whyWebsite.title} />
+
+      {content.whyWebsite.paragraphs.map((paragraph) => (
+
+        <p class="prose">{paragraph}</p>
+
+      ))}
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section section-flow visual-section">
+
+    <div class="container">
+
+      <p class="visual-eyebrow">Onze werkwijze</p>
+
+      <GemeenteSteps steps={content.steps} />
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section alt-section section-flow">
+
+    <div class="container content-prose">
+
+      <SectionHeading title={content.localSeo.title} />
+
+      {content.localSeo.paragraphs.map((paragraph) => (
+
+        <p class="prose">{paragraph}</p>
+
+      ))}
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section section-flow visual-section">
+
+    <div class="container">
+
+      <GemeenteStats stats={content.stats} />
+
+      <p class="inline-cta">
+
+        <a href="/contact/" class="btn btn-primary">Gratis offerte aanvragen</a>
+
+      </p>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section alt-section section-flow">
+
+    <div class="container content-prose">
+
+      <SectionHeading title={content.nationalGrowth.title} />
+
+      {content.nationalGrowth.paragraphs.map((paragraph) => (
+
+        <p class="prose">{paragraph}</p>
+
+      ))}
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section alt-section section-flow">
+
+    <div class="container content-prose">
+
+      <SectionHeading title={content.aboutCity.title} />
+
+      {content.aboutCity.paragraphs.map((paragraph) => (
+
+        <p class="prose">{paragraph}</p>
+
+      ))}
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section section-flow visual-section">
+
+    <div class="container">
+
+      <GemeenteHighlightGrid items={content.cityHighlights} />
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section alt-section section-flow">
+
+    <div class="container">
+
+      <SectionHeading title={content.districts.title} description={content.districts.intro} />
+
+      <h3 class="area-subtitle">Wijken en stadsdelen</h3>
+      <ul class="district-grid">
+        {content.districts.items.map((district) => (
+          <li class="district-card">{district}</li>
+        ))}
+      </ul>
+
+      {content.districts.businessAreas.length > 0 && (
+        <>
+          <h3 class="area-subtitle">Bedrijventerreinen en zakelijke gebieden</h3>
+          <ul class="district-grid">
+            {content.districts.businessAreas.map((area) => (
+              <li class="district-card district-card--business">{area}</li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {content.districts.landmarks.length > 0 && (
+        <>
+          <h3 class="area-subtitle">Lokale herkenningspunten</h3>
+          <ul class="district-grid">
+            {content.districts.landmarks.map((landmark) => (
+              <li class="district-card district-card--landmark">{landmark}</li>
+            ))}
+          </ul>
+        </>
+      )}
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section alt-section section-flow">
+
+    <div class="container content-prose">
+
+      <SectionHeading title={content.industries.title} />
+
+      {content.industries.paragraphs.map((paragraph) => (
+
+        <p class="prose">{paragraph}</p>
+
+      ))}
+
+      <ul class="sector-tags">
+        {content.industries.sectors.map((sector) => (
+          <li>{sector}</li>
+        ))}
+      </ul>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section section-flow">
+
+    <div class="container content-prose">
+
+      <SectionHeading title={content.whyStarLocal.title} />
+
+      {content.whyStarLocal.paragraphs.map((paragraph) => (
+
+        <p class="prose">{paragraph}</p>
+
+      ))}
+
+    </div>
+
+  </section>
+
+
+
+  <FAQSection title={`Veelgestelde vragen over websites in ${content.naam}`} faqs={content.faqs} />
+
+
+
+  <section class="section alt-section section-flow">
+
+    <div class="container content-prose">
+
+      <SectionHeading
+
+        title="Omliggende gemeenten"
+
+        description={`Ook actief rond ${content.naam}? Bekijk onze pagina's voor nabijgelegen gemeenten.`}
+
+      />
+
+      <ul class="neighbor-links">
+
+        {content.neighbors.map((neighbor) => (
+
+          <li>
+
+            <a href={`/gemeentes/${neighbor.slug}/`}>{neighbor.naam}</a>
+
+          </li>
+
+        ))}
+
+      </ul>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section gemeente-bottom-cta" aria-labelledby="gemeente-bottom-cta-title">
+
+    <div class="container cta-inner">
+
+      <h2 id="gemeente-bottom-cta-title">{content.bottomCta.title}</h2>
+
+      <p>{content.bottomCta.text}</p>
+
+      <div class="cta-actions">
+
+        <a href="/contact/" class="btn btn-primary">{content.bottomCta.primaryLabel}</a>
+
+        <a href="/contact/" class="btn btn-secondary">{content.bottomCta.secondaryLabel}</a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</BaseLayout>
+
+
+
+<style>
+
+  .page-top {
+
+    padding-top: 1.25rem;
+
+  }
+
+
+
+  .content-prose {
+
+    max-width: 720px;
+
+    margin: 0 auto;
+
+  }
+
+
+
+  .prose {
+
+    color: var(--text-muted);
+
+    line-height: 1.75;
+
+    margin: 0 0 1.15rem;
+
+    font-size: 1.02rem;
+
+  }
+
+
+
+  .visual-section {
+
+    padding-top: 0.5rem;
+
+    padding-bottom: 2.5rem;
+
+  }
+
+
+
+  .visual-eyebrow {
+
+    text-align: center;
+
+    color: var(--gold);
+
+    font-size: 0.82rem;
+
+    font-weight: 600;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+
+    margin: 0 0 1rem;
+
+  }
+
+
+
+  .inline-cta {
+
+    text-align: center;
+
+    margin: 1.75rem 0 0;
+
+  }
+
+
+
+  .district-grid {
+
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0 0 1.75rem;
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
+    gap: 0.85rem;
+
+  }
+
+  .area-subtitle {
+    color: var(--gold);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.85rem;
+    text-align: center;
+  }
+
+  .area-subtitle:first-of-type {
+    margin-top: 0.5rem;
+  }
+
+  .district-card {
+
+    background: rgba(205, 184, 128, 0.06);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-sm);
+
+    padding: 0.9rem 1rem;
+
+    text-align: center;
+
+    color: var(--text);
+
+    font-weight: 600;
+
+    font-size: 0.95rem;
+
+  }
+
+
+
+  .district-card--business {
+    background: rgba(37, 211, 102, 0.06);
+  }
+
+  .district-card--landmark {
+    background: rgba(205, 184, 128, 0.1);
+  }
+
+  .gemeente-services-grid :global(.service-card) {
+
+    height: 100%;
+
+  }
+
+
+
+  .neighbor-links {
+
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0.65rem 1rem;
+
+    justify-content: center;
+
+  }
+
+
+
+  .neighbor-links a {
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+  }
+
+  .sector-tags {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .sector-tags li {
+    background: rgba(205, 184, 128, 0.08);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .gemeente-bottom-cta .cta-inner {
+
+    text-align: center;
+
+    background: linear-gradient(135deg, rgba(205, 184, 128, 0.08), rgba(37, 211, 102, 0.05));
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    padding: clamp(2rem, 5vw, 3rem) 1.5rem;
+
+  }
+
+
+
+  .gemeente-bottom-cta h2 {
+
+    color: var(--gold);
+
+    font-size: clamp(1.45rem, 2.8vw, 2rem);
+
+    text-align: center;
+
+    margin-bottom: 1rem;
+
+    line-height: 1.25;
+
+  }
+
+
+
+  .gemeente-bottom-cta p {
+
+    color: var(--text-muted);
+
+    max-width: 640px;
+
+    margin: 0 auto 1.75rem;
+
+    line-height: 1.75;
+
+  }
+
+
+
+  .cta-actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 1rem;
+
+    justify-content: center;
+
+  }
+
+
+
+  .cta-actions .btn {
+
+    min-width: min(100%, 15rem);
+
+  }
+
+</style>
+
+

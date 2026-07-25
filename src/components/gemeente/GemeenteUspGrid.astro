@@ -1,0 +1,58 @@
+---
+import GemeenteBenefitIcon from './GemeenteBenefitIcon.astro';
+import type { GemeenteBenefit } from '../../data/gemeentes/types';
+
+interface Props {
+  items: GemeenteBenefit[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="usp-grid">
+  {
+    items.map((item) => (
+      <li class="usp-card">
+        <GemeenteBenefitIcon icon={item.icon} />
+        <h3>{item.title}</h3>
+        <p>{item.description}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .usp-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .usp-card {
+    background: rgba(205, 184, 128, 0.05);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.35rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    min-height: 100%;
+  }
+
+  .usp-card h3 {
+    color: var(--gold);
+    font-size: 1.02rem;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .usp-card p {
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+    font-size: 0.94rem;
+  }
+</style>

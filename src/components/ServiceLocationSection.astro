@@ -1,0 +1,172 @@
+---
+import type { Locale } from '../i18n/config';
+import {
+  FEATURED_GEMEENTEN,
+  GEMEENTE_OVERVIEW_HREF,
+  getMunicipalityCount,
+} from '../data/gemeentes/featured';
+
+interface Props {
+  scope: 'national' | 'local';
+  locale?: Locale;
+  cityName?: string;
+  citySlug?: string;
+  serviceTitle?: string;
+  localServiceHref?: string;
+}
+
+const {
+  scope,
+  locale = 'nl',
+  cityName = '',
+  citySlug = '',
+  serviceTitle = '',
+  localServiceHref,
+} = Astro.props;
+
+const municipalityCount = getMunicipalityCount();
+const isEn = locale === 'en';
+const overviewHref = isEn ? '/en/sitemap/#gemeenten' : GEMEENTE_OVERVIEW_HREF;
+const gemeenteHref = citySlug ? `/gemeentes/${citySlug}/` : '#';
+const ctaHref = localServiceHref ?? gemeenteHref;
+---
+
+{scope === 'national' ? (
+  <section class="section service-location-section">
+    <div class="container">
+      <h2>{isEn ? 'Available throughout the Netherlands' : 'Beschikbaar in heel Nederland'}</h2>
+      <p class="lead">
+        {isEn
+          ? `Star Local supports entrepreneurs in all ${municipalityCount} Dutch municipalities with websites, SEO and online growth. Browse a selection of our local pages or view the full municipality overview.`
+          : `Star Local ondersteunt ondernemers in alle ${municipalityCount} Nederlandse gemeenten met websites, SEO en online groei. Bekijk een selectie van onze lokale pagina’s of ga naar het volledige gemeenteoverzicht.`}
+      </p>
+      <p class="location-count">
+        {isEn
+          ? `Active in ${municipalityCount} Dutch municipalities`
+          : `Actief in ${municipalityCount} Nederlandse gemeenten`}
+      </p>
+      <ul class="featured-gemeenten">
+        {FEATURED_GEMEENTEN.map((gemeente) => (
+          <li>
+            <a href={`/gemeentes/${gemeente.slug}/`}>{gemeente.naam}</a>
+          </li>
+        ))}
+      </ul>
+      <a class="btn btn-primary" href={overviewHref}>
+        {isEn ? 'View all municipalities' : 'Bekijk alle gemeenten'}
+      </a>
+    </div>
+  </section>
+) : (
+  <section class="section service-location-section service-location-section--local">
+    <div class="container">
+      <h2>
+        {serviceTitle
+          ? isEn
+            ? `${serviceTitle} in ${cityName}`
+            : `${serviceTitle} in ${cityName}`
+          : isEn
+            ? `Also available for businesses in ${cityName}`
+            : `Ook beschikbaar voor ondernemers in ${cityName}`}
+      </h2>
+      <p class="lead">
+        {isEn
+          ? `Star Local delivers this service specifically for entrepreneurs in ${cityName} and surrounding areas. See what we can do for your business locally.`
+          : `Deze dienst leveren wij ook specifiek voor ondernemers in ${cityName} en omliggende wijken. Bekijk wat Star Local voor uw bedrijf in ${cityName} kan betekenen.`}
+      </p>
+      <div class="local-actions">
+        {localServiceHref && serviceTitle && (
+          <a class="btn btn-primary" href={localServiceHref}>
+            {isEn ? `${serviceTitle} in ${cityName}` : `${serviceTitle} in ${cityName}`}
+          </a>
+        )}
+        <a class="btn btn-secondary" href={gemeenteHref}>
+          {isEn ? `More about ${cityName}` : `Meer over ondernemen in ${cityName}`}
+        </a>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .service-location-section {
+    border-block: 1px solid var(--border);
+  }
+
+  h2 {
+    color: var(--gold);
+    margin: 0 0 1rem;
+    font-size: clamp(1.35rem, 3vw, 1.75rem);
+  }
+
+  .lead {
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin: 0 0 1rem;
+    max-width: 720px;
+  }
+
+  .location-count {
+    color: var(--gold-muted);
+    font-weight: 600;
+    margin: 0 0 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .featured-gemeenten {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .featured-gemeenten a {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition:
+      border-color var(--transition),
+      color var(--transition),
+      background var(--transition);
+  }
+
+  .featured-gemeenten a:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(205, 184, 128, 0.06);
+  }
+
+  .local-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .featured-gemeenten {
+      gap: 0.5rem;
+    }
+
+    .featured-gemeenten a {
+      width: calc(50% - 0.25rem);
+      justify-content: center;
+    }
+
+    .local-actions {
+      flex-direction: column;
+    }
+
+    .local-actions .btn {
+      width: 100%;
+    }
+  }
+</style>

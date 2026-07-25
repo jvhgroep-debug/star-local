@@ -1,0 +1,64 @@
+---
+import type { GemeenteStep } from '../../data/gemeentes/types';
+
+interface Props {
+  steps: GemeenteStep[];
+}
+
+const { steps } = Astro.props;
+---
+
+<ol class="steps-grid">
+  {
+    steps.map((step) => (
+      <li class="step-card">
+        <span class="step-number">{step.number}</span>
+        <h3>{step.title}</h3>
+        <p>{step.description}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .steps-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    counter-reset: step;
+  }
+
+  .step-card {
+    background: rgba(37, 211, 102, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.35rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .step-number {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+  }
+
+  .step-card h3 {
+    color: var(--text);
+    font-size: 1.02rem;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .step-card p {
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+    font-size: 0.94rem;
+  }
+</style>
