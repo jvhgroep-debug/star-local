@@ -1,0 +1,12 @@
+---
+import WebsiteLatenMakenCityPage from '../../views/WebsiteLatenMakenCityPage.astro';
+import { getWebsiteLatenMakenCityStaticPaths } from '../../data/location-engine';
+
+export function getStaticPaths() {
+  return getWebsiteLatenMakenCityStaticPaths();
+}
+
+const { content } = Astro.props;
+---
+
+<WebsiteLatenMakenCityPage content={content} />

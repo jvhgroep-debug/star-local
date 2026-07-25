@@ -1,0 +1,600 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FAQSection from '../components/FAQSection.astro';
+import type { WebsiteLatenMakenCityContent } from '../data/location-engine';
+import { WEBSITE_OFFER_IMAGES } from '../data/offers/website-laten-maken';
+import { SITE } from '../data/site';
+
+interface Props {
+  content: WebsiteLatenMakenCityContent;
+}
+
+const { content } = Astro.props;
+const m = content.municipality;
+const pkg = content.package;
+const cityHero = WEBSITE_OFFER_IMAGES.cityHero;
+const cityCta = WEBSITE_OFFER_IMAGES.cta;
+const cityHeroAlt = `Professionele website laten maken voor ondernemers in ${m.naam}.`;
+---
+
+<BaseLayout
+  locale="nl"
+  title={content.seo.title}
+  description={content.seo.description}
+  ogTitle={content.seo.ogTitle}
+  ogDescription={content.seo.ogDescription}
+  canonical={content.canonicalPath}
+  image={SITE.ogImage}
+  schema={content.schema}
+  fullWidth
+>
+  <div class="container page-top">
+    <Breadcrumbs items={content.breadcrumbs} />
+  </div>
+
+  <section class="section offer-hero" aria-labelledby="city-h1">
+    <div class="container offer-hero__grid">
+      <div class="offer-hero__content">
+        <p class="eyebrow">{content.eyebrow}</p>
+        <h1 id="city-h1">{content.h1}</h1>
+        <p class="lead">{content.heroSubtitle}</p>
+
+        <aside class="price-badge" aria-label="Eenmalige actieprijs">
+          <p class="price-badge__amount">€199</p>
+          <p class="price-badge__vat">excl. btw</p>
+          <p class="price-badge__tag">eenmalige actieprijs</p>
+        </aside>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href={content.cta.primaryHref}>{content.cta.primaryLabel}</a>
+          <a class="btn btn-secondary" href={content.cta.secondaryHref}>{content.cta.secondaryLabel}</a>
+        </div>
+        <p class="hero-note">{content.cta.contactNote}</p>
+      </div>
+
+      <figure class="offer-hero__media city-hero-media">
+        <picture>
+          <source srcset={cityHero.path} type="image/webp" />
+          <img
+            src={cityHero.fallbackPath}
+            alt={cityHeroAlt}
+            width={cityHero.width}
+            height={cityHero.height}
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </picture>
+      </figure>
+    </div>
+  </section>
+
+  <section class="trust-bar" aria-label="Voordelen in één oogopslag">
+    <div class="container">
+      <ul class="trust-bar__list">
+        {pkg.trustItems.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="local-intro-title">
+    <div class="container narrow-block">
+      <h2 id="local-intro-title">Waarom een website in {m.naam}?</h2>
+      <p class="lead">{content.intro}</p>
+    </div>
+  </section>
+
+  <section class="section alt-section" id="wat-krijg-je" aria-labelledby="included-title">
+    <div class="container">
+      <h2 id="included-title">Wat krijg je voor €199?</h2>
+      <p class="lead narrow">
+        Voor €199 excl. btw bouwen wij een complete en professionele basiswebsite waarmee jouw bedrijf in {m.naam}
+        betrouwbaar en duidelijk online staat.
+      </p>
+      <div class="grid-cards">
+        {pkg.included.map((card) => (
+          <article class="info-card">
+            <h3>{card.title}</h3>
+            <p>{card.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="pages-title">
+    <div class="container">
+      <h2 id="pages-title">Welke vijf pagina’s zijn inbegrepen?</h2>
+      <div class="grid-cards grid-cards--five">
+        {pkg.fivePages.map((page) => (
+          <article class="info-card">
+            <h3>{page.title}</h3>
+            <p>{page.text}</p>
+          </article>
+        ))}
+      </div>
+      <p class="section-note">
+        De exacte indeling bepalen we samen. Een pagina kan bijvoorbeeld worden vervangen door een menukaart,
+        tarievenpagina, portfolio of andere pagina die voor jouw bedrijf in {m.naam} belangrijk is.
+      </p>
+    </div>
+  </section>
+
+  <section class="section alt-section" aria-labelledby="audience-title">
+    <div class="container">
+      <h2 id="audience-title">Voor welke ondernemers in {m.naam}?</h2>
+      <p class="lead narrow">{content.audienceIntro}</p>
+      <ul class="audience-tags">
+        {content.audiences.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="process-title">
+    <div class="container">
+      <h2 id="process-title">Zo laten wij jouw website maken</h2>
+      <ol class="steps">
+        {pkg.steps.map((step, index) => (
+          <li class="step-card">
+            <p class="step-card__nr">Stap {index + 1}</p>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section alt-section" aria-labelledby="local-long-title">
+    <div class="container narrow-block">
+      <h2 id="local-long-title">{content.localSection.heading}</h2>
+      {content.localSection.paragraphs.map((paragraph) => <p class="local-copy">{paragraph}</p>)}
+      {content.nearbyNames.length > 0 && (
+        <p class="section-note">
+          In de regio rond {m.naam} ({m.provincie}) zijn onder meer deze gemeenten relevant voor lokaal bereik:{' '}
+          {content.nearbyNames.join(', ')}. Links naar lokale €199-pagina’s verschijnen hier alleen wanneer die
+          routes beschikbaar zijn.
+        </p>
+      )}
+    </div>
+  </section>
+
+  {content.neighborLinks.length > 0 && (
+    <section class="section" aria-labelledby="neighbors-title">
+      <div class="container">
+        <h2 id="neighbors-title">Ook beschikbaar in de omgeving van {m.naam}</h2>
+        <p class="lead narrow">
+          Bekijk website laten maken voor omliggende gemeenten, of ga terug naar het landelijke aanbod.
+        </p>
+        <ul class="city-links">
+          {content.neighborLinks.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))}
+        </ul>
+        <p class="national-link">
+          <a href={content.nationalLink.href}>{content.nationalLink.label}</a>
+        </p>
+      </div>
+    </section>
+  )}
+
+  {content.neighborLinks.length === 0 && (
+    <section class="section" aria-labelledby="national-only-title">
+      <div class="container">
+        <h2 id="national-only-title">Landelijk websitepakket</h2>
+        <p class="national-link">
+          <a href={content.nationalLink.href}>{content.nationalLink.label}</a>
+        </p>
+      </div>
+    </section>
+  )}
+
+  <section class="section alt-section" aria-labelledby="clarity-title">
+    <div class="container audience-grid">
+      <div>
+        <h2 id="clarity-title">Duidelijke prijs, duidelijke afspraken</h2>
+        <p class="lead">
+          De actieprijs van €199 excl. btw geldt voor een professionele basiswebsite van maximaal vijf pagina’s
+          voor ondernemers in {m.naam}.
+        </p>
+        <p class="section-note">
+          Extra werkzaamheden worden altijd vooraf besproken. Er worden nooit onverwacht kosten toegevoegd.
+        </p>
+      </div>
+      <aside class="not-included">
+        <h3>Niet standaard inbegrepen</h3>
+        <ul>
+          {pkg.notIncluded.map((item) => <li>{item}</li>)}
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="why-title">
+    <div class="container">
+      <h2 id="why-title">{content.whyUs.heading}</h2>
+      {content.whyUs.paragraphs.map((paragraph) => <p class="lead narrow">{paragraph}</p>)}
+      <ul class="benefits-grid">
+        {content.whyUs.points.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <FAQSection title={`Veelgestelde vragen over website laten maken in ${m.naam}`} faqs={content.faqs} />
+
+  <section class="section alt-section offer-cta" aria-labelledby="final-cta">
+    <div class="container offer-cta__grid">
+      <div>
+        <h2 id="final-cta">{content.cta.heading}</h2>
+        <p class="lead">{content.cta.body}</p>
+        <aside class="price-badge price-badge--cta" aria-label="Actieprijs samenvatting">
+          <p class="price-badge__amount">€199 excl. btw</p>
+          <p class="price-badge__tag">5 complete pagina’s · eenmalige actieprijs</p>
+        </aside>
+        <div class="cta-row">
+          <a class="btn btn-primary" href={content.cta.primaryHref}>Start mijn website</a>
+          <a class="btn btn-whatsapp" href={content.cta.whatsappHref} target="_blank" rel="noopener noreferrer">
+            Neem contact op via WhatsApp
+          </a>
+        </div>
+        <p class="national-link">
+          <a href={content.nationalLink.href}>{content.nationalLink.label}</a>
+        </p>
+      </div>
+      <figure class="offer-cta__media">
+        <picture>
+          <source srcset={cityCta.webpPath} type="image/webp" />
+          <img
+            src={cityCta.fallbackPath}
+            alt={cityCta.alt}
+            width={cityCta.width}
+            height={cityCta.height}
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+      </figure>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-top {
+    padding-top: 1.5rem;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: var(--gold);
+  }
+
+  h1 {
+    margin: 0 0 1rem;
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    line-height: 1.2;
+  }
+
+  h2 {
+    margin: 0 0 1rem;
+    font-size: clamp(1.35rem, 3vw, 1.85rem);
+    line-height: 1.3;
+  }
+
+  h3 {
+    margin: 0 0 0.65rem;
+    font-size: 1.1rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.75rem;
+    color: var(--gold);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .lead {
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin: 0 0 1.5rem;
+  }
+
+  .lead.narrow,
+  .narrow-block {
+    max-width: 760px;
+  }
+
+  .local-copy {
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin: 0 0 1.15rem;
+  }
+
+  .offer-hero__grid,
+  .audience-grid,
+  .offer-cta__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .city-hero-media {
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: #0a0e14;
+    aspect-ratio: 4 / 3;
+  }
+
+  .city-hero-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .offer-cta__media {
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: #0a0e14;
+    aspect-ratio: 16 / 9;
+  }
+
+  .offer-cta__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .price-badge {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin: 0 0 1.5rem;
+    padding: 1.1rem 1.35rem;
+    border: 1px solid rgba(205, 184, 128, 0.45);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(205, 184, 128, 0.16), rgba(205, 184, 128, 0.04));
+    min-width: min(100%, 18rem);
+  }
+
+  .price-badge__tag {
+    margin: 0;
+    color: var(--gold);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .price-badge__amount {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .price-badge__vat {
+    margin: 0;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .price-badge--cta .price-badge__amount {
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-note,
+  .section-note {
+    color: var(--text-soft);
+    line-height: 1.7;
+  }
+
+  .hero-note {
+    margin: 0;
+  }
+
+  .trust-bar {
+    border-block: 1px solid var(--border);
+    background: rgba(205, 184, 128, 0.05);
+    padding: 1rem 0;
+  }
+
+  .trust-bar__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    justify-content: space-between;
+  }
+
+  .trust-bar__list li {
+    position: relative;
+    padding-left: 1.2rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+
+  .trust-bar__list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .grid-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .info-card,
+  .step-card,
+  .not-included {
+    background: rgba(205, 184, 128, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.35rem;
+  }
+
+  .info-card p,
+  .step-card p,
+  .not-included li {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .section-note {
+    margin: 1.25rem 0;
+  }
+
+  .audience-tags,
+  .city-links,
+  .benefits-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .audience-tags,
+  .city-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .audience-tags li,
+  .city-links a {
+    display: inline-flex;
+    padding: 0.55rem 0.95rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+
+  .city-links a:hover,
+  .national-link a:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .national-link {
+    margin: 1.25rem 0 0;
+  }
+
+  .national-link a {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .step-card__nr {
+    margin: 0 0 0.5rem;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .not-included h3 {
+    margin-bottom: 0.85rem;
+  }
+
+  .not-included ul {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+
+  .not-included li + li {
+    margin-top: 0.35rem;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .benefits-grid li {
+    position: relative;
+    padding-left: 1.25rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .benefits-grid li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  @media (max-width: 900px) {
+    .offer-hero__grid,
+    .audience-grid,
+    .offer-cta__grid,
+    .grid-cards,
+    .steps,
+    .benefits-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-row {
+      flex-direction: column;
+    }
+
+    .cta-row .btn {
+      width: 100%;
+    }
+
+    .trust-bar__list {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .page-top,
+    .container {
+      overflow-x: clip;
+    }
+  }
+</style>

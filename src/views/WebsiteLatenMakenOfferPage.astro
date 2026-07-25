@@ -1,0 +1,656 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FAQSection from '../components/FAQSection.astro';
+import { SITE } from '../data/site';
+import {
+  WEBSITE_OFFER_CITY_LINKS,
+  WEBSITE_OFFER_FAQS,
+  WEBSITE_OFFER_FIVE_PAGES,
+  WEBSITE_OFFER_IMAGES,
+  WEBSITE_OFFER_INCLUDED,
+  WEBSITE_OFFER_NOT_INCLUDED,
+  WEBSITE_OFFER_STEPS,
+  WEBSITE_OFFER_TRUST,
+  WEBSITE_OFFER_WHY,
+} from '../data/offers/website-laten-maken';
+
+const canonicalPath = '/website-laten-maken/';
+const pageUrl = `${SITE.url}${canonicalPath}`;
+const contactHref = '/contact/?onderwerp=Website%20laten%20maken%20%E2%82%AC199';
+const whatsappHref = `https://wa.me/${SITE.phoneRaw.replace('+', '')}?text=${encodeURIComponent('Hallo Star Local, ik wil graag de website van €199 excl. btw aanvragen.')}`;
+
+const seoTitle = 'Website laten maken voor €199 | 5 pagina’s | Star Local';
+const seoDescription =
+  'Professionele website laten maken voor €199 excl. btw. Inclusief 5 pagina’s, mobiel ontwerp, basis-SEO en snelle oplevering. Bekijk het aanbod van Star Local.';
+const ogDescription =
+  'Een professionele website met 5 pagina’s, mobiel ontwerp en basis-SEO voor €199 excl. btw.';
+
+const trustItems = [...WEBSITE_OFFER_TRUST];
+const includedCards = [...WEBSITE_OFFER_INCLUDED];
+const fivePages = [...WEBSITE_OFFER_FIVE_PAGES];
+const steps = [...WEBSITE_OFFER_STEPS];
+const notIncluded = [...WEBSITE_OFFER_NOT_INCLUDED];
+const whyUs = [...WEBSITE_OFFER_WHY];
+
+const audiences = [
+  'zzp’ers',
+  'starters',
+  'restaurants',
+  'kappers',
+  'schoonheidssalons',
+  'taxibedrijven',
+  'schilders',
+  'loodgieters',
+  'bouwbedrijven',
+  'winkels',
+  'coaches',
+  'consultants',
+  'lokale dienstverleners',
+];
+
+const faqs = WEBSITE_OFFER_FAQS.map((faq) => ({ question: faq.question, answer: faq.answer }));
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: seoTitle,
+  description: seoDescription,
+  url: pageUrl,
+  inLanguage: 'nl-NL',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: SITE.url,
+  },
+};
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Website laten maken',
+  description:
+    'Professionele basiswebsite met maximaal 5 pagina’s laten maken voor een eenmalige actieprijs van €199 excl. btw. Inclusief responsive ontwerp, basis-SEO, contactmogelijkheden en snelle technische opbouw.',
+  provider: {
+    '@type': 'Organization',
+    name: SITE.name,
+    url: SITE.url,
+    email: SITE.email,
+    telephone: SITE.phoneRaw,
+  },
+  areaServed: {
+    '@type': 'Country',
+    name: 'Nederland',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: 199,
+    priceCurrency: 'EUR',
+    priceSpecification: {
+      '@type': 'UnitPriceSpecification',
+      price: 199,
+      priceCurrency: 'EUR',
+      valueAddedTaxIncluded: false,
+    },
+    description:
+      'Eenmalige actieprijs voor een standaard website met maximaal 5 pagina’s. Prijs exclusief btw. Extra werkzaamheden worden vooraf besproken.',
+    url: pageUrl,
+    availability: 'https://schema.org/InStock',
+  },
+};
+
+const schema = [webPageSchema, serviceSchema];
+---
+
+<BaseLayout
+  locale="nl"
+  title={seoTitle}
+  description={seoDescription}
+  ogTitle="Website laten maken voor €199 | Star Local"
+  ogDescription={ogDescription}
+  canonical={canonicalPath}
+  image={SITE.ogImage}
+  schema={schema}
+  fullWidth
+>
+  <div class="container page-top">
+    <Breadcrumbs
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Diensten', href: '/diensten/' },
+        { label: 'Website laten maken' },
+      ]}
+    />
+  </div>
+
+  <section class="section offer-hero" aria-labelledby="offer-h1">
+    <div class="container offer-hero__grid">
+      <div class="offer-hero__content">
+        <p class="eyebrow">Professionele website voor ondernemers</p>
+        <h1 id="offer-h1">Professionele website laten maken voor €199</h1>
+        <p class="lead">
+          Een snelle, moderne en mobielvriendelijke website met 5 professionele pagina’s. Gebouwd voor
+          ondernemers die online goed voor de dag willen komen.
+        </p>
+
+        <aside class="price-badge" aria-label="Eenmalige actieprijs">
+          <p class="price-badge__amount">€199</p>
+          <p class="price-badge__vat">excl. btw</p>
+          <p class="price-badge__tag">eenmalige actieprijs</p>
+        </aside>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href={contactHref}>Start mijn website</a>
+          <a class="btn btn-secondary" href="#wat-krijg-je">Bekijk wat inbegrepen is</a>
+        </div>
+        <p class="hero-note">Geen ingewikkelde pakketten. Duidelijke afspraken en een vaste prijs.</p>
+      </div>
+
+      <figure class="offer-hero__media national-hero-media">
+        <picture>
+          <source srcset={WEBSITE_OFFER_IMAGES.hero.webpPath} type="image/webp" />
+          <img
+            src={WEBSITE_OFFER_IMAGES.hero.fallbackPath}
+            alt={WEBSITE_OFFER_IMAGES.hero.alt}
+            width={WEBSITE_OFFER_IMAGES.hero.width}
+            height={WEBSITE_OFFER_IMAGES.hero.height}
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </picture>
+      </figure>
+    </div>
+  </section>
+
+  <section class="trust-bar" aria-label="Voordelen in één oogopslag">
+    <div class="container">
+      <ul class="trust-bar__list">
+        {trustItems.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="wat-krijg-je" aria-labelledby="included-title">
+    <div class="container">
+      <h2 id="included-title">Wat krijg je voor €199?</h2>
+      <p class="lead narrow">
+        Voor €199 excl. btw bouwen wij een complete en professionele basiswebsite waarmee jouw bedrijf
+        betrouwbaar en duidelijk online staat. Ideaal als je een goedkope website wilt laten maken zonder in te
+        leveren op een professionele uitstraling.
+      </p>
+      <div class="grid-cards">
+        {includedCards.map((card) => (
+          <article class="info-card">
+            <h3>{card.title}</h3>
+            <p>{card.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt-section" aria-labelledby="pages-title">
+    <div class="container">
+      <h2 id="pages-title">Welke vijf pagina’s zijn inbegrepen?</h2>
+      <div class="grid-cards grid-cards--five">
+        {fivePages.map((page) => (
+          <article class="info-card">
+            <h3>{page.title}</h3>
+            <p>{page.text}</p>
+          </article>
+        ))}
+      </div>
+      <p class="section-note">
+        De exacte indeling bepalen we samen. Een pagina kan bijvoorbeeld worden vervangen door een menukaart,
+        tarievenpagina, portfolio, reserveringspagina of andere pagina die voor jouw bedrijf belangrijk is.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href={contactHref}>Bespreek mijn website</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="audience-title">
+    <div class="container">
+      <h2 id="audience-title">Voor welke ondernemers is dit pakket geschikt?</h2>
+      <p class="lead narrow">
+        Dit pakket is bedoeld voor ondernemers die een professionele basiswebsite nodig hebben zonder direct
+        duizenden euro’s te investeren. Geschikt als website voor zzp, website voor een kleine onderneming of als
+        betaalbare website laten maken voor een lokale of landelijke start.
+      </p>
+      <ul class="audience-tags">
+        {audiences.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section alt-section" aria-labelledby="process-title">
+    <div class="container">
+      <h2 id="process-title">Zo laten wij jouw website maken</h2>
+      <ol class="steps">
+        {steps.map((step, index) => (
+          <li class="step-card">
+            <p class="step-card__nr">Stap {index + 1}</p>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="clarity-title">
+    <div class="container audience-grid">
+      <div>
+        <h2 id="clarity-title">Duidelijke prijs, duidelijke afspraken</h2>
+        <p class="lead">
+          De actieprijs van €199 excl. btw geldt voor een professionele basiswebsite van maximaal vijf pagina’s.
+          Zo weet je precies waar je aan toe bent wanneer je een website wilt laten bouwen.
+        </p>
+        <p class="section-note">
+          Extra werkzaamheden worden altijd vooraf besproken. Er worden nooit onverwacht kosten toegevoegd.
+        </p>
+      </div>
+      <aside class="not-included">
+        <h3>Niet standaard inbegrepen</h3>
+        <ul>
+          {notIncluded.map((item) => <li>{item}</li>)}
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section alt-section" aria-labelledby="why-title">
+    <div class="container">
+      <h2 id="why-title">Waarom je website laten maken door Star Local</h2>
+      <ul class="benefits-grid">
+        {whyUs.map((item) => <li>{item}</li>)}
+      </ul>
+      <p class="eeat">
+        Star Local bouwt websites die niet alleen mooi ogen, maar ook logisch zijn opgebouwd voor bezoekers en
+        zoekmachines. De website kan later worden uitgebreid met extra pagina’s,{' '}
+        <a href="/diensten/lokale-seo/">lokale SEO</a>-pagina’s, blogs of nieuwe functies. Bekijk ook onze{' '}
+        <a href="/diensten/">diensten</a>, <a href="/projecten/">projecten</a> of{' '}
+        <a href="/contact/">neem contact op</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="national-title">
+    <div class="container">
+      <h2 id="national-title">Wij maken websites voor ondernemers door heel Nederland</h2>
+      <p class="lead narrow">
+        Star Local werkt volledig digitaal en helpt ondernemers in alle Nederlandse provincies en gemeenten.
+        Overleg kan eenvoudig plaatsvinden via telefoon, WhatsApp of videogesprek. Daardoor kunnen wij snel en
+        efficiënt werken, ongeacht waar jouw bedrijf gevestigd is.
+      </p>
+      <ul class="city-links">
+        {WEBSITE_OFFER_CITY_LINKS.map((link) => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+      <p class="dev-note" role="note">
+        Testlocaties: Amsterdam, Rotterdam en Breda. Meer gemeenten volgen na goedkeuring.
+      </p>
+    </div>
+  </section>
+
+  <FAQSection title="Veelgestelde vragen over een website laten maken" faqs={faqs} />
+
+  <section class="section alt-section offer-cta" aria-labelledby="cta-title">
+    <div class="container offer-cta__grid">
+      <div>
+        <h2 id="cta-title">Klaar voor een professionele website?</h2>
+        <p class="lead">
+          Laat jouw bedrijf professioneel online presenteren met een moderne website van vijf pagina’s voor
+          slechts €199 excl. btw.
+        </p>
+        <aside class="price-badge price-badge--cta" aria-label="Actieprijs samenvatting">
+          <p class="price-badge__amount">€199 excl. btw</p>
+          <p class="price-badge__tag">5 complete pagina’s · eenmalige actieprijs</p>
+        </aside>
+        <div class="cta-row">
+          <a class="btn btn-primary" href={contactHref}>Start mijn website</a>
+          <a class="btn btn-whatsapp" href={whatsappHref} target="_blank" rel="noopener noreferrer">
+            Neem contact op via WhatsApp
+          </a>
+        </div>
+      </div>
+      <figure class="offer-cta__media">
+        <picture>
+          <source srcset={WEBSITE_OFFER_IMAGES.cta.webpPath} type="image/webp" />
+          <img
+            src={WEBSITE_OFFER_IMAGES.cta.fallbackPath}
+            alt={WEBSITE_OFFER_IMAGES.cta.alt}
+            width={WEBSITE_OFFER_IMAGES.cta.width}
+            height={WEBSITE_OFFER_IMAGES.cta.height}
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+      </figure>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-top {
+    padding-top: 1.5rem;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: var(--gold);
+  }
+
+  h1 {
+    margin: 0 0 1rem;
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    line-height: 1.2;
+  }
+
+  h2 {
+    margin: 0 0 1rem;
+    font-size: clamp(1.35rem, 3vw, 1.85rem);
+    line-height: 1.3;
+  }
+
+  h3 {
+    margin: 0 0 0.65rem;
+    font-size: 1.1rem;
+  }
+
+  .lead {
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin: 0 0 1.5rem;
+  }
+
+  .lead.narrow {
+    max-width: 760px;
+  }
+
+  .offer-hero__grid,
+  .audience-grid,
+  .offer-cta__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .national-hero-media {
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: #0a0e14;
+    aspect-ratio: 4 / 3;
+  }
+
+  .national-hero-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .offer-cta__media {
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: #0a0e14;
+    aspect-ratio: 16 / 9;
+  }
+
+  .offer-cta__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .price-badge {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin: 0 0 1.5rem;
+    padding: 1.1rem 1.35rem;
+    border: 1px solid rgba(205, 184, 128, 0.45);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(205, 184, 128, 0.16), rgba(205, 184, 128, 0.04));
+    min-width: min(100%, 18rem);
+  }
+
+  .price-badge__tag {
+    margin: 0;
+    color: var(--gold);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .price-badge__amount {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .price-badge__vat {
+    margin: 0;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .price-badge--cta .price-badge__amount {
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-note,
+  .section-note,
+  .eeat,
+  .dev-note {
+    color: var(--text-soft);
+    line-height: 1.7;
+  }
+
+  .hero-note {
+    margin: 0;
+  }
+
+  .trust-bar {
+    border-block: 1px solid var(--border);
+    background: rgba(205, 184, 128, 0.05);
+    padding: 1rem 0;
+  }
+
+  .trust-bar__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    justify-content: space-between;
+  }
+
+  .trust-bar__list li {
+    position: relative;
+    padding-left: 1.2rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+
+  .trust-bar__list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .grid-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .info-card,
+  .step-card,
+  .not-included {
+    background: rgba(205, 184, 128, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.35rem;
+  }
+
+  .info-card p,
+  .step-card p,
+  .not-included li {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .section-note {
+    margin: 1.25rem 0;
+  }
+
+  .audience-tags,
+  .city-links,
+  .benefits-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .audience-tags,
+  .city-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .audience-tags li,
+  .city-links a {
+    display: inline-flex;
+    padding: 0.55rem 0.95rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+
+  .city-links a:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .step-card__nr {
+    margin: 0 0 0.5rem;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .not-included h3 {
+    margin-bottom: 0.85rem;
+  }
+
+  .not-included ul {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+
+  .not-included li + li {
+    margin-top: 0.35rem;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .benefits-grid li {
+    position: relative;
+    padding-left: 1.25rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .benefits-grid li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .eeat {
+    max-width: 820px;
+    margin: 0;
+  }
+
+  .eeat a {
+    color: var(--gold);
+  }
+
+  .dev-note {
+    margin: 1.25rem 0 0;
+    font-style: italic;
+  }
+
+  @media (max-width: 900px) {
+    .offer-hero__grid,
+    .audience-grid,
+    .offer-cta__grid,
+    .grid-cards,
+    .steps,
+    .benefits-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-row {
+      flex-direction: column;
+    }
+
+    .cta-row .btn {
+      width: 100%;
+    }
+
+    .trust-bar__list {
+      justify-content: flex-start;
+    }
+  }
+</style>

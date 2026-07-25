@@ -1,0 +1,133 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface Props {
+  filename: string;
+  description: string;
+  width: number;
+  height: number;
+  ratio: string;
+  /** Public path, e.g. /images/offers/hero.png — used when the file exists */
+  path?: string;
+  alt?: string;
+  eager?: boolean;
+  className?: string;
+}
+
+const {
+  filename,
+  description,
+  width,
+  height,
+  ratio,
+  path: imagePath,
+  alt = '',
+  eager = false,
+  className = '',
+} = Astro.props;
+
+const aspect = `${width} / ${height}`;
+const absolutePublicPath = imagePath
+  ? path.join(process.cwd(), 'public', imagePath.replace(/^\//, ''))
+  : '';
+const resolvedSrc =
+  imagePath && absolutePublicPath && fs.existsSync(absolutePublicPath) ? imagePath : undefined;
+---
+
+{
+  resolvedSrc ? (
+    <figure class:list={['image-placeholder', 'image-placeholder--filled', className]} style={`aspect-ratio: ${aspect}`}>
+      <img
+        src={resolvedSrc}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+        {...(eager ? { fetchpriority: 'high' } : {})}
+      />
+    </figure>
+  ) : (
+    <aside
+      class:list={['image-placeholder', className]}
+      style={`aspect-ratio: ${aspect}`}
+      aria-label={`Afbeeldingplaceholder voor ${filename}`}
+    >
+      <p class="image-placeholder__eyebrow">PLAATS HIER AFBEELDING</p>
+      <p class="image-placeholder__filename">{filename}</p>
+      <p class="image-placeholder__desc">{description}</p>
+      <p class="image-placeholder__meta">
+        Aanbevolen formaat: {width} × {height} pixels<br />
+        Aanbevolen verhouding: {ratio}
+      </p>
+    </aside>
+  )
+}
+
+<style>
+  .image-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.65rem;
+    width: 100%;
+    margin: 0;
+    padding: 1.25rem 1.35rem;
+    border: 1px dashed rgba(205, 184, 128, 0.55);
+    border-radius: var(--radius);
+    background:
+      linear-gradient(135deg, rgba(205, 184, 128, 0.08), rgba(18, 24, 32, 0.92)),
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 10px,
+        rgba(205, 184, 128, 0.04) 10px,
+        rgba(205, 184, 128, 0.04) 20px
+      );
+    color: var(--text-muted);
+    overflow: hidden;
+  }
+
+  .image-placeholder--filled {
+    padding: 0;
+    border-style: solid;
+    border-color: var(--border);
+    background: #0a0e14;
+  }
+
+  .image-placeholder--filled img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .image-placeholder__eyebrow {
+    margin: 0;
+    color: var(--gold);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .image-placeholder__filename {
+    margin: 0;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 1rem;
+    word-break: break-word;
+  }
+
+  .image-placeholder__desc,
+  .image-placeholder__meta {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .image-placeholder__meta {
+    color: var(--text-soft);
+  }
+</style>
