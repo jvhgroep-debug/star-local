@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/generate-gemeente-page.mjs && astro build",
+    "build": "node scripts/generate-gemeente-page.mjs && astro build && node scripts/alias-sitemap.mjs",
     "preview": "astro preview",
     "generate:gemeentes": "node scripts/generate-gemeentes.mjs && node scripts/generate-gemeente-page.mjs"
   },
