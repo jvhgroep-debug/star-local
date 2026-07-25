@@ -1,4 +1,5 @@
 import { IMAGES } from './images';
+import { getServiceImagePath } from './service-images';
 import type { Locale } from '../i18n/config';
 import { servicesEn } from '../i18n/data/services.en';
 
@@ -401,8 +402,15 @@ const servicesByLocale: Record<Locale, Service[]> = {
   en: servicesEn,
 };
 
+function withServiceImage(service: Service): Service {
+  return {
+    ...service,
+    image: getServiceImagePath(service.slug),
+  };
+}
+
 export function getServices(locale: Locale): Service[] {
-  return servicesByLocale[locale];
+  return servicesByLocale[locale].map(withServiceImage);
 }
 
 export function getService(slug: string, locale: Locale = 'nl'): Service | undefined {

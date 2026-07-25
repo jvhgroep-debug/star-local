@@ -14,6 +14,11 @@ export interface Project {
   displayUrl?: string;
   image: string;
   fallbackImage?: string;
+  /** When true, show fallback immediately (real screenshot not available yet). */
+  pendingScreenshot?: boolean;
+  imageAltNl?: string;
+  imageAltEn?: string;
+  imagePosition?: string;
   featured?: boolean;
   status?: ProjectStatus;
   filters: ProjectFilterTag[];
@@ -112,6 +117,7 @@ export const projects: Project[] = [
     displayUrl: 'partybusnederland.nl',
     image: '/images/projects/project-partybus-nederland.webp',
     fallbackImage: IMAGES.heroSeo,
+    pendingScreenshot: true,
     featured: true,
     status: 'live',
     filters: ['platform', 'website'],
@@ -172,6 +178,7 @@ export const projects: Project[] = [
     descriptionEn: 'A conversion-focused taxi website with a simple WhatsApp booking flow.',
     image: '/images/projects/project-aj-taxi.webp',
     fallbackImage: IMAGES.heroWebdesign,
+    pendingScreenshot: true,
     featured: false,
     status: 'development',
     filters: ['website'],

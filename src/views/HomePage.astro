@@ -11,6 +11,7 @@ import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n';
 import { route } from '../i18n/routes';
 import { getServices } from '../data/services';
+import { getServiceImagePath } from '../data/service-images';
 import { getPortfolioProjects } from '../data/portfolio';
 import { IMAGES } from '../data/images';
 
@@ -28,15 +29,15 @@ const featuredServices = services.filter((service) =>
 );
 const featuredServiceImages: Record<string, { image: string; imageAlt: string }> = {
   'website-laten-maken': {
-    image: '/images/services/service-website-design.png',
+    image: getServiceImagePath('website-laten-maken'),
     imageAlt: 'Website laten maken door Star Local',
   },
   'lokale-seo': {
-    image: IMAGES.serviceLocalSeoCard,
+    image: getServiceImagePath('lokale-seo'),
     imageAlt: 'Lokale SEO door Star Local',
   },
   'google-bedrijfsprofiel': {
-    image: IMAGES.serviceGoogleBusinessProfile,
+    image: getServiceImagePath('google-bedrijfsprofiel'),
     imageAlt: 'Google Bedrijfsprofiel optimalisatie door Star Local',
   },
 };

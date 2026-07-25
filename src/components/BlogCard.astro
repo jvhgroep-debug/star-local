@@ -1,24 +1,80 @@
 ---
 interface Props {
-  comingSoon: string;
   title: string;
   category: string;
   excerpt: string;
+  href?: string;
+  image?: string;
+  imageAlt?: string;
+  date?: string;
+  comingSoon?: string;
 }
 
-const { title, category, excerpt, comingSoon } = Astro.props;
+const { title, category, excerpt, href, image, imageAlt = '', date, comingSoon } = Astro.props;
+const isPublished = Boolean(href);
 ---
 
 <article class="blog-card card">
+  {image && (
+    <div class="blog-card__image">
+      {href ? (
+        <a href={href} aria-label={title}>
+          <img src={image} alt={imageAlt} width="1200" height="675" loading="lazy" decoding="async" />
+        </a>
+      ) : (
+        <img src={image} alt={imageAlt} width="1200" height="675" loading="lazy" decoding="async" />
+      )}
+    </div>
+  )}
   <div class="card-body">
     <p class="blog-category">{category}</p>
-    <h3>{title}</h3>
+    <h3>
+      {href ? <a href={href}>{title}</a> : title}
+    </h3>
+    {date && <time class="blog-date" datetime={date}>{date}</time>}
     <p>{excerpt}</p>
-    <span class="coming-soon">{comingSoon}</span>
+    {isPublished ? (
+      <a class="card-link" href={href}>Lees artikel</a>
+    ) : (
+      comingSoon && <span class="coming-soon">{comingSoon}</span>
+    )}
   </div>
 </article>
 
 <style>
+  .blog-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .blog-card__image {
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+    background: #0a0e14;
+    border-bottom: 1px solid rgba(205, 184, 128, 0.3);
+  }
+
+  .blog-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .blog-card__image a {
+    display: block;
+    height: 100%;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
   .blog-category {
     color: var(--gold);
     font-size: 0.78rem;
@@ -33,10 +89,36 @@ const { title, category, excerpt, comingSoon } = Astro.props;
     font-size: 1.1rem;
   }
 
+  h3 a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  h3 a:hover {
+    color: var(--gold);
+  }
+
+  .blog-date {
+    display: block;
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    margin: -0.35rem 0 0.75rem;
+  }
+
   p {
     color: var(--text-muted);
     margin: 0 0 1rem;
     line-height: 1.65;
+  }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: none;
+    margin-top: auto;
+    color: var(--gold);
   }
 
   .coming-soon {

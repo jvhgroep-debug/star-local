@@ -1,0 +1,20 @@
+---
+import BlogPostPage from '../../views/BlogPostPage.astro';
+import { blogPosts, getBlogPost } from '../../data/blog/posts';
+
+export function getStaticPaths() {
+  return blogPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = Astro.props.post ?? getBlogPost(slug!);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+---
+
+<BlogPostPage post={post} />

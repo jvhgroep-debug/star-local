@@ -5,6 +5,8 @@ import CTASection from '../components/CTASection.astro';
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n';
 import { route } from '../i18n/routes';
+import { SITE } from '../data/site';
+import { getPublishedBlogPosts } from '../data/blog/posts';
 
 interface Props {
   locale: Locale;
@@ -12,6 +14,20 @@ interface Props {
 
 const { locale } = Astro.props;
 const dict = useTranslations(locale);
+const publishedPosts = locale === 'nl' ? getPublishedBlogPosts() : [];
+
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: dict.blog.h1,
+  description: dict.blog.description,
+  url: `${SITE.url}${route('blog', locale)}`,
+  publisher: {
+    '@type': 'Organization',
+    name: SITE.name,
+    url: SITE.url,
+  },
+};
 ---
 
 <BaseLayout
@@ -19,6 +35,7 @@ const dict = useTranslations(locale);
   title={dict.blog.title}
   description={dict.blog.description}
   canonical={route('blog', locale)}
+  schema={blogSchema}
   hero={{
     title: dict.blog.h1,
     intro: dict.blog.intro,
@@ -30,6 +47,21 @@ const dict = useTranslations(locale);
         {dict.blog.categories.map((cat) => <span class="category">{cat}</span>)}
       </div>
       <div class="grid-3">
+        {publishedPosts.map((post) => (
+          <BlogCard
+            title={post.title}
+            category={post.category}
+            excerpt={post.excerpt}
+            href={post.canonicalPath}
+            image={post.image}
+            imageAlt={post.imageAlt}
+            date={new Date(post.publishedAt).toLocaleDateString('nl-NL', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            })}
+          />
+        ))}
         {dict.blog.posts.map((post) => (
           <BlogCard
             title={post.title}

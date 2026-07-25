@@ -14,12 +14,15 @@ const { project, lang, viewWebsite, placeholderNote } = Astro.props;
 
 const category = lang === 'nl' ? project.categoryNl : project.categoryEn;
 const description = lang === 'nl' ? project.descriptionNl : project.descriptionEn;
-const imageSrc = project.fallbackImage || PROJECT_PLACEHOLDER;
-const usingFallback = imageSrc !== project.image;
-const missingImageName = project.image.split('/').pop() || project.image;
-const placeholderText = usingFallback
-  ? `${placeholderNote}: ${missingImageName}`
-  : placeholderNote;
+const preferredImage = project.pendingScreenshot
+  ? project.fallbackImage || PROJECT_PLACEHOLDER
+  : project.image || project.fallbackImage || PROJECT_PLACEHOLDER;
+const fallbackImage = project.fallbackImage || PROJECT_PLACEHOLDER;
+const showPlaceholderNote = Boolean(project.pendingScreenshot);
+const imageAlt =
+  lang === 'nl'
+    ? project.imageAltNl || `${project.name} – ${category}`
+    : project.imageAltEn || project.imageAltNl || `${project.name} – ${category}`;
 const hasLink = Boolean(project.website);
 const Tag = hasLink ? 'a' : 'article';
 ---
@@ -34,15 +37,17 @@ const Tag = hasLink ? 'a' : 'article';
 >
   <div class="project-card-media">
     <img
-      src={imageSrc}
-      alt={`${project.name} – ${category}`}
+      src={preferredImage}
+      alt={imageAlt}
       width="800"
       height="600"
       loading="lazy"
       decoding="async"
       class="project-card-image"
+      data-fallback={fallbackImage}
+      style={project.imagePosition ? `object-position: ${project.imagePosition}` : undefined}
     />
-    {usingFallback && <span class="placeholder-note">{placeholderText}</span>}
+    {showPlaceholderNote && <span class="placeholder-note">{placeholderNote}</span>}
     {project.status && (
       <div class="status-wrap">
         <ProjectStatusBadge status={project.status} lang={lang} />
@@ -65,11 +70,26 @@ const Tag = hasLink ? 'a' : 'article';
       </span>
     ) : (
       <span class="project-action project-action--muted">
-        {lang === 'nl' ? 'Binnenkort beschikbaar' : 'Coming soon'}
+        {lang === 'nl' ? 'In ontwikkeling' : 'In development'}
       </span>
     )}
   </div>
 </Tag>
+
+<script>
+  document.querySelectorAll('.project-card-image[data-fallback]').forEach((img) => {
+    const el = img as HTMLImageElement;
+    el.addEventListener(
+      'error',
+      () => {
+        const fallback = el.dataset.fallback;
+        if (!fallback || el.src.endsWith(fallback)) return;
+        el.src = fallback;
+      },
+      { once: true },
+    );
+  });
+</script>
 
 <style>
   .project-card {
@@ -81,15 +101,21 @@ const Tag = hasLink ? 'a' : 'article';
     overflow: hidden;
     text-decoration: none;
     color: inherit;
-    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    transition:
+      transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color var(--transition),
+      box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     height: 100%;
+    will-change: transform;
   }
 
   .project-card:hover,
   .project-card:focus-visible {
-    transform: translateY(-4px);
+    transform: translateY(-4px) scale(1.015);
     border-color: var(--border-strong);
-    box-shadow: 0 0 0 1px rgba(205, 184, 128, 0.25), 0 18px 40px rgba(0, 0, 0, 0.35);
+    box-shadow:
+      0 0 0 1px rgba(205, 184, 128, 0.22),
+      0 14px 36px rgba(0, 0, 0, 0.32);
     outline: none;
   }
 
@@ -97,14 +123,16 @@ const Tag = hasLink ? 'a' : 'article';
     cursor: default;
   }
 
-  .project-card--static:hover {
+  .project-card--static:hover,
+  .project-card--static:focus-visible {
     transform: none;
     box-shadow: none;
   }
 
   .project-card-media {
     position: relative;
-    aspect-ratio: 4 / 3;
+    flex-shrink: 0;
+    height: 225px;
     background: var(--bg-elevated);
     overflow: hidden;
   }
@@ -114,6 +142,16 @@ const Tag = hasLink ? 'a' : 'article';
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .project-card:hover .project-card-image,
+  .project-card:focus-visible .project-card-image {
+    transform: scale(1.03);
+  }
+
+  .project-card--static:hover .project-card-image {
+    transform: none;
   }
 
   .placeholder-note {
@@ -185,5 +223,11 @@ const Tag = hasLink ? 'a' : 'article';
   .project-action--muted {
     color: var(--text-soft);
     font-weight: 600;
+  }
+
+  @media (max-width: 600px) {
+    .project-card-media {
+      height: 210px;
+    }
   }
 </style>

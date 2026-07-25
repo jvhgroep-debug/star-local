@@ -1,0 +1,499 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FAQSection from '../components/FAQSection.astro';
+import type { BlogPostMeta } from '../data/blog/types';
+import { SITE } from '../data/site';
+
+interface Props {
+  post: BlogPostMeta;
+}
+
+const { post } = Astro.props;
+
+const formattedDate = new Date(post.publishedAt).toLocaleDateString('nl-NL', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const pageUrl = `${SITE.url}${post.canonicalPath}`;
+
+const blogPostingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.h1,
+  name: post.title,
+  description: post.seoDescription,
+  image: `${SITE.url}${post.image}`,
+  datePublished: post.publishedAt,
+  dateModified: post.updatedAt,
+  author: {
+    '@type': 'Organization',
+    name: post.author,
+    url: SITE.url,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: SITE.name,
+    url: SITE.url,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${SITE.url}${SITE.logo}`,
+    },
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': pageUrl,
+  },
+  inLanguage: 'nl-NL',
+  url: pageUrl,
+};
+
+const benefits = [
+  'Professioneel maatwerkontwerp',
+  'Mobiel geoptimaliseerd',
+  'Snel en gebruiksvriendelijk',
+  'Compleet boekingssysteem',
+  'Overzichtelijk wagenparkbeheer',
+  'SEO-vriendelijke structuur',
+  'Geschikt voor Nederland, België en Duitsland',
+  'Persoonlijke ondersteuning',
+  'Geen maandelijkse ontwikkelkosten',
+];
+
+const targetGroups = [
+  'Lokale autoverhuurders',
+  'Luxe autoverhuur',
+  'Bestelbusverhuur',
+  'Personenbusverhuur',
+  'Luchthavenverhuur',
+  'Zakelijke wagenverhuur',
+  'Startende autoverhuurbedrijven',
+  'Bedrijven die hun huidige reserveringsproces willen moderniseren',
+];
+
+const relatedBranches = [
+  { label: 'Website laten maken', href: '/diensten/website-laten-maken/' },
+  { label: 'Webshop laten maken', href: '/diensten/webshop-laten-maken/' },
+  { label: 'Conversie optimalisatie', href: '/diensten/conversie-optimalisatie/' },
+  { label: 'Websites voor autobedrijven in Breda', href: '/breda/website-laten-maken/autobedrijven/' },
+];
+---
+
+<BaseLayout
+  locale="nl"
+  title={post.seoTitle}
+  description={post.seoDescription}
+  canonical={post.canonicalPath}
+  image={post.image}
+  schema={blogPostingSchema}
+  fullWidth
+>
+  <article class="blog-post">
+    <div class="container page-top">
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Blog', href: '/blog/' },
+          { label: post.title },
+        ]}
+      />
+
+      <header class="blog-header">
+        <p class="blog-meta">
+          <span class="blog-category">{post.category}</span>
+          <time datetime={post.publishedAt}>{formattedDate}</time>
+        </p>
+        <h1>{post.h1}</h1>
+        <p class="author-line">{post.authorBio}</p>
+      </header>
+
+      <figure class="blog-hero-image">
+        <img
+          src={post.image}
+          alt={post.imageAlt}
+          width={post.imageWidth}
+          height={post.imageHeight}
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </figure>
+
+      <div class="blog-content content-prose">
+        <p class="intro">
+          Een modern autoverhuurbedrijf heeft meer nodig dan alleen een eenvoudige website. Klanten willen
+          beschikbare auto's bekijken, prijzen vergelijken en direct online reserveren. Star Local levert
+          daarom een complete digitale oplossing met een professionele website, boekingssysteem, wagenparkbeheer
+          en mobiele apps voor Android en iPhone.
+        </p>
+
+        <h2>Meer boekingen dankzij online reserveren</h2>
+        <p>
+          Klanten willen vandaag niet meer wachten op een telefoontje of handmatige bevestiging. Zij verwachten
+          dat zij direct kunnen zien welke voertuigen beschikbaar zijn en meteen een reservering kunnen plaatsen.
+        </p>
+        <p>Met het boekingssysteem kunnen klanten:</p>
+        <ul>
+          <li>beschikbare auto's bekijken;</li>
+          <li>een huurperiode kiezen;</li>
+          <li>een ophaal- en inleverlocatie selecteren;</li>
+          <li>direct reserveren;</li>
+          <li>optioneel online betalen.</li>
+        </ul>
+        <p>
+          Hierdoor kan een autoverhuurbedrijf dag en nacht boekingen ontvangen, zonder voor iedere aanvraag extra
+          personeel nodig te hebben.
+        </p>
+        <p class="cta-row">
+          <a class="btn btn-primary" href="/contact/?onderwerp=Autoverhuur%20website">Vraag het complete pakket aan</a>
+        </p>
+
+        <h2>Beheer het volledige wagenpark vanuit één dashboard</h2>
+        <p>Via het beheerpaneel kan het autoverhuurbedrijf eenvoudig:</p>
+        <ul>
+          <li>auto's toevoegen en verwijderen;</li>
+          <li>beschikbaarheid aanpassen;</li>
+          <li>dag- en huurprijzen wijzigen;</li>
+          <li>voertuigfoto's uploaden;</li>
+          <li>reserveringen beheren;</li>
+          <li>klantgegevens bekijken;</li>
+          <li>onderhoud en voertuigstatus bijhouden waar technisch beschikbaar.</li>
+        </ul>
+        <p>Alles wordt beheerd vanuit één overzichtelijk dashboard.</p>
+
+        <h2>Android- en iPhone-app inbegrepen</h2>
+        <p>Naast de website ontvangt de klant ook een professionele mobiele app voor Android en iPhone.</p>
+        <p>Klanten kunnen via de app:</p>
+        <ul>
+          <li>voertuigen zoeken;</li>
+          <li>beschikbaarheid controleren;</li>
+          <li>direct reserveren;</li>
+          <li>meldingen ontvangen;</li>
+          <li>hun reserveringen beheren;</li>
+          <li>opnieuw boeken.</li>
+        </ul>
+        <p>
+          Hiermee ontstaat een gebruikservaring die aansluit bij wat klanten van grotere internationale
+          verhuurbedrijven gewend zijn.
+        </p>
+
+        <h2>Beter gevonden worden in Google</h2>
+        <p>
+          Een mooie autoverhuurwebsite is niet voldoende wanneer potentiële klanten deze niet kunnen vinden.
+          Star Local bouwt de website met een technische en inhoudelijke SEO-basis voor relevante zoekopdrachten,
+          zoals:
+        </p>
+        <ul>
+          <li>auto huren;</li>
+          <li>autoverhuur;</li>
+          <li>huurauto reserveren;</li>
+          <li>bestelbus huren;</li>
+          <li>personenbus huren;</li>
+          <li>luxe auto huren;</li>
+          <li>zakelijke autoverhuur;</li>
+          <li>autoverhuur in combinatie met plaatsnamen.</li>
+        </ul>
+        <p>
+          SEO biedt geen garantie op een bepaalde positie in Google, maar helpt wel om een sterke basis voor
+          organische zichtbaarheid op te bouwen. Meer over onze aanpak vindt u op onze pagina's over{' '}
+          <a href="/diensten/website-laten-maken/">website laten maken</a>,{' '}
+          <a href="/diensten/lokale-seo/">lokale SEO</a>,{' '}
+          <a href="/diensten/technische-seo/">technische SEO</a> en{' '}
+          <a href="/diensten/conversie-optimalisatie/">conversie optimalisatie</a>.
+        </p>
+
+        <h2>Voor welke autoverhuurbedrijven is dit geschikt?</h2>
+        <ul>
+          {targetGroups.map((item) => <li>{item}</li>)}
+        </ul>
+
+        <h2>Waarom kiezen voor Star Local?</h2>
+        <ul class="benefits-grid">
+          {benefits.map((item) => <li>{item}</li>)}
+        </ul>
+        <p class="disclaimer">
+          Hosting, onderhoud, externe software, appstores of aanvullende diensten kunnen afzonderlijke of
+          terugkerende kosten hebben wanneer dat van toepassing is.
+        </p>
+
+        <aside class="price-block" aria-label="Actieprijs">
+          <h2>Compleet autoverhuurpakket voor €999 eenmalig</h2>
+          <p class="price-label">Inbegrepen:</p>
+          <ul>
+            <li>professionele website;</li>
+            <li>online boekingssysteem;</li>
+            <li>Android-app;</li>
+            <li>iPhone-app;</li>
+            <li>beheerpaneel voor reserveringen en wagenpark;</li>
+            <li>basisconfiguratie voor SEO.</li>
+          </ul>
+          <p class="price-note">Tijdelijke actieprijs zolang de actie beschikbaar is.</p>
+          <a class="btn btn-primary" href="/contact/?onderwerp=Compleet%20autoverhuurpakket">
+            Start jouw autoverhuurplatform
+          </a>
+        </aside>
+
+        <aside class="info-block">
+          <h2>Publicatie in Google Play en Apple App Store: €399</h2>
+          <ul>
+            <li>inclusief begeleiding bij publicatie;</li>
+            <li>inclusief maximaal 14 dagen testen;</li>
+            <li>testgroep tot 25 gebruikers waar dit technisch en binnen de appstorevoorwaarden mogelijk is;</li>
+            <li>
+              appstore-accounts, externe kosten en goedkeuring door Apple of Google vallen onder hun eigen
+              voorwaarden;
+            </li>
+            <li>
+              publicatie kan niet worden gegarandeerd wanneer een app niet aan de eisen van de stores voldoet.
+            </li>
+          </ul>
+        </aside>
+
+        <h2>Klaar om meer boekingen te ontvangen?</h2>
+        <p>
+          Wilt u uw autoverhuurbedrijf digitaliseren en klanten dag en nacht laten reserveren? Star Local bouwt
+          een complete oplossing waarmee u professioneel online kunt groeien, uw wagenpark overzichtelijk beheert
+          en meer boekingen kunt ontvangen.
+        </p>
+        <ul class="contact-list">
+          <li>
+            Website: <a href="https://starlocal.nl">https://starlocal.nl</a>
+          </li>
+          <li>
+            WhatsApp: <a href="tel:+31684002350">+31 6 84002350</a>
+          </li>
+        </ul>
+        <p class="cta-row">
+          <a
+            class="btn btn-whatsapp"
+            href="https://wa.me/31684002350?text=Ik%20wil%20meer%20informatie%20over%20het%20autoverhuurpakket"
+          >
+            WhatsApp Star Local
+          </a>
+          <a class="btn btn-secondary" href="/contact/">Neem contact op</a>
+        </p>
+
+        <section class="related-branches" aria-labelledby="related-branches-title">
+          <h2 id="related-branches-title">Bekijk ook onze oplossingen voor andere branches</h2>
+          <ul>
+            {relatedBranches.map((link) => (
+              <li><a href={link.href}>{link.label}</a></li>
+            ))}
+          </ul>
+        </section>
+      </div>
+    </div>
+  </article>
+
+  <FAQSection title="Veelgestelde vragen" faqs={post.faqs} />
+</BaseLayout>
+
+<style>
+  .page-top {
+    padding-top: 1.5rem;
+  }
+
+  .blog-header {
+    max-width: 820px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .blog-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin: 0 0 1rem;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+  }
+
+  .blog-category {
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+  }
+
+  h1 {
+    color: var(--gold);
+    margin: 0 0 1rem;
+    font-size: clamp(1.65rem, 4vw, 2.35rem);
+    line-height: 1.25;
+  }
+
+  .author-line {
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.65;
+    font-size: 0.95rem;
+  }
+
+  .blog-hero-image {
+    margin: 0 0 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #0a0e14;
+  }
+
+  .blog-hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  .blog-content {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  .content-prose h2 {
+    color: var(--gold);
+    margin: 2rem 0 1rem;
+    font-size: clamp(1.25rem, 3vw, 1.55rem);
+    line-height: 1.35;
+  }
+
+  .intro {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin: 0 0 1.5rem;
+  }
+
+  .content-prose p,
+  .content-prose li {
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  .content-prose p {
+    margin: 0 0 1rem;
+  }
+
+  .content-prose ul {
+    margin: 0 0 1rem;
+    padding-left: 1.25rem;
+  }
+
+  .content-prose li + li {
+    margin-top: 0.35rem;
+  }
+
+  .content-prose a {
+    color: var(--gold);
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+
+  .benefits-grid li {
+    padding-left: 1.25rem;
+    position: relative;
+  }
+
+  .benefits-grid li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .disclaimer {
+    font-size: 0.92rem;
+    color: var(--text-soft);
+  }
+
+  .price-block,
+  .info-block {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: rgba(205, 184, 128, 0.06);
+  }
+
+  .price-block {
+    border-color: rgba(205, 184, 128, 0.45);
+    background: linear-gradient(135deg, rgba(205, 184, 128, 0.12), rgba(205, 184, 128, 0.04));
+  }
+
+  .price-block h2,
+  .info-block h2 {
+    margin-top: 0;
+  }
+
+  .price-label {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .price-note {
+    color: var(--gold-muted);
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin: 1.5rem 0 0;
+  }
+
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+
+  .related-branches {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .related-branches ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .related-branches a {
+    display: inline-flex;
+    padding: 0.55rem 0.95rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+
+  @media (max-width: 700px) {
+    .benefits-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-row {
+      flex-direction: column;
+    }
+
+    .cta-row .btn {
+      width: 100%;
+    }
+  }
+</style>
