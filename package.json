@@ -9,7 +9,9 @@
     "generate:gemeentes": "node scripts/generate-gemeentes.mjs && node scripts/generate-gemeente-page.mjs"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.13",
     "@astrojs/sitemap": "^3.7.3",
-    "astro": "^5.7.0"
+    "astro": "^5.7.0",
+    "resend": "^6.18.1"
   }
 }

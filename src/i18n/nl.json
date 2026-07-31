@@ -331,7 +331,6 @@
     "website": "Website"
   },
   "form": {
-    "notice": "Formulier is visueel gereed. Integratie met Formspree, Resend of eigen API volgt.",
     "name": "Naam",
     "company": "Bedrijfsnaam",
     "email": "E-mail",
@@ -355,7 +354,9 @@
       "message": "Vul een bericht in.",
       "privacy": "U moet akkoord gaan met het privacybeleid."
     },
-    "successAlert": "Bedankt voor uw bericht. Het formulier is nog niet gekoppeld aan een verzendservice."
+    "successMessage": "Bedankt voor uw bericht. We nemen zo snel mogelijk contact met u op.",
+    "submitError": "Uw bericht kon niet worden verzonden. Probeer het later opnieuw of neem direct contact op via e-mail of WhatsApp.",
+    "sending": "Verzenden..."
   },
   "faq": {
     "title": "Veelgestelde vragen",

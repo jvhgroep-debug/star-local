@@ -4,18 +4,20 @@ import { useTranslations } from '../i18n';
 
 interface Props {
   locale: Locale;
-  showNotice?: boolean;
 }
 
-const { locale, showNotice = false } = Astro.props;
+const { locale } = Astro.props;
 const dict = useTranslations(locale);
 const form = dict.form;
 ---
 
 <form class="contact-form" id="contactformulier" novalidate>
-  {showNotice && (
-    <p class="form-notice" role="status">{form.notice}</p>
-  )}
+  <div class="form-status" id="form-status" role="status" aria-live="polite" hidden></div>
+
+  <div class="field honeypot" aria-hidden="true">
+    <label for="website">Website</label>
+    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+  </div>
 
   <div class="form-row">
     <div class="field">
@@ -64,15 +66,30 @@ const form = dict.form;
     <span class="error" data-error-for="privacy"></span>
   </div>
 
-  <button type="submit" class="btn btn-primary">{dict.buttons.sendMessage}</button>
+  <button type="submit" class="btn btn-primary" id="contact-submit">{dict.buttons.sendMessage}</button>
 </form>
 
-<script define:vars={{ errors: form.errors, successAlert: form.successAlert }}>
-  const form = document.getElementById('contactformulier');
+<script define:vars={{ errors: form.errors, successMessage: form.successMessage, submitError: form.submitError, sending: form.sending }}>
+  const formEl = document.getElementById('contactformulier');
+  const statusEl = document.getElementById('form-status');
+  const submitBtn = document.getElementById('contact-submit');
 
-  form?.addEventListener('submit', (event) => {
-    event.preventDefault();
+  function setStatus(message, type) {
+    if (!statusEl) return;
+    statusEl.hidden = !message;
+    statusEl.textContent = message;
+    statusEl.className = `form-status form-status--${type}`;
+  }
+
+  function clearFieldErrors() {
+    document.querySelectorAll('[data-error-for]').forEach((el) => {
+      el.textContent = '';
+    });
+  }
+
+  function validateForm() {
     let valid = true;
+    clearFieldErrors();
 
     const fields = [
       { id: 'naam', message: errors.name },
@@ -101,7 +118,67 @@ const form = dict.form;
       if (!fieldValid) valid = false;
     });
 
-    if (valid) alert(successAlert);
+    return valid;
+  }
+
+  function prefillSubjectFromQuery() {
+    const params = new URLSearchParams(window.location.search);
+    const subject = params.get('onderwerp');
+    const select = document.getElementById('onderwerp');
+    if (!subject || !select) return;
+
+    const options = Array.from(select.options);
+    const match = options.find((option) => option.value === subject || option.text === subject);
+    if (match) select.value = match.value;
+  }
+
+  prefillSubjectFromQuery();
+
+  formEl?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    setStatus('', 'info');
+
+    if (!validateForm()) return;
+
+    const originalLabel = submitBtn?.textContent ?? '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = sending;
+    }
+
+    const payload = {
+      naam: document.getElementById('naam')?.value.trim() ?? '',
+      bedrijfsnaam: document.getElementById('bedrijfsnaam')?.value.trim() ?? '',
+      email: document.getElementById('email')?.value.trim() ?? '',
+      telefoon: document.getElementById('telefoon')?.value.trim() ?? '',
+      onderwerp: document.getElementById('onderwerp')?.value.trim() ?? '',
+      bericht: document.getElementById('bericht')?.value.trim() ?? '',
+      privacy: document.getElementById('privacy')?.checked ?? false,
+      website: document.getElementById('website')?.value.trim() ?? '',
+    };
+
+    try {
+      const response = await fetch('/api/contact/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        formEl.reset();
+        setStatus(successMessage, 'success');
+        return;
+      }
+
+      setStatus(submitError, 'error');
+    } catch {
+      setStatus(submitError, 'error');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
+    }
   });
 </script>
 
@@ -114,14 +191,31 @@ const form = dict.form;
     padding: 2rem;
   }
 
-  .form-notice {
-    background: rgba(205, 184, 128, 0.08);
-    border: 1px solid var(--border);
+  .form-status {
     border-radius: var(--radius-sm);
     padding: 0.85rem 1rem;
-    color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     margin: 0 0 1.5rem;
+  }
+
+  .form-status--success {
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    color: #bbf7d0;
+  }
+
+  .form-status--error {
+    background: rgba(248, 113, 113, 0.12);
+    border: 1px solid rgba(248, 113, 113, 0.35);
+    color: #fecaca;
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
   }
 
   .form-row {
