@@ -1,0 +1,392 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import FAQSection from '../components/FAQSection.astro';
+import { SITE } from '../data/site';
+import { IMAGES } from '../data/images';
+import {
+  GRATIS_WEBSITE_AUTO_FEATURES,
+  GRATIS_WEBSITE_FAQS,
+  GRATIS_WEBSITE_INDUSTRIES,
+  GRATIS_WEBSITE_PAGES,
+  GRATIS_WEBSITE_STEPS,
+} from '../data/offers/gratis-website';
+
+const canonicalPath = '/gratis-website/';
+const pageUrl = `${SITE.url}${canonicalPath}`;
+const startHref = '#start-gratis';
+const exampleHref = '#voorbeeldwebsite';
+
+const seoTitle = 'Gratis website maken in 5 minuten | Star Local Website Builder';
+const seoDescription =
+  'Maak gratis een professionele website in ongeveer 5 minuten. Vul uw gegevens in, upload logo en foto’s, en ons systeem bouwt automatisch uw website.';
+
+const steps = [...GRATIS_WEBSITE_STEPS];
+const pages = [...GRATIS_WEBSITE_PAGES];
+const autoFeatures = [...GRATIS_WEBSITE_AUTO_FEATURES];
+const industries = [...GRATIS_WEBSITE_INDUSTRIES];
+const faqs = GRATIS_WEBSITE_FAQS.map((faq) => ({ question: faq.question, answer: faq.answer }));
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: seoTitle,
+  description: seoDescription,
+  url: pageUrl,
+  inLanguage: 'nl-NL',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: SITE.url,
+  },
+};
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Gratis website builder',
+  description:
+    'Gratis een professionele website laten opbouwen in ongeveer 5 minuten. Ons systeem bouwt automatisch uw website op basis van uw bedrijfsgegevens, logo en foto’s.',
+  provider: {
+    '@type': 'Organization',
+    name: SITE.name,
+    url: SITE.url,
+    email: SITE.email,
+    telephone: SITE.phoneRaw,
+  },
+  areaServed: {
+    '@type': 'Country',
+    name: 'Nederland',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: 0,
+    priceCurrency: 'EUR',
+    description: 'Gratis starten met het automatisch opbouwen van uw professionele website.',
+    url: pageUrl,
+    availability: 'https://schema.org/InStock',
+  },
+};
+
+const schema = [webPageSchema, serviceSchema];
+---
+
+<BaseLayout
+  locale="nl"
+  title={seoTitle}
+  description={seoDescription}
+  canonical={canonicalPath}
+  image={IMAGES.heroHome}
+  schema={schema}
+  fullWidth
+  hero={{
+    title: 'Gratis een professionele website in ongeveer 5 minuten',
+    intro: 'Ons systeem bouwt automatisch uw website.',
+    ariaLabel: 'Gratis website builder',
+    backgroundImage: IMAGES.serviceWebsiteDesign,
+    ctas: [
+      { label: 'Start gratis', href: startHref, variant: 'primary' },
+      { label: 'Bekijk voorbeeld', href: exampleHref, variant: 'secondary' },
+    ],
+  }}
+>
+  <div class="container page-top">
+    <Breadcrumbs
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Gratis website' },
+      ]}
+    />
+  </div>
+
+  <section class="section" id="hoe-werkt-het" aria-labelledby="how-it-works-title">
+    <div class="container">
+      <SectionHeading title="Hoe werkt het?" />
+      <ProcessSteps steps={steps} />
+    </div>
+  </section>
+
+  <section class="section alt-section" id="wat-krijgt-u" aria-labelledby="included-title">
+    <div class="container">
+      <SectionHeading
+        title="Wat krijgt u?"
+        description="Een complete basiswebsite met professionele pagina’s en handige functies die automatisch worden toegevoegd."
+      />
+
+      <div class="grid-cards">
+        {pages.map((page) => (
+          <article class="info-card">
+            <h3>{page.title}</h3>
+            <p>{page.text}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="auto-features">
+        <h3 id="auto-features-title">Daarnaast automatisch</h3>
+        <ul class="check-list" aria-labelledby="auto-features-title">
+          {autoFeatures.map((feature) => <li>{feature}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="voor-wie" aria-labelledby="audience-title">
+    <div class="container">
+      <SectionHeading
+        title="Voor wie?"
+        description="Onze website builder is geschikt voor lokale ondernemers en dienstverleners in allerlei branches."
+      />
+      <div class="industry-grid">
+        {industries.map((industry) => (
+          <article class="industry-card">
+            <h3>{industry.title}</h3>
+            <p>{industry.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt-section" id="voorbeeldwebsite" aria-labelledby="example-title">
+    <div class="container">
+      <SectionHeading
+        title="Voorbeeldwebsite"
+        description="Zo kan uw website eruitzien zodra u uw gegevens heeft ingevuld. Binnenkort kunt u hier een live voorbeeld bekijken."
+      />
+      <div class="example-placeholder" role="img" aria-label="Placeholder voorbeeldwebsite">
+        <div class="example-placeholder__chrome">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="example-placeholder__body">
+          <p class="example-placeholder__eyebrow">Voorbeeld</p>
+          <p class="example-placeholder__title">Uw professionele bedrijfswebsite</p>
+          <p class="example-placeholder__text">
+            Hier verschijnt straks een interactief voorbeeld van de website die ons systeem voor u opbouwt.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FAQSection title="Veelgestelde vragen" faqs={faqs} />
+
+  <section class="section final-cta" id="start-gratis" aria-labelledby="final-cta-title">
+    <div class="container">
+      <div class="final-cta__inner">
+        <h2 id="final-cta-title">Maak vandaag nog gratis uw website</h2>
+        <p>
+          Vul uw bedrijfsgegevens in, upload uw logo en foto’s, en laat ons systeem automatisch uw
+          professionele website opbouwen.
+        </p>
+        <div class="final-cta__actions">
+          <a class="btn btn-primary" href={startHref}>Start gratis</a>
+          <a class="btn btn-secondary" href={exampleHref}>Bekijk voorbeeld</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-top {
+    padding-top: 1.25rem;
+  }
+
+  .alt-section {
+    background: rgba(205, 184, 128, 0.03);
+    border-block: 1px solid var(--border);
+  }
+
+  .grid-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .info-card,
+  .industry-card {
+    background: rgba(205, 184, 128, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.35rem;
+    transition: transform var(--transition), border-color var(--transition);
+  }
+
+  .info-card:hover,
+  .industry-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+  }
+
+  .info-card h3,
+  .industry-card h3,
+  .auto-features h3 {
+    color: var(--gold);
+    margin: 0 0 0.65rem;
+    font-size: 1.05rem;
+  }
+
+  .info-card p,
+  .industry-card p {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .auto-features {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: rgba(205, 184, 128, 0.04);
+  }
+
+  .check-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.75rem 1rem;
+  }
+
+  .check-list li {
+    color: var(--text-muted);
+    padding-left: 1.3rem;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .industry-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .example-placeholder {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #0a0e14;
+    box-shadow: var(--shadow);
+  }
+
+  .example-placeholder__chrome {
+    display: flex;
+    gap: 0.45rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(205, 184, 128, 0.05);
+  }
+
+  .example-placeholder__chrome span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(205, 184, 128, 0.35);
+  }
+
+  .example-placeholder__body {
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    background:
+      radial-gradient(circle at top, rgba(205, 184, 128, 0.12), transparent 55%),
+      linear-gradient(180deg, rgba(7, 10, 15, 0.2), rgba(7, 10, 15, 0.85));
+  }
+
+  .example-placeholder__eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--gold);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .example-placeholder__title {
+    margin: 0 0 0.75rem;
+    color: var(--text);
+    font-size: clamp(1.35rem, 3vw, 1.85rem);
+    font-weight: 700;
+  }
+
+  .example-placeholder__text {
+    margin: 0;
+    max-width: 520px;
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  .final-cta {
+    padding-bottom: 4rem;
+  }
+
+  .final-cta__inner {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(205, 184, 128, 0.08), rgba(37, 211, 102, 0.05));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 3rem 2rem;
+  }
+
+  .final-cta__inner h2 {
+    color: var(--gold);
+    margin: 0 0 1rem;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+  }
+
+  .final-cta__inner p {
+    color: var(--text-muted);
+    max-width: 640px;
+    margin: 0 auto 2rem;
+    line-height: 1.75;
+  }
+
+  .final-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  @media (max-width: 1000px) {
+    .grid-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .industry-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 700px) {
+    .industry-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .grid-cards,
+    .industry-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
