@@ -1,0 +1,91 @@
+---
+import SeoHead from '../components/SeoHead.astro';
+import '../styles/global.css';
+import '../styles/builder.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical = Astro.url.pathname,
+  noindex = true,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <SeoHead
+      locale="nl"
+      {title}
+      {description}
+      canonicalPath={canonical}
+      {noindex}
+    />
+  </head>
+  <body class="builder-page-body">
+    <a href="#builder-main" class="skip-link">Ga naar builder</a>
+    <header class="builder-page-header">
+      <div class="container builder-page-header__inner">
+        <a href="/" class="builder-page-brand" aria-label="Star Local home">
+          <span>Star Local</span>
+        </a>
+        <a href="/gratis-website/" class="builder-page-back">Terug naar overzicht</a>
+      </div>
+    </header>
+    <main id="builder-main" class="builder-page-main">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  .builder-page-body {
+    min-height: 100vh;
+    background: var(--bg);
+  }
+
+  .builder-page-header {
+    border-bottom: 1px solid var(--border);
+    background: var(--header-bg);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .builder-page-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 64px;
+  }
+
+  .builder-page-brand {
+    color: var(--gold);
+    font-weight: 800;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+
+  .builder-page-back {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+
+  .builder-page-back:hover {
+    color: var(--gold);
+  }
+
+  .builder-page-main {
+    padding: 1.5rem 0 3rem;
+  }
+</style>

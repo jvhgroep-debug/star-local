@@ -1,0 +1,24 @@
+---
+import BuilderLayout from '../../layouts/BuilderLayout.astro';
+---
+
+<BuilderLayout
+  title="Gratis website maken | Website Builder | Star Local"
+  description="Maak gratis uw professionele website in ongeveer 5 minuten. Vul uw bedrijfsgegevens in en ons systeem bouwt automatisch uw website."
+  canonical="/gratis-website/start/"
+>
+  <div class="container">
+    <div id="website-builder-root" class="website-builder-root" aria-live="polite"></div>
+    <noscript>
+      <p class="builder-noscript">
+        De Website Builder vereist JavaScript. Schakel JavaScript in om uw gratis website samen te stellen.
+      </p>
+    </noscript>
+  </div>
+</BuilderLayout>
+
+<script>
+  import { initWebsiteBuilder } from '../../lib/builder/app';
+
+  initWebsiteBuilder();
+</script>
