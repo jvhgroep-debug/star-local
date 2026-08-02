@@ -47,6 +47,25 @@ export interface BuilderBranding {
   photoNames: string[];
 }
 
+export type BuilderFontFamily = 'system' | 'serif' | 'modern' | 'display';
+export type BuilderButtonStyle = 'solid' | 'soft' | 'outline';
+export type BuilderCornerRadius = 'sharp' | 'rounded' | 'pill';
+export type BuilderShadowLevel = 'none' | 'soft' | 'medium';
+
+export interface BuilderDesignSettings {
+  fontFamily: BuilderFontFamily;
+  buttonStyle: BuilderButtonStyle;
+  cornerRadius: BuilderCornerRadius;
+  shadow: BuilderShadowLevel;
+}
+
+export const DEFAULT_DESIGN_SETTINGS: BuilderDesignSettings = {
+  fontFamily: 'system',
+  buttonStyle: 'solid',
+  cornerRadius: 'rounded',
+  shadow: 'soft',
+};
+
 export type BuilderStep = 1 | 2 | 3 | 4 | 5;
 
 export type PreviewPage = 'home' | 'about' | 'services' | 'contact' | 'privacy';
@@ -68,6 +87,12 @@ export interface BuilderState {
   selectedPackage: WebsitePackage;
   publishEmailConfirmed: string;
   publishedAt: string | null;
+  ctaQuoteLabel: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  design: BuilderDesignSettings;
+  heroPlaceholder: string;
+  galleryPlaceholders: string[];
 }
 
 export interface BuilderFileMeta {

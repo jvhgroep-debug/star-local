@@ -1,24 +1,10 @@
 import { Resend } from 'resend';
+import type { SendEmailParams, SendEmailResult } from './types';
 
-/** Parameters for transactional e-mail via Resend. */
-export interface SendEmailParams {
-  to: string | string[];
-  subject: string;
-  html: string;
-  text?: string;
-  replyTo?: string;
-}
-
-/** Result of a send attempt. */
-export interface SendEmailResult {
-  id: string | null;
-}
+export type { SendEmailParams, SendEmailResult } from './types';
 
 /**
  * Central Resend wrapper for Star Local SaaS e-mail.
- *
- * Reuses the existing `resend` package (also used by `/api/contact/`).
- * This phase defines the wrapper only — no e-mails are sent yet.
  */
 export class ResendEmailService {
   private readonly client: Resend;
@@ -29,18 +15,25 @@ export class ResendEmailService {
     this.fromEmail = fromEmail;
   }
 
-  /**
-   * Sends a transactional e-mail via Resend.
-   * Not implemented in this phase — call sites will be added with magic link flow.
-   */
-  async send(_params: SendEmailParams): Promise<SendEmailResult> {
-    void this.client;
-    void this.fromEmail;
-    throw new Error('ResendEmailService.send is not implemented yet.');
+  async send(params: SendEmailParams): Promise<SendEmailResult> {
+    const to = Array.isArray(params.to) ? params.to : [params.to];
+    const { data, error } = await this.client.emails.send({
+      from: this.fromEmail,
+      to,
+      subject: params.subject,
+      html: params.html,
+      text: params.text,
+      replyTo: params.replyTo,
+    });
+
+    if (error) {
+      throw new Error(error.message || 'E-mail verzenden mislukt.');
+    }
+
+    return { id: data?.id ?? null };
   }
 }
 
-/** Factory for a configured Resend e-mail service instance. */
 export function createResendEmailService(apiKey: string, fromEmail: string): ResendEmailService {
   return new ResendEmailService(apiKey, fromEmail);
 }

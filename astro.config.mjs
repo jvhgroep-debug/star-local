@@ -60,5 +60,14 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) =>
+        !page.includes('/dashboard') &&
+        !page.includes('/login') &&
+        !page.includes('/check-email') &&
+        !page.includes('/auth/') &&
+        !page.includes('/logout'),
+    }),
+  ],
 });

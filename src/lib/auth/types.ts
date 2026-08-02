@@ -1,10 +1,12 @@
 import type { IsoDateTime } from '../../types/tenant';
 import type { MagicLink, User } from '../../types/auth';
 
-/** Input for requesting a magic login link (implementation follows in a later phase). */
+/** Input for requesting a magic login link. */
 export interface CreateMagicLinkInput {
   email: string;
+  tenantId?: string;
   redirectPath?: string;
+  origin?: string;
 }
 
 /** Result of creating a magic link (plain token only returned to mail layer, never stored). */
@@ -29,6 +31,7 @@ export interface ValidateMagicLinkResult {
 export interface Session {
   id: string;
   userId: string;
+  tenantId: string | null;
   expiresAt: IsoDateTime;
   createdAt: IsoDateTime;
 }
@@ -36,6 +39,7 @@ export interface Session {
 /** Input for creating a session after authentication. */
 export interface CreateSessionInput {
   userId: string;
+  tenantId?: string | null;
   ttlSeconds?: number;
 }
 
@@ -48,5 +52,12 @@ export interface CreateSessionResult {
 
 /** Input for ending a session. */
 export interface DestroySessionInput {
-  sessionId: string;
+  sessionId?: string;
+  sessionToken?: string;
+}
+
+export interface AuthSessionContext {
+  session: Session;
+  user: import('../../types/auth').User;
+  sessionToken: string;
 }

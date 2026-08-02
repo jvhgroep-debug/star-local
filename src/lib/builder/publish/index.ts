@@ -5,7 +5,7 @@ import { buildWebsiteConfig } from '../website-config';
 import { preparePublication } from './prepare';
 import { clearPreparedWebsite, loadPreparedWebsite, savePreparedWebsite } from './storage';
 
-export { preparePublication, generateAllPages } from './prepare';
+export { buildPublishPayload, publishWebsiteToD1, prepareSiteArtifactsForPublish } from './d1-client';
 export { savePreparedWebsite, loadPreparedWebsite, clearPreparedWebsite } from './storage';
 export {
   PUBLICATION_STATUS_LABELS,
@@ -19,7 +19,7 @@ export interface PublishResult {
   config: WebsiteConfig;
 }
 
-/** Run the full publish preparation flow (no DNS, no database). */
+/** Run the full publish preparation flow (client artifacts; server persists to D1 and R2). */
 export function executePublication(
   state: BuilderState,
   files: BuilderFiles,

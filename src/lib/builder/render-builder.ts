@@ -3,6 +3,7 @@ import { COLOR_PRESETS, DAY_DEFINITIONS, WORKDAY_KEYS } from './constants';
 import { formatSlugPreviewHtml, getSlugPreview } from './slug';
 import { formatAddress, formatHoursLine, futureDomain, generateCopy } from './templates';
 import type { BuilderFiles } from './files';
+import { renderPremiumUpsellNotice } from './packages';
 
 function escapeHtml(value: string): string {
   return value
@@ -63,7 +64,7 @@ export function renderStep1(state: BuilderState, errors: Record<string, string>)
       <h2 id="step-1-title">Stap 1 — Bedrijf</h2>
       <div class="builder-form">
         <label for="business-name">Bedrijfsnaam *
-          <input id="business-name" name="business-name" type="text" value="${escapeHtml(state.business.name)}" autocomplete="organization" required aria-describedby="slug-preview ${errors.name ? 'error-name' : ''}" />
+          <input id="business-name" name="business-name" type="text" value="${escapeHtml(state.business.name)}" placeholder="Uw bedrijfsnaam" autocomplete="organization" required aria-describedby="slug-preview ${errors.name ? 'error-name' : ''}" />
         </label>
         ${fieldError(errors, 'name')}
 
@@ -76,7 +77,7 @@ export function renderStep1(state: BuilderState, errors: Record<string, string>)
             id="industry-search"
             type="search"
             value="${escapeHtml(state.business.industry)}"
-            placeholder="Zoek een branche..."
+            placeholder="Uw branche"
             autocomplete="off"
             role="combobox"
             aria-expanded="false"
@@ -88,7 +89,7 @@ export function renderStep1(state: BuilderState, errors: Record<string, string>)
         ${fieldError(errors, 'industry')}
 
         <label for="business-description">Korte omschrijving *
-          <textarea id="business-description" name="business-description" rows="4" required aria-describedby="${errors.description ? 'error-description' : ''}">${escapeHtml(state.business.description)}</textarea>
+          <textarea id="business-description" name="business-description" rows="4" placeholder="Beschrijf kort uw bedrijf" required aria-describedby="${errors.description ? 'error-description' : ''}">${escapeHtml(state.business.description)}</textarea>
         </label>
         ${fieldError(errors, 'description')}
 
@@ -255,6 +256,8 @@ export function renderStep4(
           ${fieldError(errors, 'accentColor')}
           <p class="builder-hint">Tekstkleur wordt automatisch leesbaar gehouden.</p>
         </fieldset>
+
+        ${renderPremiumUpsellNotice()}
       </div>
     </section>
   `;

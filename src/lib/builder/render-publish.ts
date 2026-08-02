@@ -2,10 +2,16 @@ import type { BuilderState } from '../../types/builder';
 import type { PreparedWebsite } from '../../types/website-config';
 import { getSlugPreview } from './slug';
 import {
+  PREMIUM_PACKAGE_FEATURES,
+  getFreePackageFeatures,
+  renderPackageFeatureList,
+} from './packages';
+import {
   PUBLICATION_STATUS_LABELS,
   WEBSITE_PACKAGE_LABELS,
   publicationStatusBadgeClass,
 } from './publish/status';
+import { placeholderBusinessName } from './placeholders';
 
 function escapeHtml(value: string): string {
   return value
@@ -35,7 +41,7 @@ export function renderPublishForm(state: BuilderState, errors: Record<string, st
 
       <section class="builder-publish-form" aria-labelledby="publish-form-title">
         <h2 id="publish-form-title">Uw website klaarzetten voor publicatie</h2>
-        <p class="builder-lead">Controleer uw gegevens. Na bevestiging bereiden wij uw website technisch voor op <strong>${escapeHtml(state.business.name || 'uw bedrijf')}</strong>.</p>
+        <p class="builder-lead">Controleer uw gegevens. Na bevestiging bereiden wij uw website technisch voor op <strong>${escapeHtml(placeholderBusinessName(state.business.name))}</strong>.</p>
 
         <div class="builder-publish-summary">
           <dl>
@@ -46,20 +52,24 @@ export function renderPublishForm(state: BuilderState, errors: Record<string, st
 
         <fieldset class="builder-package-picker">
           <legend>Kies uw pakket</legend>
-          <label class="builder-package-option">
-            <input type="radio" name="website-package" value="free" ${state.selectedPackage === 'free' ? 'checked' : ''} />
-            <span>
-              <strong>Gratis</strong>
-              <small>Subdomein op starlocal.nl — ${escapeHtml(slug.domain)}</small>
-            </span>
-          </label>
-          <label class="builder-package-option builder-package-option--muted">
-            <input type="radio" name="website-package" value="premium" disabled />
-            <span>
-              <strong>Premium</strong>
-              <small>Eigen domein — beschikbaar in een volgende stap</small>
-            </span>
-          </label>
+          <div class="builder-premium-grid builder-premium-grid--publish">
+            <label class="builder-package-option builder-package-option--card">
+              <input type="radio" name="website-package" value="free" ${state.selectedPackage === 'free' ? 'checked' : ''} />
+              <span class="builder-package-option__content">
+                <strong>Gratis</strong>
+                <small>Subdomein op starlocal.nl — ${escapeHtml(slug.domain)}</small>
+                ${renderPackageFeatureList(getFreePackageFeatures(slug.domain))}
+              </span>
+            </label>
+            <label class="builder-package-option builder-package-option--card builder-package-option--muted">
+              <input type="radio" name="website-package" value="premium" disabled />
+              <span class="builder-package-option__content">
+                <strong>Premium</strong>
+                <small>Volledige huisstijl en eigen domein — beschikbaar in een volgende stap</small>
+                ${renderPackageFeatureList(PREMIUM_PACKAGE_FEATURES)}
+              </span>
+            </label>
+          </div>
         </fieldset>
 
         <label for="publish-email-confirm">Bevestig uw e-mailadres *
@@ -75,7 +85,7 @@ export function renderPublishForm(state: BuilderState, errors: Record<string, st
         </label>
         ${fieldError(errors, 'publishEmail')}
 
-        <p class="builder-publish-form__note">Nog geen echte DNS-koppeling of hosting. Uw website wordt lokaal voorbereid alsof deze gepubliceerd wordt.</p>
+        <p class="builder-publish-form__note">Uw gegevens worden opgeslagen in de database met status Draft. Nog geen live website of DNS-koppeling.</p>
 
         <div class="builder-publish-actions">
           <button type="button" class="btn btn-primary" data-confirm-publish>Website publiceren</button>

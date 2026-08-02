@@ -1,0 +1,55 @@
+---
+export const prerender = false;
+
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import { createRepositories } from '../lib/db';
+import { getDashboardDbBundle, mapDashboardDbBundle } from '../lib/dashboard/get-dashboard-data';
+import type { DashboardViewModel } from '../types/dashboard';
+import { isAuthRedirect, requireAuthSession } from '../lib/auth';
+import type { D1Database } from '../lib/db/d1';
+
+const db = Astro.locals.runtime?.env?.DB as D1Database | undefined;
+const authResult = await requireAuthSession(Astro.request, db, Astro.url);
+
+if (isAuthRedirect(authResult)) {
+  return Astro.redirect(authResult.redirect);
+}
+
+const { session: authSession, tenantId } = authResult;
+const welcome = Astro.url.searchParams.get('welcome') === '1';
+
+let initialData: DashboardViewModel | null = null;
+if (tenantId && db) {
+  const bundle = await getDashboardDbBundle(createRepositories(db), tenantId);
+  if (bundle) {
+    initialData = mapDashboardDbBundle(bundle);
+  }
+}
+---
+
+<DashboardLayout
+  title="Klantendashboard | Star Local"
+  description="Beheer uw website, diensten, contactgegevens, SEO en publicatie-instellingen in uw Star Local klantendashboard."
+  canonical="/dashboard/"
+  userEmail={authSession.user.email}
+>
+  <div class="container dashboard-page-container">
+    {welcome ? (
+      <p class="auth-alert auth-alert--success dashboard-welcome" role="status">
+        Succesvol ingelogd. U kunt nu uw website beheren.
+      </p>
+    ) : null}
+    <div id="dashboard-root" class="dashboard-root" aria-live="polite"></div>
+    <noscript>
+      <p class="dashboard-noscript">
+        Het klantendashboard vereist JavaScript. Schakel JavaScript in om uw website te beheren.
+      </p>
+    </noscript>
+  </div>
+</DashboardLayout>
+
+<script define:vars={{ initialData, tenantId }}>
+  import { initDashboard } from '../lib/dashboard/app';
+
+  initDashboard({ initialData, tenantId });
+</script>

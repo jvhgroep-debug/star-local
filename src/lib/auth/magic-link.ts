@@ -1,34 +1,30 @@
+import type { D1Database } from '../db/d1';
+import { createAuthService, type AuthServiceOptions } from './auth.service';
 import type {
   CreateMagicLinkInput,
   CreateMagicLinkResult,
+  CreateSessionInput,
+  CreateSessionResult,
+  DestroySessionInput,
   ValidateMagicLinkInput,
   ValidateMagicLinkResult,
 } from './types';
 
-/**
- * Creates a magic login link for the given e-mail address.
- *
- * Planned behaviour (not implemented in this phase):
- * - normalize and validate e-mail
- * - upsert user by e-mail
- * - generate cryptographically secure token
- * - store SHA-256 hash in `magic_links`
- * - set expiry (e.g. 15 minutes)
- * - send link via Resend wrapper
- */
-export function createMagicLink(_input: CreateMagicLinkInput): Promise<CreateMagicLinkResult> {
-  throw new Error('createMagicLink is not implemented yet.');
+export async function createMagicLink(db: D1Database, input: CreateMagicLinkInput, options?: AuthServiceOptions): Promise<CreateMagicLinkResult> {
+  return createAuthService(db, options).requestMagicLink(input);
 }
 
-/**
- * Validates a one-time magic link token.
- *
- * Planned behaviour (not implemented in this phase):
- * - hash incoming token and look up `magic_links.token_hash`
- * - reject expired or used tokens
- * - mark token as used
- * - return authenticated user
- */
-export function validateMagicLink(_input: ValidateMagicLinkInput): Promise<ValidateMagicLinkResult> {
-  throw new Error('validateMagicLink is not implemented yet.');
+export async function validateMagicLink(
+  db: D1Database,
+  input: ValidateMagicLinkInput,
+): Promise<ValidateMagicLinkResult> {
+  return createAuthService(db).validateMagicLink(input);
+}
+
+export async function createSession(db: D1Database, input: CreateSessionInput): Promise<CreateSessionResult> {
+  return createAuthService(db).createSession(input);
+}
+
+export async function destroySession(db: D1Database, input: DestroySessionInput): Promise<void> {
+  return createAuthService(db).destroySession(input);
 }

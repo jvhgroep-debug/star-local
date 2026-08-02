@@ -10,6 +10,13 @@ import type { BuilderFiles } from './files';
 import { heroPhotoUrl } from './files';
 import { getSlugPreview } from './slug';
 import { formatAddress, generateCopy } from './templates';
+import {
+  BUILDER_PLACEHOLDERS,
+  placeholderBusinessName,
+  placeholderDescription,
+  placeholderIndustry,
+  placeholderRegion,
+} from './placeholders';
 
 export interface BuildWebsiteConfigOptions {
   status?: PublicationStatus;
@@ -20,8 +27,8 @@ export interface BuildWebsiteConfigOptions {
 }
 
 function generateServices(state: BuilderState, copy: ReturnType<typeof generateCopy>): WebsiteService[] {
-  const city = state.contact.city.trim() || 'uw regio';
-  const industry = state.business.industry.trim().toLowerCase() || 'dienstverlener';
+  const hasCity = Boolean(state.contact.city.trim());
+  const hasName = Boolean(state.business.name.trim());
 
   return state.business.services
     .filter((service) => service.title.trim())
@@ -30,10 +37,14 @@ function generateServices(state: BuilderState, copy: ReturnType<typeof generateC
       const description = service.description.trim();
       const summary =
         description ||
-        `${title} door ${state.business.name.trim() || 'ons team'} — professioneel uitgevoerd in ${city}.`;
+        (hasName && hasCity
+          ? `${title} door ${state.business.name.trim()} — professioneel uitgevoerd in ${state.contact.city.trim()}.`
+          : BUILDER_PLACEHOLDERS.description);
       const detail =
         description ||
-        `${copy.localTitle} helpt u met ${title.toLowerCase()}. Als ${industry} in ${city} leveren wij vakwerk, duidelijke afspraken en een nette afwerking. Neem contact op voor een vrijblijvende offerte.`;
+        (hasName && hasCity
+          ? `${copy.localTitle} helpt u met ${title.toLowerCase()}. Als ${state.business.industry.trim().toLowerCase()} in ${state.contact.city.trim()} leveren wij vakwerk, duidelijke afspraken en een nette afwerking. Neem contact op voor een vrijblijvende offerte.`
+          : BUILDER_PLACEHOLDERS.description);
 
       return {
         id: service.id,
@@ -53,9 +64,11 @@ export function buildWebsiteConfig(
 ): WebsiteConfig {
   const copy = generateCopy(state);
   const slugPreview = getSlugPreview(state.business.name);
-  const name = state.business.name.trim() || 'Uw bedrijf';
-  const city = state.contact.city.trim() || 'uw regio';
-  const industry = state.business.industry.trim() || 'Lokale dienstverlener';
+  const name = placeholderBusinessName(state.business.name);
+  const city = placeholderRegion(state.contact.city);
+  const industry = placeholderIndustry(state.business.industry);
+  const hasIndustry = Boolean(state.business.industry.trim());
+  const hasCity = Boolean(state.contact.city.trim());
   const domain = slugPreview.domain;
   const status = options.status ?? state.publicationStatus ?? 'concept';
   const websitePackage = options.package ?? state.selectedPackage ?? 'free';
@@ -99,7 +112,11 @@ export function buildWebsiteConfig(
       contact: `Voor vragen over privacy kunt u contact opnemen via ${state.contact.email.trim() || 'ons contactformulier'}${state.contact.phone.trim() ? ` of telefonisch via ${state.contact.phone.trim()}` : ''}. Ons adres: ${formatAddress(state) || city}.`,
     },
     whyChooseUs: [
-      `Lokale ${industry.toLowerCase()} in ${city}`,
+      hasIndustry && hasCity
+        ? `${state.business.industry.trim()} in ${state.contact.city.trim()}`
+        : hasIndustry
+          ? state.business.industry.trim()
+          : BUILDER_PLACEHOLDERS.industry,
       'Persoonlijke service en duidelijke communicatie',
       'Transparante afspraken en professionele uitvoering',
       'Bereikbaar via telefoon, WhatsApp en e-mail',
@@ -107,6 +124,9 @@ export function buildWebsiteConfig(
     publishEmail: options.publishEmail ?? state.publishEmailConfirmed ?? state.contact.email,
     publishedAt: options.publishedAt ?? state.publishedAt ?? null,
     preparedAt: options.preparedAt ?? null,
+    heroTitle: state.heroTitle,
+    heroSubtitle: state.heroSubtitle,
+    design: state.design,
   };
 }
 
@@ -125,5 +145,11 @@ export function configAsBuilderState(config: WebsiteConfig): BuilderState {
     selectedPackage: config.package,
     publishEmailConfirmed: config.publishEmail,
     publishedAt: config.publishedAt,
+    ctaQuoteLabel: config.copy.ctaLabel,
+    heroTitle: config.heroTitle,
+    heroSubtitle: config.heroSubtitle,
+    design: config.design,
+    heroPlaceholder: 'Hero-afbeelding placeholder',
+    galleryPlaceholders: ['Galerij 1', 'Galerij 2', 'Galerij 3'],
   };
 }

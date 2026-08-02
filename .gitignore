@@ -10,3 +10,4 @@ dist/
 *.log
 scripts/*-baseline*.log
 scripts/baseline-*.log
+scripts/generate-log.txt

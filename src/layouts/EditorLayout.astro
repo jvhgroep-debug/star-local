@@ -1,0 +1,39 @@
+---
+import SeoHead from '../components/SeoHead.astro';
+import '../styles/global.css';
+import '../styles/builder.css';
+import '../styles/editor.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <SeoHead locale="nl" {title} {description} canonicalPath="/dashboard/editor/" noindex={true} />
+  </head>
+  <body class="pro-editor-page-body">
+    <div id="website-editor-root" class="website-editor-root"></div>
+    <noscript>
+      <p class="editor-noscript">De Website Builder vereist JavaScript.</p>
+    </noscript>
+  </body>
+</html>
+
+<style>
+  .pro-editor-page-body {
+    margin: 0;
+    min-height: 100vh;
+    background: #070b10;
+    overflow: hidden;
+  }
+
+  .website-editor-root {
+    min-height: 100vh;
+  }
+</style>

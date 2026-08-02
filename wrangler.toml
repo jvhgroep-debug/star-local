@@ -9,3 +9,9 @@ pages_build_output_dir = "dist"
 binding = "DB"
 database_name = "star-local-saas-dev"
 migrations_dir = "migrations"
+
+# Development R2 (local: wrangler r2 object put/get against star-local-saas-media-dev)
+# Production bucket_name is intentionally dev-only in this phase.
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "star-local-saas-media-dev"

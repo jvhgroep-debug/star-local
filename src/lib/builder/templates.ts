@@ -1,10 +1,24 @@
 import type { BuilderState, DayHours } from '../../types/builder';
+import type { PreviewPage, PreparedWebsite } from '../../types/website-config';
 import type { BuilderFiles } from './files';
+import { buildPageSeo } from './generator/seo';
 import { buildWebsiteConfig } from './website-config';
 import { getSlugPreview } from './slug';
+import {
+  PREMIUM_PACKAGE_FEATURES,
+  getFreePackageFeatures,
+  renderPackageFeatureList,
+} from './packages';
+import {
+  BUILDER_PLACEHOLDERS,
+  placeholderBusinessName,
+  placeholderDescription,
+  placeholderRegion,
+} from './placeholders';
 
 export interface GeneratedCopy {
   localTitle: string;
+  slogan: string;
   homeIntro: string;
   heroDescription: string;
   aboutIntro: string;
@@ -21,49 +35,73 @@ export interface GeneratedCopy {
   ctaLabel: string;
 }
 
-function industryLabel(industry: string): string {
-  const value = industry.trim().toLowerCase();
-  return value || 'dienstverlener';
-}
-
 /** "Bedrijfsnaam in Plaats" — centrale lokale SEO-formule. */
 export function localBusinessTitle(name: string, city: string): string {
-  const business = name.trim() || 'Uw bedrijf';
+  const business = placeholderBusinessName(name);
   const place = city.trim();
   return place ? `${business} in ${place}` : business;
 }
 
 export function generateCopy(state: BuilderState): GeneratedCopy {
   const { business, contact } = state;
-  const name = business.name.trim() || 'Uw bedrijf';
-  const industry = industryLabel(business.industry);
-  const industryDisplay = business.industry.trim() || 'Lokale dienstverlener';
-  const city = contact.city.trim() || 'uw regio';
+  const name = placeholderBusinessName(business.name);
   const slug = getSlugPreview(business.name);
-  const localTitle = localBusinessTitle(name, contact.city.trim());
-  const description =
-    business.description.trim() ||
-    `Wij helpen klanten in ${city} met vakkundige ${industryDisplay.toLowerCase()} en duidelijke afspraken.`;
+  const localTitle = localBusinessTitle(business.name, contact.city.trim());
 
-  const aboutBody = `${name} is een ${industryDisplay.toLowerCase()} in ${city}. ${description}`;
-  const aboutExtended = `${aboutBody} Als ${industryDisplay.toLowerCase()} in ${city} staan wij bekend om betrouwbare service, duidelijke communicatie en een professionele aanpak. Neem gerust contact op — wij denken graag met u mee.`;
+  const hasDescription = Boolean(business.description.trim());
+  const hasIndustry = Boolean(business.industry.trim());
+  const hasCity = Boolean(contact.city.trim());
+
+  const description = placeholderDescription(business.description);
+  const regionDisplay = placeholderRegion(contact.city);
+
+  const aboutBody = hasDescription
+    ? `${name} is een ${business.industry.trim().toLowerCase()} in ${hasCity ? contact.city.trim() : regionDisplay}. ${business.description.trim()}`
+    : BUILDER_PLACEHOLDERS.description;
+
+  const aboutExtended = hasDescription
+    ? `${aboutBody} Als ${business.industry.trim().toLowerCase()} in ${hasCity ? contact.city.trim() : regionDisplay} staan wij bekend om betrouwbare service, duidelijke communicatie en een professionele aanpak. Neem gerust contact op — wij denken graag met u mee.`
+    : BUILDER_PLACEHOLDERS.description;
+
+  const slogan =
+    hasIndustry && hasCity
+      ? `Professionele ${business.industry.trim().toLowerCase()} in ${contact.city.trim()}`
+      : hasIndustry
+        ? `Professionele ${business.industry.trim().toLowerCase()}`
+        : BUILDER_PLACEHOLDERS.industry;
+
+  const homeIntro =
+    hasDescription || hasIndustry || hasCity
+      ? `Welkom bij ${localTitle}. Uw betrouwbare ${hasIndustry ? business.industry.trim().toLowerCase() : BUILDER_PLACEHOLDERS.industry.toLowerCase()} in de regio.`
+      : BUILDER_PLACEHOLDERS.description;
+
+  const seoTitle =
+    hasCity || hasIndustry ? `${localTitle}${hasIndustry ? ` | ${business.industry.trim()}` : ''}` : name;
+
+  const seoDescription =
+    hasCity && hasIndustry
+      ? `${localTitle} — ${business.industry.trim().toLowerCase()}. Bekijk diensten, openingstijden en neem direct contact op.`
+      : description;
 
   return {
     localTitle,
-    homeIntro: `Welkom bij ${localTitle}. Uw betrouwbare ${industry} in de regio.`,
+    slogan,
+    homeIntro,
     heroDescription: description,
     aboutIntro: `Over ${name}`,
     aboutBody,
     aboutExtended,
-    servicesIntro: `Ontdek wat ${localTitle} voor u kan betekenen.`,
-    contactIntro: `Neem contact op met ${localTitle}. Wij reageren zo snel mogelijk op uw vraag.`,
+    servicesIntro: hasCity || hasIndustry ? `Ontdek wat ${localTitle} voor u kan betekenen.` : BUILDER_PLACEHOLDERS.description,
+    contactIntro: hasCity || hasIndustry
+      ? `Neem contact op met ${localTitle}. Wij reageren zo snel mogelijk op uw vraag.`
+      : BUILDER_PLACEHOLDERS.description,
     privacyIntro: `${name} hecht waarde aan uw privacy. Op deze pagina leest u hoe wij omgaan met uw gegevens.`,
-    seoTitle: `${localTitle} | ${industryDisplay}`,
-    seoDescription: `${localTitle} — ${industryDisplay.toLowerCase()}. Bekijk diensten, openingstijden en neem direct contact op.`,
+    seoTitle,
+    seoDescription,
     ogTitle: localTitle,
-    canonicalUrl: slug.slug ? `https://${slug.domain}/` : 'https://uw-bedrijf.starlocal.nl/',
+    canonicalUrl: slug.slug ? `https://${slug.domain}/` : `https://${BUILDER_PLACEHOLDERS.domain}/`,
     h1: localTitle,
-    ctaLabel: 'Offerte aanvragen',
+    ctaLabel: state.ctaQuoteLabel?.trim() || 'Offerte aanvragen',
   };
 }
 
@@ -124,6 +162,32 @@ export function futureDomain(state: BuilderState): string {
 
 export function applyPreviewSeo(state: BuilderState, files: BuilderFiles): void {
   const website = buildWebsiteConfig(state, files);
+  applySeoBundle(website.seo.title, {
+    title: website.seo.title,
+    description: website.seo.description,
+    ogTitle: website.seo.ogTitle,
+    ogDescription: website.seo.description,
+    canonicalUrl: website.seo.canonicalUrl,
+  }, website.localBusinessSchema);
+}
+
+export function applyPreparedPreviewSeo(prepared: PreparedWebsite, page: PreviewPage): void {
+  const seo = prepared.seoByPage?.[page] ?? buildPageSeo(prepared.config, page);
+  applySeoBundle(seo.title, seo, prepared.config.localBusinessSchema);
+}
+
+function applySeoBundle(
+  documentTitle: string,
+  seo: {
+    title: string;
+    description: string;
+    ogTitle: string;
+    ogDescription: string;
+    canonicalUrl: string;
+  },
+  localBusinessSchema: Record<string, unknown>,
+): void {
+  document.title = documentTitle;
 
   const setMeta = (attr: 'name' | 'property', key: string, content: string) => {
     let el = document.querySelector(`meta[${attr}="${key}"]`) as HTMLMetaElement | null;
@@ -135,10 +199,10 @@ export function applyPreviewSeo(state: BuilderState, files: BuilderFiles): void 
     el.content = content;
   };
 
-  setMeta('name', 'description', website.seo.description);
-  setMeta('property', 'og:title', website.seo.ogTitle);
-  setMeta('property', 'og:description', website.seo.description);
-  setMeta('property', 'og:url', website.seo.canonicalUrl);
+  setMeta('name', 'description', seo.description);
+  setMeta('property', 'og:title', seo.ogTitle);
+  setMeta('property', 'og:description', seo.ogDescription);
+  setMeta('property', 'og:url', seo.canonicalUrl);
 
   let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
   if (!canonical) {
@@ -146,7 +210,7 @@ export function applyPreviewSeo(state: BuilderState, files: BuilderFiles): void 
     canonical.rel = 'canonical';
     document.head.appendChild(canonical);
   }
-  canonical.href = website.seo.canonicalUrl;
+  canonical.href = seo.canonicalUrl;
 
   let schemaScript = document.querySelector('#builder-preview-schema') as HTMLScriptElement | null;
   if (!schemaScript) {
@@ -155,7 +219,7 @@ export function applyPreviewSeo(state: BuilderState, files: BuilderFiles): void 
     schemaScript.type = 'application/ld+json';
     document.head.appendChild(schemaScript);
   }
-  schemaScript.textContent = JSON.stringify(website.localBusinessSchema);
+  schemaScript.textContent = JSON.stringify(localBusinessSchema);
 }
 
 export function resetPreviewSeo(): void {
@@ -165,25 +229,20 @@ export function resetPreviewSeo(): void {
 
 export function renderPremiumBlock(state: BuilderState): string {
   const domain = futureDomain(state);
+  const freeFeatures = getFreePackageFeatures(domain);
+
   return `
     <section class="builder-premium-block" aria-labelledby="premium-block-title">
       <h2 id="premium-block-title">Kies uw pakket</h2>
       <div class="builder-premium-grid">
         <article class="builder-premium-card">
           <h3>Gratis</h3>
-          <ul>
-            <li>✓ ${domain}</li>
-          </ul>
+          ${renderPackageFeatureList(freeFeatures)}
         </article>
         <article class="builder-premium-card builder-premium-card--highlight">
           <h3>Premium</h3>
-          <ul>
-            <li>✓ Eigen domein</li>
-            <li>✓ Eigen e-mail</li>
-            <li>✓ Meer SEO</li>
-            <li>✓ Prioriteit</li>
-          </ul>
-          <button type="button" class="btn btn-secondary" data-premium-upgrade>Later upgraden</button>
+          ${renderPackageFeatureList(PREMIUM_PACKAGE_FEATURES)}
+          <button type="button" class="btn btn-secondary" data-premium-upgrade>Upgrade naar Premium</button>
         </article>
       </div>
     </section>

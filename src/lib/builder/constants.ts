@@ -1,4 +1,7 @@
 import type { DayHours, DayKey } from '../../types/builder';
+import { DEFAULT_DESIGN_SETTINGS } from '../../types/builder';
+
+export { DEFAULT_DESIGN_SETTINGS };
 
 export const BUILDER_STORAGE_KEY = 'starlocal-website-builder-v1';
 

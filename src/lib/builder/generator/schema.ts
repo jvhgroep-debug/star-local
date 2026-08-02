@@ -3,6 +3,7 @@ import type { GeneratedCopy } from '../templates';
 import { formatAddress, formatTelLink, futureDomain } from '../templates';
 import type { BuilderFiles } from '../files';
 import { getSlugPreview } from '../slug';
+import { placeholderBusinessName } from '../placeholders';
 
 /** Build LocalBusiness JSON-LD from generated website data. */
 export function buildLocalBusinessSchema(
@@ -17,7 +18,7 @@ export function buildLocalBusinessSchema(
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    name: state.business.name.trim() || 'Uw bedrijf',
+    name: placeholderBusinessName(state.business.name),
     description: copy.seoDescription,
     url: copy.canonicalUrl,
     image: files.photoUrls[0] ?? files.logoUrl ?? undefined,

@@ -1,0 +1,49 @@
+---
+import SeoHead from '../components/SeoHead.astro';
+import '../styles/global.css';
+import '../styles/auth.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  userEmail?: string | null;
+}
+
+const {
+  title,
+  description,
+  canonical = Astro.url.pathname,
+  userEmail = null,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <SeoHead locale="nl" {title} {description} canonicalPath={canonical} noindex={true} />
+  </head>
+  <body class="auth-page-body">
+    <a href="#auth-main" class="skip-link">Ga naar inhoud</a>
+    <header class="auth-page-header">
+      <div class="container auth-page-header__inner">
+        <a href="/" class="auth-page-brand" aria-label="Star Local home">
+          <span>Star Local</span>
+        </a>
+        {userEmail ? (
+          <div class="auth-page-user">
+            <span class="auth-page-user__email">{userEmail}</span>
+            <a href="/logout/" class="auth-page-logout">Uitloggen</a>
+          </div>
+        ) : (
+          <a href="/gratis-website/" class="auth-page-back">Website maken</a>
+        )}
+      </div>
+    </header>
+    <main id="auth-main" class="auth-page-main">
+      <div class="container auth-page-container">
+        <slot />
+      </div>
+    </main>
+  </body>
+</html>

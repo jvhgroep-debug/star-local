@@ -20,6 +20,7 @@ export interface UserRow {
 export interface MagicLink {
   id: string;
   userId: string;
+  tenantId: string | null;
   tokenHash: string;
   expiresAt: IsoDateTime;
   usedAt: IsoDateTime | null;
@@ -30,10 +31,64 @@ export interface MagicLink {
 export interface MagicLinkRow {
   id: string;
   user_id: string;
+  tenant_id: string | null;
   token_hash: string;
   expires_at: IsoDateTime;
   used_at: IsoDateTime | null;
   created_at: IsoDateTime;
+}
+
+/** Application-layer session record. */
+export interface SessionRecord {
+  id: string;
+  userId: string;
+  tenantId: string | null;
+  tokenHash: string;
+  expiresAt: IsoDateTime;
+  createdAt: IsoDateTime;
+}
+
+/** D1 row shape for `sessions`. */
+export interface SessionRow {
+  id: string;
+  user_id: string;
+  tenant_id: string | null;
+  token_hash: string;
+  expires_at: IsoDateTime;
+  created_at: IsoDateTime;
+}
+
+export interface CreateUserInput {
+  id: string;
+  email: string;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface CreateMagicLinkInputDb {
+  id: string;
+  userId: string;
+  tenantId: string | null;
+  tokenHash: string;
+  expiresAt: IsoDateTime;
+  createdAt: IsoDateTime;
+}
+
+export interface CreateTenantUserInput {
+  id: string;
+  tenantId: string;
+  userId: string;
+  role: TenantUserRole;
+  createdAt: IsoDateTime;
+}
+
+export interface CreateSessionInputDb {
+  id: string;
+  userId: string;
+  tenantId: string | null;
+  tokenHash: string;
+  expiresAt: IsoDateTime;
+  createdAt: IsoDateTime;
 }
 
 /** Application-layer tenant membership record. */
@@ -54,11 +109,12 @@ export interface TenantUserRow {
   created_at: IsoDateTime;
 }
 
-/** D1 row shape for `tenants` (snake_case columns). */
+/** D1 row shape for `tenants` (snake_case columns). `name` = bedrijfsnaam. */
 export interface TenantRow {
   id: string;
   slug: string;
   name: string;
+  branche: string;
   status: TenantStatus;
   created_at: IsoDateTime;
   updated_at: IsoDateTime;

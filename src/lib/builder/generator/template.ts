@@ -1,5 +1,5 @@
-import type { BuilderState, PreviewPage } from '../../types/builder';
-import type { WebsiteConfig } from '../../types/website-config';
+import type { BuilderState, PreviewPage, BuilderDesignSettings } from '../../../types/builder';
+import type { WebsiteConfig } from '../../../types/website-config';
 import type { BuilderFiles } from '../files';
 import { readableTextColor } from '../colors';
 import {
@@ -10,7 +10,16 @@ import {
   formatWhatsAppLink,
   mapsRouteUrl,
 } from '../templates';
+import type { PageSeoBundle } from './seo';
+import { buildPageSeo, tenantPagePath } from './seo';
 import { buildWebsiteConfig, configAsBuilderState } from '../website-config';
+import {
+  BUILDER_PLACEHOLDERS,
+  placeholderBusinessName,
+  placeholderDescription,
+  placeholderIndustry,
+  placeholderRegion,
+} from '../placeholders';
 
 function escapeHtml(value: string): string {
   return value
@@ -20,19 +29,74 @@ function escapeHtml(value: string): string {
     .replace(/"/g, '&quot;');
 }
 
+export interface RenderWebsiteOptions {
+  editorMode?: boolean;
+  /** Standalone HTML output with real href links (for production documents). */
+  standalone?: boolean;
+}
+
+function renderInternalPageControl(
+  page: PreviewPage,
+  label: string,
+  className: string,
+  standalone: boolean,
+  activePage?: PreviewPage,
+): string {
+  if (standalone) {
+    const active = activePage === page ? ' is-active' : '';
+    return `<a class="${className}${active}" href="${tenantPagePath(page)}">${escapeHtml(label)}</a>`;
+  }
+  const active = activePage === page ? ' is-active' : '';
+  return `<button type="button" class="${className}${active}" data-preview-page="${page}">${escapeHtml(label)}</button>`;
+}
+
+function editorFieldAttr(field: string, editorMode: boolean): string {
+  return editorMode ? ` data-editor-field="${field}" contenteditable="plaintext-only" spellcheck="true"` : '';
+}
+
+function designFontStack(font: BuilderDesignSettings['fontFamily']): string {
+  switch (font) {
+    case 'serif':
+      return "Georgia, 'Times New Roman', serif";
+    case 'modern':
+      return "'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+    case 'display':
+      return "'Trebuchet MS', 'Gill Sans', sans-serif";
+    default:
+      return "system-ui, -apple-system, 'Segoe UI', sans-serif";
+  }
+}
+
+function designRadius(radius: BuilderDesignSettings['cornerRadius']): string {
+  switch (radius) {
+    case 'sharp':
+      return '4px';
+    case 'pill':
+      return '999px';
+    default:
+      return '10px';
+  }
+}
+
 export function renderExampleDomainBar(domain: string): string {
   return `
     <div class="builder-example-domain" aria-label="Voorbeeld website-adres">
       <span class="builder-example-domain__label">Voorbeeld:</span>
-      <strong class="builder-example-domain__value">${escapeHtml(domain || 'uw-bedrijf.starlocal.nl')}</strong>
+      <strong class="builder-example-domain__value">${escapeHtml(domain || BUILDER_PLACEHOLDERS.domain)}</strong>
     </div>
   `;
 }
 
-function renderCtas(state: BuilderState): string {
+function renderCtas(state: BuilderState, editorMode = false, standalone = false): string {
   const phoneLink = formatTelLink(state.contact.phone);
   const whatsappLink = formatWhatsAppLink(state.contact.whatsapp);
   const routeLink = mapsRouteUrl(state);
+  const quoteLabel = escapeHtml(state.ctaQuoteLabel?.trim() || 'Offerte aanvragen');
+  const quoteBtn = editorMode
+    ? `<span class="tenant-btn tenant-btn--accent tenant-btn--editable" data-preview-page="contact" data-editor-field="cta.quote" contenteditable="plaintext-only" spellcheck="true">${quoteLabel}</span>`
+    : standalone
+      ? `<a class="tenant-btn tenant-btn--accent" href="${tenantPagePath('contact')}">${quoteLabel}</a>`
+      : `<button type="button" class="tenant-btn tenant-btn--accent" data-preview-page="contact">${quoteLabel}</button>`;
 
   return `
     <div class="tenant-cta-bar">
@@ -46,7 +110,7 @@ function renderCtas(state: BuilderState): string {
           ? `<a class="tenant-btn tenant-btn--whatsapp" href="${whatsappLink}" target="_blank" rel="noopener noreferrer">WhatsApp</a>`
           : `<span class="tenant-btn tenant-btn--ghost">WhatsApp</span>`
       }
-      <button type="button" class="tenant-btn tenant-btn--accent" data-preview-page="contact">Offerte aanvragen</button>
+      ${quoteBtn}
       ${
         routeLink !== '#'
           ? `<a class="tenant-btn tenant-btn--outline" href="${routeLink}" target="_blank" rel="noopener noreferrer">Route</a>`
@@ -56,56 +120,58 @@ function renderCtas(state: BuilderState): string {
   `;
 }
 
-function renderHeader(config: WebsiteConfig, activePage: PreviewPage): string {
+function renderHeader(config: WebsiteConfig, activePage: PreviewPage, editorMode = false, standalone = false): string {
   const state = configAsBuilderState(config);
   const logo = config.media.logoUrl;
-  const name = escapeHtml(config.business.name || 'Uw bedrijf');
+  const name = escapeHtml(placeholderBusinessName(config.business.name));
 
-  const navItem = (page: PreviewPage, label: string) => {
-    const active = activePage === page ? ' is-active' : '';
-    return `<button type="button" class="tenant-nav__link${active}" data-preview-page="${page}">${escapeHtml(label)}</button>`;
-  };
+  const brandInner = `
+          ${logo ? `<img src="${logo}" alt="" class="tenant-logo" />` : '<span class="tenant-logo-fallback" aria-hidden="true"></span>'}
+          <span class="tenant-brand__text">
+            <span class="tenant-brand__name"${editorFieldAttr('business.name', editorMode)}>${name}</span>
+            ${state.contact.city.trim() ? `<span class="tenant-brand__city">${escapeHtml(state.contact.city.trim())}</span>` : ''}
+          </span>`;
+
+  const brand = standalone
+    ? `<a class="tenant-brand" href="${tenantPagePath('home')}" aria-label="${name} home">${brandInner}</a>`
+    : `<button type="button" class="tenant-brand" data-preview-page="home" aria-label="${name} home">${brandInner}</button>`;
 
   return `
     <header class="tenant-header">
       <div class="tenant-header__inner">
-        <button type="button" class="tenant-brand" data-preview-page="home" aria-label="${name} home">
-          ${logo ? `<img src="${logo}" alt="" class="tenant-logo" />` : '<span class="tenant-logo-fallback" aria-hidden="true"></span>'}
-          <span class="tenant-brand__text">
-            <span class="tenant-brand__name">${name}</span>
-            ${state.contact.city.trim() ? `<span class="tenant-brand__city">${escapeHtml(state.contact.city.trim())}</span>` : ''}
-          </span>
-        </button>
+        ${brand}
         <button type="button" class="tenant-menu-toggle" aria-expanded="false" aria-controls="tenant-main-nav" aria-label="Menu openen">
           <span></span><span></span><span></span>
         </button>
         <nav id="tenant-main-nav" class="tenant-nav" aria-label="Hoofdnavigatie">
-          ${navItem('home', 'Home')}
-          ${navItem('about', 'Over ons')}
-          ${navItem('services', 'Diensten')}
-          ${navItem('contact', 'Contact')}
+          ${renderInternalPageControl('home', 'Home', 'tenant-nav__link', standalone, activePage)}
+          ${renderInternalPageControl('about', 'Over ons', 'tenant-nav__link', standalone, activePage)}
+          ${renderInternalPageControl('services', 'Diensten', 'tenant-nav__link', standalone, activePage)}
+          ${renderInternalPageControl('contact', 'Contact', 'tenant-nav__link', standalone, activePage)}
         </nav>
       </div>
     </header>
   `;
 }
 
-function renderSeoMeta(config: WebsiteConfig): string {
+function renderSeoMeta(_config: WebsiteConfig, _page: PreviewPage, _pageSeo: PageSeoBundle, standalone = false): string {
+  if (standalone) return '';
   return `
     <div class="tenant-seo-sr" aria-hidden="true">
-      <span data-seo-h1>${escapeHtml(config.seo.h1)}</span>
-      <span data-seo-title>${escapeHtml(config.seo.title)}</span>
-      <span data-seo-description>${escapeHtml(config.seo.description)}</span>
-      <span data-seo-og>${escapeHtml(config.seo.ogTitle)}</span>
-      <span data-seo-canonical>${escapeHtml(config.seo.canonicalUrl)}</span>
+      <span data-seo-h1>${escapeHtml(_pageSeo.h1)}</span>
+      <span data-seo-title>${escapeHtml(_pageSeo.title)}</span>
+      <span data-seo-description>${escapeHtml(_pageSeo.description)}</span>
+      <span data-seo-og>${escapeHtml(_pageSeo.ogTitle)}</span>
+      <span data-seo-og-description>${escapeHtml(_pageSeo.ogDescription)}</span>
+      <span data-seo-canonical>${escapeHtml(_pageSeo.canonicalUrl)}</span>
     </div>
-    <script type="application/ld+json">${JSON.stringify(config.localBusinessSchema)}</script>
+    <script type="application/ld+json">${JSON.stringify(_config.localBusinessSchema)}</script>
   `;
 }
 
-function renderFooter(config: WebsiteConfig): string {
+function renderFooter(config: WebsiteConfig, standalone = false): string {
   const state = configAsBuilderState(config);
-  const name = escapeHtml(config.business.name || 'Uw bedrijf');
+  const name = escapeHtml(placeholderBusinessName(config.business.name));
   const phone = config.contact.phone.trim();
   const email = config.contact.email.trim();
   const cityLine = escapeHtml(formatCityLine(state));
@@ -115,7 +181,7 @@ function renderFooter(config: WebsiteConfig): string {
       <div class="tenant-footer__inner">
         <div class="tenant-footer__col">
           <strong>${escapeHtml(config.copy.localTitle)}</strong>
-          <p>${escapeHtml(config.business.industry || 'Lokale dienstverlener')}</p>
+          <p>${escapeHtml(placeholderIndustry(config.business.industry))}</p>
         </div>
         <div class="tenant-footer__col">
           <strong>Contact</strong>
@@ -124,7 +190,11 @@ function renderFooter(config: WebsiteConfig): string {
           ${cityLine ? `<p>${cityLine}</p>` : ''}
         </div>
         <div class="tenant-footer__col">
-          <button type="button" class="tenant-footer__link" data-preview-page="privacy">Privacybeleid</button>
+          ${
+            standalone
+              ? `<a class="tenant-footer__link" href="${tenantPagePath('privacy')}">Privacybeleid</a>`
+              : `<button type="button" class="tenant-footer__link" data-preview-page="privacy">Privacybeleid</button>`
+          }
         </div>
       </div>
       <div class="tenant-footer__bottom">
@@ -202,26 +272,33 @@ function renderLightbox(config: WebsiteConfig): string {
   `;
 }
 
-function renderMobileBar(config: WebsiteConfig): string {
+function renderMobileBar(config: WebsiteConfig, standalone = false): string {
   const state = configAsBuilderState(config);
   const phoneLink = formatTelLink(state.contact.phone);
   const whatsappLink = formatWhatsAppLink(state.contact.whatsapp);
+  const quoteLabel = escapeHtml(state.ctaQuoteLabel?.trim() || config.copy.ctaLabel || 'Offerte aanvragen');
 
   if (!phoneLink && !whatsappLink) return '';
+
+  const quoteControl = standalone
+    ? `<a class="tenant-mobile-bar__btn tenant-mobile-bar__btn--quote" href="${tenantPagePath('contact')}">${quoteLabel}</a>`
+    : `<button type="button" class="tenant-mobile-bar__btn tenant-mobile-bar__btn--quote" data-preview-page="contact">${quoteLabel}</button>`;
 
   return `
     <div class="tenant-mobile-bar" aria-label="Snelle contactknoppen">
       ${phoneLink ? `<a class="tenant-mobile-bar__btn" href="${phoneLink}">Bel direct</a>` : ''}
       ${whatsappLink ? `<a class="tenant-mobile-bar__btn tenant-mobile-bar__btn--wa" href="${whatsappLink}" target="_blank" rel="noopener noreferrer">WhatsApp</a>` : ''}
-      <button type="button" class="tenant-mobile-bar__btn tenant-mobile-bar__btn--quote" data-preview-page="contact">Offerte</button>
+      ${quoteControl}
     </div>
   `;
 }
 
-function renderPageHome(config: WebsiteConfig): string {
+function renderPageHome(config: WebsiteConfig, editorMode = false, standalone = false): string {
   const state = configAsBuilderState(config);
   const { copy } = config;
   const hero = config.media.heroImageUrl;
+  const heroTitle = config.heroTitle?.trim() || copy.h1;
+  const heroSubtitle = config.heroSubtitle?.trim() || copy.slogan;
 
   const serviceCards =
     config.services.length > 0
@@ -237,17 +314,18 @@ function renderPageHome(config: WebsiteConfig): string {
             `,
           )
           .join('')}</div>
-          ${config.services.length > 3 ? `<p class="tenant-link-wrap"><button type="button" class="tenant-link" data-preview-page="services">Bekijk alle diensten</button></p>` : ''}`
+          ${config.services.length > 3 ? `<p class="tenant-link-wrap">${renderInternalPageControl('services', 'Bekijk alle diensten', 'tenant-link', standalone)}</p>` : ''}`
       : '<p class="tenant-muted">Voeg diensten toe in de builder om ze hier te tonen.</p>';
 
   return `
     <section class="tenant-hero" ${hero ? `style="--tenant-hero-image:url('${hero}')"` : ''}>
       <div class="tenant-hero__overlay">
         <div class="tenant-hero__content">
-          <p class="tenant-hero__eyebrow">${escapeHtml(config.business.industry || 'Lokale dienstverlener')}</p>
-          <h1>${escapeHtml(copy.h1)}</h1>
-          <p class="tenant-hero__text">${escapeHtml(copy.heroDescription)}</p>
-          ${renderCtas(state)}
+          <p class="tenant-hero__eyebrow"${editorFieldAttr('business.industry', editorMode)}>${escapeHtml(placeholderIndustry(config.business.industry))}</p>
+          <h1${editorFieldAttr('hero.title', editorMode)}>${escapeHtml(heroTitle)}</h1>
+          ${heroSubtitle ? `<p class="tenant-hero__slogan"${editorFieldAttr('hero.subtitle', editorMode)}>${escapeHtml(heroSubtitle)}</p>` : ''}
+          <p class="tenant-hero__text"${editorFieldAttr('hero.description', editorMode)}>${escapeHtml(copy.heroDescription)}</p>
+          ${renderCtas(state, editorMode, standalone)}
         </div>
       </div>
     </section>
@@ -273,7 +351,7 @@ function renderPageHome(config: WebsiteConfig): string {
       <div class="tenant-section__inner tenant-split">
         <div>
           <p class="tenant-section__eyebrow">Waarom kiezen voor ons</p>
-          <h2>Waarom ${escapeHtml(config.business.name || 'ons')}?</h2>
+          <h2>Waarom ${escapeHtml(placeholderBusinessName(config.business.name))}?</h2>
           <ul class="tenant-checklist">
             ${config.whyChooseUs.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
           </ul>
@@ -281,7 +359,7 @@ function renderPageHome(config: WebsiteConfig): string {
         <div class="tenant-about-card">
           <h3>${escapeHtml(copy.localTitle)}</h3>
           <p>${escapeHtml(copy.aboutExtended.slice(0, 220))}${copy.aboutExtended.length > 220 ? '…' : ''}</p>
-          <button type="button" class="tenant-link" data-preview-page="about">Meer over ons</button>
+          ${renderInternalPageControl('about', 'Meer over ons', 'tenant-link', standalone)}
         </div>
       </div>
     </section>
@@ -292,13 +370,13 @@ function renderPageHome(config: WebsiteConfig): string {
       <div class="tenant-section__inner tenant-section__inner--narrow tenant-cta-banner__inner">
         <h2>Klaar om contact op te nemen?</h2>
         <p class="tenant-lead">${escapeHtml(copy.contactIntro)}</p>
-        ${renderCtas(state)}
+        ${renderCtas(state, false, standalone)}
       </div>
     </section>
   `;
 }
 
-function renderPageAbout(config: WebsiteConfig): string {
+function renderPageAbout(config: WebsiteConfig, standalone = false): string {
   const state = configAsBuilderState(config);
   const { copy } = config;
 
@@ -315,19 +393,19 @@ function renderPageAbout(config: WebsiteConfig): string {
           </div>
           <div class="tenant-about-card">
             <h2>Onze expertise</h2>
-            <p>Wij zijn actief als ${escapeHtml(config.business.industry || 'lokale dienstverlener')} in ${escapeHtml(config.contact.city || 'uw regio')}. ${escapeHtml(config.business.description.trim() || copy.heroDescription)}</p>
+            <p>Wij zijn actief als ${escapeHtml(placeholderIndustry(config.business.industry).toLowerCase())} in ${escapeHtml(placeholderRegion(config.contact.city))}. ${escapeHtml(placeholderDescription(config.business.description))}</p>
             <ul class="tenant-checklist">
               ${config.whyChooseUs.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
             </ul>
           </div>
         </div>
-        ${renderCtas(state)}
+        ${renderCtas(state, false, standalone)}
       </div>
     </section>
   `;
 }
 
-function renderPageServices(config: WebsiteConfig): string {
+function renderPageServices(config: WebsiteConfig, standalone = false): string {
   const { copy } = config;
 
   const blocks =
@@ -339,7 +417,11 @@ function renderPageServices(config: WebsiteConfig): string {
                 <span class="tenant-card__index">${String(index + 1).padStart(2, '0')}</span>
                 <h2>${escapeHtml(service.title)}</h2>
                 <p>${escapeHtml(service.detail)}</p>
-                <button type="button" class="tenant-btn tenant-btn--accent" data-preview-page="contact">Offerte aanvragen</button>
+                ${
+                  standalone
+                    ? `<a class="tenant-btn tenant-btn--accent" href="${tenantPagePath('contact')}">Offerte aanvragen</a>`
+                    : `<button type="button" class="tenant-btn tenant-btn--accent" data-preview-page="contact">Offerte aanvragen</button>`
+                }
               </article>
             `,
           )
@@ -369,7 +451,7 @@ function renderPageServices(config: WebsiteConfig): string {
   `;
 }
 
-function renderPageContact(config: WebsiteConfig): string {
+function renderPageContact(config: WebsiteConfig, standalone = false): string {
   const state = configAsBuilderState(config);
   const { copy } = config;
   const street = escapeHtml(formatStreetLine(state));
@@ -390,7 +472,7 @@ function renderPageContact(config: WebsiteConfig): string {
               ${street ? `<div><dt>Adres</dt><dd>${street}</dd></div>` : ''}
               ${cityLine ? `<div><dt>Postcode &amp; plaats</dt><dd>${cityLine}</dd></div>` : ''}
             </dl>
-            ${renderCtas(state)}
+            ${renderCtas(state, false, standalone)}
           </div>
           <div>
             <h2>Openingstijden</h2>
@@ -409,9 +491,9 @@ function renderPageContact(config: WebsiteConfig): string {
   `;
 }
 
-function renderPagePrivacy(config: WebsiteConfig): string {
+function renderPagePrivacy(config: WebsiteConfig, standalone = false): string {
   const { copy, privacySections } = config;
-  const name = escapeHtml(config.business.name || 'Uw bedrijf');
+  const name = escapeHtml(placeholderBusinessName(config.business.name));
 
   return `
     <section class="tenant-section tenant-section--page">
@@ -427,44 +509,63 @@ function renderPagePrivacy(config: WebsiteConfig): string {
         <h2>Contact over privacy</h2>
         <p>${escapeHtml(privacySections.contact)}</p>
         <p><strong>${name}</strong> — ${escapeHtml(config.slug.url)}</p>
-        <button type="button" class="tenant-btn tenant-btn--outline" data-preview-page="home">Terug naar home</button>
+        ${renderInternalPageControl('home', 'Terug naar home', 'tenant-btn tenant-btn--outline', standalone)}
       </div>
     </section>
   `;
 }
 
 /** Central template — renders one page from WebsiteConfig (preview + publication). */
-export function renderGeneratedWebsiteFromConfig(config: WebsiteConfig, page: PreviewPage): string {
+export function renderGeneratedWebsiteFromConfig(
+  config: WebsiteConfig,
+  page: PreviewPage,
+  pageSeo?: PageSeoBundle,
+  options: RenderWebsiteOptions = {},
+): string {
+  const editorMode = options.editorMode ?? false;
+  const standalone = options.standalone ?? false;
+  const design = config.design;
   const textColor = readableTextColor(config.branding.primaryColor);
+  const seo = pageSeo ?? buildPageSeo(config, page);
 
   const pageContent = (() => {
     switch (page) {
       case 'about':
-        return renderPageAbout(config);
+        return renderPageAbout(config, standalone);
       case 'services':
-        return renderPageServices(config);
+        return renderPageServices(config, standalone);
       case 'contact':
-        return renderPageContact(config);
+        return renderPageContact(config, standalone);
       case 'privacy':
-        return renderPagePrivacy(config);
+        return renderPagePrivacy(config, standalone);
       default:
-        return renderPageHome(config);
+        return renderPageHome(config, editorMode, standalone);
     }
   })();
 
+  const siteClasses = [
+    'tenant-site',
+    `tenant-site--btn-${design?.buttonStyle ?? 'solid'}`,
+    `tenant-site--radius-${design?.cornerRadius ?? 'rounded'}`,
+    `tenant-site--shadow-${design?.shadow ?? 'soft'}`,
+    editorMode ? 'tenant-site--editor' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return `
     <div
-      class="tenant-site"
-      style="--tenant-primary:${config.branding.primaryColor};--tenant-accent:${config.branding.accentColor};--tenant-text:${textColor};"
-      data-preview-root
+      class="${siteClasses}"
+      style="--tenant-primary:${config.branding.primaryColor};--tenant-accent:${config.branding.accentColor};--tenant-text:${textColor};--tenant-font:${designFontStack(design?.fontFamily ?? 'system')};--tenant-btn-radius:${designRadius(design?.cornerRadius ?? 'rounded')};"
+      ${standalone ? 'data-tenant-root' : 'data-preview-root'}
       data-generated-domain="${escapeHtml(config.slug.domain)}"
     >
-      ${renderHeader(config, page)}
-      ${renderSeoMeta(config)}
+      ${renderHeader(config, page, editorMode, standalone)}
+      ${renderSeoMeta(config, page, seo, standalone)}
       <main class="tenant-main">${pageContent}</main>
-      ${renderFooter(config)}
+      ${renderFooter(config, standalone)}
       ${renderLightbox(config)}
-      ${renderMobileBar(config)}
+      ${renderMobileBar(config, standalone)}
     </div>
   `;
 }

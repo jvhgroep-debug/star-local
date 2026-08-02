@@ -1,5 +1,5 @@
 import type { BuilderState } from '../../types/builder';
-import { BUILDER_STORAGE_KEY, createDefaultHours, createServiceId } from './constants';
+import { BUILDER_STORAGE_KEY, createDefaultHours, createServiceId, DEFAULT_DESIGN_SETTINGS } from './constants';
 
 export function createDefaultState(): BuilderState {
   return {
@@ -34,6 +34,12 @@ export function createDefaultState(): BuilderState {
     selectedPackage: 'free',
     publishEmailConfirmed: '',
     publishedAt: null,
+    ctaQuoteLabel: 'Offerte aanvragen',
+    heroTitle: '',
+    heroSubtitle: '',
+    design: { ...DEFAULT_DESIGN_SETTINGS },
+    heroPlaceholder: 'Hero-afbeelding placeholder',
+    galleryPlaceholders: ['Galerij 1', 'Galerij 2', 'Galerij 3'],
   };
 }
 
@@ -64,6 +70,14 @@ export function loadState(): BuilderState {
       publicationStatus: parsed.publicationStatus ?? 'concept',
       selectedPackage: parsed.selectedPackage ?? 'free',
       publishedAt: parsed.publishedAt ?? null,
+      ctaQuoteLabel: parsed.ctaQuoteLabel ?? 'Offerte aanvragen',
+      heroTitle: parsed.heroTitle ?? '',
+      heroSubtitle: parsed.heroSubtitle ?? '',
+      design: { ...DEFAULT_DESIGN_SETTINGS, ...parsed.design },
+      heroPlaceholder: parsed.heroPlaceholder ?? 'Hero-afbeelding placeholder',
+      galleryPlaceholders: parsed.galleryPlaceholders?.length
+        ? parsed.galleryPlaceholders
+        : ['Galerij 1', 'Galerij 2', 'Galerij 3'],
     };
   } catch {
     return createDefaultState();

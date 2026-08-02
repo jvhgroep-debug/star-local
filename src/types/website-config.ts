@@ -2,10 +2,14 @@ import type {
   BuilderBranding,
   BuilderBusiness,
   BuilderContact,
+  BuilderDesignSettings,
   DayHours,
   PreviewPage,
 } from './builder';
 import type { GeneratedCopy } from '../lib/builder/templates';
+import type { PageSeoBundle } from '../lib/builder/generator/seo';
+
+export type { PageSeoBundle };
 
 export type PublicationStatus = 'concept' | 'ready_for_publication' | 'published';
 
@@ -68,11 +72,35 @@ export interface WebsiteConfig {
   publishEmail: string;
   publishedAt: string | null;
   preparedAt: string | null;
+  heroTitle: string;
+  heroSubtitle: string;
+  design: BuilderDesignSettings;
 }
 
 export interface PreparedWebsite {
   config: WebsiteConfig;
   pages: Record<PreviewPage, string>;
+  seoByPage?: Record<PreviewPage, PageSeoBundle>;
+  /** Full standalone HTML documents per page (production-ready, not deployed). */
+  documents?: Record<PreviewPage, string>;
+  /** Generated tenant sitemap.xml content. */
+  sitemap?: string;
+  /** Generated tenant robots.txt content. */
+  robots?: string;
+  /** Generated web app manifest. */
+  manifest?: string;
+  /** Generated SVG favicon. */
+  faviconSvg?: string;
+  generation?: {
+    pageCount: number;
+    pages: PreviewPage[];
+    documentPaths: Record<PreviewPage, string>;
+    sitemapPath: string;
+    robotsPath: string;
+    manifestPath?: string;
+    faviconPath?: string;
+    generatedAt: string;
+  };
   preparedAt: string;
 }
 

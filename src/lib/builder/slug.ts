@@ -1,4 +1,5 @@
 import { isReservedSubdomain } from '../../config/reserved-subdomains';
+import { BUILDER_PLACEHOLDERS } from './placeholders';
 
 /** Normalize a business name into a safe tenant subdomain slug. */
 export function normalizeBuilderSlug(name: string): string {
@@ -26,7 +27,7 @@ export function getSlugPreview(businessName: string): SlugPreviewResult {
   if (!slug) {
     return {
       slug: '',
-      domain: 'uw-bedrijf.starlocal.nl',
+      domain: BUILDER_PLACEHOLDERS.domain,
       available: false,
       message: 'Voer een geldige bedrijfsnaam in voor uw website-adres.',
     };
@@ -53,7 +54,7 @@ export function getSlugPreview(businessName: string): SlugPreviewResult {
 
 export function formatSlugPreviewHtml(preview: SlugPreviewResult): string {
   const statusClass = preview.available ? 'builder-slug-live--ok' : 'builder-slug-live--error';
-  const domain = preview.domain || 'uw-bedrijf.starlocal.nl';
+  const domain = preview.domain || BUILDER_PLACEHOLDERS.domain;
   return `
     <div class="builder-slug-live ${statusClass}" aria-live="polite">
       <span class="builder-slug-live__domain">${domain}</span>

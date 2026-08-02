@@ -1,0 +1,84 @@
+---
+export const prerender = false;
+
+import AuthLayout from '../../layouts/AuthLayout.astro';
+import { FROM_EMAIL, RESEND_API_KEY } from 'astro:env/server';
+import type { D1Database } from '../../lib/db/d1';
+import {
+  AUTH_ROUTES,
+  MagicLinkExpiredError,
+  MagicLinkInvalidError,
+  SESSION_COOKIE_NAME,
+  createAuthServiceFromEnv,
+} from '../../lib/auth';
+
+const token = Astro.url.searchParams.get('token')?.trim() ?? '';
+const db = Astro.locals.runtime?.env?.DB as D1Database | undefined;
+
+type AuthMagicView = 'missing' | 'expired' | 'invalid' | 'error';
+
+let view: AuthMagicView = 'missing';
+
+if (!token) {
+  view = 'missing';
+} else if (!db) {
+  view = 'error';
+} else {
+  const auth = createAuthServiceFromEnv(db, Astro.request, {
+    resendApiKey: RESEND_API_KEY,
+    fromEmail: FROM_EMAIL,
+  });
+
+  try {
+    const { session, redirectPath } = await auth.activateAccountFromMagicLink(token);
+    const secure = Astro.url.protocol === 'https:' || Astro.request.headers.get('x-forwarded-proto') === 'https';
+
+    Astro.cookies.set(SESSION_COOKIE_NAME, session.sessionToken, {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'lax',
+      secure,
+      maxAge: 30 * 24 * 60 * 60,
+    });
+
+    return Astro.redirect(`${redirectPath}?welcome=1`);
+  } catch (error) {
+    if (error instanceof MagicLinkExpiredError) view = 'expired';
+    else if (error instanceof MagicLinkInvalidError) view = 'invalid';
+    else view = 'error';
+  }
+}
+
+const titles: Record<AuthMagicView, string> = {
+  missing: 'Magic link ongeldig | Star Local',
+  expired: 'Magic link verlopen | Star Local',
+  invalid: 'Magic link ongeldig | Star Local',
+  error: 'Inloggen mislukt | Star Local',
+};
+---
+
+<AuthLayout title={titles[view]} description="Magic link verificatie voor Star Local klantendashboard." canonical="/auth/magic/">
+  {view === 'expired' ? (
+    <section class="auth-card" aria-labelledby="magic-expired-title">
+      <div class="auth-card__icon auth-card__icon--warning" aria-hidden="true">⏱</div>
+      <h1 id="magic-expired-title">Magic link verlopen</h1>
+      <p>Deze inloglink is niet meer geldig. Magic links verlopen na 30 minuten en kunnen maar één keer gebruikt worden.</p>
+      <div class="auth-actions">
+        <a class="btn btn-primary" href={AUTH_ROUTES.login}>Nieuwe inloglink aanvragen</a>
+      </div>
+    </section>
+  ) : (
+    <section class="auth-card" aria-labelledby="magic-invalid-title">
+      <div class="auth-card__icon auth-card__icon--error" aria-hidden="true">!</div>
+      <h1 id="magic-invalid-title">Magic link ongeldig</h1>
+      <p>
+        {view === 'error'
+          ? 'We konden uw inloglink niet verwerken. Probeer opnieuw in te loggen.'
+          : 'Deze inloglink is ongeldig of al gebruikt. Vraag een nieuwe link aan.'}
+      </p>
+      <div class="auth-actions">
+        <a class="btn btn-primary" href={AUTH_ROUTES.login}>Naar inloggen</a>
+      </div>
+    </section>
+  )}
+</AuthLayout>

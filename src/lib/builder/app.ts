@@ -1,5 +1,6 @@
 import type { BuilderState, BuilderStep, PreviewPage } from '../../types/builder';
 import type { PreparedWebsite } from '../../types/website-config';
+import type { PublishWebsiteResult } from '../../types/publish';
 import { readableTextColor } from './colors';
 import { BUILDER_INDUSTRIES, COLOR_PRESETS, createServiceId, filterIndustries, WORKDAY_KEYS } from './constants';
 import {
@@ -12,8 +13,12 @@ import {
   syncFileMeta,
   type BuilderFiles,
 } from './files';
-import { renderPublishForm, renderPublishSuccess } from './render-publish';
+import { renderPublishForm } from './render-publish';
+import { renderPublishSuccessD1 } from './render-publish-d1';
 import {
+  buildPublishPayload,
+  publishWebsiteToD1,
+  prepareSiteArtifactsForPublish,
   clearPreparedWebsite,
   executePublication,
   getActivePreparedWebsite,
@@ -35,7 +40,8 @@ import {
   loadState,
   saveState,
 } from './storage';
-import { applyPreviewSeo, futureDomain, renderPremiumBlock, resetPreviewSeo } from './templates';
+import { applyPreviewSeo, applyPreparedPreviewSeo, futureDomain, renderPremiumBlock, resetPreviewSeo } from './templates';
+import { saveDashboardSession } from '../dashboard/storage';
 import { formatSlugPreviewHtml, getSlugPreview } from './slug';
 import {
   validateAll,
@@ -52,6 +58,8 @@ interface AppContext {
   errors: Record<string, string>;
   fileWarning: string | null;
   preparedWebsite: PreparedWebsite | null;
+  d1PublishResult: PublishWebsiteResult | null;
+  magicLinkSent: boolean;
   usePreparedSite: boolean;
 }
 
@@ -359,12 +367,45 @@ function render(): void {
   if (view === 'publish') {
     root.innerHTML = renderPublishForm(ctx.state, ctx.errors);
   } else if (view === 'publish-success') {
-    root.innerHTML = ctx.preparedWebsite
-      ? renderPublishSuccess(ctx.state, ctx.preparedWebsite)
+    const generation = ctx.preparedWebsite?.generation
+      ? {
+          pageCount: ctx.preparedWebsite.generation.pageCount,
+          documentPaths: ctx.preparedWebsite.generation.documentPaths,
+          sitemapPath: ctx.preparedWebsite.generation.sitemapPath,
+          robotsPath: ctx.preparedWebsite.generation.robotsPath,
+          manifestPath: ctx.preparedWebsite.generation.manifestPath,
+          faviconPath: ctx.preparedWebsite.generation.faviconPath,
+        }
+      : undefined;
+
+    const previewOptions =
+      ctx.preparedWebsite && ctx.usePreparedSite
+        ? {
+            previewHtml: getPreviewHtml(ctx.state.previewPage),
+            domain: ctx.preparedWebsite.config.slug.domain,
+            publishEmail: ctx.state.publishEmailConfirmed || ctx.d1PublishResult?.publishEmail,
+            magicLinkSent: ctx.magicLinkSent,
+            generation,
+          }
+        : {
+            domain: ctx.preparedWebsite?.config.slug.domain ?? '',
+            publishEmail: ctx.state.publishEmailConfirmed || ctx.d1PublishResult?.publishEmail,
+            magicLinkSent: ctx.magicLinkSent,
+            generation,
+          };
+    root.innerHTML = ctx.d1PublishResult
+      ? renderPublishSuccessD1(ctx.d1PublishResult, previewOptions)
       : renderBuilderShell();
+    if (ctx.usePreparedSite && ctx.preparedWebsite) {
+      applyPreparedPreviewSeo(ctx.preparedWebsite, ctx.state.previewPage);
+    }
   } else if (view === 'preview') {
     root.innerHTML = renderPreviewShell();
-    applyPreviewSeo(ctx.state, ctx.files);
+    if (ctx.usePreparedSite && ctx.preparedWebsite) {
+      applyPreparedPreviewSeo(ctx.preparedWebsite, ctx.state.previewPage);
+    } else {
+      applyPreviewSeo(ctx.state, ctx.files);
+    }
   } else {
     root.innerHTML = renderBuilderShell();
     resetPreviewSeo();
@@ -431,12 +472,6 @@ function bindEvents(): void {
 
   root.querySelector('.builder-body')?.addEventListener('input', scheduleLivePreview);
   root.querySelector('.builder-body')?.addEventListener('change', scheduleLivePreview);
-
-  root.querySelectorAll('[data-premium-upgrade]').forEach((button) => {
-    button.addEventListener('click', () => {
-      window.alert('Premium upgrades worden in een volgende stap beschikbaar.');
-    });
-  });
 
   root.querySelector('[data-copy-workday-hours]')?.addEventListener('click', () => {
     readStep3FromDom();
@@ -586,6 +621,8 @@ function bindEvents(): void {
     ctx.errors = {};
     ctx.fileWarning = null;
     ctx.preparedWebsite = null;
+    ctx.d1PublishResult = null;
+    ctx.magicLinkSent = false;
     ctx.usePreparedSite = false;
     render();
   });
@@ -622,7 +659,7 @@ function bindEvents(): void {
     render();
   });
 
-  root.querySelector('[data-confirm-publish]')?.addEventListener('click', () => {
+  root.querySelector('[data-confirm-publish]')?.addEventListener('click', async () => {
     readAllStepsFromDom();
     const emailInput = root.querySelector('#publish-email-confirm') as HTMLInputElement | null;
     const packageInput = root.querySelector('[name="website-package"]:checked') as HTMLInputElement | null;
@@ -639,27 +676,71 @@ function bindEvents(): void {
       return;
     }
 
-    const publishResult = executePublication(ctx.state, ctx.files, {
+    const publishButton = root.querySelector('[data-confirm-publish]') as HTMLButtonElement | null;
+    if (publishButton) {
+      publishButton.disabled = true;
+      publishButton.textContent = 'Publiceren…';
+    }
+
+    const localResult = executePublication(ctx.state, ctx.files, {
       package: selectedPackage,
       publishEmail: publishEmail.trim(),
     });
+    ctx.preparedWebsite = localResult.prepared;
 
-    ctx.preparedWebsite = publishResult.prepared;
-    ctx.state.publicationStatus = 'ready_for_publication';
+    let siteArtifacts;
+    try {
+      siteArtifacts = await prepareSiteArtifactsForPublish(localResult.prepared);
+    } catch (error) {
+      if (publishButton) {
+        publishButton.disabled = false;
+        publishButton.textContent = 'Website publiceren';
+      }
+      ctx.errors = {
+        publish: error instanceof Error ? error.message : 'Websitebestanden konden niet worden voorbereid.',
+      };
+      render();
+      root.querySelector('.builder-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const payload = buildPublishPayload(localResult.prepared, siteArtifacts, {
+      package: selectedPackage,
+      publishEmail: publishEmail.trim(),
+      hasLogo: Boolean(ctx.files.logoUrl),
+      photoCount: ctx.files.photoUrls.length,
+    });
+    const d1Response = await publishWebsiteToD1(payload);
+
+    if (publishButton) {
+      publishButton.disabled = false;
+      publishButton.textContent = 'Website publiceren';
+    }
+
+    if (!d1Response.ok) {
+      ctx.errors = d1Response.errors ?? { publish: d1Response.message };
+      render();
+      root.querySelector('.builder-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    ctx.d1PublishResult = d1Response.result;
+    ctx.magicLinkSent = d1Response.ok ? Boolean(d1Response.magicLinkSent) : false;
+    saveDashboardSession({
+      tenantId: d1Response.result.tenantId,
+      websiteId: d1Response.result.websiteId,
+      slug: d1Response.result.slug,
+      subdomain: d1Response.result.subdomain,
+      publishEmail: publishEmail.trim(),
+    });
+    ctx.state.publicationStatus = 'published';
     ctx.state.selectedPackage = selectedPackage;
     ctx.state.publishEmailConfirmed = publishEmail.trim();
-    ctx.state.publishedAt = null;
+    ctx.state.publishedAt = d1Response.result.savedAt;
     ctx.state.view = 'publish-success';
-    ctx.usePreparedSite = false;
-    ctx.errors = {};
-    persist();
-    render();
-  });
-
-  root.querySelector('[data-view-published-site]')?.addEventListener('click', () => {
-    ctx.state.view = 'preview';
     ctx.state.previewPage = 'home';
     ctx.usePreparedSite = true;
+    ctx.errors = {};
     persist();
     render();
   });
@@ -682,6 +763,11 @@ function attachPreviewFrame(frame: Element): void {
     ctx.state.previewPage = page;
     persist();
     frame.innerHTML = getPreviewHtml(page);
+    if (ctx.usePreparedSite && ctx.preparedWebsite) {
+      applyPreparedPreviewSeo(ctx.preparedWebsite, page);
+    } else {
+      applyPreviewSeo(ctx.state, ctx.files);
+    }
     attachPreviewFrame(frame);
   });
 }
@@ -693,6 +779,8 @@ export function initWebsiteBuilder(): void {
     errors: {},
     fileWarning: null,
     preparedWebsite: getActivePreparedWebsite(),
+    d1PublishResult: null,
+    magicLinkSent: false,
     usePreparedSite: false,
   };
 

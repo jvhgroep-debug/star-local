@@ -1,0 +1,25 @@
+---
+export const prerender = false;
+
+import EditorLayout from '../../layouts/EditorLayout.astro';
+import { isAuthRedirect, requireAuthSession } from '../../lib/auth';
+import type { D1Database } from '../../lib/db/d1';
+
+const db = Astro.locals.runtime?.env?.DB as D1Database | undefined;
+const authResult = await requireAuthSession(Astro.request, db, Astro.url);
+
+if (isAuthRedirect(authResult)) {
+  return Astro.redirect(authResult.redirect);
+}
+---
+
+<EditorLayout
+  title="Website Builder | Star Local"
+  description="Professionele website builder met live preview, inline editing en design-instellingen."
+/>
+
+<script>
+  import { initWebsiteEditor } from '../../lib/editor/app';
+
+  initWebsiteEditor();
+</script>

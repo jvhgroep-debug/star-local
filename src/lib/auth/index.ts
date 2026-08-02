@@ -1,11 +1,9 @@
 /**
- * Star Local SaaS — authentication module (foundation only).
- *
- * Magic link login for `app.starlocal.nl`. No implementation in this phase;
- * exports types, placeholders, and module boundaries for later work.
+ * Star Local SaaS — authentication (magic link + session cookies).
  */
 
 export type {
+  AuthSessionContext,
   CreateMagicLinkInput,
   CreateMagicLinkResult,
   CreateSessionInput,
@@ -16,5 +14,19 @@ export type {
   ValidateMagicLinkResult,
 } from './types';
 
+export { AUTH_ROUTES, SESSION_COOKIE_NAME, MAGIC_LINK_TTL_SECONDS } from './constants';
+export { AuthService, createAuthService } from './auth.service';
+export { AuthValidationError, MagicLinkExpiredError, MagicLinkInvalidError } from './errors';
 export { createMagicLink, validateMagicLink } from './magic-link';
 export { createSession, destroySession } from './session';
+export { normalizeEmail } from './crypto';
+export { requireAuthSession, isAuthRedirect } from './guard';
+export {
+  buildSessionCookie,
+  clearSessionCookie,
+  createAuthServiceFromEnv,
+  getAuthSession,
+  getSessionCookieName,
+  getSessionTokenFromRequest,
+  isSecureRequest,
+} from './server';

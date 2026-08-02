@@ -1,0 +1,97 @@
+---
+export const prerender = false;
+
+import AuthLayout from '../layouts/AuthLayout.astro';
+import { AUTH_ROUTES } from '../lib/auth/constants';
+
+const next = Astro.url.searchParams.get('next') ?? AUTH_ROUTES.dashboard;
+const error = Astro.url.searchParams.get('error');
+const loggedOut = Astro.url.searchParams.get('loggedOut') === '1';
+const prefilledEmail = Astro.url.searchParams.get('email') ?? '';
+---
+
+<AuthLayout
+  title="Inloggen | Star Local"
+  description="Log in op uw Star Local klantendashboard via een beveiligde magic link per e-mail."
+  canonical="/login/"
+>
+  <section class="auth-card" aria-labelledby="login-title">
+    <div class="auth-card__icon auth-card__icon--info" aria-hidden="true">✉</div>
+    <h1 id="login-title">Inloggen op uw dashboard</h1>
+    <p>Vul uw e-mailadres in. U ontvangt een beveiligde inloglink die 30 minuten geldig is.</p>
+
+    {loggedOut ? (
+      <p class="auth-alert auth-alert--success" role="status">U bent succesvol uitgelogd.</p>
+    ) : null}
+
+    {error === 'unavailable' ? (
+      <p class="auth-alert auth-alert--error" role="alert">Inloggen is tijdelijk niet beschikbaar. Probeer het later opnieuw.</p>
+    ) : null}
+
+    <form class="auth-form" id="login-form" method="post" action="/api/auth/magic-link/">
+      <label for="login-email">
+        E-mailadres
+        <input
+          id="login-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          value={prefilledEmail}
+          placeholder="naam@bedrijf.nl"
+        />
+      </label>
+      <input type="hidden" name="next" value={next} />
+      <p class="auth-alert auth-alert--error" id="login-error" hidden role="alert"></p>
+      <button type="submit" class="btn btn-primary" id="login-submit">Inloglink versturen</button>
+    </form>
+
+    <p class="auth-muted" style="margin-top: 1rem;">Geen wachtwoord nodig. De link is eenmalig bruikbaar.</p>
+  </section>
+</AuthLayout>
+
+<script>
+  const form = document.getElementById('login-form') as HTMLFormElement | null;
+  const errorEl = document.getElementById('login-error');
+  const submitBtn = document.getElementById('login-submit') as HTMLButtonElement | null;
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form || !submitBtn) return;
+
+    const emailInput = form.querySelector('#login-email') as HTMLInputElement | null;
+    const email = emailInput?.value.trim() ?? '';
+    if (!email) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Versturen…';
+    errorEl?.setAttribute('hidden', '');
+
+    try {
+      const response = await fetch('/api/auth/magic-link/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = (await response.json()) as { ok: boolean; message?: string; redirect?: string };
+
+      if (!response.ok || !data.ok) {
+        if (errorEl) {
+          errorEl.textContent = data.message ?? 'Inloglink versturen mislukt.';
+          errorEl.removeAttribute('hidden');
+        }
+        return;
+      }
+
+      window.location.href = data.redirect ?? `/check-email/?email=${encodeURIComponent(email.toLowerCase())}`;
+    } catch {
+      if (errorEl) {
+        errorEl.textContent = 'Verbinding mislukt. Probeer het opnieuw.';
+        errorEl.removeAttribute('hidden');
+      }
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Inloglink versturen';
+    }
+  });
+</script>

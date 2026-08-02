@@ -17,6 +17,7 @@ export function renderTenantPreview(
   state: BuilderState,
   files: BuilderFiles,
   page: PreviewPage,
+  editorMode = false,
 ): string {
-  return renderGeneratedWebsiteFromConfig(buildWebsiteConfig(state, files), page);
+  return renderGeneratedWebsiteFromConfig(buildWebsiteConfig(state, files), page, undefined, { editorMode });
 }
