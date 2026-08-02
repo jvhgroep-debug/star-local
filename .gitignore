@@ -5,3 +5,8 @@ dist/
 .env.*
 .wrangler/
 .vercel/
+
+# Local build/audit logs (never commit)
+*.log
+scripts/*-baseline*.log
+scripts/baseline-*.log
