@@ -13,6 +13,7 @@
     "blog": "Blog",
     "contact": "Contact",
     "freeAdvice": "Free consultation",
+    "freeWebsiteCta": "Create free website",
     "mainNav": "Main navigation",
     "mobileNav": "Mobile menu",
     "openMenu": "Open menu",
@@ -33,7 +34,10 @@
     "services": "Services",
     "company": "Company",
     "legal": "Legal",
-    "copyright": "Star Local. All rights reserved."
+    "copyright": "Star Local. All rights reserved.",
+    "freeWebsiteLink": "Create free website",
+    "freeWebsitePromo": "Free professional website in about 3 minutes.",
+    "freeWebsiteStart": "Start for free"
   },
   "footerBar": {
     "copyright": "Star Local. All rights reserved.",

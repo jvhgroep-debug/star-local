@@ -30,8 +30,9 @@ export class D1ContactRepository implements ContactRepository {
     await this.db
       .prepare(
         `INSERT INTO contacts (
-          id, tenant_id, telefoon, whatsapp, email, adres, postcode, plaats, created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          id, tenant_id, telefoon, whatsapp, email, website, kvk, adres, postcode, plaats,
+          gemeente_slug, gemeente_naam, provincie, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .bind(
         input.id,
@@ -39,9 +40,14 @@ export class D1ContactRepository implements ContactRepository {
         input.telefoon ?? '',
         input.whatsapp ?? '',
         input.email ?? '',
+        input.website ?? '',
+        input.kvk ?? '',
         input.adres ?? '',
         input.postcode ?? '',
         input.plaats ?? '',
+        input.gemeenteSlug ?? '',
+        input.gemeenteNaam ?? '',
+        input.provincie ?? '',
         input.createdAt,
         input.updatedAt,
       )

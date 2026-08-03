@@ -42,6 +42,11 @@ const {
     <main id="builder-main" class="builder-page-main">
       <slot />
     </main>
+    <footer class="builder-page-footer">
+      <div class="container">
+        <p>Star Local Website Builder Beta</p>
+      </div>
+    </footer>
   </body>
 </html>
 
@@ -87,5 +92,18 @@ const {
 
   .builder-page-main {
     padding: 1.5rem 0 3rem;
+  }
+
+  .builder-page-footer {
+    border-top: 1px solid var(--border);
+    padding: 1rem 0 1.5rem;
+    text-align: center;
+  }
+
+  .builder-page-footer p {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
   }
 </style>

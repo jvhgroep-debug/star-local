@@ -30,10 +30,42 @@ export interface WebsiteRecord {
   theme: WebsiteTheme;
   primaryColor: string;
   secondaryColor: string;
+  fontFamily: string;
   status: WebsiteStatus;
   package: WebsitePackage;
   logoKey: string | null;
   published: boolean;
+  publicationStatus: import('./publication').PublicationPipelineStatus;
+  lastPublishedAt: IsoDateTime | null;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface WebsitePageRecord {
+  id: string;
+  tenantId: string;
+  websiteId: string;
+  pageKey: string;
+  title: string;
+  slug: string;
+  contentJson: string;
+  seoTitle: string;
+  metaDescription: string;
+  canonicalPath: string;
+  status: WebsiteStatus;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface MediaItemRecord {
+  id: string;
+  tenantId: string;
+  mediaType: 'logo' | 'photo';
+  storageKey: string;
+  filename: string;
+  mimeType: string;
+  sizeBytes: number;
+  sortOrder: number;
   createdAt: IsoDateTime;
   updatedAt: IsoDateTime;
 }
@@ -44,9 +76,14 @@ export interface ContactRecord {
   telefoon: string;
   whatsapp: string;
   email: string;
+  website: string;
+  kvk: string;
   adres: string;
   postcode: string;
   plaats: string;
+  gemeenteSlug: string;
+  gemeenteNaam: string;
+  provincie: string;
   createdAt: IsoDateTime;
   updatedAt: IsoDateTime;
 }
@@ -95,10 +132,42 @@ export interface WebsiteRow {
   theme: string;
   primary_color: string;
   secondary_color: string;
+  font_family?: string;
   status: string;
   package: string;
   logo_key: string | null;
   published: number;
+  publication_status?: string;
+  last_published_at?: string | null;
+  created_at: IsoDateTime;
+  updated_at: IsoDateTime;
+}
+
+export interface WebsitePageRow {
+  id: string;
+  tenant_id: string;
+  website_id: string;
+  page_key: string;
+  title: string;
+  slug: string;
+  content_json: string;
+  seo_title: string;
+  meta_description: string;
+  canonical_path: string;
+  status: string;
+  created_at: IsoDateTime;
+  updated_at: IsoDateTime;
+}
+
+export interface MediaItemRow {
+  id: string;
+  tenant_id: string;
+  media_type: string;
+  storage_key: string;
+  filename: string;
+  mime_type: string;
+  size_bytes: number;
+  sort_order: number;
   created_at: IsoDateTime;
   updated_at: IsoDateTime;
 }
@@ -109,9 +178,14 @@ export interface ContactRow {
   telefoon: string;
   whatsapp: string;
   email: string;
+  website?: string;
+  kvk?: string;
   adres: string;
   postcode: string;
   plaats: string;
+  gemeente_slug?: string;
+  gemeente_naam?: string;
+  provincie?: string;
   created_at: IsoDateTime;
   updated_at: IsoDateTime;
 }
@@ -169,6 +243,7 @@ export interface CreateWebsiteInput {
   theme?: WebsiteTheme;
   primaryColor?: string;
   secondaryColor?: string;
+  fontFamily?: string;
   status?: WebsiteStatus;
   package?: WebsitePackage;
   logoKey?: string | null;
@@ -183,6 +258,7 @@ export interface UpdateWebsiteInput {
   theme?: WebsiteTheme;
   primaryColor?: string;
   secondaryColor?: string;
+  fontFamily?: string;
   status?: WebsiteStatus;
   package?: WebsitePackage;
   logoKey?: string | null;
@@ -196,9 +272,43 @@ export interface CreateContactInput {
   telefoon?: string;
   whatsapp?: string;
   email?: string;
+  website?: string;
+  kvk?: string;
   adres?: string;
   postcode?: string;
   plaats?: string;
+  gemeenteSlug?: string;
+  gemeenteNaam?: string;
+  provincie?: string;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface CreateWebsitePageInput {
+  id: string;
+  tenantId: string;
+  websiteId: string;
+  pageKey: string;
+  title: string;
+  slug: string;
+  contentJson: string;
+  seoTitle: string;
+  metaDescription: string;
+  canonicalPath: string;
+  status?: WebsiteStatus;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
+}
+
+export interface CreateMediaItemInput {
+  id: string;
+  tenantId: string;
+  mediaType: 'logo' | 'photo';
+  storageKey: string;
+  filename: string;
+  mimeType: string;
+  sizeBytes: number;
+  sortOrder?: number;
   createdAt: IsoDateTime;
   updatedAt: IsoDateTime;
 }

@@ -15,6 +15,7 @@ const dict = useTranslations(locale);
 const mainNav = getMainNav(locale, dict);
 const currentPath = Astro.url.pathname;
 const homeHref = route('home', locale);
+const gratisWebsiteHref = '/gratis-website/';
 ---
 
 <header class="site-header" id="site-header">
@@ -54,7 +55,7 @@ const homeHref = route('home', locale);
             </a>
           )
         )}
-        <a href={route('contact', locale)} class="btn btn-primary header-cta">{dict.nav.freeAdvice}</a>
+        <a href={gratisWebsiteHref} class="btn btn-primary header-cta">{dict.nav.freeWebsiteCta}</a>
       </nav>
 
       <button class="menu-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label={dict.nav.openMenu}>
@@ -78,7 +79,7 @@ const homeHref = route('home', locale);
           <a href={item.href}>{item.label}</a>
         )
       )}
-      <a href={route('contact', locale)} class="btn btn-primary mobile-cta">{dict.nav.freeAdvice}</a>
+      <a href={gratisWebsiteHref} class="btn btn-primary mobile-cta">{dict.nav.freeWebsiteCta}</a>
     </div>
   </nav>
 </header>
@@ -162,8 +163,11 @@ const homeHref = route('home', locale);
   }
 
   .header-cta {
-    padding: 0.65rem 1.1rem;
-    font-size: 0.88rem;
+    padding: 0.7rem 1.15rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 0 0 1px rgba(205, 184, 128, 0.35), 0 8px 24px rgba(205, 184, 128, 0.12);
   }
 
   .nav-dropdown {
@@ -253,7 +257,8 @@ const homeHref = route('home', locale);
 
   .mobile-cta {
     margin-top: 0.5rem;
-    width: fit-content;
+    width: 100%;
+    text-align: center;
   }
 
   @media (max-width: 1024px) {

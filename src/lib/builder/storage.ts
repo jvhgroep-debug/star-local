@@ -1,5 +1,6 @@
 import type { BuilderState } from '../../types/builder';
 import { BUILDER_STORAGE_KEY, createDefaultHours, createServiceId, DEFAULT_DESIGN_SETTINGS } from './constants';
+import { DEFAULT_ENABLED_PAGES } from '../../types/builder';
 
 export function createDefaultState(): BuilderState {
   return {
@@ -17,10 +18,17 @@ export function createDefaultState(): BuilderState {
       phone: '',
       whatsapp: '',
       email: '',
+      website: '',
       street: '',
       postcode: '',
       city: '',
       country: 'Nederland',
+      kvk: '',
+    },
+    location: {
+      gemeenteSlug: '',
+      gemeenteNaam: '',
+      provincie: '',
     },
     hours: createDefaultHours(),
     branding: {
@@ -29,6 +37,8 @@ export function createDefaultState(): BuilderState {
       textColor: '#ffffff',
       logoName: '',
       photoNames: [],
+      heroImageName: '',
+      socialImageName: '',
     },
     publicationStatus: 'concept',
     selectedPackage: 'free',
@@ -37,6 +47,8 @@ export function createDefaultState(): BuilderState {
     ctaQuoteLabel: 'Offerte aanvragen',
     heroTitle: '',
     heroSubtitle: '',
+    seoMetaDescription: '',
+    enabledPages: { ...DEFAULT_ENABLED_PAGES },
     design: { ...DEFAULT_DESIGN_SETTINGS },
     heroPlaceholder: 'Hero-afbeelding placeholder',
     galleryPlaceholders: ['Galerij 1', 'Galerij 2', 'Galerij 3'],
@@ -65,6 +77,7 @@ export function loadState(): BuilderState {
             : createDefaultState().business.services,
       },
       contact: { ...createDefaultState().contact, ...parsed.contact },
+      location: { ...createDefaultState().location, ...parsed.location },
       hours: parsed.hours?.length === 7 ? parsed.hours : createDefaultHours(),
       branding: { ...createDefaultState().branding, ...parsed.branding },
       publicationStatus: parsed.publicationStatus ?? 'concept',
@@ -73,6 +86,8 @@ export function loadState(): BuilderState {
       ctaQuoteLabel: parsed.ctaQuoteLabel ?? 'Offerte aanvragen',
       heroTitle: parsed.heroTitle ?? '',
       heroSubtitle: parsed.heroSubtitle ?? '',
+      seoMetaDescription: parsed.seoMetaDescription ?? '',
+      enabledPages: { ...DEFAULT_ENABLED_PAGES, ...parsed.enabledPages },
       design: { ...DEFAULT_DESIGN_SETTINGS, ...parsed.design },
       heroPlaceholder: parsed.heroPlaceholder ?? 'Hero-afbeelding placeholder',
       galleryPlaceholders: parsed.galleryPlaceholders?.length
@@ -94,12 +109,16 @@ export function clearState(): void {
   window.localStorage.removeItem(BUILDER_STORAGE_KEY);
 }
 
+export { clearFilesStorage } from './media-storage';
+
 export function hasStoredUploadMeta(state: BuilderState): {
   logo: boolean;
+  hero: boolean;
   photos: boolean;
 } {
   return {
     logo: Boolean(state.branding.logoName),
+    hero: Boolean(state.branding.heroImageName),
     photos: state.branding.photoNames.length > 0,
   };
 }

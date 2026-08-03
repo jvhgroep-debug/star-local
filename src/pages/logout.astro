@@ -19,6 +19,24 @@ Astro.cookies.delete(SESSION_COOKIE_NAME, {
   sameSite: 'lax',
   secure,
 });
-
-return Astro.redirect(`${AUTH_ROUTES.login}?loggedOut=1`);
 ---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <title>Uitloggen…</title>
+    <meta http-equiv="refresh" content="0;url=/login/?loggedOut=1" />
+  </head>
+  <body>
+    <p>U wordt uitgelogd…</p>
+    <script>
+      try {
+        localStorage.removeItem('starlocal-dashboard-session-v1');
+      } catch {
+        /* ignore */
+      }
+      window.location.replace('/login/?loggedOut=1');
+    </script>
+  </body>
+</html>

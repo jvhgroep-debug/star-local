@@ -1,9 +1,15 @@
 import type { R2Bucket } from './r2';
 import { R2MediaService, TENANT_MEDIA_LAYOUT } from './r2-media.service';
 import type { MediaService } from './types';
+import { LocalMediaAdapter } from './local-media.adapter';
 
 export function createMediaService(bucket: R2Bucket): MediaService {
   return new R2MediaService(bucket);
+}
+
+export function createMediaServiceOrLocal(bucket?: R2Bucket | null): MediaService {
+  if (bucket) return new R2MediaService(bucket);
+  return new LocalMediaAdapter();
 }
 
 export type { MediaService } from './types';

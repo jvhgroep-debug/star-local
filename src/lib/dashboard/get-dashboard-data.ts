@@ -12,11 +12,12 @@ export async function getDashboardDbBundle(
   const tenant = await repos.tenants.findById(tenantId);
   if (!tenant) return null;
 
-  const [website, contact, services, hours] = await Promise.all([
+  const [website, contact, services, hours, pages] = await Promise.all([
     repos.websites.findByTenantId(tenantId),
     repos.contacts.findByTenantId(tenantId),
     repos.services.listByTenantId(tenantId),
     repos.openingHours.listByTenantId(tenantId),
+    repos.websitePages.listByTenantId(tenantId),
   ]);
 
   if (!website) return null;
@@ -27,6 +28,7 @@ export async function getDashboardDbBundle(
     contact,
     services,
     hours,
+    pages,
   };
 }
 
@@ -53,7 +55,7 @@ export function mapDashboardDbBundle(
     package: website.package,
     packageLabel: WEBSITE_PACKAGE_LABELS[website.package] ?? website.package,
     lastUpdated: website.updatedAt,
-    pageCount: DASHBOARD_PAGES.length,
+    pageCount: bundle.pages.length || DASHBOARD_PAGES.length,
     seoScore: '—',
     seoTitle: website.seoTitle,
     metaDescription: website.metaDescription,
@@ -73,11 +75,18 @@ export function mapDashboardDbBundle(
       description: service.omschrijving,
     })),
     hours: mapOpeningHoursRows(hours),
-    pages: DASHBOARD_PAGES.map((page) => ({
-      id: page.id,
-      label: page.label,
-      path: page.path,
-    })),
+    pages:
+      bundle.pages.length > 0
+        ? bundle.pages.map((page) => ({
+            id: page.pageKey,
+            label: page.title,
+            path: page.canonicalPath,
+          }))
+        : DASHBOARD_PAGES.map((page) => ({
+            id: page.id,
+            label: page.label,
+            path: page.path,
+          })),
     logoKey: website.logoKey,
     logoName: website.logoKey?.startsWith('pending:')
       ? website.logoKey.replace(/^pending:/, '')
@@ -85,6 +94,12 @@ export function mapDashboardDbBundle(
     primaryColor: website.primaryColor,
     accentColor: website.secondaryColor,
     publishEmail,
+    publicationPipelineStatus: 'draft',
+    publicationPipelineLabel: 'Draft',
+    publicationLogs: [],
+    lastPublicationLog: null,
+    canPublish: true,
+    websiteList: [],
   };
 }
 

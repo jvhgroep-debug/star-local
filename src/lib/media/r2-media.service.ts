@@ -135,6 +135,12 @@ export class R2MediaService implements MediaService {
     };
   }
 
+  async readObjectBytes(key: string): Promise<ArrayBuffer | null> {
+    const object = await this.bucket.get(key);
+    if (!object) return null;
+    return object.arrayBuffer();
+  }
+
   private async upload(input: MediaUploadInput, kind: 'logo' | PhotoCategory): Promise<MediaUploadResult> {
     const validation = await this.validateUpload(input, kind);
     if (!validation.valid) {

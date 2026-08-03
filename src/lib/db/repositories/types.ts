@@ -1,10 +1,13 @@
 import type {
   ContactRecord,
   CreateContactInput,
+  CreateMediaItemInput,
   CreateOpeningHoursInput,
   CreateServiceInput,
   CreateTenantInput,
   CreateWebsiteInput,
+  CreateWebsitePageInput,
+  MediaItemRecord,
   OpeningHoursRecord,
   ServiceRecord,
   TenantRecord,
@@ -13,6 +16,7 @@ import type {
   UpdateServiceInput,
   UpdateTenantInput,
   UpdateWebsiteInput,
+  WebsitePageRecord,
   WebsiteRecord,
   Weekday,
 } from '../../types/database';
@@ -20,6 +24,7 @@ import type {
 export interface TenantRepository {
   findById(id: string): Promise<TenantRecord | null>;
   findBySlug(slug: string): Promise<TenantRecord | null>;
+  findBySlugIgnoreCase(slug: string): Promise<TenantRecord | null>;
   list(limit?: number, offset?: number): Promise<TenantRecord[]>;
   create(input: CreateTenantInput): Promise<TenantRecord>;
   update(id: string, input: UpdateTenantInput): Promise<TenantRecord | null>;
@@ -62,10 +67,24 @@ export interface OpeningHoursRepository {
   deleteByTenantId(tenantId: string): Promise<number>;
 }
 
+export interface WebsitePageRepository {
+  listByTenantId(tenantId: string): Promise<WebsitePageRecord[]>;
+  create(input: CreateWebsitePageInput): Promise<WebsitePageRecord>;
+  deleteByTenantId(tenantId: string): Promise<number>;
+}
+
+export interface MediaItemRepository {
+  listByTenantId(tenantId: string): Promise<MediaItemRecord[]>;
+  create(input: CreateMediaItemInput): Promise<MediaItemRecord>;
+  deleteByTenantId(tenantId: string): Promise<number>;
+}
+
 export interface DatabaseRepositories {
   tenants: TenantRepository;
   websites: WebsiteRepository;
   contacts: ContactRepository;
   services: ServiceRepository;
   openingHours: OpeningHoursRepository;
+  websitePages: WebsitePageRepository;
+  mediaItems: MediaItemRepository;
 }

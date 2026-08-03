@@ -6,6 +6,7 @@ import { preparePublication } from './prepare';
 import { clearPreparedWebsite, loadPreparedWebsite, savePreparedWebsite } from './storage';
 
 export { buildPublishPayload, publishWebsiteToD1, prepareSiteArtifactsForPublish } from './d1-client';
+export { buildSavePayload, saveWebsiteToD1, loadWebsiteFromD1 } from './save-client';
 export { savePreparedWebsite, loadPreparedWebsite, clearPreparedWebsite } from './storage';
 export {
   PUBLICATION_STATUS_LABELS,

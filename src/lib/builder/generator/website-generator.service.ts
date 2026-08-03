@@ -7,7 +7,6 @@ import { buildWebsiteConfig } from '../website-config';
 import { buildAllPageSeo, type PageSeoBundle } from './seo';
 import { renderGeneratedWebsiteFromConfig } from './template';
 import { buildAllTenantDocuments } from './document';
-import type { PreviewPage, WebsiteConfig } from '../../../types/website-config';
 import { buildTenantFavicon, TENANT_FAVICON_PATH } from './favicon';
 import { buildTenantManifest, TENANT_MANIFEST_PATH } from './manifest';
 import { buildTenantRobots } from './robots';

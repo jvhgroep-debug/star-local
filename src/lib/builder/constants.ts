@@ -25,6 +25,40 @@ export const DAY_DEFINITIONS: { key: DayKey; label: string }[] = [
 export const WORKDAY_KEYS: DayKey[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
 export { BUILDER_INDUSTRIES, filterIndustries } from '../../data/builder/industries';
+export { BUILDER_MUNICIPALITIES, filterMunicipalities, findMunicipalityBySlug } from '../../data/builder/municipalities';
+export type { BuilderMunicipality } from '../../data/builder/municipalities';
+
+export const FONT_OPTIONS = [
+  { id: 'system', label: 'Standaard (system)' },
+  { id: 'serif', label: 'Serif — klassiek' },
+  { id: 'modern', label: 'Modern sans' },
+  { id: 'display', label: 'Display — opvallend' },
+] as const;
+
+export const BUILDER_STEP_LABELS = [
+  'Bedrijfsgegevens',
+  'Huisstijl',
+  "Pagina's",
+  'Diensten',
+  'Openingstijden',
+  'SEO',
+  'Voorbeeld',
+  'Afronden',
+] as const;
+
+export const BUTTON_STYLE_OPTIONS = [
+  { id: 'solid', label: 'Vol — effen kleur' },
+  { id: 'soft', label: 'Zacht — lichte achtergrond' },
+  { id: 'outline', label: 'Outline — rand' },
+] as const;
+
+export const PAGE_DEFINITIONS = [
+  { id: 'home' as const, label: 'Home', description: 'Uw welkomstpagina met hero, diensten en contact-CTA.' },
+  { id: 'about' as const, label: 'Over ons', description: 'Vertel wie u bent en waarom klanten voor u kiezen.' },
+  { id: 'services' as const, label: 'Diensten', description: 'Overzicht van al uw diensten met omschrijvingen.' },
+  { id: 'contact' as const, label: 'Contact', description: 'Contactformulier, adres en openingstijden.' },
+  { id: 'privacy' as const, label: 'Privacy', description: 'AVG-conform privacybeleid (verplicht voor live sites).' },
+] as const;
 
 export const COLOR_PRESETS = [
   {

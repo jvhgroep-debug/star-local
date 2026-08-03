@@ -1,0 +1,69 @@
+# Star Local — Cloudflare Pages productieconfiguratie (VOORBEELD)
+#
+# Kopieer relevante secties naar wrangler.toml vóór productie-setup.
+# Gebruik NOOIT echte secrets in dit voorbeeldbestand.
+#
+# BELANGRIJK: één centrale Cloudflare-applicatie voor alle tenants.
+# Maak GEEN apart Pages/Workers-project per ondernemer.
+
+name = "star-local"
+compatibility_date = "2026-07-19"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "dist"
+
+# ---------------------------------------------------------------------------
+# D1 — één database voor alle tenants
+# Binding in code: locals.runtime.env.DB
+# ---------------------------------------------------------------------------
+# Aanmaken:  wrangler d1 create star-local-saas-prod
+# Lokaal:    wrangler d1 migrations apply star-local-saas-dev --local
+# Productie: wrangler d1 migrations apply star-local-saas-prod --remote
+[[d1_databases]]
+binding = "DB"
+database_name = "star-local-saas-prod"
+database_id = "REPLACE_WITH_PRODUCTION_D1_DATABASE_ID"
+migrations_dir = "migrations"
+
+# ---------------------------------------------------------------------------
+# R2 — één bucket voor alle tenant-media en gepubliceerde sites
+# Binding in code: locals.runtime.env.MEDIA
+# ---------------------------------------------------------------------------
+# Aanmaken: wrangler r2 bucket create star-local-saas-media-prod
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "star-local-saas-media-prod"
+
+# ---------------------------------------------------------------------------
+# KV — OPTIONEEL (niet vereist voor Website Builder V1)
+# ---------------------------------------------------------------------------
+# Sessies worden opgeslagen in D1 (tabel `sessions`, migratie 0004).
+# De Astro Cloudflare-adapter kan een SESSION KV-binding suggereren; negeer
+# tenzij u expliciet Astro-sessions via KV wilt gebruiken.
+#
+# [[kv_namespaces]]
+# binding = "SESSION"
+# id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+# ---------------------------------------------------------------------------
+# Resend — GEEN Wrangler-binding; alleen secrets + Astro env schema
+# ---------------------------------------------------------------------------
+# Secrets instellen via Dashboard of:
+#   wrangler pages secret put RESEND_API_KEY --project-name star-local
+#   wrangler pages secret put FROM_EMAIL --project-name star-local
+#   wrangler pages secret put CONTACT_TO_EMAIL --project-name star-local
+#
+# MAGIC_LINK_SECRET is NIET nodig — tokens worden gehasht in D1 (magic_links).
+
+# ---------------------------------------------------------------------------
+# Plain-text environment variables (Cloudflare Dashboard → Settings → Variables)
+# ---------------------------------------------------------------------------
+[vars]
+APP_BASE_URL = "https://www.starlocal.nl"
+DASHBOARD_BASE_URL = "https://app.starlocal.nl"
+RESEND_FROM_EMAIL = "Star Local <noreply@starlocal.nl>"
+MEDIA_PUBLIC_BASE_URL = "https://REPLACE_WITH_MEDIA_CDN_HOST"
+
+# Secrets (NOOIT committen — alleen via Dashboard / wrangler pages secret put):
+#   RESEND_API_KEY   — magic links, save-e-mail, contactformulieren
+#   FROM_EMAIL       — afzender voor alle Resend-mails
+#   CONTACT_TO_EMAIL — ontvanger marketingcontactformulier (/api/contact/)

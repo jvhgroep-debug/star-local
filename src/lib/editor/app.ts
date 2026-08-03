@@ -5,15 +5,24 @@ import {
   createEmptyFiles,
   revokeObjectUrl,
   setLogoFile,
+  setHeroFile,
+  addPhotoFile,
+  removePhoto,
+  replacePhotoFile,
+  removeHeroFile,
   syncFileMeta,
   type BuilderFiles,
 } from '../builder/files';
+import { buildPageSeo } from '../builder/generator/seo';
 import { bindPreviewInteractions } from '../builder/preview-interactions';
 import { renderTenantPreview } from '../builder/render-preview';
 import { saveState } from '../builder/storage';
+import { saveFilesToStorage } from '../builder/media-storage';
+import { buildSavePayload, saveWebsiteToD1 } from '../builder/publish/save-client';
+import { loadDashboardSession } from '../dashboard/storage';
 import { formatSlugPreviewHtml, getSlugPreview } from '../builder/slug';
 import { buildWebsiteConfig } from '../builder/website-config';
-import { loadEditorBootstrap } from './bootstrap';
+import { loadEditorBootstrapAsync } from './bootstrap';
 import type { EditorNavSection, EditorViewport } from './constants';
 import { applyInlineField, bindInlineEditing, syncInlineFields } from './inline-edit';
 import { renderProEditorShell } from './render';
@@ -26,6 +35,8 @@ interface EditorContext {
   viewport: EditorViewport;
   dirty: boolean;
   lastSavedAt: string | null;
+  tenantId: string | null;
+  saveError: string | null;
 }
 
 let ctx: EditorContext;
@@ -56,21 +67,60 @@ function updateStatusBar(): void {
   }
 }
 
+function getEditorTenantId(): string | null {
+  if (typeof window === 'undefined') return null;
+  return (
+    new URL(window.location.href).searchParams.get('tenantId') ??
+    loadDashboardSession()?.tenantId ??
+    null
+  );
+}
+
 function persistSession(): void {
   const meta = syncFileMeta(ctx.files);
   ctx.state.branding.logoName = meta.logoName;
+  ctx.state.branding.heroImageName = meta.heroName;
   ctx.state.branding.photoNames = meta.photoNames;
   ctx.state.branding.textColor = readableTextColor(ctx.state.branding.primaryColor);
   saveState(ctx.state);
+  void saveFilesToStorage(ctx.files);
   ctx.lastSavedAt = new Date().toISOString();
   ctx.dirty = false;
   updateStatusBar();
 }
 
+async function persistSessionToD1(): Promise<void> {
+  if (!ctx.tenantId) return;
+
+  try {
+    const { payload, errors: mediaErrors } = await buildSavePayload(ctx.state, ctx.files);
+    if (Object.keys(mediaErrors).length > 0) {
+      ctx.saveError = Object.values(mediaErrors)[0] ?? 'Media kon niet worden opgeslagen.';
+      updateStatusBar();
+      return;
+    }
+
+    payload.tenantId = ctx.tenantId;
+    const response = await saveWebsiteToD1(payload);
+    if (!response.ok) {
+      ctx.saveError = response.message;
+    } else {
+      ctx.saveError = null;
+    }
+    updateStatusBar();
+  } catch {
+    ctx.saveError = 'Opslaan naar dashboard mislukt. Probeer het opnieuw.';
+    updateStatusBar();
+  }
+}
+
 function scheduleAutoSave(): void {
   markDirty();
   if (saveTimer) clearTimeout(saveTimer);
-  saveTimer = setTimeout(persistSession, 800);
+  saveTimer = setTimeout(() => {
+    persistSession();
+    void persistSessionToD1();
+  }, 800);
 }
 
 function readPanelFromDom(): void {
@@ -128,15 +178,17 @@ function updateSeoPanelIfVisible(): void {
   const seo = root.querySelector('.editor-seo-live');
   if (!seo) return;
   const config = buildWebsiteConfig(ctx.state, ctx.files);
+  const pageSeo = buildPageSeo(config, ctx.previewPage);
   const row = (label: string, value: string) =>
     `<div class="editor-readonly-field"><span class="editor-readonly-field__label">${label}</span><output class="editor-readonly-field__value">${value || '—'}</output></div>`;
   seo.innerHTML = [
-    row('Titel', config.seo.title),
-    row('Meta description', config.seo.description),
-    row('Slug', config.slug.slug),
-    row('Canonical', config.seo.canonicalUrl),
-    row('OpenGraph titel', config.seo.ogTitle),
-    row('OpenGraph description', config.seo.description),
+    row('SEO titel', pageSeo.title),
+    row('Meta description', pageSeo.description),
+    row('Canonical', pageSeo.canonicalUrl),
+    row('Open Graph titel', pageSeo.ogTitle),
+    row('Open Graph description', pageSeo.ogDescription),
+    row('Robots', 'index, follow'),
+    row('H1', pageSeo.h1),
   ].join('');
 }
 
@@ -240,28 +292,66 @@ function bindEvents(): void {
     render();
   });
 
-  root.querySelector('[data-replace-hero-placeholder]')?.addEventListener('click', () => {
-    readPanelFromDom();
-    ctx.state.heroPlaceholder = `Hero ${new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' })}`;
-    scheduleAutoSave();
-    render();
-  });
-
-  root.querySelector('[data-add-gallery-placeholder]')?.addEventListener('click', () => {
-    readPanelFromDom();
-    ctx.state.galleryPlaceholders.push(`Galerij ${ctx.state.galleryPlaceholders.length + 1}`);
-    scheduleAutoSave();
-    render();
-  });
-
-  root.querySelectorAll('[data-remove-gallery]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      readPanelFromDom();
-      const index = Number((btn as HTMLElement).dataset.removeGallery);
-      if (ctx.state.galleryPlaceholders.length <= 1) return;
-      ctx.state.galleryPlaceholders.splice(index, 1);
+  root.querySelector('#editor-hero-input')?.addEventListener('change', (event) => {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    const error = setHeroFile(ctx.files, file);
+    if (!error) {
+      ctx.state.branding.heroImageName = file.name;
       scheduleAutoSave();
       render();
+    }
+  });
+
+  root.querySelector('[data-remove-hero]')?.addEventListener('click', () => {
+    removeHeroFile(ctx.files);
+    ctx.state.branding.heroImageName = '';
+    scheduleAutoSave();
+    render();
+  });
+
+  root.querySelector('#editor-gallery-input')?.addEventListener('change', (event) => {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    const error = addPhotoFile(ctx.files, file);
+    if (!error) {
+      scheduleAutoSave();
+      render();
+    }
+  });
+
+  root.querySelectorAll('[data-replace-gallery]').forEach((input) => {
+    input.addEventListener('change', (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      const index = Number((input as HTMLElement).dataset.replaceGallery);
+      replacePhotoFile(ctx.files, index, file);
+      scheduleAutoSave();
+      render();
+    });
+  });
+
+  root.querySelectorAll('[data-remove-gallery-photo]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const index = Number((btn as HTMLElement).dataset.removeGalleryPhoto);
+      removePhoto(ctx.files, index);
+      scheduleAutoSave();
+      render();
+    });
+  });
+
+  root.querySelector('[data-editor-save-now]')?.addEventListener('click', () => {
+    readPanelFromDom();
+    persistSession();
+    void persistSessionToD1().then(() => render());
+    render();
+  });
+
+  root.querySelector('#editor-media-search')?.addEventListener('input', (event) => {
+    const query = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    root.querySelectorAll('[data-media-gallery] .pro-media-card--gallery').forEach((card) => {
+      const name = card.querySelector('img')?.getAttribute('alt') ?? '';
+      (card as HTMLElement).style.display = !query || name.toLowerCase().includes(query) ? '' : 'none';
     });
   });
 
@@ -338,18 +428,27 @@ function render(): void {
   bindEvents();
 }
 
-export function initWebsiteEditor(): void {
-  const bootstrap = loadEditorBootstrap();
+export async function initWebsiteEditor(): Promise<void> {
+  const bootstrap = await loadEditorBootstrapAsync();
+  const urlPage = typeof window !== 'undefined' ? new URL(window.location.href).searchParams.get('page') : null;
+  const allowedPages: PreviewPage[] = ['home', 'about', 'services', 'contact', 'privacy'];
+  const initialPage = allowedPages.includes(urlPage as PreviewPage) ? (urlPage as PreviewPage) : 'home';
+
   ctx = {
     state: bootstrap.state,
     files: bootstrap.files.logoUrl ? bootstrap.files : createEmptyFiles(),
     section: 'website',
-    previewPage: 'home',
+    previewPage: initialPage,
     viewport: 'desktop',
     dirty: false,
-    lastSavedAt: null,
+    lastSavedAt: bootstrap.state.publishedAt,
+    tenantId: bootstrap.tenantId ?? getEditorTenantId(),
+    saveError: null,
   };
-  if (bootstrap.files.logoUrl) ctx.files = bootstrap.files;
+  if (bootstrap.files.logoUrl || bootstrap.files.heroUrl || bootstrap.files.photoUrls.length > 0) {
+    ctx.files = bootstrap.files;
+  }
   persistSession();
+  void saveFilesToStorage(ctx.files);
   render();
 }

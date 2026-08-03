@@ -119,3 +119,17 @@ const DAY_KEY_TO_WEEKDAY: Record<DayKey, 0 | 1 | 2 | 3 | 4 | 5 | 6> = {
 export function dayKeyToWeekday(dayKey: DayKey): 0 | 1 | 2 | 3 | 4 | 5 | 6 {
   return DAY_KEY_TO_WEEKDAY[dayKey];
 }
+
+const WEEKDAY_TO_DAY_KEY: DayKey[] = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday',
+];
+
+export function weekdayToDayKey(weekday: number): DayKey {
+  return WEEKDAY_TO_DAY_KEY[weekday] ?? 'monday';
+}

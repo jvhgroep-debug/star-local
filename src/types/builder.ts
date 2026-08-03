@@ -33,10 +33,18 @@ export interface BuilderContact {
   phone: string;
   whatsapp: string;
   email: string;
+  website: string;
   street: string;
   postcode: string;
   city: string;
   country: string;
+  kvk: string;
+}
+
+export interface BuilderLocation {
+  gemeenteSlug: string;
+  gemeenteNaam: string;
+  provincie: string;
 }
 
 export interface BuilderBranding {
@@ -45,6 +53,8 @@ export interface BuilderBranding {
   textColor: string;
   logoName: string;
   photoNames: string[];
+  heroImageName: string;
+  socialImageName: string;
 }
 
 export type BuilderFontFamily = 'system' | 'serif' | 'modern' | 'display';
@@ -66,13 +76,23 @@ export const DEFAULT_DESIGN_SETTINGS: BuilderDesignSettings = {
   shadow: 'soft',
 };
 
-export type BuilderStep = 1 | 2 | 3 | 4 | 5;
+export type BuilderStep = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 export type PreviewPage = 'home' | 'about' | 'services' | 'contact' | 'privacy';
 
+export type EnabledPages = Record<PreviewPage, boolean>;
+
+export const DEFAULT_ENABLED_PAGES: EnabledPages = {
+  home: true,
+  about: true,
+  services: true,
+  contact: true,
+  privacy: true,
+};
+
 import type { PublicationStatus, WebsitePackage } from './website-config';
 
-export type BuilderView = 'builder' | 'preview' | 'publish' | 'publish-success';
+export type BuilderView = 'builder' | 'preview' | 'publish' | 'publish-success' | 'save-success' | 'generate-success';
 
 export interface BuilderState {
   version: 1;
@@ -81,6 +101,7 @@ export interface BuilderState {
   previewPage: PreviewPage;
   business: BuilderBusiness;
   contact: BuilderContact;
+  location: BuilderLocation;
   hours: DayHours[];
   branding: BuilderBranding;
   publicationStatus: PublicationStatus;
@@ -90,6 +111,8 @@ export interface BuilderState {
   ctaQuoteLabel: string;
   heroTitle: string;
   heroSubtitle: string;
+  seoMetaDescription: string;
+  enabledPages: EnabledPages;
   design: BuilderDesignSettings;
   heroPlaceholder: string;
   galleryPlaceholders: string[];

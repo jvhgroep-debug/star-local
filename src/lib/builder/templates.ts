@@ -76,12 +76,14 @@ export function generateCopy(state: BuilderState): GeneratedCopy {
       : BUILDER_PLACEHOLDERS.description;
 
   const seoTitle =
-    hasCity || hasIndustry ? `${localTitle}${hasIndustry ? ` | ${business.industry.trim()}` : ''}` : name;
+    state.heroTitle.trim() ||
+    (hasCity || hasIndustry ? `${localTitle}${hasIndustry ? ` | ${business.industry.trim()}` : ''}` : name);
 
   const seoDescription =
-    hasCity && hasIndustry
+    state.seoMetaDescription.trim() ||
+    (hasCity && hasIndustry
       ? `${localTitle} — ${business.industry.trim().toLowerCase()}. Bekijk diensten, openingstijden en neem direct contact op.`
-      : description;
+      : description);
 
   return {
     localTitle,

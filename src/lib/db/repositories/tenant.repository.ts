@@ -26,6 +26,14 @@ export class D1TenantRepository implements TenantRepository {
     return row ? mapTenantRow(row) : null;
   }
 
+  async findBySlugIgnoreCase(slug: string) {
+    const row = await this.db
+      .prepare('SELECT * FROM tenants WHERE LOWER(slug) = LOWER(?) LIMIT 1')
+      .bind(slug)
+      .first<TenantRow>();
+    return row ? mapTenantRow(row) : null;
+  }
+
   async list(limit = 100, offset = 0) {
     const { results = [] } = await this.db
       .prepare('SELECT * FROM tenants ORDER BY created_at DESC LIMIT ? OFFSET ?')

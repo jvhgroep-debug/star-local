@@ -16,5 +16,6 @@ export interface MediaService {
   listPhotos(tenantId: string): Promise<MediaListResult>;
   listLogo(tenantId: string): Promise<MediaListResult>;
   getObject(key: string): Promise<MediaObject | null>;
+  readObjectBytes(key: string): Promise<ArrayBuffer | null>;
   validateUpload(input: MediaUploadInput, kind: 'logo' | PhotoCategory): Promise<MediaValidationResult>;
 }

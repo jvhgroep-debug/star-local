@@ -11,7 +11,7 @@ function escapeHtml(value: string): string {
 }
 
 function resolveOgImage(config: WebsiteConfig): string | null {
-  return config.media.heroImageUrl || config.media.logoUrl || null;
+  return config.media.socialImageUrl || config.media.heroImageUrl || config.media.logoUrl || null;
 }
 
 function renderDocumentHead(config: WebsiteConfig, seo: PageSeoBundle): string {

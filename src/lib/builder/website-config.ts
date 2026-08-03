@@ -1,4 +1,5 @@
 import type { BuilderService, BuilderState } from '../../types/builder';
+import { DEFAULT_ENABLED_PAGES } from '../../types/builder';
 import type {
   PublicationStatus,
   WebsiteConfig,
@@ -9,6 +10,7 @@ import { buildLocalBusinessSchema } from './generator/schema';
 import type { BuilderFiles } from './files';
 import { heroPhotoUrl } from './files';
 import { getSlugPreview } from './slug';
+import { createDefaultState } from './storage';
 import { formatAddress, generateCopy } from './templates';
 import {
   BUILDER_PLACEHOLDERS,
@@ -93,7 +95,9 @@ export function buildWebsiteConfig(
       photoUrls: files.photoUrls,
       photoNames: files.photoNames.length ? files.photoNames : state.branding.photoNames,
       heroImageUrl: heroPhotoUrl(files),
-      galleryImageUrls: files.photoUrls.slice(1),
+      galleryImageUrls: files.photoUrls,
+      socialImageUrl: files.socialImageUrl,
+      socialImageName: files.socialImageName || state.branding.socialImageName,
     },
     services: generateServices(state, copy),
     seo: {
@@ -126,6 +130,8 @@ export function buildWebsiteConfig(
     preparedAt: options.preparedAt ?? null,
     heroTitle: state.heroTitle,
     heroSubtitle: state.heroSubtitle,
+    seoMetaDescription: state.seoMetaDescription,
+    enabledPages: state.enabledPages,
     design: state.design,
   };
 }
@@ -138,7 +144,17 @@ export function configAsBuilderState(config: WebsiteConfig): BuilderState {
     view: 'builder',
     previewPage: 'home',
     business: config.business,
-    contact: config.contact,
+    contact: {
+      ...createDefaultState().contact,
+      ...config.contact,
+      website: config.contact.website ?? '',
+      kvk: config.contact.kvk ?? '',
+    },
+    location: {
+      gemeenteSlug: '',
+      gemeenteNaam: config.contact.city ?? '',
+      provincie: '',
+    },
     hours: config.hours,
     branding: config.branding,
     publicationStatus: config.status,
@@ -148,6 +164,8 @@ export function configAsBuilderState(config: WebsiteConfig): BuilderState {
     ctaQuoteLabel: config.copy.ctaLabel,
     heroTitle: config.heroTitle,
     heroSubtitle: config.heroSubtitle,
+    seoMetaDescription: config.seoMetaDescription ?? '',
+    enabledPages: config.enabledPages ?? { ...DEFAULT_ENABLED_PAGES },
     design: config.design,
     heroPlaceholder: 'Hero-afbeelding placeholder',
     galleryPlaceholders: ['Galerij 1', 'Galerij 2', 'Galerij 3'],

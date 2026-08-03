@@ -3,8 +3,10 @@ import { FROM_EMAIL, RESEND_API_KEY } from 'astro:env/server';
 import type { D1Database } from '../../../lib/db/d1';
 import {
   AuthValidationError,
+  AUTH_NEXT_COOKIE,
   createAuthServiceFromEnv,
   normalizeEmail,
+  sanitizeAuthRedirectPath,
 } from '../../../lib/auth';
 import { AUTH_ROUTES } from '../../../lib/auth/constants';
 
@@ -13,6 +15,7 @@ export const prerender = false;
 type MagicLinkPayload = {
   email?: string;
   tenantId?: string;
+  next?: string;
 };
 
 function json(body: { ok: boolean; message?: string }, status: number): Response {
@@ -42,6 +45,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
   const email = typeof payload.email === 'string' ? payload.email.trim() : '';
   const tenantId = typeof payload.tenantId === 'string' ? payload.tenantId.trim() : undefined;
+  const nextPath = sanitizeAuthRedirectPath(typeof payload.next === 'string' ? payload.next : undefined);
 
   if (!email) {
     return json({ ok: false, message: 'Voer een e-mailadres in.' }, 400);
@@ -53,8 +57,22 @@ export const POST: APIRoute = async ({ request, locals }) => {
   });
 
   try {
-    await auth.requestMagicLink({ email, tenantId, origin: new URL(request.url).origin });
-    return json({ ok: true, redirect: `${AUTH_ROUTES.checkEmail}?email=${encodeURIComponent(normalizeEmail(email))}` }, 200);
+    const { emailSent } = await auth.requestMagicLink({ email, tenantId, origin: new URL(request.url).origin });
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    if (nextPath) {
+      headers.append(
+        'Set-Cookie',
+        `${AUTH_NEXT_COOKIE}=${encodeURIComponent(nextPath)}; Path=/; Max-Age=1800; SameSite=Lax${new URL(request.url).protocol === 'https:' ? '; Secure' : ''}`,
+      );
+    }
+    return new Response(
+      JSON.stringify({
+        ok: true,
+        emailSent,
+        redirect: `${AUTH_ROUTES.checkEmail}?email=${encodeURIComponent(normalizeEmail(email))}`,
+      }),
+      { status: 200, headers },
+    );
   } catch (error) {
     if (error instanceof AuthValidationError) {
       return json({ ok: false, message: error.message }, 400);

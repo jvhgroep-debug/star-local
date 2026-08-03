@@ -1,4 +1,5 @@
 import type { BuilderState, PreviewPage } from '../../types/builder';
+import { buildPageSeo } from '../builder/generator/seo';
 import { BUILDER_INDUSTRIES, COLOR_PRESETS, WORKDAY_KEYS } from '../builder/constants';
 import type { BuilderFiles } from '../builder/files';
 import { buildWebsiteConfig } from '../builder/website-config';
@@ -50,6 +51,7 @@ export function renderStatusBar(options: {
       </div>
       <div class="pro-editor-status__actions">
         <span class="pro-editor-status__site">${escapeHtml(options.businessName || 'Uw website')}</span>
+        <button type="button" class="btn btn-secondary btn-sm" data-editor-save-now>Opslaan</button>
         <a class="btn btn-secondary btn-sm" href="/dashboard/">Dashboard</a>
       </div>
     </header>
@@ -116,8 +118,9 @@ function renderPagesSettings(state: BuilderState, page: PreviewPage): string {
   return `
     <div class="pro-settings-group">
       <h2>Pagina's</h2>
-      <p class="pro-settings-intro">Schakel tussen pagina's in de preview. Alle ${EDITOR_PREVIEW_PAGES.length} pagina's zijn automatisch gegenereerd.</p>
+      <p class="pro-settings-intro">Kies een pagina om te bewerken. SEO en preview worden per pagina bijgewerkt.</p>
       <div class="pro-page-list">${rows}</div>
+      <p class="pro-settings-hint">Tip: klik op tekst in de preview om direct te wijzigen (homepage).</p>
     </div>
   `;
 }
@@ -151,32 +154,48 @@ function renderDesignSettings(state: BuilderState): string {
 function renderMediaSettings(state: BuilderState, files: BuilderFiles): string {
   const logo = files.logoUrl
     ? `<img src="${files.logoUrl}" alt="" class="pro-media-card__img" />`
-    : `<div class="pro-media-card__placeholder"><span>Logo</span><small>${files.logoName ? escapeHtml(files.logoName) : 'Placeholder'}</small></div>`;
+    : `<div class="pro-media-card__placeholder"><span>Logo</span><small>${files.logoName ? escapeHtml(files.logoName) : 'Nog geen logo'}</small></div>`;
 
-  const heroCard = `<div class="pro-media-card pro-media-card--hero"><div class="pro-media-card__placeholder"><span>🖼</span><small>${escapeHtml(state.heroPlaceholder)}</small></div><button type="button" class="btn btn-secondary btn-sm" data-replace-hero-placeholder>Hero vervangen</button></div>`;
+  const hero = files.heroUrl || files.photoUrls[0]
+    ? `<img src="${files.heroUrl || files.photoUrls[0]}" alt="" class="pro-media-card__img pro-media-card__img--hero" />`
+    : `<div class="pro-media-card__placeholder"><span>Hero</span><small>${escapeHtml(state.branding.heroImageName || 'Nog geen hero')}</small></div>`;
 
-  const gallery = state.galleryPlaceholders
+  const gallery = files.photoUrls
     .map(
-      (label, index) => `
-        <div class="pro-media-card pro-media-card--gallery">
-          <div class="pro-media-card__placeholder"><span>${index + 1}</span><small>${escapeHtml(label)}</small></div>
-          <button type="button" class="builder-text-btn" data-remove-gallery="${index}">Verwijderen</button>
+      (url, index) => `
+        <div class="pro-media-card pro-media-card--gallery" data-gallery-index="${index}">
+          <img src="${url}" alt="" class="pro-media-card__img" />
+          <div class="pro-media-card__actions">
+            <label class="pro-upload"><span class="btn btn-secondary btn-sm">Vervangen</span><input type="file" accept="image/jpeg,image/png,image/webp" data-replace-gallery="${index}" hidden /></label>
+            <button type="button" class="builder-text-btn" data-remove-gallery-photo="${index}">Verwijderen</button>
+          </div>
         </div>
       `,
     )
     .join('');
 
+  const canAddGallery = files.photoUrls.length < 5;
+
   return `
     <div class="pro-settings-group">
-      <h2>Afbeeldingen</h2>
-      <p class="pro-settings-intro">Professionele placeholders — nog geen productie-upload. Logo kan lokaal vervangen worden voor preview.</p>
-      <h3>Logo</h3>
-      <div class="pro-media-card">${logo}<label class="pro-upload"><span class="btn btn-secondary btn-sm">Logo vervangen</span><input id="editor-logo-input" type="file" accept="image/jpeg,image/png,image/webp" hidden /></label>${files.logoUrl ? `<button type="button" class="builder-text-btn" data-remove-logo>Verwijderen</button>` : ''}</div>
-      <h3>Hero</h3>
-      ${heroCard}
-      <h3>Galerij</h3>
-      <div class="pro-media-grid">${gallery}</div>
-      <button type="button" class="btn btn-secondary btn-sm" data-add-gallery-placeholder>Placeholder toevoegen</button>
+      <h2>Mediabibliotheek</h2>
+      <p class="pro-settings-intro">Upload logo, hero en galerijafbeeldingen. Maximaal 5 foto's, 5 MB per bestand.</p>
+      <div class="pro-media-library-search">
+        <input type="search" id="editor-media-search" placeholder="Zoeken op bestandsnaam…" aria-label="Zoek media" />
+      </div>
+      <h3>Logo <span class="pro-media-badge">1 max</span></h3>
+      <div class="pro-media-card pro-media-card--logo">${logo}
+        <label class="pro-upload"><span class="btn btn-secondary btn-sm">${files.logoUrl ? 'Vervangen' : 'Uploaden'}</span><input id="editor-logo-input" type="file" accept="image/jpeg,image/png,image/webp" hidden /></label>
+        ${files.logoUrl ? `<button type="button" class="builder-text-btn" data-remove-logo>Verwijderen</button>` : ''}
+      </div>
+      <h3>Hero <span class="pro-media-badge">1 max</span></h3>
+      <div class="pro-media-card pro-media-card--hero">${hero}
+        <label class="pro-upload"><span class="btn btn-secondary btn-sm">${files.heroUrl ? 'Vervangen' : 'Uploaden'}</span><input id="editor-hero-input" type="file" accept="image/jpeg,image/png,image/webp" hidden /></label>
+        ${files.heroUrl ? `<button type="button" class="builder-text-btn" data-remove-hero>Verwijderen</button>` : ''}
+      </div>
+      <h3>Galerij <span class="pro-media-badge">${files.photoUrls.length}/5</span></h3>
+      <div class="pro-media-grid" data-media-gallery>${gallery || '<p class="pro-settings-hint">Nog geen galerijafbeeldingen.</p>'}</div>
+      ${canAddGallery ? `<label class="pro-upload"><span class="btn btn-secondary btn-sm">+ Toevoegen</span><input id="editor-gallery-input" type="file" accept="image/jpeg,image/png,image/webp" hidden /></label>` : ''}
     </div>
   `;
 }
@@ -241,22 +260,25 @@ function renderServicesSettings(state: BuilderState): string {
   `;
 }
 
-function renderSeoSettings(state: BuilderState, files: BuilderFiles): string {
+function renderSeoSettings(state: BuilderState, files: BuilderFiles, page: PreviewPage): string {
   const config = buildWebsiteConfig(state, files);
+  const seo = buildPageSeo(config, page);
+  const pageLabel = EDITOR_PREVIEW_PAGES.find((p) => p.id === page)?.label ?? page;
   const row = (label: string, value: string) =>
     `<div class="editor-readonly-field"><span class="editor-readonly-field__label">${escapeHtml(label)}</span><output class="editor-readonly-field__value">${escapeHtml(value || '—')}</output></div>`;
 
   return `
     <div class="pro-settings-group">
-      <h2>SEO</h2>
-      <p class="pro-settings-intro">Live berekend — wijzigingen in website-gegevens worden direct bijgewerkt.</p>
+      <h2>SEO — ${escapeHtml(pageLabel)}</h2>
+      <p class="pro-settings-intro">Live berekend per pagina. Wijzig bedrijfsgegevens of omschrijving om SEO aan te passen.</p>
       <div class="editor-seo-live">
-        ${row('Titel', config.seo.title)}
-        ${row('Meta description', config.seo.description)}
-        ${row('Slug', config.slug.slug)}
-        ${row('Canonical', config.seo.canonicalUrl)}
-        ${row('OpenGraph titel', config.seo.ogTitle)}
-        ${row('OpenGraph description', config.seo.description)}
+        ${row('SEO titel', seo.title)}
+        ${row('Meta description', seo.description)}
+        ${row('Canonical', seo.canonicalUrl)}
+        ${row('Open Graph titel', seo.ogTitle)}
+        ${row('Open Graph description', seo.ogDescription)}
+        ${row('Robots', 'index, follow')}
+        ${row('H1', seo.h1)}
       </div>
     </div>
   `;
@@ -308,7 +330,7 @@ export function renderSettingsPanel(
       body = renderServicesSettings(state);
       break;
     case 'seo':
-      body = renderSeoSettings(state, files);
+      body = renderSeoSettings(state, files, page);
       break;
     case 'settings':
       body = renderSettingsPanelSection(state);

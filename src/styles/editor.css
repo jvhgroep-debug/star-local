@@ -529,6 +529,38 @@
   }
 }
 
+.pro-media-library-search {
+  margin-bottom: 1rem;
+}
+
+.pro-media-library-search input {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+}
+
+.pro-media-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.pro-media-card__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.pro-media-card__img--hero {
+  max-height: 140px;
+  object-fit: cover;
+  width: 100%;
+}
+
 @media (max-width: 900px) {
   .pro-editor__workspace {
     grid-template-columns: 1fr;

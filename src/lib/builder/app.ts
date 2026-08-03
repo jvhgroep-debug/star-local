@@ -1,55 +1,86 @@
-import type { BuilderState, BuilderStep, PreviewPage } from '../../types/builder';
+import type { BuilderButtonStyle, BuilderFontFamily, BuilderState, BuilderStep, PreviewPage } from '../../types/builder';
 import type { PreparedWebsite } from '../../types/website-config';
+import type { SaveWebsiteResult } from '../../types/save';
 import type { PublishWebsiteResult } from '../../types/publish';
+import {
+  buildPublishPayload,
+  clearPreparedWebsite,
+  executePublication,
+  getActivePreparedWebsite,
+  prepareSiteArtifactsForPublish,
+  publishWebsiteToD1,
+} from './publish';
 import { readableTextColor } from './colors';
-import { BUILDER_INDUSTRIES, COLOR_PRESETS, createServiceId, filterIndustries, WORKDAY_KEYS } from './constants';
+import {
+  BUILDER_INDUSTRIES,
+  COLOR_PRESETS,
+  createServiceId,
+  filterIndustries,
+  WORKDAY_KEYS,
+} from './constants';
 import {
   addPhotoFile,
   createEmptyFiles,
   movePhoto,
+  removeHeroFile,
   removePhoto,
+  replacePhotoFile,
   revokeAllFiles,
+  setHeroFile,
   setLogoFile,
+  setSocialImageFile,
   syncFileMeta,
   type BuilderFiles,
 } from './files';
 import { renderPublishForm } from './render-publish';
 import { renderPublishSuccessD1 } from './render-publish-d1';
+import { renderSaveSuccess } from './render-save-success';
+import { renderGenerateSuccess } from './render-generate-success';
 import {
-  buildPublishPayload,
-  publishWebsiteToD1,
-  prepareSiteArtifactsForPublish,
-  clearPreparedWebsite,
-  executePublication,
-  getActivePreparedWebsite,
-} from './publish';
+  autoGenerateWebsite,
+  syncGeneratedToWebsiteList,
+  type AutoGenerateSummary,
+} from './generator/auto-generate.service';
+import { buildSavePayload, saveWebsiteToD1 } from './publish/save-client';
 import { renderTenantPreview, renderExampleDomainBar } from './render-preview';
 import { bindPreviewInteractions } from './preview-interactions';
 import {
   renderProgress,
+  renderPreviewPageTabs,
   renderStep1,
   renderStep2,
   renderStep3,
   renderStep4,
   renderStep5,
+  renderStep6,
+  renderStep7,
+  renderStep8,
 } from './render-builder';
 import {
   clearState,
+  clearFilesStorage,
   createDefaultState,
   hasStoredUploadMeta,
   loadState,
   saveState,
 } from './storage';
-import { applyPreviewSeo, applyPreparedPreviewSeo, futureDomain, renderPremiumBlock, resetPreviewSeo } from './templates';
-import { saveDashboardSession } from '../dashboard/storage';
+import { loadFilesFromStorage, saveFilesToStorage } from './media-storage';
+import { applyPreviewSeo, applyPreparedPreviewSeo, futureDomain, generateCopy, renderPremiumBlock, resetPreviewSeo } from './templates';
+import { saveDashboardSession, persistSaveResult, loadPersistedSaveResult } from '../dashboard/storage';
+import { syncSavedToWebsiteList } from '../dashboard/website-list.storage';
 import { formatSlugPreviewHtml, getSlugPreview } from './slug';
 import {
+  firstInvalidStep,
   validateAll,
   validatePublishEmail,
   validateStep1,
   validateStep2,
   validateStep3,
   validateStep4,
+  validateStep5,
+  validateStep6,
+  validateStep7,
+  validateStep8,
 } from './validation';
 
 interface AppContext {
@@ -59,12 +90,18 @@ interface AppContext {
   fileWarning: string | null;
   preparedWebsite: PreparedWebsite | null;
   d1PublishResult: PublishWebsiteResult | null;
+  saveResult: SaveWebsiteResult | null;
+  saveMagicLinkSent: boolean;
+  generateSummary: AutoGenerateSummary | null;
   magicLinkSent: boolean;
   usePreparedSite: boolean;
+  previewViewport: 'desktop' | 'tablet' | 'mobile';
 }
 
 let ctx: AppContext;
 let previewTimer: ReturnType<typeof setTimeout> | null = null;
+let eventsAbort: AbortController | null = null;
+let mediaPersistTimer: ReturnType<typeof setTimeout> | null = null;
 
 function getRoot(): HTMLElement {
   const root = document.getElementById('website-builder-root');
@@ -72,21 +109,74 @@ function getRoot(): HTMLElement {
   return root;
 }
 
+function syncCityFromContact(): void {
+  if (ctx.state.contact.city.trim()) {
+    ctx.state.location.gemeenteNaam = ctx.state.contact.city.trim();
+  }
+}
+
+function scheduleFilesPersist(): void {
+  if (mediaPersistTimer) clearTimeout(mediaPersistTimer);
+  mediaPersistTimer = setTimeout(() => {
+    void saveFilesToStorage(ctx.files);
+  }, 300);
+}
+
 function persist(): void {
+  syncCityFromContact();
   const meta = syncFileMeta(ctx.files);
   ctx.state.branding.logoName = meta.logoName;
+  ctx.state.branding.heroImageName = meta.heroName;
   ctx.state.branding.photoNames = meta.photoNames;
+  ctx.state.branding.socialImageName = meta.socialImageName;
   ctx.state.branding.textColor = readableTextColor(ctx.state.branding.primaryColor);
   saveState(ctx.state);
+  scheduleFilesPersist();
 }
 
 function readStep1FromDom(): void {
   const root = getRoot();
   ctx.state.business.name = (root.querySelector('#business-name') as HTMLInputElement)?.value ?? '';
   ctx.state.business.industry = (root.querySelector('#business-industry') as HTMLInputElement)?.value ?? '';
-  ctx.state.business.description =
-    (root.querySelector('#business-description') as HTMLTextAreaElement)?.value ?? '';
+  const get = (selector: string) => (root.querySelector(selector) as HTMLInputElement)?.value ?? '';
+  ctx.state.contact.phone = get('#contact-phone');
+  ctx.state.contact.email = get('#contact-email');
+  ctx.state.contact.website = get('#contact-website');
+  ctx.state.contact.street = get('#contact-street');
+  ctx.state.contact.postcode = get('#contact-postcode');
+  ctx.state.contact.city = get('#contact-city');
+}
 
+function readStep2FromDom(): void {
+  const root = getRoot();
+  const primary = (root.querySelector('#primary-color') as HTMLInputElement)?.value;
+  const accent = (root.querySelector('#accent-color') as HTMLInputElement)?.value;
+  const fontInput = root.querySelector('[name="font-family"]:checked') as HTMLInputElement | null;
+  const buttonInput = root.querySelector('[name="button-style"]:checked') as HTMLInputElement | null;
+  if (primary) ctx.state.branding.primaryColor = primary;
+  if (accent) ctx.state.branding.accentColor = accent;
+  if (fontInput?.value) {
+    ctx.state.design.fontFamily = fontInput.value as BuilderFontFamily;
+  }
+  if (buttonInput?.value) {
+    ctx.state.design.buttonStyle = buttonInput.value as BuilderButtonStyle;
+  }
+}
+
+function readStep3FromDom(): void {
+  const root = getRoot();
+  const pages: PreviewPage[] = ['home', 'about', 'services', 'contact', 'privacy'];
+  pages.forEach((page) => {
+    const input = root.querySelector(`[data-page-toggle="${page}"]`) as HTMLInputElement | null;
+    if (input && page !== 'home') {
+      ctx.state.enabledPages[page] = input.checked;
+    }
+  });
+  ctx.state.enabledPages.home = true;
+}
+
+function readStep4FromDom(): void {
+  const root = getRoot();
   ctx.state.business.services = [...root.querySelectorAll('.builder-service')].map((element, index) => ({
     id: ctx.state.business.services[index]?.id ?? createServiceId(),
     title: (element.querySelector(`[name="service-title-${index}"]`) as HTMLInputElement)?.value ?? '',
@@ -95,43 +185,32 @@ function readStep1FromDom(): void {
   }));
 }
 
-function readStep2FromDom(): void {
-  const root = getRoot();
-  const get = (selector: string) => (root.querySelector(selector) as HTMLInputElement)?.value ?? '';
-  ctx.state.contact.phone = get('#contact-phone');
-  ctx.state.contact.whatsapp = get('#contact-whatsapp');
-  ctx.state.contact.email = get('#contact-email');
-  ctx.state.contact.street = get('#contact-street');
-  ctx.state.contact.postcode = get('#contact-postcode');
-  ctx.state.contact.city = get('#contact-city');
-  ctx.state.contact.country = get('#contact-country') || 'Nederland';
-}
-
-function readStep3FromDom(): void {
+function readStep5FromDom(): void {
   const root = getRoot();
   ctx.state.hours = ctx.state.hours.map((day, index) => {
-    const closed = (root.querySelector(`[name="hours-closed-${index}"]`) as HTMLInputElement)?.checked ?? false;
-    const open24 = (root.querySelector(`[name="hours-open24-${index}"]`) as HTMLInputElement)?.checked ?? false;
-    const openTime = (root.querySelector(`[name="hours-open-${index}"]`) as HTMLInputElement)?.value ?? '09:00';
-    const closeTime = (root.querySelector(`[name="hours-close-${index}"]`) as HTMLInputElement)?.value ?? '17:00';
+    const closed = (root.querySelector(`[data-hours-closed="${index}"]`) as HTMLInputElement)?.checked ?? day.closed;
+    const open24 = (root.querySelector(`[data-hours-open24="${index}"]`) as HTMLInputElement)?.checked ?? day.open24;
+    const openTime = (root.querySelector(`[data-hours-open="${index}"]`) as HTMLInputElement)?.value ?? day.openTime;
+    const closeTime = (root.querySelector(`[data-hours-close="${index}"]`) as HTMLInputElement)?.value ?? day.closeTime;
     return { ...day, closed, open24, openTime, closeTime };
   });
 }
 
-function readStep4FromDom(): void {
+function readStep6FromDom(): void {
   const root = getRoot();
-  const primary = (root.querySelector('#primary-color') as HTMLInputElement)?.value;
-  const accent = (root.querySelector('#accent-color') as HTMLInputElement)?.value;
-  if (primary) ctx.state.branding.primaryColor = primary;
-  if (accent) ctx.state.branding.accentColor = accent;
+  ctx.state.heroTitle = (root.querySelector('#seo-title') as HTMLInputElement)?.value ?? '';
+  ctx.state.seoMetaDescription = (root.querySelector('#seo-meta-description') as HTMLTextAreaElement)?.value ?? '';
+  ctx.state.business.description = (root.querySelector('#business-description') as HTMLTextAreaElement)?.value ?? '';
 }
 
 function readAllStepsFromDom(): void {
   const root = getRoot();
   if (root.querySelector('#business-name')) readStep1FromDom();
-  if (root.querySelector('#contact-phone')) readStep2FromDom();
-  if (root.querySelector('[name="hours-closed-0"]')) readStep3FromDom();
-  if (root.querySelector('#primary-color')) readStep4FromDom();
+  if (root.querySelector('#primary-color')) readStep2FromDom();
+  if (root.querySelector('[data-page-toggle]')) readStep3FromDom();
+  if (root.querySelector('.builder-service')) readStep4FromDom();
+  if (root.querySelector('[data-hours-closed]')) readStep5FromDom();
+  if (root.querySelector('#seo-title')) readStep6FromDom();
 }
 
 function refreshLivePreviewPanel(): void {
@@ -141,17 +220,67 @@ function refreshLivePreviewPanel(): void {
 
   const domainValue = root.querySelector('.builder-live-panel .builder-example-domain__value');
   if (domainValue) {
-    domainValue.textContent = futureDomain(ctx.state);
+    const domain =
+      ctx.usePreparedSite && ctx.preparedWebsite
+        ? ctx.preparedWebsite.config.slug.domain
+        : futureDomain(ctx.state);
+    domainValue.textContent = domain;
   }
 
-  frame.innerHTML = renderTenantPreview(ctx.state, ctx.files, 'home');
+  frame.innerHTML = getPreviewHtml(ctx.state.previewPage);
   attachPreviewFrame(frame);
+  if (ctx.usePreparedSite && ctx.preparedWebsite) {
+    applyPreparedPreviewSeo(ctx.preparedWebsite, ctx.state.previewPage);
+  } else {
+    applyPreviewSeo(ctx.state, ctx.files);
+  }
+}
+
+function updateSeoCharCounts(): void {
+  if (ctx.state.currentStep !== 6) return;
+  const root = getRoot();
+  const titleInput = root.querySelector('#seo-title') as HTMLInputElement | null;
+  const metaInput = root.querySelector('#seo-meta-description') as HTMLTextAreaElement | null;
+  const titleHint = root.querySelector('#seo-title-hint');
+  const metaHint = root.querySelector('#seo-meta-hint');
+  if (titleInput && titleHint) {
+    const len = titleInput.value.length;
+    titleHint.textContent = `${len}/70 tekens`;
+    titleHint.classList.toggle('is-over', len > 70);
+  }
+  if (metaInput && metaHint) {
+    const len = metaInput.value.length;
+    metaHint.textContent = `${len}/160 tekens`;
+    metaHint.classList.toggle('is-over', len > 160);
+  }
+}
+
+function syncHoursRowUi(index: number): void {
+  const root = getRoot();
+  const row = root.querySelector(`[data-hours-index="${index}"]`);
+  const day = ctx.state.hours[index];
+  if (!row || !day) return;
+
+  const closedInput = row.querySelector(`[data-hours-closed="${index}"]`) as HTMLInputElement | null;
+  const open24Input = row.querySelector(`[data-hours-open24="${index}"]`) as HTMLInputElement | null;
+  const openInput = row.querySelector(`[data-hours-open="${index}"]`) as HTMLInputElement | null;
+  const closeInput = row.querySelector(`[data-hours-close="${index}"]`) as HTMLInputElement | null;
+  const disabled = day.closed || day.open24;
+
+  if (closedInput) closedInput.checked = day.closed;
+  if (open24Input) {
+    open24Input.disabled = day.closed;
+    open24Input.checked = day.open24;
+  }
+  if (openInput) openInput.disabled = disabled;
+  if (closeInput) closeInput.disabled = disabled;
 }
 
 function scheduleLivePreview(): void {
   readAllStepsFromDom();
   ctx.state.branding.textColor = readableTextColor(ctx.state.branding.primaryColor);
   persist();
+  updateSeoCharCounts();
   if (previewTimer) clearTimeout(previewTimer);
   previewTimer = setTimeout(refreshLivePreviewPanel, 80);
 }
@@ -165,27 +294,35 @@ function updateSlugPreview(): void {
   scheduleLivePreview();
 }
 
-function bindIndustryPicker(root: HTMLElement): void {
-  const search = root.querySelector('#industry-search') as HTMLInputElement | null;
-  const hidden = root.querySelector('#business-industry') as HTMLInputElement | null;
-  const list = root.querySelector('#industry-options') as HTMLUListElement | null;
+function bindSearchPicker(options: {
+  root: HTMLElement;
+  searchId: string;
+  hiddenId: string;
+  listId: string;
+  getOptions: (query: string) => string[];
+  onSelect: (value: string) => void;
+  formatOption?: (value: string) => string;
+  signal: AbortSignal;
+}): void {
+  const search = options.root.querySelector(`#${options.searchId}`) as HTMLInputElement | null;
+  const hidden = options.root.querySelector(`#${options.hiddenId}`) as HTMLInputElement | null;
+  const list = options.root.querySelector(`#${options.listId}`) as HTMLUListElement | null;
   if (!search || !hidden || !list) return;
 
   const renderOptions = (query: string) => {
-    const options = filterIndustries(query).slice(0, 14);
-    list.innerHTML = options
+    const values = options.getOptions(query).slice(0, 14);
+    list.innerHTML = values
       .map(
-        (option) =>
-          `<li role="option" tabindex="0" data-industry="${option.replace(/"/g, '&quot;')}">${option}</li>`,
+        (value) =>
+          `<li role="option" tabindex="0" data-value="${value.replace(/"/g, '&quot;')}">${options.formatOption?.(value) ?? value}</li>`,
       )
       .join('');
-    list.hidden = options.length === 0;
-    search.setAttribute('aria-expanded', options.length > 0 ? 'true' : 'false');
+    list.hidden = values.length === 0;
+    search.setAttribute('aria-expanded', values.length > 0 ? 'true' : 'false');
   };
 
-  const selectIndustry = (value: string) => {
-    hidden.value = value;
-    search.value = value;
+  const selectValue = (value: string) => {
+    options.onSelect(value);
     list.hidden = true;
     search.setAttribute('aria-expanded', 'false');
     scheduleLivePreview();
@@ -193,29 +330,59 @@ function bindIndustryPicker(root: HTMLElement): void {
 
   search.addEventListener('input', () => {
     renderOptions(search.value);
-    const exact = BUILDER_INDUSTRIES.find(
-      (industry) => industry.toLowerCase() === search.value.trim().toLowerCase(),
-    );
-    hidden.value = exact ?? hidden.value;
     scheduleLivePreview();
   });
   search.addEventListener('focus', () => renderOptions(search.value));
   search.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      const first = list.querySelector('[data-industry]') as HTMLElement | null;
-      if (first) selectIndustry(first.dataset.industry ?? '');
+      const query = search.value.trim();
+      const exact = options.getOptions('').find((value) => value.toLowerCase() === query.toLowerCase());
+      if (exact) {
+        selectValue(exact);
+        return;
+      }
+      const visible = [...list.querySelectorAll('[data-value]')] as HTMLElement[];
+      if (visible.length === 1 && visible[0]?.dataset.value) {
+        selectValue(visible[0].dataset.value);
+      }
     }
-  });
+  }, { signal: options.signal });
 
   list.addEventListener('click', (event) => {
-    const item = (event.target as HTMLElement).closest('[data-industry]') as HTMLElement | null;
-    if (item?.dataset.industry) selectIndustry(item.dataset.industry);
+    const item = (event.target as HTMLElement).closest('[data-value]') as HTMLElement | null;
+    if (item?.dataset.value) selectValue(item.dataset.value);
   });
 
   document.addEventListener('click', (event) => {
-    if (!root.contains(event.target as Node)) list.hidden = true;
+    if (!options.root.contains(event.target as Node)) list.hidden = true;
+  }, { signal: options.signal });
+}
+
+function bindIndustryPicker(root: HTMLElement, signal: AbortSignal): void {
+  bindSearchPicker({
+    root,
+    searchId: 'industry-search',
+    hiddenId: 'business-industry',
+    listId: 'industry-options',
+    signal,
+    getOptions: (query) => filterIndustries(query),
+    onSelect: (value) => {
+      const search = root.querySelector('#industry-search') as HTMLInputElement;
+      const hidden = root.querySelector('#business-industry') as HTMLInputElement;
+      hidden.value = value;
+      search.value = value;
+    },
   });
+
+  const search = root.querySelector('#industry-search') as HTMLInputElement | null;
+  search?.addEventListener('input', () => {
+    const hidden = root.querySelector('#business-industry') as HTMLInputElement | null;
+    const exact = BUILDER_INDUSTRIES.find(
+      (industry) => industry.toLowerCase() === search.value.trim().toLowerCase(),
+    );
+    if (hidden) hidden.value = exact ?? '';
+  }, { signal });
 }
 
 function readCurrentStepFromDom(): void {
@@ -232,6 +399,12 @@ function readCurrentStepFromDom(): void {
     case 4:
       readStep4FromDom();
       break;
+    case 5:
+      readStep5FromDom();
+      break;
+    case 6:
+      readStep6FromDom();
+      break;
     default:
       break;
   }
@@ -239,6 +412,7 @@ function readCurrentStepFromDom(): void {
 
 function validateCurrentStep(): boolean {
   readCurrentStepFromDom();
+  const hasLogo = Boolean(ctx.files.logoUrl);
   let result;
 
   switch (ctx.state.currentStep) {
@@ -246,13 +420,25 @@ function validateCurrentStep(): boolean {
       result = validateStep1(ctx.state);
       break;
     case 2:
-      result = validateStep2(ctx.state);
+      result = validateStep2(ctx.state, hasLogo);
       break;
     case 3:
       result = validateStep3(ctx.state);
       break;
     case 4:
-      result = validateStep4(ctx.state, Boolean(ctx.files.logoUrl), ctx.files.photoUrls.length);
+      result = validateStep4(ctx.state);
+      break;
+    case 5:
+      result = validateStep5(ctx.state);
+      break;
+    case 6:
+      result = validateStep6(ctx.state);
+      break;
+    case 7:
+      result = validateStep7(ctx.state);
+      break;
+    case 8:
+      result = validateStep8(ctx.state);
       break;
     default:
       result = { valid: true, errors: {} };
@@ -263,33 +449,42 @@ function validateCurrentStep(): boolean {
 }
 
 function renderBuilderShell(): string {
+  const isPreviewStep = ctx.state.currentStep === 7;
   const stepContent = (() => {
     switch (ctx.state.currentStep) {
       case 1:
         return renderStep1(ctx.state, ctx.errors);
       case 2:
-        return renderStep2(ctx.state, ctx.errors);
+        return renderStep2(ctx.state, ctx.files, ctx.errors, ctx.fileWarning);
       case 3:
         return renderStep3(ctx.state, ctx.errors);
       case 4:
-        return renderStep4(ctx.state, ctx.files, ctx.errors, ctx.fileWarning);
+        return renderStep4(ctx.state, ctx.errors);
       case 5:
-        return renderStep5(ctx.state, ctx.files);
+        return renderStep5(ctx.state);
+      case 6:
+        return renderStep6(ctx.state, ctx.files, ctx.errors);
+      case 7:
+        return renderStep7(ctx.state, ctx.errors, ctx.generateSummary);
+      case 8:
+        return renderStep8(ctx.state, ctx.files, ctx.errors);
       default:
         return '';
     }
   })();
 
-  const showNav = ctx.state.currentStep < 5;
+  const showNav = ctx.state.currentStep < 8;
+  const nextLabel =
+    ctx.state.currentStep === 6 ? 'Naar voorbeeld' : ctx.state.currentStep === 7 ? 'Naar afronden' : 'Volgende';
 
   return `
-    <div class="builder-workspace">
-      <div class="builder-workspace__form">
+    <div class="builder-workspace ${isPreviewStep ? 'builder-workspace--preview-step' : ''}">
+      <div class="builder-workspace__form ${isPreviewStep ? 'builder-workspace__form--compact' : ''}">
         <div class="builder-shell">
           <header class="builder-header">
             <p class="eyebrow">Website Builder</p>
             <h1>Maak uw gratis website</h1>
-            <p class="builder-subtitle">Vul uw bedrijfsgegevens in. Ons systeem bouwt automatisch uw website.</p>
+            <p class="builder-subtitle">Doorloop de stappen en zie direct een live preview van uw website.</p>
             ${renderProgress(ctx.state.currentStep)}
           </header>
 
@@ -301,8 +496,18 @@ function renderBuilderShell(): string {
             showNav
               ? `
             <footer class="builder-footer">
-              <button type="button" class="btn btn-secondary" data-builder-back ${ctx.state.currentStep === 1 ? 'disabled' : ''}>Terug</button>
-              <button type="button" class="btn btn-primary" data-builder-next>${ctx.state.currentStep === 4 ? 'Naar overzicht' : 'Verder'}</button>
+              <button type="button" class="btn btn-secondary" data-builder-back ${ctx.state.currentStep === 1 ? 'disabled' : ''}>Vorige</button>
+              <button type="button" class="btn btn-primary" data-builder-next>${nextLabel}</button>
+            </footer>
+          `
+              : ''
+          }
+
+          ${
+            ctx.state.currentStep === 8
+              ? `
+            <footer class="builder-footer">
+              <button type="button" class="btn btn-secondary" data-builder-back>Vorige</button>
             </footer>
           `
               : ''
@@ -318,9 +523,16 @@ function renderBuilderShell(): string {
         ${renderExampleDomainBar(futureDomain(ctx.state))}
         <div class="builder-live-panel__head">
           <strong>Live preview</strong>
-          <span>Wijzigingen verschijnen direct — automatisch gegenereerd</span>
+          <div class="builder-viewport-switch" role="group" aria-label="Apparaatweergave">
+            <button type="button" class="builder-viewport-btn ${ctx.previewViewport === 'desktop' ? 'is-active' : ''}" data-builder-viewport="desktop">Desktop</button>
+            <button type="button" class="builder-viewport-btn ${ctx.previewViewport === 'tablet' ? 'is-active' : ''}" data-builder-viewport="tablet">Tablet</button>
+            <button type="button" class="builder-viewport-btn ${ctx.previewViewport === 'mobile' ? 'is-active' : ''}" data-builder-viewport="mobile">Mobiel</button>
+          </div>
         </div>
-        <div id="builder-live-preview-frame" class="builder-live-preview__frame"></div>
+        ${renderPreviewPageTabs(ctx.state.previewPage, ctx.state.enabledPages)}
+        <div class="builder-live-preview__canvas builder-live-preview__canvas--${ctx.previewViewport}">
+          <div id="builder-live-preview-frame" class="builder-live-preview__frame"></div>
+        </div>
       </aside>
     </div>
 
@@ -328,7 +540,7 @@ function renderBuilderShell(): string {
   `;
 }
 
-function getPreviewHtml(page: PreviewPage): string {
+function getPreviewHtml(page: import('../../types/builder').PreviewPage): string {
   if (ctx.usePreparedSite && ctx.preparedWebsite) {
     return ctx.preparedWebsite.pages[page];
   }
@@ -399,6 +611,10 @@ function render(): void {
     if (ctx.usePreparedSite && ctx.preparedWebsite) {
       applyPreparedPreviewSeo(ctx.preparedWebsite, ctx.state.previewPage);
     }
+  } else if (view === 'save-success' && ctx.saveResult) {
+    root.innerHTML = renderSaveSuccess(ctx.saveResult, ctx.saveMagicLinkSent);
+  } else if (view === 'generate-success' && ctx.generateSummary) {
+    root.innerHTML = renderGenerateSuccess(ctx.generateSummary);
   } else if (view === 'preview') {
     root.innerHTML = renderPreviewShell();
     if (ctx.usePreparedSite && ctx.preparedWebsite) {
@@ -416,13 +632,69 @@ function render(): void {
 }
 
 function goToStep(step: BuilderStep): void {
+  readAllStepsFromDom();
   ctx.state.currentStep = step;
   ctx.errors = {};
   persist();
   render();
 }
 
+function handleGenerateWebsite(): void {
+  const root = getRoot();
+  readAllStepsFromDom();
+
+  const buttons = root.querySelectorAll('[data-generate-website]');
+  buttons.forEach((button) => {
+    (button as HTMLButtonElement).disabled = true;
+    button.textContent = 'Genereren…';
+  });
+
+  try {
+    const result = autoGenerateWebsite(ctx.state, ctx.files);
+    if (!result.ok) {
+      ctx.errors = {
+        ...result.errors,
+        generate: 'Controleer de verplichte velden en probeer opnieuw.',
+      };
+      if (result.errors.name || result.errors.industry) ctx.state.currentStep = 1;
+      else if (result.errors.services) ctx.state.currentStep = 4;
+      else if (result.errors.businessDescription) ctx.state.currentStep = 6;
+      else if (result.errors.logo) ctx.state.currentStep = 2;
+      else if (result.errors.phone || result.errors.email || result.errors.city) ctx.state.currentStep = 1;
+      persist();
+      render();
+      root.querySelector('.builder-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    ctx.preparedWebsite = result.generated;
+    ctx.usePreparedSite = true;
+    ctx.generateSummary = result.summary;
+    ctx.state.publicationStatus = 'concept';
+    ctx.state.previewPage = 'home';
+    ctx.state.currentStep = 7;
+    ctx.state.view = 'generate-success';
+    ctx.errors = {};
+    syncGeneratedToWebsiteList(result.generated);
+    persist();
+    render();
+    refreshLivePreviewPanel();
+    if (ctx.preparedWebsite) {
+      applyPreparedPreviewSeo(ctx.preparedWebsite, ctx.state.previewPage);
+    }
+  } finally {
+    buttons.forEach((button) => {
+      (button as HTMLButtonElement).disabled = false;
+      button.textContent = 'Website genereren';
+    });
+  }
+}
+
 function bindEvents(): void {
+  eventsAbort?.abort();
+  eventsAbort = new AbortController();
+  const { signal } = eventsAbort;
+
   const root = getRoot();
 
   root.querySelector('[data-builder-back]')?.addEventListener('click', () => {
@@ -442,15 +714,21 @@ function bindEvents(): void {
       return;
     }
     persist();
-    if (ctx.state.currentStep < 5) {
-      ctx.state.currentStep = (ctx.state.currentStep + 1) as BuilderStep;
+    if (ctx.state.currentStep < 8) {
+      const nextStep = (ctx.state.currentStep + 1) as BuilderStep;
+      if (nextStep === 6 && !ctx.state.heroTitle.trim()) {
+        const copy = generateCopy(ctx.state);
+        ctx.state.heroTitle = copy.seoTitle;
+        ctx.state.seoMetaDescription = copy.seoDescription;
+      }
+      ctx.state.currentStep = nextStep;
       ctx.errors = {};
       render();
     }
   });
 
   root.querySelector('[data-add-service]')?.addEventListener('click', () => {
-    readStep1FromDom();
+    readStep4FromDom();
     ctx.state.business.services.push({ id: createServiceId(), title: '', description: '' });
     persist();
     render();
@@ -458,7 +736,7 @@ function bindEvents(): void {
 
   root.querySelectorAll('[data-remove-service]').forEach((button) => {
     button.addEventListener('click', () => {
-      readStep1FromDom();
+      readStep4FromDom();
       const index = Number((button as HTMLElement).dataset.removeService);
       ctx.state.business.services.splice(index, 1);
       persist();
@@ -466,46 +744,122 @@ function bindEvents(): void {
     });
   });
 
+  root.querySelectorAll('[data-move-service-up]').forEach((button) => {
+    button.addEventListener('click', () => {
+      readStep4FromDom();
+      const index = Number((button as HTMLElement).dataset.moveServiceUp);
+      if (index <= 0) return;
+      const services = ctx.state.business.services;
+      [services[index - 1], services[index]] = [services[index], services[index - 1]];
+      persist();
+      render();
+      scheduleLivePreview();
+    });
+  });
+
+  root.querySelectorAll('[data-move-service-down]').forEach((button) => {
+    button.addEventListener('click', () => {
+      readStep4FromDom();
+      const index = Number((button as HTMLElement).dataset.moveServiceDown);
+      const services = ctx.state.business.services;
+      if (index >= services.length - 1) return;
+      [services[index], services[index + 1]] = [services[index + 1], services[index]];
+      persist();
+      render();
+      scheduleLivePreview();
+    });
+  });
+
+  root.querySelector('[data-copy-workday-hours]')?.addEventListener('click', () => {
+    readStep5FromDom();
+    const monday = ctx.state.hours.find((day) => day.dayKey === 'monday');
+    if (!monday) return;
+    ctx.state.hours = ctx.state.hours.map((day) => {
+      if (!WORKDAY_KEYS.includes(day.dayKey)) return day;
+      return {
+        ...day,
+        closed: monday.closed,
+        open24: monday.open24,
+        openTime: monday.openTime,
+        closeTime: monday.closeTime,
+      };
+    });
+    persist();
+    render();
+    scheduleLivePreview();
+  });
+
+  root.querySelectorAll('[data-hours-closed]').forEach((input) => {
+    input.addEventListener('change', () => {
+      readStep5FromDom();
+      const index = Number((input as HTMLElement).dataset.hoursClosed);
+      const day = ctx.state.hours[index];
+      if (day?.closed) day.open24 = false;
+      persist();
+      syncHoursRowUi(index);
+      scheduleLivePreview();
+    }, { signal });
+  });
+
+  root.querySelectorAll('[data-hours-open24]').forEach((input) => {
+    input.addEventListener('change', () => {
+      readStep5FromDom();
+      const index = Number((input as HTMLElement).dataset.hoursOpen24);
+      const day = ctx.state.hours[index];
+      if (day?.open24) day.closed = false;
+      persist();
+      syncHoursRowUi(index);
+      scheduleLivePreview();
+    }, { signal });
+  });
+
+  root.querySelectorAll('[data-hours-open], [data-hours-close]').forEach((input) => {
+    input.addEventListener('change', scheduleLivePreview, { signal });
+  });
+
+  root.querySelectorAll('[data-page-toggle]').forEach((input) => {
+    input.addEventListener('change', () => {
+      readStep3FromDom();
+      persist();
+      render();
+      scheduleLivePreview();
+    });
+  });
+
+  root.querySelectorAll('[data-preview-tab]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const page = (button as HTMLElement).dataset.previewTab as PreviewPage;
+      ctx.state.previewPage = page;
+      persist();
+      refreshLivePreviewPanel();
+      root.querySelectorAll('[data-preview-tab]').forEach((tab) => {
+        const el = tab as HTMLElement;
+        const isActive = el.dataset.previewTab === page;
+        el.classList.toggle('is-active', isActive);
+        el.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    });
+  });
+
+  root.querySelectorAll('[data-builder-viewport]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const viewport = (button as HTMLElement).dataset.builderViewport as 'desktop' | 'tablet' | 'mobile';
+      ctx.previewViewport = viewport;
+      root.querySelectorAll('[data-builder-viewport]').forEach((btn) => {
+        btn.classList.toggle('is-active', (btn as HTMLElement).dataset.builderViewport === viewport);
+      });
+      const canvas = root.querySelector('.builder-live-preview__canvas');
+      canvas?.classList.remove('builder-live-preview__canvas--desktop', 'builder-live-preview__canvas--tablet', 'builder-live-preview__canvas--mobile');
+      canvas?.classList.add(`builder-live-preview__canvas--${viewport}`);
+    });
+  });
+
   root.querySelector('#business-name')?.addEventListener('input', updateSlugPreview);
 
-  bindIndustryPicker(root);
+  bindIndustryPicker(root, signal);
 
   root.querySelector('.builder-body')?.addEventListener('input', scheduleLivePreview);
   root.querySelector('.builder-body')?.addEventListener('change', scheduleLivePreview);
-
-  root.querySelector('[data-copy-workday-hours]')?.addEventListener('click', () => {
-    readStep3FromDom();
-    const monday = ctx.state.hours.find((day) => day.dayKey === 'monday');
-    if (!monday) return;
-    ctx.state.hours = ctx.state.hours.map((day) =>
-      WORKDAY_KEYS.includes(day.dayKey)
-        ? {
-            ...day,
-            closed: monday.closed,
-            open24: monday.open24,
-            openTime: monday.openTime,
-            closeTime: monday.closeTime,
-          }
-        : day,
-    );
-    persist();
-    render();
-  });
-
-  root.querySelectorAll('.builder-hours-row').forEach((row, index) => {
-    row.querySelector(`[name="hours-closed-${index}"]`)?.addEventListener('change', (event) => {
-      const checked = (event.target as HTMLInputElement).checked;
-      const open24 = row.querySelector(`[name="hours-open24-${index}"]`) as HTMLInputElement;
-      if (checked && open24) open24.checked = false;
-      render();
-    });
-    row.querySelector(`[name="hours-open24-${index}"]`)?.addEventListener('change', (event) => {
-      const checked = (event.target as HTMLInputElement).checked;
-      const closed = row.querySelector(`[name="hours-closed-${index}"]`) as HTMLInputElement;
-      if (checked && closed) closed.checked = false;
-      render();
-    });
-  });
 
   root.querySelector('#builder-logo')?.addEventListener('change', (event) => {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -517,43 +871,84 @@ function bindEvents(): void {
     scheduleLivePreview();
   });
 
-  root.querySelector('#builder-photos')?.addEventListener('change', (event) => {
+  root.querySelector('#builder-hero')?.addEventListener('change', (event) => {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    const error = setHeroFile(ctx.files, file);
+    ctx.errors.photos = error ?? '';
+    if (!error) persist();
+    render();
+    scheduleLivePreview();
+  }, { signal });
+
+  root.querySelector('#builder-hero-replace')?.addEventListener('change', (event) => {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    const error = setHeroFile(ctx.files, file);
+    ctx.errors.photos = error ?? '';
+    if (!error) persist();
+    (event.target as HTMLInputElement).value = '';
+    render();
+    scheduleLivePreview();
+  }, { signal });
+
+  root.querySelector('[data-remove-hero]')?.addEventListener('click', () => {
+    removeHeroFile(ctx.files);
+    persist();
+    render();
+    scheduleLivePreview();
+  });
+
+  root.querySelector('#builder-photos-add')?.addEventListener('change', (event) => {
     const input = event.target as HTMLInputElement;
     const selected = [...(input.files ?? [])];
     let error: string | null = null;
-    selected.forEach((file) => {
-      if (!error) error = addPhotoFile(ctx.files, file);
-    });
+    for (const file of selected) {
+      error = addPhotoFile(ctx.files, file);
+      if (error) break;
+    }
+    if (error) ctx.errors.photos = error;
+    else {
+      ctx.errors.photos = '';
+      persist();
+    }
     input.value = '';
-    ctx.errors.photos = error ?? '';
-    if (!error) persist();
     render();
     scheduleLivePreview();
   });
 
   root.querySelectorAll('[data-remove-photo]').forEach((button) => {
     button.addEventListener('click', () => {
-      removePhoto(ctx.files, Number((button as HTMLElement).dataset.removePhoto));
+      const index = Number((button as HTMLElement).dataset.removePhoto);
+      removePhoto(ctx.files, index);
       persist();
       render();
+      scheduleLivePreview();
     });
   });
 
-  root.querySelectorAll('[data-move-photo-up]').forEach((button) => {
-    button.addEventListener('click', () => {
-      movePhoto(ctx.files, Number((button as HTMLElement).dataset.movePhotoUp), -1);
-      persist();
+  root.querySelectorAll('[data-replace-photo]').forEach((input) => {
+    input.addEventListener('change', (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      const index = Number((event.target as HTMLElement).dataset.replacePhoto);
+      const error = replacePhotoFile(ctx.files, index, file);
+      if (!error) persist();
+      (event.target as HTMLInputElement).value = '';
       render();
+      scheduleLivePreview();
     });
   });
 
-  root.querySelectorAll('[data-move-photo-down]').forEach((button) => {
-    button.addEventListener('click', () => {
-      movePhoto(ctx.files, Number((button as HTMLElement).dataset.movePhotoDown), 1);
-      persist();
-      render();
-    });
-  });
+  root.querySelector('#builder-social-image')?.addEventListener('change', (event) => {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    const error = setSocialImageFile(ctx.files, file);
+    ctx.errors.socialImage = error ?? '';
+    if (!error) persist();
+    render();
+    scheduleLivePreview();
+  }, { signal });
 
   root.querySelectorAll('[data-color-preset]').forEach((button) => {
     button.addEventListener('click', () => {
@@ -564,6 +959,27 @@ function bindEvents(): void {
       ctx.state.branding.accentColor = preset.accentColor;
       persist();
       render();
+      scheduleLivePreview();
+    });
+  });
+
+  root.querySelectorAll('[name="font-family"]').forEach((input) => {
+    input.addEventListener('change', (event) => {
+      const value = (event.target as HTMLInputElement).value as BuilderFontFamily;
+      if (value) {
+        ctx.state.design.fontFamily = value;
+        scheduleLivePreview();
+      }
+    });
+  });
+
+  root.querySelectorAll('[name="button-style"]').forEach((input) => {
+    input.addEventListener('change', (event) => {
+      const value = (event.target as HTMLInputElement).value as BuilderButtonStyle;
+      if (value) {
+        ctx.state.design.buttonStyle = value;
+        scheduleLivePreview();
+      }
     });
   });
 
@@ -583,28 +999,6 @@ function bindEvents(): void {
     });
   });
 
-  root.querySelector('[data-show-preview]')?.addEventListener('click', () => {
-    readAllStepsFromDom();
-    const result = validateAll(ctx.state, Boolean(ctx.files.logoUrl), ctx.files.photoUrls.length);
-    if (!result.valid) {
-      ctx.errors = result.errors;
-      const firstErrorStep = result.errors.name || result.errors.industry || result.errors.description || result.errors.services
-        ? 1
-        : result.errors.email || result.errors.phone || result.errors.city
-          ? 2
-          : Object.keys(result.errors).some((key) => key.startsWith('hours-'))
-            ? 3
-            : 4;
-      ctx.state.currentStep = firstErrorStep as BuilderStep;
-      render();
-      return;
-    }
-    ctx.state.view = 'preview';
-    ctx.state.previewPage = 'home';
-    persist();
-    render();
-  });
-
   root.querySelector('[data-edit-data]')?.addEventListener('click', () => {
     ctx.state.currentStep = 1;
     persist();
@@ -615,6 +1009,7 @@ function bindEvents(): void {
     if (!window.confirm('Weet u zeker dat u opnieuw wilt beginnen? Alle ingevulde gegevens worden gewist.')) return;
     revokeAllFiles(ctx.files);
     clearState();
+    clearFilesStorage();
     clearPreparedWebsite();
     ctx.state = createDefaultState();
     ctx.files = createEmptyFiles();
@@ -622,14 +1017,101 @@ function bindEvents(): void {
     ctx.fileWarning = null;
     ctx.preparedWebsite = null;
     ctx.d1PublishResult = null;
+    ctx.generateSummary = null;
     ctx.magicLinkSent = false;
     ctx.usePreparedSite = false;
     render();
   });
 
+  root.querySelectorAll('[data-generate-website]').forEach((button) => {
+    button.addEventListener('click', () => {
+      handleGenerateWebsite();
+    });
+  });
+
+  root.querySelector('[data-open-generated-preview]')?.addEventListener('click', () => {
+    ctx.state.view = 'builder';
+    ctx.state.currentStep = 7;
+    ctx.errors = {};
+    persist();
+    render();
+    refreshLivePreviewPanel();
+    if (ctx.usePreparedSite && ctx.preparedWebsite) {
+      applyPreparedPreviewSeo(ctx.preparedWebsite, ctx.state.previewPage);
+    }
+  });
+
+  root.querySelector('[data-edit-generated-website]')?.addEventListener('click', () => {
+    ctx.state.view = 'builder';
+    ctx.state.currentStep = 1;
+    ctx.errors = {};
+    persist();
+    render();
+  });
+
+  root.querySelector('[data-save-website]')?.addEventListener('click', async () => {
+    readAllStepsFromDom();
+    const allValid = validateAll(ctx.state, Boolean(ctx.files.logoUrl));
+    if (!allValid.valid) {
+      ctx.errors = allValid.errors;
+      ctx.state.currentStep = firstInvalidStep(ctx.state, Boolean(ctx.files.logoUrl)) as BuilderStep;
+      persist();
+      render();
+      getRoot().querySelector('.builder-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const saveButton = root.querySelector('[data-save-website]') as HTMLButtonElement | null;
+    if (saveButton) {
+      saveButton.disabled = true;
+      saveButton.textContent = 'Opslaan…';
+    }
+
+    try {
+      const { payload, errors: mediaErrors } = await buildSavePayload(ctx.state, ctx.files);
+      if (Object.keys(mediaErrors).length > 0) {
+        ctx.errors = { ...ctx.errors, ...mediaErrors };
+        render();
+        return;
+      }
+
+      const response = await saveWebsiteToD1(payload);
+      if (!response.ok) {
+        ctx.errors = response.fieldErrors ?? { save: response.message };
+        if (response.fieldErrors?.name) {
+          ctx.state.currentStep = 1;
+        }
+        render();
+        getRoot().querySelector('.builder-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      ctx.saveResult = response.result;
+      ctx.saveMagicLinkSent = Boolean(response.magicLinkSent);
+      persistSaveResult({ result: response.result, magicLinkSent: ctx.saveMagicLinkSent });
+      saveDashboardSession({
+        tenantId: response.result.tenantId,
+        websiteId: response.result.websiteId,
+        slug: response.result.slug,
+        subdomain: `${response.result.slug}.starlocal.nl`,
+        publishEmail: ctx.state.contact.email.trim(),
+      });
+      syncSavedToWebsiteList(response.result, ctx.state);
+      ctx.state.view = 'save-success';
+      ctx.errors = {};
+      persist();
+      render();
+    } finally {
+      if (saveButton) {
+        saveButton.disabled = false;
+        saveButton.textContent = 'Opslaan als concept';
+      }
+    }
+  });
+
   root.querySelector('[data-back-to-builder]')?.addEventListener('click', () => {
     ctx.state.view = 'builder';
-    ctx.usePreparedSite = false;
+    ctx.usePreparedSite = Boolean(ctx.preparedWebsite);
     resetPreviewSeo();
     persist();
     render();
@@ -644,11 +1126,11 @@ function bindEvents(): void {
 
   root.querySelector('[data-open-publish]')?.addEventListener('click', () => {
     readAllStepsFromDom();
-    const result = validateAll(ctx.state, Boolean(ctx.files.logoUrl), ctx.files.photoUrls.length);
+    const result = validateAll(ctx.state, Boolean(ctx.files.logoUrl));
     if (!result.valid) {
       ctx.state.view = 'builder';
       ctx.errors = result.errors;
-      ctx.state.currentStep = 1;
+      ctx.state.currentStep = firstInvalidStep(ctx.state, Boolean(ctx.files.logoUrl)) as BuilderStep;
       persist();
       render();
       return;
@@ -667,7 +1149,7 @@ function bindEvents(): void {
     const selectedPackage = (packageInput?.value === 'premium' ? 'premium' : 'free') as 'free' | 'premium';
 
     const emailResult = validatePublishEmail(publishEmail, ctx.state.contact.email);
-    const allResult = validateAll(ctx.state, Boolean(ctx.files.logoUrl), ctx.files.photoUrls.length);
+    const allResult = validateAll(ctx.state, Boolean(ctx.files.logoUrl));
 
     if (!emailResult.valid || !allResult.valid) {
       ctx.errors = { ...allResult.errors, ...emailResult.errors };
@@ -760,9 +1242,17 @@ function bindEvents(): void {
 
 function attachPreviewFrame(frame: Element): void {
   bindPreviewInteractions(frame, (page) => {
+    if (!ctx.state.enabledPages[page]) return;
     ctx.state.previewPage = page;
     persist();
     frame.innerHTML = getPreviewHtml(page);
+    const root = getRoot();
+    root.querySelectorAll('[data-preview-tab]').forEach((tab) => {
+      const el = tab as HTMLElement;
+      const isActive = el.dataset.previewTab === page;
+      el.classList.toggle('is-active', isActive);
+      el.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
     if (ctx.usePreparedSite && ctx.preparedWebsite) {
       applyPreparedPreviewSeo(ctx.preparedWebsite, page);
     } else {
@@ -773,26 +1263,57 @@ function attachPreviewFrame(frame: Element): void {
 }
 
 export function initWebsiteBuilder(): void {
+  const storedFiles = loadFilesFromStorage();
+
   ctx = {
     state: loadState(),
-    files: createEmptyFiles(),
+    files: storedFiles ?? createEmptyFiles(),
     errors: {},
     fileWarning: null,
     preparedWebsite: getActivePreparedWebsite(),
     d1PublishResult: null,
+    saveResult: null,
+    saveMagicLinkSent: false,
+    generateSummary: null,
     magicLinkSent: false,
-    usePreparedSite: false,
+    usePreparedSite: Boolean(getActivePreparedWebsite()),
+    previewViewport: 'desktop',
   };
 
   const storedUploads = hasStoredUploadMeta(ctx.state);
-  if (storedUploads.logo || storedUploads.photos) {
+  const hasRestoredMedia = Boolean(
+    storedFiles?.logoUrl || storedFiles?.heroUrl || (storedFiles?.photoUrls.length ?? 0) > 0,
+  );
+  if (!hasRestoredMedia && (storedUploads.logo || storedUploads.hero || storedUploads.photos)) {
     ctx.fileWarning =
-      'Uw eerder gekozen logo of foto’s zijn na het verversen van de pagina niet meer beschikbaar. Upload ze opnieuw in stap 4.';
+      'Eerder gekozen afbeeldingen zijn na het verversen van de pagina niet meer beschikbaar. Upload ze opnieuw in stap 2 (Huisstijl).';
+  }
+
+  if (ctx.state.currentStep > 8) {
+    ctx.state.currentStep = 8;
   }
 
   if (ctx.state.view === 'preview' || ctx.state.view === 'publish' || ctx.state.view === 'publish-success') {
     ctx.state.view = 'builder';
   }
+  if (ctx.state.view !== 'save-success') {
+    ctx.saveResult = null;
+    ctx.saveMagicLinkSent = false;
+  } else if (!ctx.saveResult) {
+    const persisted = loadPersistedSaveResult();
+    if (persisted) {
+      ctx.saveResult = persisted.result;
+      ctx.saveMagicLinkSent = Boolean(persisted.magicLinkSent);
+    }
+  }
+  if (ctx.state.view !== 'generate-success') {
+    ctx.generateSummary = null;
+  } else if (!ctx.generateSummary && ctx.preparedWebsite) {
+    ctx.state.view = 'builder';
+    ctx.state.currentStep = 7;
+    ctx.usePreparedSite = true;
+  }
 
+  syncCityFromContact();
   render();
 }

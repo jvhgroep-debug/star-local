@@ -13,6 +13,7 @@
     "blog": "Blog",
     "contact": "Contact",
     "freeAdvice": "Gratis advies",
+    "freeWebsiteCta": "Gratis website maken",
     "mainNav": "Hoofdnavigatie",
     "mobileNav": "Mobiel menu",
     "openMenu": "Menu openen",
@@ -33,7 +34,10 @@
     "services": "Diensten",
     "company": "Bedrijf",
     "legal": "Juridisch",
-    "copyright": "Star Local. Alle rechten voorbehouden."
+    "copyright": "Star Local. Alle rechten voorbehouden.",
+    "freeWebsiteLink": "Gratis website maken",
+    "freeWebsitePromo": "Gratis professionele website in ongeveer 3 minuten.",
+    "freeWebsiteStart": "Start gratis"
   },
   "footerBar": {
     "copyright": "Star Local. Alle rechten voorbehouden.",

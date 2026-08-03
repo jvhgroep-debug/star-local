@@ -14,6 +14,7 @@ export interface CreateMagicLinkResult {
   magicLink: MagicLink;
   /** One-time plaintext token for e-mail delivery. Must not be persisted in D1. */
   plainToken: string;
+  emailSent: boolean;
 }
 
 /** Input for validating a magic link token from a verification URL. */

@@ -23,6 +23,7 @@ const legalBarLinks = [
   { label: bar.terms, href: route('terms', locale) },
   { label: bar.disclaimer, href: route('disclaimer', locale) },
 ];
+const gratisWebsiteHref = '/gratis-website/';
 ---
 
 <footer class="site-footer">
@@ -62,6 +63,13 @@ const legalBarLinks = [
       </ul>
     </div>
   </div>
+
+  <section class="footer-promo" aria-label={dict.footer.freeWebsiteLink}>
+    <div class="container footer-promo__inner">
+      <p class="footer-promo__text">{dict.footer.freeWebsitePromo}</p>
+      <a href={gratisWebsiteHref} class="btn btn-primary footer-promo__cta">{dict.footer.freeWebsiteStart}</a>
+    </div>
+  </section>
 
   <div class="footer-bar">
     <div class="container footer-bar__inner">
@@ -136,6 +144,36 @@ const legalBarLinks = [
     color: var(--gold);
   }
 
+  .footer-promo {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(205, 184, 128, 0.08), rgba(205, 184, 128, 0.02));
+  }
+
+  .footer-promo__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.75rem 0;
+  }
+
+  .footer-promo__text {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.05rem;
+    font-weight: 600;
+    max-width: 42ch;
+    line-height: 1.45;
+  }
+
+  .footer-promo__cta {
+    flex-shrink: 0;
+    padding: 0.75rem 1.25rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
   .footer-bar {
     padding: 1.35rem 0 1.5rem;
   }
@@ -193,6 +231,17 @@ const legalBarLinks = [
   @media (max-width: 640px) {
     .footer-grid {
       grid-template-columns: 1fr;
+    }
+
+    .footer-promo__inner {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+    }
+
+    .footer-promo__cta {
+      width: 100%;
+      text-align: center;
     }
 
     .footer-bar__inner {

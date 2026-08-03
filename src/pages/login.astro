@@ -68,12 +68,14 @@ const prefilledEmail = Astro.url.searchParams.get('email') ?? '';
     errorEl?.setAttribute('hidden', '');
 
     try {
+      const nextInput = form.querySelector('input[name="next"]') as HTMLInputElement | null;
+      const next = nextInput?.value ?? '';
       const response = await fetch('/api/auth/magic-link/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, next: next || undefined }),
       });
-      const data = (await response.json()) as { ok: boolean; message?: string; redirect?: string };
+      const data = (await response.json()) as { ok: boolean; message?: string; redirect?: string; emailSent?: boolean };
 
       if (!response.ok || !data.ok) {
         if (errorEl) {

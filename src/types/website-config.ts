@@ -4,6 +4,7 @@ import type {
   BuilderContact,
   BuilderDesignSettings,
   DayHours,
+  EnabledPages,
   PreviewPage,
 } from './builder';
 import type { GeneratedCopy } from '../lib/builder/templates';
@@ -29,6 +30,8 @@ export interface WebsiteMedia {
   photoNames: string[];
   heroImageUrl: string | null;
   galleryImageUrls: string[];
+  socialImageUrl: string | null;
+  socialImageName: string;
 }
 
 export interface WebsiteSeo {
@@ -74,6 +77,8 @@ export interface WebsiteConfig {
   preparedAt: string | null;
   heroTitle: string;
   heroSubtitle: string;
+  seoMetaDescription: string;
+  enabledPages: EnabledPages;
   design: BuilderDesignSettings;
 }
 

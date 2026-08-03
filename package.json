@@ -6,6 +6,8 @@
     "dev": "astro dev",
     "build": "node scripts/generate-gemeente-page.mjs && astro build && node scripts/alias-sitemap.mjs",
     "preview": "astro preview",
+    "test:publish": "npx --yes tsx scripts/test-local-publish-direct.ts",
+    "test:generate": "npx --yes tsx scripts/test-auto-generate-direct.ts",
     "generate:gemeentes": "node scripts/generate-gemeentes.mjs && node scripts/generate-gemeente-page.mjs"
   },
   "dependencies": {

@@ -31,3 +31,31 @@ export function clearDashboardSession(): void {
   if (typeof window === 'undefined') return;
   window.localStorage.removeItem(DASHBOARD_SESSION_KEY);
 }
+
+export const SAVE_RESULT_STORAGE_KEY = 'starlocal-save-result-v1';
+
+export interface PersistedSavePayload {
+  result: import('../../types/save').SaveWebsiteResult;
+  magicLinkSent?: boolean;
+}
+
+export function persistSaveResult(payload: PersistedSavePayload): void {
+  if (typeof window === 'undefined') return;
+  sessionStorage.setItem(SAVE_RESULT_STORAGE_KEY, JSON.stringify(payload));
+}
+
+export function loadPersistedSaveResult(): PersistedSavePayload | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = sessionStorage.getItem(SAVE_RESULT_STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as PersistedSavePayload;
+  } catch {
+    return null;
+  }
+}
+
+export function clearPersistedSaveResult(): void {
+  if (typeof window === 'undefined') return;
+  sessionStorage.removeItem(SAVE_RESULT_STORAGE_KEY);
+}

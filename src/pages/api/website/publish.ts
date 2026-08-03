@@ -56,12 +56,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
         fromEmail: FROM_EMAIL,
       });
       try {
-        await auth.requestMagicLink({
+        const linkResult = await auth.requestMagicLink({
           email: publishEmail,
           tenantId: result.tenantId,
           origin: new URL(request.url).origin,
         });
-        magicLinkSent = true;
+        magicLinkSent = linkResult.emailSent;
       } catch (error) {
         console.error('[publish] Magic link verzenden mislukt:', error);
       }

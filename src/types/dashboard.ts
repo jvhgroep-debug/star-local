@@ -1,7 +1,12 @@
-import type { ContactRecord, OpeningHoursRecord, ServiceRecord, TenantRecord, WebsiteRecord } from './database';
+import type { ContactRecord, OpeningHoursRecord, ServiceRecord, TenantRecord, WebsitePageRecord, WebsiteRecord } from './database';
+import type { PublicationLogEntry, PublicationPipelineStatus } from './publication';
 
 export type DashboardSection =
   | 'overview'
+  | 'websites'
+  | 'concepts'
+  | 'published'
+  | 'stats'
   | 'website'
   | 'pages'
   | 'services'
@@ -11,6 +16,24 @@ export type DashboardSection =
   | 'images'
   | 'publish'
   | 'settings';
+
+export interface DashboardWebsiteCardItem {
+  id: string;
+  tenantId: string | null;
+  websiteId: string | null;
+  businessName: string;
+  slug: string;
+  subdomain: string;
+  url: string;
+  status: string;
+  statusLabel: string;
+  pipelineStatus: PublicationPipelineStatus;
+  pipelineLabel: string;
+  lastUpdated: string | null;
+  primaryColor: string;
+  logoName: string | null;
+  source: 'd1' | 'local';
+}
 
 export interface DashboardPageItem {
   id: string;
@@ -70,6 +93,12 @@ export interface DashboardViewModel {
   primaryColor: string;
   accentColor: string;
   publishEmail: string | null;
+  publicationPipelineStatus: PublicationPipelineStatus;
+  publicationPipelineLabel: string;
+  publicationLogs: PublicationLogEntry[];
+  lastPublicationLog: PublicationLogEntry | null;
+  canPublish: boolean;
+  websiteList: DashboardWebsiteCardItem[];
 }
 
 export interface DashboardDbBundle {
@@ -78,4 +107,5 @@ export interface DashboardDbBundle {
   contact: ContactRecord | null;
   services: ServiceRecord[];
   hours: OpeningHoursRecord[];
+  pages: WebsitePageRecord[];
 }

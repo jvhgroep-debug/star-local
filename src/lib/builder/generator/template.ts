@@ -57,13 +57,13 @@ function editorFieldAttr(field: string, editorMode: boolean): string {
 function designFontStack(font: BuilderDesignSettings['fontFamily']): string {
   switch (font) {
     case 'serif':
-      return "Georgia, 'Times New Roman', serif";
+      return 'Georgia, Times New Roman, serif';
     case 'modern':
-      return "'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+      return 'Segoe UI, Roboto, Helvetica, Arial, sans-serif';
     case 'display':
-      return "'Trebuchet MS', 'Gill Sans', sans-serif";
+      return 'Trebuchet MS, Gill Sans, sans-serif';
     default:
-      return "system-ui, -apple-system, 'Segoe UI', sans-serif";
+      return 'system-ui, -apple-system, Segoe UI, sans-serif';
   }
 }
 
@@ -144,10 +144,19 @@ function renderHeader(config: WebsiteConfig, activePage: PreviewPage, editorMode
           <span></span><span></span><span></span>
         </button>
         <nav id="tenant-main-nav" class="tenant-nav" aria-label="Hoofdnavigatie">
-          ${renderInternalPageControl('home', 'Home', 'tenant-nav__link', standalone, activePage)}
-          ${renderInternalPageControl('about', 'Over ons', 'tenant-nav__link', standalone, activePage)}
-          ${renderInternalPageControl('services', 'Diensten', 'tenant-nav__link', standalone, activePage)}
-          ${renderInternalPageControl('contact', 'Contact', 'tenant-nav__link', standalone, activePage)}
+          ${(['home', 'about', 'services', 'contact', 'privacy'] as PreviewPage[])
+            .filter((pageId) => config.enabledPages?.[pageId] !== false)
+            .map((pageId) => {
+              const labels: Record<PreviewPage, string> = {
+                home: 'Home',
+                about: 'Over ons',
+                services: 'Diensten',
+                contact: 'Contact',
+                privacy: 'Privacy',
+              };
+              return renderInternalPageControl(pageId, labels[pageId], 'tenant-nav__link', standalone, activePage);
+            })
+            .join('')}
         </nav>
       </div>
     </header>
@@ -174,47 +183,57 @@ function renderFooter(config: WebsiteConfig, standalone = false): string {
   const name = escapeHtml(placeholderBusinessName(config.business.name));
   const phone = config.contact.phone.trim();
   const email = config.contact.email.trim();
+  const street = escapeHtml(formatStreetLine(state));
   const cityLine = escapeHtml(formatCityLine(state));
+  const telHref = phone ? formatTelLink(state.contact.phone) : '';
+  const mailHref = email ? `mailto:${encodeURIComponent(email)}` : '';
 
   return `
     <footer class="tenant-footer">
       <div class="tenant-footer__inner">
         <div class="tenant-footer__col">
-          <strong>${escapeHtml(config.copy.localTitle)}</strong>
+          <strong>${name}</strong>
           <p>${escapeHtml(placeholderIndustry(config.business.industry))}</p>
-        </div>
-        <div class="tenant-footer__col">
-          <strong>Contact</strong>
-          ${phone ? `<p>${escapeHtml(phone)}</p>` : ''}
-          ${email ? `<p>${escapeHtml(email)}</p>` : ''}
+          ${street ? `<p>${street}</p>` : ''}
           ${cityLine ? `<p>${cityLine}</p>` : ''}
         </div>
         <div class="tenant-footer__col">
-          ${
-            standalone
-              ? `<a class="tenant-footer__link" href="${tenantPagePath('privacy')}">Privacybeleid</a>`
-              : `<button type="button" class="tenant-footer__link" data-preview-page="privacy">Privacybeleid</button>`
-          }
+          <strong>Contact</strong>
+          ${phone ? `<p><a class="tenant-footer__link" href="${telHref}">${escapeHtml(phone)}</a></p>` : ''}
+          ${email ? `<p><a class="tenant-footer__link" href="${mailHref}">${escapeHtml(email)}</a></p>` : ''}
         </div>
-      </div>
-      <div class="tenant-footer__bottom">
-        <p>&copy; ${new Date().getFullYear()} ${name}. Alle rechten voorbehouden.</p>
+        <div class="tenant-footer__col">
+          ${
+            config.enabledPages?.privacy !== false
+              ? standalone
+                ? `<a class="tenant-footer__link" href="${tenantPagePath('privacy')}">Privacybeleid</a>`
+                : `<button type="button" class="tenant-footer__link" data-preview-page="privacy">Privacybeleid</button>`
+              : ''
+          }
+          <p class="tenant-footer__copyright">&copy; ${new Date().getFullYear()} ${name}</p>
+        </div>
       </div>
     </footer>
   `;
 }
 
-function renderContactForm(): string {
+function renderContactForm(config: WebsiteConfig): string {
+  const recipientEmail = config.contact.email.trim();
+  const businessName = placeholderBusinessName(config.business.name);
+
   return `
-    <form class="tenant-form" aria-label="Contactformulier">
+    <form class="tenant-form" aria-label="Contactformulier" novalidate
+      data-tenant-email="${escapeHtml(recipientEmail)}"
+      data-business-name="${escapeHtml(businessName)}">
       <div class="tenant-form-grid">
-        <label>Naam<input type="text" name="name" autocomplete="name" placeholder="Uw naam" /></label>
-        <label>E-mail<input type="email" name="email" autocomplete="email" placeholder="Uw e-mailadres" /></label>
+        <label>Naam<input type="text" name="name" autocomplete="name" placeholder="Uw naam" required /></label>
+        <label>E-mail<input type="email" name="email" autocomplete="email" placeholder="Uw e-mailadres" required /></label>
       </div>
       <label>Telefoon<input type="tel" name="phone" autocomplete="tel" placeholder="Uw telefoonnummer" /></label>
-      <label>Bericht<textarea name="message" rows="5" placeholder="Waar kunnen wij u mee helpen?"></textarea></label>
-      <button type="button" class="tenant-btn tenant-btn--accent tenant-form__submit">Versturen</button>
-      <p class="tenant-form__note">Dit is een voorbeeldformulier. Verzending wordt in een volgende stap geactiveerd.</p>
+      <label>Bericht<textarea name="message" rows="5" placeholder="Waar kunnen wij u mee helpen?" required></textarea></label>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="tenant-form__honeypot" />
+      <button type="submit" class="tenant-btn tenant-btn--accent tenant-form__submit">Versturen</button>
+      <p class="tenant-form__status" role="status" hidden></p>
     </form>
   `;
 }
@@ -456,6 +475,10 @@ function renderPageContact(config: WebsiteConfig, standalone = false): string {
   const { copy } = config;
   const street = escapeHtml(formatStreetLine(state));
   const cityLine = escapeHtml(formatCityLine(state));
+  const telHref = config.contact.phone ? formatTelLink(state.contact.phone) : '';
+  const whatsappHref = config.contact.whatsapp ? formatWhatsAppLink(state.contact.whatsapp) : '';
+  const mailHref = config.contact.email ? `mailto:${encodeURIComponent(config.contact.email.trim())}` : '';
+  const mapsUrl = mapsRouteUrl(state);
 
   return `
     <section class="tenant-section tenant-section--page">
@@ -466,9 +489,9 @@ function renderPageContact(config: WebsiteConfig, standalone = false): string {
         <div class="tenant-contact-layout">
           <div class="tenant-contact-details">
             <dl>
-              ${config.contact.phone ? `<div><dt>Telefoon</dt><dd>${escapeHtml(config.contact.phone)}</dd></div>` : ''}
-              ${config.contact.whatsapp ? `<div><dt>WhatsApp</dt><dd>${escapeHtml(config.contact.whatsapp)}</dd></div>` : ''}
-              ${config.contact.email ? `<div><dt>E-mail</dt><dd>${escapeHtml(config.contact.email)}</dd></div>` : ''}
+              ${config.contact.phone ? `<div><dt>Telefoon</dt><dd><a href="${telHref}">${escapeHtml(config.contact.phone)}</a></dd></div>` : ''}
+              ${config.contact.whatsapp ? `<div><dt>WhatsApp</dt><dd><a href="${whatsappHref}" target="_blank" rel="noopener">${escapeHtml(config.contact.whatsapp)}</a></dd></div>` : ''}
+              ${config.contact.email ? `<div><dt>E-mail</dt><dd><a href="${mailHref}">${escapeHtml(config.contact.email)}</a></dd></div>` : ''}
               ${street ? `<div><dt>Adres</dt><dd>${street}</dd></div>` : ''}
               ${cityLine ? `<div><dt>Postcode &amp; plaats</dt><dd>${cityLine}</dd></div>` : ''}
             </dl>
@@ -483,9 +506,19 @@ function renderPageContact(config: WebsiteConfig, standalone = false): string {
     </section>
 
     <section class="tenant-section tenant-section--alt">
+      <div class="tenant-section__inner">
+        <h2>Route</h2>
+        <p><a href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener noreferrer">Bekijk op Google Maps</a></p>
+        <div class="tenant-map-placeholder" role="img" aria-label="Kaartplaceholder">
+          <p>Google Maps — volgt bij live publicatie</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="tenant-section tenant-section--alt">
       <div class="tenant-section__inner tenant-form-section">
         <h2>Contactformulier</h2>
-        ${renderContactForm()}
+        ${renderContactForm(config)}
       </div>
     </section>
   `;

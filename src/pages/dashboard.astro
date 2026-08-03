@@ -15,7 +15,9 @@ if (isAuthRedirect(authResult)) {
   return Astro.redirect(authResult.redirect);
 }
 
-const { session: authSession, tenantId } = authResult;
+const { session: authSession, tenantId: sessionTenantId } = authResult;
+const queryTenantId = Astro.url.searchParams.get('tenantId');
+const tenantId = sessionTenantId ?? queryTenantId;
 const welcome = Astro.url.searchParams.get('welcome') === '1';
 
 let initialData: DashboardViewModel | null = null;

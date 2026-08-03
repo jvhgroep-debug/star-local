@@ -1,5 +1,6 @@
 import type { D1Database } from '../db/d1';
 import { AUTH_ROUTES } from './constants';
+import { AuthRepository } from './repository';
 import { getAuthSession, getSessionTokenFromRequest } from './server';
 import type { AuthSessionContext } from './types';
 
@@ -33,6 +34,12 @@ export async function requireAuthSession(
       return { redirect: `${AUTH_ROUTES.dashboard}?tenantId=${encodeURIComponent(sessionTenantId)}` };
     }
     tenantId = sessionTenantId;
+  } else if (tenantId) {
+    const repo = new AuthRepository(db);
+    const membership = await repo.findTenantUser(tenantId, authSession.user.id);
+    if (!membership) {
+      return { redirect: AUTH_ROUTES.dashboard };
+    }
   }
 
   return { session: authSession, tenantId };

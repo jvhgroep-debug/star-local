@@ -38,6 +38,7 @@ export function getMainNav(locale: Locale, dict: Dictionary): (NavItem | { label
 export function getFooterServices(locale: Locale, dict: Dictionary): NavItem[] {
   const ns = dict.navServices;
   return [
+    { label: dict.footer.freeWebsiteLink, href: '/gratis-website/' },
     { label: ns.website, href: route('service', locale, { slug: 'website-laten-maken' }) },
     { label: ns.localSeo, href: route('service', locale, { slug: 'lokale-seo' }) },
     { label: ns.nationalSeo, href: route('service', locale, { slug: 'landelijke-seo' }) },

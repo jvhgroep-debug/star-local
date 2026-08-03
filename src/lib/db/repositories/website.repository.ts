@@ -39,9 +39,9 @@ export class D1WebsiteRepository implements WebsiteRepository {
       .prepare(
         `INSERT INTO websites (
           id, tenant_id, seo_title, meta_description, theme,
-          primary_color, secondary_color, status, package, logo_key,
+          primary_color, secondary_color, font_family, status, package, logo_key,
           published, created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .bind(
         input.id,
@@ -51,6 +51,7 @@ export class D1WebsiteRepository implements WebsiteRepository {
         input.theme ?? 'default',
         input.primaryColor ?? '#1a2332',
         input.secondaryColor ?? '#cdb880',
+        input.fontFamily ?? 'system',
         input.status ?? 'draft',
         input.package ?? 'free',
         input.logoKey ?? null,
@@ -73,7 +74,7 @@ export class D1WebsiteRepository implements WebsiteRepository {
       .prepare(
         `UPDATE websites SET
           seo_title = ?, meta_description = ?, theme = ?,
-          primary_color = ?, secondary_color = ?, status = ?, package = ?,
+          primary_color = ?, secondary_color = ?, font_family = ?, status = ?, package = ?,
           logo_key = ?, published = ?, updated_at = ?
          WHERE id = ?`,
       )
@@ -83,6 +84,7 @@ export class D1WebsiteRepository implements WebsiteRepository {
         input.theme ?? existing.theme,
         input.primaryColor ?? existing.primaryColor,
         input.secondaryColor ?? existing.secondaryColor,
+        input.fontFamily ?? existing.fontFamily,
         input.status ?? existing.status,
         input.package ?? existing.package,
         input.logoKey !== undefined ? input.logoKey : existing.logoKey,

@@ -60,7 +60,9 @@ export class AuthService {
 
     await this.sendMagicLinkEmail(email, plainToken, input.origin ?? this.options.origin ?? 'https://www.starlocal.nl');
 
-    return { magicLink, plainToken };
+    const emailSent = Boolean(this.options.resendApiKey?.trim() && this.options.fromEmail?.trim());
+
+    return { magicLink, plainToken, emailSent };
   }
 
   async validateMagicLink(input: ValidateMagicLinkInput): Promise<ValidateMagicLinkResult> {
@@ -151,16 +153,21 @@ export class AuthService {
     };
   }
 
-  async activateAccountFromMagicLink(plainToken: string): Promise<{ session: CreateSessionResult; redirectPath: string }> {
+  async activateAccountFromMagicLink(
+    plainToken: string,
+    fallbackRedirectPath?: string | null,
+  ): Promise<{ session: CreateSessionResult; redirectPath: string }> {
     const { user, magicLink } = await this.validateMagicLink({ plainToken });
     const session = await this.createSession({
       userId: user.id,
       tenantId: magicLink.tenantId,
     });
 
-    const redirectPath = magicLink.tenantId
-      ? `${AUTH_ROUTES.dashboard}?tenantId=${encodeURIComponent(magicLink.tenantId)}`
-      : AUTH_ROUTES.dashboard;
+    const redirectPath =
+      sanitizeAuthRedirectPath(fallbackRedirectPath) ??
+      (magicLink.tenantId
+        ? `${AUTH_ROUTES.dashboard}?tenantId=${encodeURIComponent(magicLink.tenantId)}`
+        : AUTH_ROUTES.dashboard);
 
     return { session, redirectPath };
   }
@@ -182,4 +189,12 @@ export class AuthService {
 
 export function createAuthService(db: D1Database, options: AuthServiceOptions = {}): AuthService {
   return new AuthService(db, options);
+}
+
+/** Only allow same-origin relative redirects after login. */
+export function sanitizeAuthRedirectPath(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const path = value.trim();
+  if (!path.startsWith('/') || path.startsWith('//')) return null;
+  return path;
 }

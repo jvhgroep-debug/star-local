@@ -2,9 +2,34 @@ import type { DashboardViewModel } from '../../types/dashboard';
 import type { PreparedWebsite } from '../../types/website-config';
 import { WEBSITE_PACKAGE_LABELS } from '../builder/publish/status';
 import { WEBSITE_STATUS_LABELS } from '../publish';
+import { computeTenantKey } from '../publish/local-publish.service';
+import {
+  getLastPublicationLog,
+  loadPublicationLogs,
+  loadPublicationPipelineStatus,
+} from '../publish/publication-log.storage';
+import { loadPreparedWebsite } from '../builder/publish/storage';
 import { DASHBOARD_PAGES } from './constants';
 import { mapOpeningHoursRows } from './format';
 import type { DashboardSession } from './storage';
+import { pipelineStatusLabel } from './publish-client';
+
+function resolvePublicationFields(slug: string, tenantId: string | null) {
+  const tenantKey = computeTenantKey(slug, tenantId);
+  const status = loadPublicationPipelineStatus(tenantKey);
+  const logs = loadPublicationLogs(tenantKey);
+  const lastLog = getLastPublicationLog(tenantKey);
+  const canPublish = Boolean(loadPreparedWebsite());
+
+  return {
+    publicationPipelineStatus: status,
+    publicationPipelineLabel: pipelineStatusLabel(status),
+    publicationLogs: logs,
+    lastPublicationLog: lastLog,
+    canPublish,
+    seoScoreFromLog: lastLog?.seoScore != null ? String(lastLog.seoScore) : null,
+  };
+}
 
 export function mapPreparedWebsiteToDashboard(
   prepared: PreparedWebsite,
@@ -13,6 +38,7 @@ export function mapPreparedWebsiteToDashboard(
   const { config } = prepared;
   const subdomain = config.slug.domain;
   const url = config.slug.url.replace(/\/$/, '');
+  const pub = resolvePublicationFields(config.slug.slug, session?.tenantId ?? null);
 
   return {
     source: 'local',
@@ -30,7 +56,6 @@ export function mapPreparedWebsiteToDashboard(
     packageLabel: WEBSITE_PACKAGE_LABELS[config.package],
     lastUpdated: prepared.preparedAt,
     pageCount: DASHBOARD_PAGES.length,
-    seoScore: '—',
     seoTitle: config.seo.title,
     metaDescription: config.seo.description,
     canonicalUrl: config.seo.canonicalUrl,
@@ -67,5 +92,12 @@ export function mapPreparedWebsiteToDashboard(
     primaryColor: config.branding.primaryColor,
     accentColor: config.branding.accentColor,
     publishEmail: session?.publishEmail ?? config.publishEmail,
+    publicationPipelineStatus: pub.publicationPipelineStatus,
+    publicationPipelineLabel: pub.publicationPipelineLabel,
+    publicationLogs: pub.publicationLogs,
+    lastPublicationLog: pub.lastPublicationLog,
+    canPublish: pub.canPublish,
+    seoScore: pub.seoScoreFromLog ?? '—',
+    websiteList: [],
   };
 }
