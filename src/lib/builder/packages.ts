@@ -1,3 +1,5 @@
+import { renderPremiumUpgradeAnchor } from '../premium/upgrade';
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, '&amp;')
@@ -45,8 +47,8 @@ export function renderPackageFeatureList(features: readonly string[]): string {
 export function renderPremiumUpsellNotice(): string {
   return `
     <aside class="builder-premium-upsell" aria-label="Premium huisstijl">
-      <p>Eigen kleuren en volledige huisstijl zijn beschikbaar met Premium.</p>
-      <button type="button" class="btn btn-secondary" data-premium-upgrade>Upgrade naar Premium</button>
+      <p>Eigen kleuren en volledige huisstijl zijn beschikbaar met Premium (€9,95 per maand).</p>
+      ${renderPremiumUpgradeAnchor('btn btn-secondary')}
     </aside>
   `;
 }

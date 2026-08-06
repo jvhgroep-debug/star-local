@@ -23,6 +23,7 @@ import { loadWebsiteFromD1 } from '../builder/publish/save-client';
 import { mapLoadResultToDashboard } from './map-load-result';
 
 import { renderDashboardShell } from './render';
+import { bindPremiumUpgradeButtons } from '../premium/upgrade';
 
 import { loadDashboardSession } from './storage';
 
@@ -476,13 +477,7 @@ function bindEvents(): void {
     void handlePublish(true);
   });
 
-  root.querySelectorAll('[data-premium-upgrade]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      window.alert(
-        'Premium wordt binnenkort beschikbaar. U hoort van ons zodra u kunt upgraden — er is nog geen betaalfunctionaliteit actief.',
-      );
-    });
-  });
+  bindPremiumUpgradeButtons(root);
 
   root.querySelectorAll('[data-open-publish-section]').forEach((btn) => {
     btn.addEventListener('click', () => {

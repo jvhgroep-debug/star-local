@@ -9,6 +9,7 @@ import {
   getFreePackageFeatures,
   renderPackageFeatureList,
 } from './packages';
+import { renderPremiumUpgradeAnchor } from '../premium/upgrade';
 import {
   BUILDER_PLACEHOLDERS,
   placeholderBusinessName,
@@ -244,7 +245,7 @@ export function renderPremiumBlock(state: BuilderState): string {
         <article class="builder-premium-card builder-premium-card--highlight">
           <h3>Premium</h3>
           ${renderPackageFeatureList(PREMIUM_PACKAGE_FEATURES)}
-          <button type="button" class="btn btn-secondary" data-premium-upgrade>Upgrade naar Premium</button>
+          ${renderPremiumUpgradeAnchor('btn btn-secondary')}
         </article>
       </div>
     </section>

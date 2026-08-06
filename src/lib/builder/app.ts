@@ -68,6 +68,7 @@ import { loadFilesFromStorage, saveFilesToStorage } from './media-storage';
 import { IMAGE_STORAGE_QUOTA_ERROR, validateImageUpload } from './upload-validation';
 import { applyPreviewSeo, applyPreparedPreviewSeo, futureDomain, generateCopy, renderPremiumBlock, resetPreviewSeo } from './templates';
 import { saveDashboardSession, persistSaveResult, loadPersistedSaveResult, clearPersistedSaveResult } from '../dashboard/storage';
+import { bindPremiumUpgradeButtons } from '../premium/upgrade';
 import { syncSavedToWebsiteList } from '../dashboard/website-list.storage';
 import { formatSlugPreviewHtml, getSlugPreview } from './slug';
 import {
@@ -1518,6 +1519,8 @@ function bindEvents(): void {
 
   const previewFrame = root.querySelector('.builder-preview-frame');
   if (previewFrame) attachPreviewFrame(previewFrame);
+
+  bindPremiumUpgradeButtons(root);
 }
 
 function attachPreviewFrame(frame: Element): void {

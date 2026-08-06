@@ -121,18 +121,24 @@ const form = dict.form;
     return valid;
   }
 
-  function prefillSubjectFromQuery() {
+  function prefillFromQuery() {
     const params = new URLSearchParams(window.location.search);
     const subject = params.get('onderwerp');
     const select = document.getElementById('onderwerp');
-    if (!subject || !select) return;
+    if (subject && select) {
+      const options = Array.from(select.options);
+      const match = options.find((option) => option.value === subject || option.text === subject);
+      if (match) select.value = match.value;
+    }
 
-    const options = Array.from(select.options);
-    const match = options.find((option) => option.value === subject || option.text === subject);
-    if (match) select.value = match.value;
+    const message = params.get('bericht');
+    const textarea = document.getElementById('bericht');
+    if (message && textarea && !textarea.value.trim()) {
+      textarea.value = message;
+    }
   }
 
-  prefillSubjectFromQuery();
+  prefillFromQuery();
 
   formEl?.addEventListener('submit', async (event) => {
     event.preventDefault();

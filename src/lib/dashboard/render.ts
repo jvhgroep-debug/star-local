@@ -7,13 +7,14 @@ import {
   resolveMyWebsiteContext,
   type MyWebsiteContext,
 } from './my-website';
-import { formatDuration, formatLogTime, pipelineStatusBadgeClass } from './publish-client';
+import { renderPremiumUpgradeAnchor } from '../premium/upgrade';
 import {
   bindChangeRequestForm,
   fetchCustomerChangeRequests,
   renderChangeRequestForm,
   renderChangeRequestsList,
 } from './change-requests-ui';
+import { formatDuration, formatLogTime, pipelineStatusBadgeClass } from './publish-client';
 
 function escapeHtml(value: string): string {
   return value
@@ -209,19 +210,17 @@ function renderPremiumUpgradeBlock(): string {
     <aside class="dashboard-premium-block" aria-label="Premium upgrade">
       <div class="dashboard-premium-block__content">
         <p class="dashboard-premium-block__eyebrow">Premium</p>
-        <h3 class="dashboard-premium-block__title">Upgrade naar Premium</h3>
+        <h3 class="dashboard-premium-block__title">Premium aanvragen</h3>
         <p class="dashboard-premium-block__lead">
-          Geef uw website een professionele uitstraling met een eigen domein, volledige huisstijl en extra SEO.
+          Geef uw website een professionele uitstraling met een eigen domein, volledige huisstijl en extra SEO. Premium kost €9,95 per maand.
         </p>
         <ul class="dashboard-premium-block__features">
           ${features.map((feature) => `<li><span aria-hidden="true">✦</span> ${escapeHtml(feature)}</li>`).join('')}
         </ul>
       </div>
       <div class="dashboard-premium-block__cta">
-        <button type="button" class="btn btn-primary dashboard-premium-block__button" data-premium-upgrade>
-          Upgrade naar Premium
-        </button>
-        <p class="dashboard-premium-block__note">Betaalfunctionaliteit volgt in een latere fase.</p>
+        ${renderPremiumUpgradeAnchor('btn btn-primary dashboard-premium-block__button')}
+        <p class="dashboard-premium-block__note">Vraag Premium aan via het contactformulier — wij nemen contact met u op.</p>
       </div>
     </aside>
   `;
