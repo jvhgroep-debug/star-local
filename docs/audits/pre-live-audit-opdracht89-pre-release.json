@@ -1,0 +1,99 @@
+{
+  "label": "opdracht89-pre-release",
+  "timestamp": "2026-08-06T20:29:38.595Z",
+  "distExists": true,
+  "pageCount": 6384,
+  "gemeenteCount": 350,
+  "sitemap": {
+    "total": 6389,
+    "files": [
+      {
+        "file": "sitemap-0.xml",
+        "count": 6389
+      },
+      {
+        "file": "sitemap-index.xml",
+        "count": 1
+      },
+      {
+        "file": "sitemap.xml",
+        "count": 1
+      }
+    ]
+  },
+  "robotsExists": true,
+  "faviconExists": true,
+  "ogImageExists": true,
+  "routeCheck": [
+    {
+      "route": "/",
+      "ok": true
+    },
+    {
+      "route": "/gratis-website/",
+      "ok": true
+    },
+    {
+      "route": "/gratis-website/start/",
+      "ok": true
+    },
+    {
+      "route": "/login/",
+      "ok": true
+    },
+    {
+      "route": "/dashboard/",
+      "ok": true
+    },
+    {
+      "route": "/admin/websites/",
+      "ok": true
+    },
+    {
+      "route": "/website-laten-maken/",
+      "ok": true
+    },
+    {
+      "route": "/gemeentes/amsterdam/",
+      "ok": true
+    },
+    {
+      "route": "/gemeentes/breda/",
+      "ok": true
+    },
+    {
+      "route": "/diensten/",
+      "ok": true
+    },
+    {
+      "route": "/contact/",
+      "ok": true
+    },
+    {
+      "route": "/over-ons/",
+      "ok": true
+    },
+    {
+      "route": "/privacy/",
+      "ok": true
+    },
+    {
+      "route": "/cookies/",
+      "ok": true
+    },
+    {
+      "route": "/robots.txt",
+      "ok": true
+    },
+    {
+      "route": "/sitemap.xml",
+      "ok": true
+    },
+    {
+      "route": "/favicon.svg",
+      "ok": true
+    }
+  ],
+  "missingRoutes": [],
+  "routeCollisions": 0
+}

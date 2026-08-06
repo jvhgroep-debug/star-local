@@ -1,0 +1,18 @@
+# Temporary Pages deploy config — productie D1, geen R2 (V1)
+name = "star-local"
+compatibility_date = "2026-07-19"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "star-local-saas-prod"
+database_id = "d58a4699-131e-403d-8ea7-65ef928a72d7"
+migrations_dir = "migrations"
+
+[vars]
+APP_BASE_URL = "https://www.starlocal.nl"
+DASHBOARD_BASE_URL = "https://www.starlocal.nl"
+TENANT_BASE_DOMAIN = "starlocal.nl"
+ENVIRONMENT = "production"
+MEDIA_PUBLIC_BASE_URL = ""
