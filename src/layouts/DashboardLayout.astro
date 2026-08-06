@@ -1,5 +1,6 @@
 ---
 import SeoHead from '../components/SeoHead.astro';
+import StagingBanner from '../components/StagingBanner.astro';
 import '../styles/global.css';
 import '../styles/builder.css';
 import '../styles/dashboard.css';
@@ -35,6 +36,7 @@ const {
     />
   </head>
   <body class="dashboard-page-body">
+    <StagingBanner />
     <a href="#dashboard-main" class="skip-link">Ga naar dashboard</a>
     <header class="dashboard-page-header">
       <div class="container dashboard-page-header__inner">

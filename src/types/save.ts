@@ -32,6 +32,11 @@ export interface SaveWebsitePayload {
   heroSubtitle?: string;
   seoMetaDescription?: string;
   enabledPages?: EnabledPages;
+  /** Admin approval queue — persisted in D1 */
+  approvalStatus?: import('./approval').ApprovalStatus;
+  configSnapshotJson?: string;
+  /** Wizard v2 concept save — skips logo upload validation */
+  saveMode?: 'full' | 'concept_v2';
 }
 
 export interface SaveWebsiteResult {

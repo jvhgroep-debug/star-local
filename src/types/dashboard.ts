@@ -1,10 +1,12 @@
 import type { ContactRecord, OpeningHoursRecord, ServiceRecord, TenantRecord, WebsitePageRecord, WebsiteRecord } from './database';
+import type { ChangeRequestRecord } from './change-request';
 import type { PublicationLogEntry, PublicationPipelineStatus } from './publication';
 
 export type DashboardSection =
   | 'overview'
   | 'websites'
   | 'concepts'
+  | 'in_review'
   | 'published'
   | 'stats'
   | 'website'
@@ -15,7 +17,9 @@ export type DashboardSection =
   | 'seo'
   | 'images'
   | 'publish'
-  | 'settings';
+  | 'settings'
+  | 'change_requests'
+  | 'change_request_new';
 
 export interface DashboardWebsiteCardItem {
   id: string;
@@ -33,6 +37,11 @@ export interface DashboardWebsiteCardItem {
   primaryColor: string;
   logoName: string | null;
   source: 'd1' | 'local';
+  approvalStatus?: string;
+  pendingChangesStatus?: 'none' | 'in_review';
+  liveUrl?: string | null;
+  previewPath?: string;
+  editPath?: string;
 }
 
 export interface DashboardPageItem {
@@ -99,6 +108,9 @@ export interface DashboardViewModel {
   lastPublicationLog: PublicationLogEntry | null;
   canPublish: boolean;
   websiteList: DashboardWebsiteCardItem[];
+  customerBusinessName?: string;
+  customerEmail?: string;
+  changeRequests?: Array<ChangeRequestRecord & { typeLabel: string; statusLabel: string }>;
 }
 
 export interface DashboardDbBundle {

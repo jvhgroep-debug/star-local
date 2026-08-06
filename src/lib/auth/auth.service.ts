@@ -1,6 +1,8 @@
 import type { D1Database } from '../db/d1';
 import { createResendEmailService } from '../email/resend';
 import { renderMagicLinkEmail, buildMagicLinkUrl } from '../email/magic-link-template';
+import { CustomerRepository } from '../customer-portal/repositories';
+import { AuthRateLimitService, clientIp } from '../customer-portal/rate-limit';
 import { AUTH_ROUTES, EMAIL_PATTERN, MAGIC_LINK_TTL_SECONDS, SESSION_COOKIE_NAME, SESSION_TTL_SECONDS } from './constants';
 import { generateSecureToken, hashSecret, normalizeEmail } from './crypto';
 import { AuthValidationError, MagicLinkExpiredError, MagicLinkInvalidError } from './errors';
@@ -24,25 +26,47 @@ export interface AuthServiceOptions {
 
 export class AuthService {
   private readonly repo: AuthRepository;
+  private readonly customers: CustomerRepository;
+  private readonly rateLimit: AuthRateLimitService;
 
   constructor(
     db: D1Database,
     private readonly options: AuthServiceOptions = {},
   ) {
     this.repo = new AuthRepository(db);
+    this.customers = new CustomerRepository(db);
+    this.rateLimit = new AuthRateLimitService(db);
   }
 
-  async requestMagicLink(input: CreateMagicLinkInput): Promise<CreateMagicLinkResult> {
+  async requestMagicLink(input: CreateMagicLinkInput, request?: Request): Promise<CreateMagicLinkResult> {
     const email = normalizeEmail(input.email);
     if (!EMAIL_PATTERN.test(email)) {
       throw new AuthValidationError('Voer een geldig e-mailadres in.');
     }
 
+    if (request) {
+      await this.rateLimit.purgeExpired();
+      const ip = clientIp(request);
+      const emailLimit = await this.rateLimit.checkAndIncrement('magic-link:email', email);
+      if (!emailLimit.allowed) {
+        throw new AuthValidationError(`Te veel pogingen. Probeer het over ${emailLimit.retryAfterSeconds ?? 60} seconden opnieuw.`);
+      }
+      const ipLimit = await this.rateLimit.checkAndIncrement('magic-link:ip', ip);
+      if (!ipLimit.allowed) {
+        throw new AuthValidationError('Te veel verzoeken vanaf dit netwerk. Probeer het later opnieuw.');
+      }
+    }
+
+    await this.repo.purgeExpiredMagicLinks();
+
     const user = await this.repo.upsertUserByEmail(email);
+    const customer = await this.customers.upsertFromUser({ userId: user.id, email });
 
     if (input.tenantId) {
       await this.repo.ensureTenantOwner(input.tenantId, user.id);
     }
+
+    await this.repo.deleteMagicLinksForUser(user.id);
 
     const plainToken = generateSecureToken(32);
     const tokenHash = await hashSecret(plainToken);
@@ -53,6 +77,7 @@ export class AuthService {
       id: crypto.randomUUID(),
       userId: user.id,
       tenantId: input.tenantId ?? null,
+      customerId: customer.id,
       tokenHash,
       expiresAt,
       createdAt: now.toISOString(),
@@ -97,6 +122,7 @@ export class AuthService {
       id: crypto.randomUUID(),
       userId: input.userId,
       tenantId: input.tenantId ?? null,
+      customerId: input.customerId ?? null,
       tokenHash,
       expiresAt,
       createdAt: now.toISOString(),
@@ -107,6 +133,7 @@ export class AuthService {
         id: record.id,
         userId: record.userId,
         tenantId: record.tenantId,
+        customerId: record.customerId,
         expiresAt: record.expiresAt,
         createdAt: record.createdAt,
       },
@@ -147,6 +174,7 @@ export class AuthService {
         id: record.id,
         userId: record.userId,
         tenantId: record.tenantId,
+        customerId: record.customerId,
         expiresAt: record.expiresAt,
         createdAt: record.createdAt,
       },
@@ -158,9 +186,11 @@ export class AuthService {
     fallbackRedirectPath?: string | null,
   ): Promise<{ session: CreateSessionResult; redirectPath: string }> {
     const { user, magicLink } = await this.validateMagicLink({ plainToken });
+    const customer = await this.customers.upsertFromUser({ userId: user.id, email: user.email });
     const session = await this.createSession({
       userId: user.id,
       tenantId: magicLink.tenantId,
+      customerId: customer.id,
     });
 
     const redirectPath =

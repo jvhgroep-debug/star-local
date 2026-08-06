@@ -15,6 +15,7 @@ import type { MediaService } from '../media/types';
 import { dayKeyToWeekday } from './validation';
 import { validateSavePayload } from './save-validation';
 import { LocalMediaAdapter } from '../media/local-media.adapter';
+import { AuthRepository } from '../auth/repository';
 
 const SLUG_IN_USE_MESSAGE = 'Deze website-adresnaam is al in gebruik. Kies een andere naam.';
 
@@ -200,8 +201,8 @@ export class WebsiteSaveService {
             `INSERT INTO websites (
               id, tenant_id, seo_title, meta_description, theme,
               primary_color, secondary_color, font_family, status, package, logo_key,
-              published, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              published, approval_status, config_snapshot_json, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           )
           .bind(
             websiteId,
@@ -216,6 +217,8 @@ export class WebsiteSaveService {
             payload.package,
             logoKey,
             booleanToInt(false),
+            payload.approvalStatus ?? 'concept',
+            payload.configSnapshotJson ?? null,
             now,
             now,
           ),
@@ -383,6 +386,25 @@ export class WebsiteSaveService {
       }
 
       const subdomain = `${slug}.starlocal.nl`;
+
+      const email = payload.contact.email.trim().toLowerCase();
+      const authRepo = new AuthRepository(this.db);
+      const user = await authRepo.upsertUserByEmail(email);
+      await authRepo.ensureTenantOwner(tenantId, user.id);
+
+      const { CustomerRepository, WebsitePermissionRepository } = await import('../customer-portal/repositories');
+      const customer = await new CustomerRepository(this.db).upsertFromUser({
+        userId: user.id,
+        email,
+        businessName: payload.business.name.trim(),
+      });
+      await new WebsitePermissionRepository(this.db).ensurePermission({
+        customerId: customer.id,
+        tenantId,
+        websiteId,
+        role: 'owner',
+      });
+
       return {
         tenantId,
         websiteId,
@@ -532,6 +554,19 @@ export class WebsiteSaveService {
       logoKey,
       updatedAt: now,
     });
+
+    if (payload.approvalStatus || payload.configSnapshotJson) {
+      await this.db
+        .prepare(
+          `UPDATE websites SET
+            approval_status = COALESCE(?, approval_status),
+            config_snapshot_json = COALESCE(?, config_snapshot_json),
+            updated_at = ?
+           WHERE id = ?`,
+        )
+        .bind(payload.approvalStatus ?? null, payload.configSnapshotJson ?? null, now, website.id)
+        .run();
+    }
 
     await this.repos.contacts.update(contact.id, {
       telefoon: payload.contact.phone.trim(),

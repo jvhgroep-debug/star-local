@@ -6,6 +6,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import LangPreference from '../components/LangPreference.astro';
+import StagingBanner from '../components/StagingBanner.astro';
 import Hero from '../components/Hero.astro';
 import type { HeroProps } from '../components/hero.types';
 import { useTranslations } from '../i18n';
@@ -55,6 +56,7 @@ const layoutFullWidth = fullWidth || !!hero;
     <LangPreference />
   </head>
   <body>
+    <StagingBanner />
     <a href="#main-content" class="skip-link">{dict.skipLink}</a>
     <Header locale={locale} />
     <main id="main-content" class:list={['main-content', { 'main-content--full': layoutFullWidth }]}>

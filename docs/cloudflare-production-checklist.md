@@ -3,7 +3,33 @@
 Dit document beschrijft de **handmatige stappen** om Star Local live te zetten op één centrale Cloudflare-omgeving. Voer deze stappen **niet automatisch** uit vanuit de codebase. **Geen deploy in dit document uitvoeren zonder expliciete goedkeuring.**
 
 **Branch:** `feature/saas-phase-1-foundation`  
-**Laatst gecontroleerd:** 2026-08-03
+**Laatst gecontroleerd:** 2026-08-05 (OPDRACHT 62)
+
+---
+
+## Publicatieflow (volledig)
+
+```
+Builder → Concept → Ter goedkeuring → Goedgekeurd → Publicatiepakket → Cloudflare-ready → Live
+         (D1)      (pending_review)   (approved)    (package_ready)    (R2 deploy)      (published)
+```
+
+| Stap | Status | Actie |
+|------|--------|-------|
+| 1 | `concept` / `pending_review` | Builder indienen → D1 |
+| 2 | `pending_review` | Admin goedkeuren/afkeuren (+ Resend mail) |
+| 3 | `approved` | Admin "Pakket genereren" → disk `publications/{tenantId}/{websiteId}/vN/` |
+| 4 | `package_ready` | Admin productiepreview + "Live zetten" → R2 `{tenantId}/site/*` |
+| 5 | `published` | Tenant actief op `https://{slug}.starlocal.nl` |
+
+**API-routes:**
+- `POST /api/admin/websites/publish/` — pakket genereren
+- `POST /api/admin/websites/go-live/` — R2 deploy + `markPublished()`
+- `GET /api/admin/publication/file/` — productiepreview
+
+**Config-bestanden:**
+- `wrangler.toml` — alleen lokale ontwikkeling (dev D1/R2)
+- `wrangler.prod.toml` — productie (D1/R2 + `[vars]`)
 
 ---
 
@@ -29,11 +55,19 @@ Dit document beschrijft de **handmatige stappen** om Star Local live te zetten o
 |-------------------|--------|--------|
 | `DB` (D1) | ✅ Dev | `star-local-saas-dev` — **geen** `database_id` |
 | `MEDIA` (R2) | ✅ Dev | `star-local-saas-media-dev` |
-| `SESSION` (KV) | ⬜ Niet geconfigureerd | Optioneel; niet vereist (sessies in D1) |
-| `[vars]` | ⬜ Ontbreekt | Alleen in `wrangler.example.toml` |
-| Resend secrets | ⬜ Ontbreekt | Via Dashboard / `.env` lokaal |
+| `[vars]` | ⬜ Ontbreekt | Alleen in `wrangler.prod.toml` |
+| Resend secrets | ⬜ Lokaal | Via `.env` / `.env.example` |
 
-### `wrangler.example.toml` (productie-sjabloon)
+### `wrangler.prod.toml` (productie — deploy config)
+
+| Binding / setting | Status | Waarde |
+|-------------------|--------|--------|
+| `DB` (D1) | 📋 Klaar | `star-local-saas-prod` + `REPLACE_WITH_PRODUCTION_D1_DATABASE_ID` |
+| `MEDIA` (R2) | 📋 Klaar | `star-local-saas-media-prod` |
+| `[vars]` | ✅ Aanwezig | `APP_BASE_URL`, `DASHBOARD_BASE_URL`, `TENANT_BASE_DOMAIN`, `ENVIRONMENT` |
+| Secrets | 📋 Handmatig | `RESEND_API_KEY`, `FROM_EMAIL`, `CONTACT_TO_EMAIL`, `ADMIN_NOTIFICATION_EMAIL` |
+
+### `wrangler.example.toml` (legacy sjabloon)
 
 | Binding / setting | Status | Opmerking |
 |-------------------|--------|-----------|
@@ -43,17 +77,15 @@ Dit document beschrijft de **handmatige stappen** om Star Local live te zetten o
 | `[vars]` | 📋 Sjabloon | `APP_BASE_URL`, `DASHBOARD_BASE_URL`, … |
 | Resend | 📋 Documentatie | Secrets via Dashboard |
 
-### Ontbrekende configuraties vóór productie-setup (7)
+### Ontbrekende configuraties vóór productie-setup (5)
 
-1. D1 `database_id` (productie)
-2. D1 `database_name` → `star-local-saas-prod` in actieve `wrangler.toml`
-3. R2 `bucket_name` → `star-local-saas-media-prod` in actieve `wrangler.toml`
-4. `[vars]` — `APP_BASE_URL`, `DASHBOARD_BASE_URL`, `RESEND_FROM_EMAIL`
-5. Secret `RESEND_API_KEY`
-6. Secret `FROM_EMAIL`
-7. Secret `CONTACT_TO_EMAIL`
+1. D1 `database_id` invullen in `wrangler.prod.toml`
+2. Cloudflare D1 + R2 resources aanmaken (prod names)
+3. Secrets instellen in Dashboard (`RESEND_API_KEY`, `FROM_EMAIL`, `CONTACT_TO_EMAIL`, optioneel `ADMIN_NOTIFICATION_EMAIL`)
+4. `MEDIA_PUBLIC_BASE_URL` invullen wanneer CDN actief is
+5. DNS: `app.starlocal.nl` + `*.starlocal.nl` (handmatig, na deploy)
 
-*(KV `SESSION` is optioneel — telt niet mee als blokkade.)*
+*(Dev `wrangler.toml` blijft ongewijzigd — geen testdatabase in productieconfig.)*
 
 ---
 
@@ -71,9 +103,10 @@ wrangler d1 create star-local-saas-prod
 ```
 
 - [ ] `database_id` noteren
-- [ ] `wrangler.toml` bijwerken:
+- [ ] `wrangler.prod.toml` bijwerken (niet `wrangler.toml`):
 
 ```toml
+# wrangler.prod.toml
 [[d1_databases]]
 binding = "DB"
 database_name = "star-local-saas-prod"
@@ -81,10 +114,10 @@ database_id = "<database_id>"
 migrations_dir = "migrations"
 ```
 
-- [ ] Migraties uitvoeren (zie [Database-migraties](#database-migraties-0001-0006)):
+- [ ] Migraties uitvoeren (zie [Database-migraties](#database-migraties-0001-0008)):
 
 ```bash
-wrangler d1 migrations apply star-local-saas-prod --remote
+wrangler d1 migrations apply star-local-saas-prod --remote --config wrangler.prod.toml
 ```
 
 - [ ] Tabellen controleren:
@@ -93,7 +126,7 @@ wrangler d1 migrations apply star-local-saas-prod --remote
 wrangler d1 execute star-local-saas-prod --remote --command "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;"
 ```
 
-**Verwacht:** `users`, `tenants`, `magic_links`, `tenant_users`, `websites`, `contacts`, `services`, `opening_hours`, `sessions`, `website_pages`, `media_items`, `publication_logs`.
+**Verwacht:** `users`, `tenants`, `magic_links`, `tenant_users`, `websites`, `contacts`, `services`, `opening_hours`, `sessions`, `website_pages`, `media_items`, `publication_logs`, `admin_publication_logs`, `publication_versions`.
 
 ---
 
@@ -105,7 +138,7 @@ wrangler d1 execute star-local-saas-prod --remote --command "SELECT name FROM sq
 wrangler r2 bucket create star-local-saas-media-prod
 ```
 
-- [ ] Binding in `wrangler.toml`:
+- [ ] Binding in `wrangler.prod.toml`:
 
 ```toml
 [[r2_buckets]]
@@ -125,8 +158,21 @@ Alle objecten in **één bucket**, gescheiden per `tenantId`:
 ```
 {tenantId}/logo/{uuid}.{ext}
 {tenantId}/photos/{uuid}.{ext}
-{tenantId}/hero/{uuid}.{ext}
+{tenantId}/hero/{uuid}.{ext}       ← ook social/OG-afbeeldingen
 {tenantId}/gallery/{uuid}.{ext}
+```
+
+**Publicatiepakketten (archief)** (`src/lib/publish/package-r2-paths.ts`):
+
+```
+{tenantId}/packages/{versionLabel}/index.html
+{tenantId}/packages/{versionLabel}/assets/...
+```
+
+**Exports** (`src/lib/publish/package-r2-paths.ts`):
+
+```
+{tenantId}/exports/{exportId}/{filename}
 ```
 
 **Gepubliceerde tenant-sites** (`src/lib/publish/site-paths.ts`):
@@ -173,11 +219,13 @@ Alle objecten in **één bucket**, gescheiden per `tenantId`:
 | `RESEND_API_KEY` | ✅ Ja | Magic links, save-e-mail, tenant-contactformulier |
 | `FROM_EMAIL` | ✅ Ja | Afzender alle Resend-mails (bijv. `Star Local <noreply@starlocal.nl>`) |
 | `CONTACT_TO_EMAIL` | ✅ Ja | Ontvanger marketingcontactformulier (`/api/contact/`) |
+| `ADMIN_NOTIFICATION_EMAIL` | ⬜ Optioneel | Admin notificatie bij go-live |
 
 ```bash
-wrangler pages secret put RESEND_API_KEY --project-name star-local
-wrangler pages secret put FROM_EMAIL --project-name star-local
-wrangler pages secret put CONTACT_TO_EMAIL --project-name star-local
+wrangler pages secret put RESEND_API_KEY --project-name star-local --config wrangler.prod.toml
+wrangler pages secret put FROM_EMAIL --project-name star-local --config wrangler.prod.toml
+wrangler pages secret put CONTACT_TO_EMAIL --project-name star-local --config wrangler.prod.toml
+wrangler pages secret put ADMIN_NOTIFICATION_EMAIL --project-name star-local --config wrangler.prod.toml
 ```
 
 #### Plain-text variabelen (`[vars]` in `wrangler.toml` of Dashboard)
@@ -186,17 +234,16 @@ wrangler pages secret put CONTACT_TO_EMAIL --project-name star-local
 |-----------|-----------|-----------|
 | `APP_BASE_URL` | ✅ Ja | `https://www.starlocal.nl` |
 | `DASHBOARD_BASE_URL` | ✅ Ja | `https://app.starlocal.nl` |
-| `RESEND_FROM_EMAIL` | ⚠️ Aanbevolen | `Star Local <noreply@starlocal.nl>` |
+| `TENANT_BASE_DOMAIN` | ✅ Ja | `starlocal.nl` |
+| `ENVIRONMENT` | ✅ Ja | `production` |
 | `MEDIA_PUBLIC_BASE_URL` | ⬜ Optioneel | CDN-host media (toekomstige fase) |
 
-#### Resend-checklist (geen code-wijzigingen nodig)
+#### Resend-checklist
 
-- [ ] Resend-account aangemaakt
-- [ ] Domein `starlocal.nl` geverifieerd in Resend (SPF/DKIM)
-- [ ] `RESEND_API_KEY` ingesteld in Cloudflare Secrets
-- [ ] `FROM_EMAIL` overeenkomstig geverifieerd afzenderdomein
-- [ ] Test magic link na deploy (niet nu)
-- [ ] Test contactformulier na deploy (niet nu)
+- [ ] Magic Login (`src/lib/auth/auth.service.ts`) — `RESEND_API_KEY` + `FROM_EMAIL`
+- [ ] Goedkeuringsmails (`PATCH /api/admin/websites/`) — zelfde secrets
+- [ ] Publicatiemails (`POST /api/admin/websites/go-live/`) — owner + optioneel admin
+- [ ] Contactformulier (`/api/contact/`) — `CONTACT_TO_EMAIL`
 
 #### Niet vereist
 
@@ -206,13 +253,12 @@ wrangler pages secret put CONTACT_TO_EMAIL --project-name star-local
 
 #### Astro env schema (`astro.config.mjs`)
 
-Gedefinieerd en optioneel lokaal:
+Gedefinieerd in `astro.config.mjs` (alle optioneel lokaal):
 
-- `RESEND_API_KEY` (secret)
-- `FROM_EMAIL` (secret)
-- `CONTACT_TO_EMAIL` (secret)
+- `RESEND_API_KEY`, `FROM_EMAIL`, `CONTACT_TO_EMAIL`, `ADMIN_NOTIFICATION_EMAIL` (secrets)
+- `APP_BASE_URL`, `DASHBOARD_BASE_URL`, `TENANT_BASE_DOMAIN`, `ENVIRONMENT`, `MEDIA_PUBLIC_BASE_URL` (public)
 
-Lokaal: `.env` / `.env.local` (niet committen).
+Lokaal: kopieer `.env.example` → `.env` (niet committen).
 
 ---
 
@@ -236,7 +282,7 @@ Binding-namen moeten exact overeenkomen met `src/env.d.ts` (`DB`, `MEDIA`).
 
 ```bash
 npm run build
-wrangler pages deploy dist --project-name star-local
+wrangler pages deploy dist --config wrangler.prod.toml --project-name star-local
 ```
 
 Of via GitHub-integratie (bestaand `star-local` Pages-project).
@@ -268,15 +314,17 @@ Of via GitHub-integratie (bestaand `star-local` Pages-project).
 - [ ] Preview desktop / tablet / mobiel
 - [ ] Contactformulier tenant-site (Resend)
 
-#### Publicatie (indien geactiveerd)
+#### Admin publicatieflow
 
-- [ ] `/api/website/publish` — tenant live op `{slug}.starlocal.nl`
-- [ ] R2: `{tenantId}/site/index.html` aanwezig
-- [ ] Marketing pSEO (~6383 URL's) intact
+- [ ] Admin goedkeuring → status `approved`
+- [ ] Pakket genereren → status `package_ready` + disk package
+- [ ] Productiepreview (`/admin/production-preview/`)
+- [ ] Live zetten → R2 + status `published` + `{slug}.starlocal.nl`
 
 #### Automatische tests (lokaal, vóór deploy)
 
 ```bash
+node scripts/production-readiness-check.mjs
 npm run test:generate   # 22/22
 npm run test:publish    # 13/13
 npm run build           # exit 0
@@ -284,7 +332,7 @@ npm run build           # exit 0
 
 ---
 
-## Database-migraties (0001–0006)
+## Database-migraties (0001–0008)
 
 Migraties staan in `migrations/` en worden in **vaste volgorde** uitgevoerd door `wrangler d1 migrations apply`.
 
@@ -296,6 +344,8 @@ Migraties staan in `migrations/` en worden in **vaste volgorde** uitgevoerd door
 | **0004** | `0004_auth_sessions.sql` | `sessions`; `ALTER magic_links` (+tenant_id) | 0001, 0003 |
 | **0005** | `0005_website_save_foundation.sql` | `website_pages`, `media_items`; contact/website uitbreidingen | 0002, 0003 |
 | **0006** | `0006_publication_pipeline.sql` | `publication_logs`; `ALTER websites` (+publication_status) | 0002, 0005 |
+| **0007** | `0007_admin_approval_queue.sql` | `approval_status`, `config_snapshot_json`, `admin_publication_logs` | 0002 |
+| **0008** | `0008_publication_packages.sql` | `publication_versions`; uitgebreide approval statuses | 0007 |
 
 ### Volgorde-controle
 
@@ -303,6 +353,8 @@ Migraties staan in `migrations/` en worden in **vaste volgorde** uitgevoerd door
 - ✅ **0004** — vereist `tenants` (0001) en `magic_links` (0001); veilig na 0003
 - ✅ **0005** — vereist `websites`, `contacts` (0002); `ALTER websites` vereist 0003-kolommen
 - ✅ **0006** — vereist `websites` (0002); geen conflict met 0005
+- ✅ **0007** — vereist `websites`; voegt admin approval kolommen toe
+- ✅ **0008** — vereist 0007 approval statuses; recreates CHECK constraints veilig
 
 **Geen circular dependencies.** Alle migraties gebruiken `IF NOT EXISTS` / `ADD COLUMN` waar mogelijk — herhaald uitvoeren is veilig via Wrangler migration tracking.
 
@@ -354,18 +406,18 @@ wrangler d1 export star-local-saas-prod --remote --output backup-YYYYMMDD.sql
 
 | Blokkade | Impact |
 |----------|--------|
-| `wrangler.toml` is dev-only | Productie-bindings ontbreken |
-| Dashboard publish ≠ live R2-pipeline | Gebruik `/api/website/publish` voor echte live site |
-| Geen republish-flow | Tweede publicatie vereist extra implementatie |
-| Bèta: geen self-service publiceren | Handmatige go-live na controle |
-| Custom domains niet geïmplementeerd | Alleen `{slug}.starlocal.nl` |
+| `database_id` placeholder in `wrangler.prod.toml` | Handmatig invullen na D1 create |
+| Cloudflare D1/R2 prod resources | Nog niet aangemaakt (bewust) |
+| DNS wildcard + app subdomain | Handmatig na deploy |
 | `MEDIA_PUBLIC_BASE_URL` placeholder | Geen CDN-media-URLs op tenant sites |
+| Resend domeinverificatie | E-mail pas na SPF/DKIM + secrets |
+| Go-live vereist R2 binding | Lokaal: platformProxy dev bucket |
 
 ---
 
 ## Checklist samenvatting
 
-- [ ] **Stap 1** — D1 aangemaakt + migraties 0001–0006 remote
+- [ ] **Stap 1** — D1 aangemaakt + migraties 0001–0008 remote
 - [ ] **Stap 2** — R2 bucket aangemaakt + binding `MEDIA`
 - [ ] **Stap 3** — KV gecontroleerd (overslaan indien D1-sessies voldoende)
 - [ ] **Stap 4** — Secrets + environment variables ingesteld

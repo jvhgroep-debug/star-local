@@ -26,6 +26,19 @@ import BuilderLayout from '../../layouts/BuilderLayout.astro';
   </div>
 </BuilderLayout>
 
+<script is:inline>
+  document.querySelectorAll('.builder-generating-overlay').forEach(function (element) {
+    element.remove();
+  });
+  document.querySelectorAll('.tenant-lightbox').forEach(function (element) {
+    element.hidden = true;
+    element.setAttribute('aria-hidden', 'true');
+  });
+  document.body.style.overflow = '';
+  document.body.style.pointerEvents = '';
+  document.documentElement.style.overflow = '';
+</script>
+
 <script>
   import { initWebsiteBuilder } from '../../lib/builder/app';
 

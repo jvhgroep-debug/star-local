@@ -1,7 +1,7 @@
 ---
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n';
-import { SITE } from '../data/site';
+import { SITE, FREE_WEBSITE_START_PATH } from '../data/site';
 import { route } from '../i18n/routes';
 import { getFooterServices, getFooterCompany, getFooterLegal } from '../data/navigation';
 
@@ -23,7 +23,7 @@ const legalBarLinks = [
   { label: bar.terms, href: route('terms', locale) },
   { label: bar.disclaimer, href: route('disclaimer', locale) },
 ];
-const gratisWebsiteHref = '/gratis-website/';
+const gratisWebsiteHref = FREE_WEBSITE_START_PATH;
 ---
 
 <footer class="site-footer">

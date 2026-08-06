@@ -18,7 +18,7 @@ const prefilledEmail = Astro.url.searchParams.get('email') ?? '';
   <section class="auth-card" aria-labelledby="login-title">
     <div class="auth-card__icon auth-card__icon--info" aria-hidden="true">✉</div>
     <h1 id="login-title">Inloggen op uw dashboard</h1>
-    <p>Vul uw e-mailadres in. U ontvangt een beveiligde inloglink die 30 minuten geldig is.</p>
+    <p>Vul uw e-mailadres in. U ontvangt een beveiligde inloglink die 15 minuten geldig is.</p>
 
     {loggedOut ? (
       <p class="auth-alert auth-alert--success" role="status">U bent succesvol uitgelogd.</p>
@@ -54,6 +54,14 @@ const prefilledEmail = Astro.url.searchParams.get('email') ?? '';
   const form = document.getElementById('login-form') as HTMLFormElement | null;
   const errorEl = document.getElementById('login-error');
   const submitBtn = document.getElementById('login-submit') as HTMLButtonElement | null;
+  let csrfToken = '';
+
+  void fetch('/api/customer/csrf/', { headers: { Accept: 'application/json' } })
+    .then((response) => response.json())
+    .then((data: { token?: string }) => {
+      csrfToken = data.token ?? '';
+    })
+    .catch(() => undefined);
 
   form?.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -72,10 +80,19 @@ const prefilledEmail = Astro.url.searchParams.get('email') ?? '';
       const next = nextInput?.value ?? '';
       const response = await fetch('/api/auth/magic-link/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(csrfToken ? { 'x-csrf-token': csrfToken } : {}),
+        },
         body: JSON.stringify({ email, next: next || undefined }),
       });
-      const data = (await response.json()) as { ok: boolean; message?: string; redirect?: string; emailSent?: boolean };
+      const data = (await response.json()) as {
+        ok: boolean;
+        message?: string;
+        redirect?: string;
+        emailSent?: boolean;
+        devMagicUrl?: string;
+      };
 
       if (!response.ok || !data.ok) {
         if (errorEl) {
@@ -83,6 +100,10 @@ const prefilledEmail = Astro.url.searchParams.get('email') ?? '';
           errorEl.removeAttribute('hidden');
         }
         return;
+      }
+
+      if (data.devMagicUrl) {
+        sessionStorage.setItem('starlocal-dev-magic-url', data.devMagicUrl);
       }
 
       window.location.href = data.redirect ?? `/check-email/?email=${encodeURIComponent(email.toLowerCase())}`;

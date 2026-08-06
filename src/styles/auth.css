@@ -169,3 +169,31 @@
   color: #1a2332;
   word-break: break-all;
 }
+
+.auth-dev-panel {
+  margin: 1.25rem 0;
+  padding: 1rem 1.1rem;
+  border: 1px dashed rgba(205, 184, 128, 0.55);
+  border-radius: 10px;
+  background: rgba(205, 184, 128, 0.08);
+}
+
+.auth-dev-panel__label {
+  margin: 0 0 0.35rem;
+  color: #9a7b2f;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.auth-dev-panel__text {
+  margin: 0 0 0.85rem;
+  color: #4a5568;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.auth-dev-panel__link {
+  width: 100%;
+}

@@ -8,6 +8,7 @@ import { SITE } from '../data/site';
 import { IMAGES } from '../data/images';
 import {
   GRATIS_WEBSITE_AUTO_FEATURES,
+  GRATIS_WEBSITE_BENEFITS,
   GRATIS_WEBSITE_FAQS,
   GRATIS_WEBSITE_INDUSTRIES,
   GRATIS_WEBSITE_PAGES,
@@ -17,14 +18,14 @@ import {
 const canonicalPath = '/gratis-website/';
 const pageUrl = `${SITE.url}${canonicalPath}`;
 const startHref = '/gratis-website/start/';
-const exampleHref = '#wat-krijgt-u';
 
-const seoTitle = 'Gratis website maken in 5 minuten | Star Local Website Builder';
+const seoTitle = 'Gratis professionele website maken in 3 minuten | Star Local';
 const seoDescription =
-  'Maak gratis een professionele website in ongeveer 5 minuten. Vul uw gegevens in, upload logo en foto’s, en ons systeem bouwt automatisch uw website.';
+  'Maak gratis een professionele website in 3 minuten. Geen technische kennis nodig. Vul uw gegevens in, kies uw stijl en ons systeem bouwt automatisch uw website.';
 
 const steps = [...GRATIS_WEBSITE_STEPS];
 const pages = [...GRATIS_WEBSITE_PAGES];
+const benefits = [...GRATIS_WEBSITE_BENEFITS];
 const autoFeatures = [...GRATIS_WEBSITE_AUTO_FEATURES];
 const industries = [...GRATIS_WEBSITE_INDUSTRIES];
 const faqs = GRATIS_WEBSITE_FAQS.map((faq) => ({ question: faq.question, answer: faq.answer }));
@@ -48,7 +49,7 @@ const serviceSchema = {
   '@type': 'Service',
   name: 'Gratis website builder',
   description:
-    'Gratis een professionele website laten opbouwen in ongeveer 5 minuten. Ons systeem bouwt automatisch uw website op basis van uw bedrijfsgegevens, logo en foto’s.',
+    'Gratis een professionele website laten opbouwen in 3 minuten. Geen technische kennis nodig — ons systeem bouwt automatisch uw website.',
   provider: {
     '@type': 'Organization',
     name: SITE.name,
@@ -82,14 +83,12 @@ const schema = [webPageSchema, serviceSchema];
   schema={schema}
   fullWidth
   hero={{
-    title: 'Gratis een professionele website in ongeveer 5 minuten',
-    intro: 'Ons systeem bouwt automatisch uw website.',
-    ariaLabel: 'Gratis website builder',
+    title: 'Gratis professionele website',
+    intro: 'Binnen 3 minuten online. Geen technische kennis nodig.',
+    ariaLabel: 'Gratis professionele website maken',
     backgroundImage: IMAGES.serviceWebsiteDesign,
-    ctas: [
-      { label: 'Start gratis', href: startHref, variant: 'primary' },
-      { label: 'Bekijk wat u krijgt', href: exampleHref, variant: 'secondary' },
-    ],
+    ctas: [{ label: 'Start gratis', href: startHref, variant: 'primary' }],
+    usps: ['Binnen 3 minuten', 'Geen technische kennis nodig', '5 pagina\'s inbegrepen', 'Direct zichtbaar resultaat'],
   }}
 >
   <div class="container page-top">
@@ -101,23 +100,37 @@ const schema = [webPageSchema, serviceSchema];
     />
   </div>
 
-  <section class="section" id="hoe-werkt-het" aria-labelledby="how-it-works-title">
+  <section class="section benefits-section" id="voordelen" aria-labelledby="benefits-title">
     <div class="container">
-      <SectionHeading title="Hoe werkt het?" />
-      <ProcessSteps steps={steps} />
+      <SectionHeading
+        title="Waarom Star Local?"
+        description="Alles wat u nodig heeft om professioneel online te gaan — zonder kosten en zonder gedoe."
+      />
+      <ul class="benefits-grid" aria-labelledby="benefits-title">
+        {benefits.map((benefit) => (
+          <li class="benefit-item">
+            <span class="benefit-item__check" aria-hidden="true">✓</span>
+            <span>{benefit}</span>
+          </li>
+        ))}
+      </ul>
+      <div class="section-cta">
+        <a class="btn btn-primary" href={startHref}>Start gratis</a>
+      </div>
     </div>
   </section>
 
-  <section class="section alt-section" id="wat-krijgt-u" aria-labelledby="included-title">
+  <section class="section alt-section" id="paginas" aria-labelledby="included-title">
     <div class="container">
       <SectionHeading
-        title="Wat krijgt u?"
-        description="Een complete basiswebsite met professionele pagina’s en handige functies die automatisch worden toegevoegd."
+        title="5 pagina's inbegrepen"
+        description="Uw website wordt compleet opgeleverd met alle essentiële pagina's die elke ondernemer nodig heeft."
       />
 
-      <div class="grid-cards">
-        {pages.map((page) => (
-          <article class="info-card">
+      <div class="pages-grid">
+        {pages.map((page, index) => (
+          <article class="page-card">
+            <span class="page-card__number" aria-hidden="true">{index + 1}</span>
             <h3>{page.title}</h3>
             <p>{page.text}</p>
           </article>
@@ -133,7 +146,22 @@ const schema = [webPageSchema, serviceSchema];
     </div>
   </section>
 
-  <section class="section" id="voor-wie" aria-labelledby="audience-title">
+  <section class="section" id="hoe-werkt-het" aria-labelledby="how-it-works-title">
+    <div class="container">
+      <SectionHeading
+        title="Hoe werkt het?"
+        description="In drie eenvoudige stappen van idee naar professionele website."
+      />
+      <div class="steps-wrapper">
+        <ProcessSteps steps={steps} />
+      </div>
+      <div class="section-cta">
+        <a class="btn btn-primary" href={startHref}>Start gratis</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt-section" id="voor-wie" aria-labelledby="audience-title">
     <div class="container">
       <SectionHeading
         title="Voor wie?"
@@ -150,7 +178,7 @@ const schema = [webPageSchema, serviceSchema];
     </div>
   </section>
 
-  <section class="section alt-section" id="voorbeeldwebsite" aria-labelledby="example-title">
+  <section class="section" id="voorbeeldwebsite" aria-labelledby="example-title">
     <div class="container">
       <SectionHeading
         title="Voorbeeldwebsite"
@@ -178,14 +206,13 @@ const schema = [webPageSchema, serviceSchema];
   <section class="section final-cta" id="start-gratis" aria-labelledby="final-cta-title">
     <div class="container">
       <div class="final-cta__inner">
-        <h2 id="final-cta-title">Maak vandaag nog gratis uw website</h2>
+        <h2 id="final-cta-title">Maak nu gratis uw website</h2>
         <p>
-          Vul uw bedrijfsgegevens in, upload uw logo en foto’s, en laat ons systeem automatisch uw
+          Vul uw bedrijfsgegevens in, kies uw stijl en laat ons systeem binnen 3 minuten automatisch uw
           professionele website opbouwen.
         </p>
         <div class="final-cta__actions">
-          <a class="btn btn-primary" href={startHref}>Start gratis</a>
-          <a class="btn btn-secondary" href={exampleHref}>Bekijk wat u krijgt</a>
+          <a class="btn btn-primary btn-lg" href={startHref}>Start gratis</a>
         </div>
       </div>
     </div>
@@ -202,13 +229,110 @@ const schema = [webPageSchema, serviceSchema];
     border-block: 1px solid var(--border);
   }
 
-  .grid-cards {
+  .section-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .benefits-section {
+    padding-top: 0.5rem;
+  }
+
+  .benefits-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 1rem;
   }
 
-  .info-card,
+  .benefit-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.65rem;
+    padding: 1.5rem 1rem;
+    background: rgba(205, 184, 128, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    transition: transform var(--transition), border-color var(--transition);
+  }
+
+  .benefit-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+  }
+
+  .benefit-item__check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: rgba(37, 211, 102, 0.12);
+    color: #25d366;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .pages-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .page-card {
+    background: rgba(205, 184, 128, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.35rem 1.15rem;
+    transition: transform var(--transition), border-color var(--transition);
+  }
+
+  .page-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+  }
+
+  .page-card__number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: rgba(205, 184, 128, 0.15);
+    color: var(--gold);
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-card h3 {
+    color: var(--gold);
+    margin: 0 0 0.65rem;
+    font-size: 1.05rem;
+  }
+
+  .page-card p {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.65;
+    font-size: 0.92rem;
+  }
+
+  .steps-wrapper :global(.process-steps) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .industry-card {
     background: rgba(205, 184, 128, 0.04);
     border: 1px solid var(--border);
@@ -217,21 +341,17 @@ const schema = [webPageSchema, serviceSchema];
     transition: transform var(--transition), border-color var(--transition);
   }
 
-  .info-card:hover,
   .industry-card:hover {
     transform: translateY(-2px);
     border-color: var(--border-strong);
   }
 
-  .info-card h3,
-  .industry-card h3,
-  .auto-features h3 {
+  .industry-card h3 {
     color: var(--gold);
     margin: 0 0 0.65rem;
     font-size: 1.05rem;
   }
 
-  .info-card p,
   .industry-card p {
     margin: 0;
     color: var(--text-muted);
@@ -244,6 +364,12 @@ const schema = [webPageSchema, serviceSchema];
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: rgba(205, 184, 128, 0.04);
+  }
+
+  .auto-features h3 {
+    color: var(--gold);
+    margin: 0 0 0.65rem;
+    font-size: 1.05rem;
   }
 
   .check-list {
@@ -341,7 +467,7 @@ const schema = [webPageSchema, serviceSchema];
 
   .final-cta__inner {
     text-align: center;
-    background: linear-gradient(135deg, rgba(205, 184, 128, 0.08), rgba(37, 211, 102, 0.05));
+    background: linear-gradient(135deg, rgba(205, 184, 128, 0.1), rgba(37, 211, 102, 0.06));
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 3rem 2rem;
@@ -350,14 +476,15 @@ const schema = [webPageSchema, serviceSchema];
   .final-cta__inner h2 {
     color: var(--gold);
     margin: 0 0 1rem;
-    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-size: clamp(1.5rem, 3.5vw, 2.15rem);
   }
 
   .final-cta__inner p {
     color: var(--text-muted);
-    max-width: 640px;
+    max-width: 560px;
     margin: 0 auto 2rem;
     line-height: 1.75;
+    font-size: 1.05rem;
   }
 
   .final-cta__actions {
@@ -367,26 +494,57 @@ const schema = [webPageSchema, serviceSchema];
     justify-content: center;
   }
 
-  @media (max-width: 1000px) {
-    .grid-cards {
+  .btn-lg {
+    padding: 0.95rem 2rem;
+    font-size: 1.05rem;
+  }
+
+  @media (max-width: 1100px) {
+    .benefits-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .pages-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .steps-wrapper :global(.process-steps) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .benefits-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pages-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .industry-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-  }
 
-  @media (max-width: 700px) {
-    .industry-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .steps-wrapper :global(.process-steps) {
+      grid-template-columns: 1fr;
     }
   }
 
   @media (max-width: 600px) {
-    .grid-cards,
+    .benefits-grid,
+    .pages-grid,
     .industry-grid {
       grid-template-columns: 1fr;
+    }
+
+    .final-cta__inner {
+      padding: 2.25rem 1.25rem;
+    }
+
+    .btn-lg {
+      width: 100%;
+      text-align: center;
     }
   }
 </style>

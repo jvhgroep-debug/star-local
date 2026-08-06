@@ -1,5 +1,6 @@
 ---
 import SeoHead from '../components/SeoHead.astro';
+import StagingBanner from '../components/StagingBanner.astro';
 import '../styles/global.css';
 import '../styles/builder.css';
 
@@ -30,6 +31,7 @@ const {
     />
   </head>
   <body class="builder-page-body">
+    <StagingBanner />
     <a href="#builder-main" class="skip-link">Ga naar builder</a>
     <header class="builder-page-header">
       <div class="container builder-page-header__inner">
@@ -84,6 +86,7 @@ const {
     text-decoration: none;
     font-size: 0.92rem;
     font-weight: 600;
+    transition: color var(--transition);
   }
 
   .builder-page-back:hover {
@@ -92,6 +95,21 @@ const {
 
   .builder-page-main {
     padding: 1.5rem 0 3rem;
+  }
+
+  @media (max-width: 640px) {
+    .builder-page-header__inner {
+      min-height: 56px;
+      gap: 0.75rem;
+    }
+
+    .builder-page-back {
+      font-size: 0.85rem;
+    }
+
+    .builder-page-main {
+      padding: 1rem 0 2rem;
+    }
   }
 
   .builder-page-footer {

@@ -21,6 +21,7 @@ export interface MagicLink {
   id: string;
   userId: string;
   tenantId: string | null;
+  customerId: string | null;
   tokenHash: string;
   expiresAt: IsoDateTime;
   usedAt: IsoDateTime | null;
@@ -32,6 +33,7 @@ export interface MagicLinkRow {
   id: string;
   user_id: string;
   tenant_id: string | null;
+  customer_id: string | null;
   token_hash: string;
   expires_at: IsoDateTime;
   used_at: IsoDateTime | null;
@@ -43,6 +45,7 @@ export interface SessionRecord {
   id: string;
   userId: string;
   tenantId: string | null;
+  customerId: string | null;
   tokenHash: string;
   expiresAt: IsoDateTime;
   createdAt: IsoDateTime;
@@ -53,6 +56,7 @@ export interface SessionRow {
   id: string;
   user_id: string;
   tenant_id: string | null;
+  customer_id: string | null;
   token_hash: string;
   expires_at: IsoDateTime;
   created_at: IsoDateTime;
@@ -69,6 +73,7 @@ export interface CreateMagicLinkInputDb {
   id: string;
   userId: string;
   tenantId: string | null;
+  customerId?: string | null;
   tokenHash: string;
   expiresAt: IsoDateTime;
   createdAt: IsoDateTime;
@@ -86,6 +91,7 @@ export interface CreateSessionInputDb {
   id: string;
   userId: string;
   tenantId: string | null;
+  customerId?: string | null;
   tokenHash: string;
   expiresAt: IsoDateTime;
   createdAt: IsoDateTime;

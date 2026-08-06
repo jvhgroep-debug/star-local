@@ -22,7 +22,7 @@ import type { GemeentePageContent } from '../data/gemeentes/types';
 
 import { IMAGES } from '../data/images';
 
-import { SITE } from '../data/site';
+import { SITE, FREE_WEBSITE_START_PATH } from '../data/site';
 
 
 
@@ -146,9 +146,9 @@ const serviceSchemas = content.services.map((service) => ({
 
     ctas: [
 
-      { label: 'Gratis offerte aanvragen', href: '/contact/', variant: 'primary' },
+      { label: 'Gratis website maken', href: FREE_WEBSITE_START_PATH, variant: 'primary' },
 
-      { label: 'Bekijk onze diensten', href: '/diensten/', variant: 'secondary' },
+      { label: 'Gratis offerte aanvragen', href: '/contact/', variant: 'secondary' },
 
     ],
 
@@ -306,7 +306,9 @@ const serviceSchemas = content.services.map((service) => ({
 
       <p class="inline-cta">
 
-        <a href="/contact/" class="btn btn-primary">Gratis offerte aanvragen</a>
+        <a href={FREE_WEBSITE_START_PATH} class="btn btn-primary">Gratis website maken</a>
+
+        <a href="/contact/" class="btn btn-secondary">Gratis offerte aanvragen</a>
 
       </p>
 
@@ -493,7 +495,7 @@ const serviceSchemas = content.services.map((service) => ({
 
       <div class="cta-actions">
 
-        <a href="/contact/" class="btn btn-primary">{content.bottomCta.primaryLabel}</a>
+        <a href={FREE_WEBSITE_START_PATH} class="btn btn-primary">Gratis website maken</a>
 
         <a href="/contact/" class="btn btn-secondary">{content.bottomCta.secondaryLabel}</a>
 
@@ -572,11 +574,12 @@ const serviceSchemas = content.services.map((service) => ({
 
 
   .inline-cta {
-
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
     text-align: center;
-
     margin: 1.75rem 0 0;
-
   }
 
 

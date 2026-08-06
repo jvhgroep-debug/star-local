@@ -72,6 +72,21 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
+.staging-banner {
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #0a0e14;
+  background: linear-gradient(90deg, #f5d76e 0%, #cdb880 50%, #f5d76e 100%);
+  border-bottom: 2px solid #0a0e14;
+}
+
 .skip-link {
   position: absolute;
   left: -9999px;
@@ -129,6 +144,11 @@ textarea:focus-visible {
 .btn-primary:hover {
   background: var(--gold-light);
   transform: translateY(-1px);
+}
+
+.btn-primary:active,
+.btn-secondary:active {
+  transform: translateY(0);
 }
 
 .btn-secondary {

@@ -42,6 +42,10 @@ function payloadToBuilderState(payload: SaveWebsitePayload): BuilderState {
 }
 
 export function validateSavePayload(payload: SaveWebsitePayload): { valid: boolean; errors: Record<string, string> } {
+  if (payload.saveMode === 'concept_v2') {
+    return validateConceptV2Payload(payload);
+  }
+
   const state = payloadToBuilderState(payload);
   const hasLogo = payload.media.some((m) => m.kind === 'logo');
   const wizardValidation = validateAll(state, hasLogo);
@@ -80,6 +84,38 @@ export function validateSavePayload(payload: SaveWebsitePayload): { valid: boole
     if (file.dataBase64.length > 7 * 1024 * 1024) {
       errors.logo = 'Bestand is te groot (max. 5 MB).';
     }
+  }
+
+  return { valid: Object.keys(errors).length === 0, errors };
+}
+
+function validateConceptV2Payload(payload: SaveWebsitePayload): { valid: boolean; errors: Record<string, string> } {
+  const errors: Record<string, string> = {};
+  const slug = normalizeBuilderSlug(payload.business.name);
+
+  if (!payload.business.name.trim()) errors.name = 'Bedrijfsnaam is verplicht.';
+  if (!payload.business.industry.trim()) errors.industry = 'Branche is verplicht.';
+  if (!payload.business.description.trim()) errors.businessDescription = 'Omschrijving is verplicht.';
+  if (!payload.contact.email.trim() || !EMAIL_PATTERN.test(payload.contact.email.trim())) {
+    errors.email = 'Vul een geldig e-mailadres in.';
+  }
+  if (!payload.contact.street.trim()) errors.street = 'Adres is verplicht.';
+  if (!payload.contact.city.trim()) errors.city = 'Plaats is verplicht.';
+
+  if (!slug || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    errors.name = errors.name ?? 'Voer een geldige bedrijfsnaam in voor uw website-adres.';
+  }
+  if (slug && isReservedSubdomain(slug)) {
+    errors.name = 'Deze naam is niet beschikbaar. Kies een andere bedrijfsnaam.';
+  }
+
+  const website = payload.contact.website.trim();
+  if (website && !WEBSITE_PATTERN.test(website)) {
+    errors.website = 'Vul een geldige website-URL in.';
+  }
+
+  if (!payload.configSnapshotJson?.trim()) {
+    errors.configSnapshot = 'Configuratie-snapshot ontbreekt.';
   }
 
   return { valid: Object.keys(errors).length === 0, errors };

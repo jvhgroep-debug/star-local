@@ -16,7 +16,7 @@ export function validateStep1(state: BuilderState): ValidationResult {
   const { business, contact } = state;
 
   if (!business.name.trim()) {
-    errors.name = 'Vul uw bedrijfsnaam in.';
+    errors.name = 'Bedrijfsnaam is verplicht — vul uw bedrijfsnaam in.';
   } else {
     const slug = getSlugPreview(business.name);
     if (!slug.available) {
@@ -26,17 +26,17 @@ export function validateStep1(state: BuilderState): ValidationResult {
 
   const industry = business.industry.trim();
   if (!industry) {
-    errors.industry = 'Kies een categorie (branche).';
+    errors.industry = 'Categorie is verplicht — kies uw branche.';
   } else if (!BUILDER_INDUSTRIES.some((item) => item.toLowerCase() === industry.toLowerCase())) {
     errors.industry = 'Kies een categorie uit de lijst.';
   }
 
   if (!hasPhoneValue(contact.phone)) {
-    errors.phone = 'Vul een geldig telefoonnummer in.';
+    errors.phone = 'Telefoonnummer is verplicht — vul een geldig nummer in.';
   }
 
   if (!contact.email.trim()) {
-    errors.email = 'Vul uw e-mailadres in.';
+    errors.email = 'E-mailadres is verplicht — vul uw e-mailadres in.';
   } else if (!EMAIL_PATTERN.test(contact.email.trim())) {
     errors.email = 'Vul een geldig e-mailadres in.';
   }
@@ -47,11 +47,11 @@ export function validateStep1(state: BuilderState): ValidationResult {
   }
 
   if (!contact.street.trim()) {
-    errors.street = 'Vul uw adres in (straat en huisnummer).';
+    errors.street = 'Adres is verplicht — vul straat en huisnummer in.';
   }
 
   if (!contact.city.trim()) {
-    errors.city = 'Vul uw plaats in.';
+    errors.city = 'Plaats is verplicht — vul uw woonplaats in.';
   }
 
   return { valid: Object.keys(errors).length === 0, errors };
@@ -62,7 +62,7 @@ export function validateStep2(state: BuilderState, hasLogo: boolean): Validation
   const errors: Record<string, string> = {};
 
   if (!hasLogo) {
-    errors.logo = 'Upload uw logo (JPG, PNG of WebP, max. 5 MB).';
+    errors.logo = 'Logo is verplicht — upload uw logo (JPG, PNG of WebP, max. 5 MB).';
   }
 
   if (!isValidHexColor(state.branding.primaryColor)) {
@@ -104,7 +104,7 @@ export function validateStep4(state: BuilderState): ValidationResult {
   const validServices = state.business.services.filter((service) => service.title.trim());
 
   if (validServices.length === 0) {
-    errors.services = 'Voeg minimaal één dienst toe.';
+    errors.services = 'Minimaal één dienst is verplicht — voeg een dienst toe.';
   }
 
   return { valid: Object.keys(errors).length === 0, errors };
@@ -120,19 +120,19 @@ export function validateStep6(state: BuilderState): ValidationResult {
   const errors: Record<string, string> = {};
 
   if (!state.heroTitle.trim()) {
-    errors.seoTitle = 'Vul een SEO-titel in.';
+    errors.seoTitle = 'SEO-titel is verplicht — vul een titel in voor Google.';
   } else if (state.heroTitle.trim().length > 70) {
     errors.seoTitle = 'SEO-titel mag maximaal 70 tekens zijn.';
   }
 
   if (!state.seoMetaDescription.trim()) {
-    errors.seoMetaDescription = 'Vul een meta description in.';
+    errors.seoMetaDescription = 'Meta description is verplicht — vul een korte beschrijving in.';
   } else if (state.seoMetaDescription.trim().length > 160) {
     errors.seoMetaDescription = 'Meta description mag maximaal 160 tekens zijn.';
   }
 
   if (!state.business.description.trim()) {
-    errors.businessDescription = 'Vul een bedrijfsomschrijving in.';
+    errors.businessDescription = 'Bedrijfsomschrijving is verplicht — beschrijf uw bedrijf.';
   } else if (state.business.description.trim().length < 40) {
     errors.businessDescription = 'Bedrijfsomschrijving moet minimaal 40 tekens bevatten.';
   }

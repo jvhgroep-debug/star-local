@@ -1,0 +1,107 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+export const prerender = false;
+---
+
+<AdminLayout
+  title="Website preview | Star Local Admin"
+  description="Volledige preview van een website in de goedkeuringswachtrij."
+  canonical="/admin/preview/"
+>
+  <div class="admin-preview-shell" id="admin-preview-root">
+    <header class="admin-preview-bar">
+      <div class="admin-preview-bar__meta">
+        <p class="eyebrow">Admin preview</p>
+        <h1 id="admin-preview-title">Website laden…</h1>
+        <p id="admin-preview-subtitle" class="admin-preview-bar__subtitle"></p>
+      </div>
+      <div class="admin-preview-bar__actions">
+        <a class="btn btn-secondary" href="/admin/websites/">Terug naar wachtrij</a>
+      </div>
+    </header>
+    <nav class="admin-preview-tabs" id="admin-preview-tabs" aria-label="Pagina's"></nav>
+    <div class="admin-preview-frame" id="admin-preview-frame"></div>
+  </div>
+</AdminLayout>
+
+<script>
+  import { loadAdminRecord, listPreviewPageLabels, resolvePreviewPages, resolvePreviewPagesFromPackageJson } from '../../lib/admin/preview';
+  import { fetchAdminPublicationLog } from '../../lib/admin/admin-api.client';
+  import { APPROVAL_STATUS_LABELS } from '../../types/approval';
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id') ?? '';
+  const isLive = params.get('live') === '1';
+  const title = document.getElementById('admin-preview-title');
+  const subtitle = document.getElementById('admin-preview-subtitle');
+  const tabs = document.getElementById('admin-preview-tabs');
+  const frame = document.getElementById('admin-preview-frame');
+
+  async function initPreview() {
+    const loaded = id ? await loadAdminRecord(id) : null;
+    const record = loaded?.record ?? null;
+
+    if (!record || !title || !subtitle || !tabs || !frame) {
+      if (title) title.textContent = 'Preview niet beschikbaar';
+      if (subtitle) subtitle.textContent = 'Deze website staat niet in de wachtrij of is verwijderd.';
+      return;
+    }
+
+    title.textContent = record.businessName;
+    const liveNote = isLive && record.approvalStatus === 'published' ? ' · Live (simulatie)' : '';
+    subtitle.innerHTML = `${record.subdomain} · ${APPROVAL_STATUS_LABELS[record.approvalStatus]}${liveNote}${
+      isLive && record.approvalStatus === 'published'
+        ? '<span class="admin-preview-bar__badge">Gepubliceerd — lokale build</span>'
+        : ''
+    }`;
+
+    let pages = null as ReturnType<typeof resolvePreviewPages> | null;
+
+    if (isLive && record.approvalStatus === 'published') {
+      try {
+        const pub = await fetchAdminPublicationLog(id);
+        pages = resolvePreviewPagesFromPackageJson(pub.packageJson);
+      } catch {
+        pages = null;
+      }
+    }
+
+    if (!pages) {
+      pages = resolvePreviewPages(record, loaded?.configSnapshotJson ?? null);
+    }
+
+    if (!pages) {
+      subtitle.textContent = 'Geen preview beschikbaar voor deze website.';
+      return;
+    }
+
+    let currentPage = 'home';
+    const pageLabels = listPreviewPageLabels();
+
+    const renderPage = () => {
+      frame.innerHTML = pages[currentPage] ?? '<p>Preview niet beschikbaar.</p>';
+      tabs.querySelectorAll('[data-admin-preview-tab]').forEach((button) => {
+        button.classList.toggle('is-active', (button as HTMLButtonElement).dataset.adminPreviewTab === currentPage);
+      });
+    };
+
+    tabs.innerHTML = pageLabels
+      .map(
+        (page) =>
+          `<button type="button" class="admin-preview-tabs__btn${page.id === currentPage ? ' is-active' : ''}" data-admin-preview-tab="${page.id}">${page.label}</button>`,
+      )
+      .join('');
+
+    tabs.querySelectorAll('[data-admin-preview-tab]').forEach((button) => {
+      button.addEventListener('click', () => {
+        currentPage = (button as HTMLButtonElement).dataset.adminPreviewTab ?? 'home';
+        renderPage();
+      });
+    });
+
+    renderPage();
+  }
+
+  void initPreview();
+</script>

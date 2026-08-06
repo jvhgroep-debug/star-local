@@ -14,6 +14,9 @@ export const SITE = {
   ogImage: IMAGES.heroHome,
 } as const;
 
+/** Website Builder entry — all marketing CTAs point here (OPDRACHT 81). */
+export const FREE_WEBSITE_START_PATH = '/gratis-website/start/' as const;
+
 export function canonical(path: string): string {
   const normalized = path.startsWith('/') ? path : `/${path}`;
   return `${SITE.url}${normalized.endsWith('/') ? normalized : `${normalized}/`}`;

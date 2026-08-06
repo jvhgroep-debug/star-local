@@ -1,0 +1,31 @@
+---
+import BuilderLayout from '../../../layouts/BuilderLayout.astro';
+import '../../../styles/wizard-v2.css';
+---
+
+<BuilderLayout
+  title="Website Wizard | Star Local Website Builder"
+  description="Stel uw gratis website samen met live preview. Gegevens worden lokaal opgeslagen in uw browser."
+  canonical="/gratis-website/wizard/"
+>
+  <div class="container">
+    <aside class="builder-beta-banner" role="status" aria-label="Fase 2 informatie">
+      <p class="builder-beta-banner__eyebrow">Website Builder — Fase 2</p>
+      <p class="builder-beta-banner__title">Website Wizard met live preview</p>
+      <p class="builder-beta-banner__text">
+        Vul uw bedrijfsgegevens in en zie direct een voorbeeldwebsite.
+        Gegevens worden lokaal opgeslagen. Afbeelding-upload volgt in een latere fase.
+      </p>
+    </aside>
+    <div id="website-wizard-v2-root" class="website-builder-root" aria-live="polite"></div>
+    <noscript>
+      <p class="builder-noscript">De Website Wizard vereist JavaScript.</p>
+    </noscript>
+  </div>
+</BuilderLayout>
+
+<script>
+  import { initWebsiteWizardV2 } from '../../../lib/wizard-v2/app';
+
+  initWebsiteWizardV2();
+</script>

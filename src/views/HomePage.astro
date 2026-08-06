@@ -14,6 +14,7 @@ import { getServices } from '../data/services';
 import { getServiceImagePath } from '../data/service-images';
 import { getPortfolioProjects } from '../data/portfolio';
 import { IMAGES } from '../data/images';
+import { FREE_WEBSITE_START_PATH } from '../data/site';
 
 interface Props {
   locale: Locale;
@@ -56,7 +57,8 @@ const featuredProjects = projects.slice(0, 3);
     intro: dict.home.lead,
     ariaLabel: dict.home.heroLabel,
     ctas: [
-      { label: dict.buttons.freeConsultation, href: route('contact', locale), variant: 'primary' },
+      { label: dict.nav.freeWebsiteCta, href: FREE_WEBSITE_START_PATH, variant: 'primary' },
+      { label: dict.buttons.freeConsultation, href: route('contact', locale), variant: 'secondary' },
       { label: dict.buttons.viewWork, href: route('portfolio', locale), variant: 'secondary' },
     ],
     usps: dict.home.usps,

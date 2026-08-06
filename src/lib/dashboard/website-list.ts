@@ -1,4 +1,5 @@
 import type { DashboardViewModel, DashboardWebsiteCardItem } from '../../types/dashboard';
+import { APPROVAL_STATUS_LABELS } from '../../types/approval';
 import type { StoredWebsiteSummary } from './website-list.storage';
 import { upsertWebsiteFromModel } from './website-list.storage';
 import { pipelineStatusLabel } from './publish-client';
@@ -15,7 +16,11 @@ export function mapStoredToCard(item: StoredWebsiteSummary): DashboardWebsiteCar
     status: item.status,
     statusLabel: item.statusLabel,
     pipelineStatus: item.pipelineStatus,
-    pipelineLabel: pipelineStatusLabel(item.pipelineStatus),
+    pipelineLabel: item.approvalStatus
+      ? APPROVAL_STATUS_LABELS[item.approvalStatus]
+      : item.source === 'local'
+        ? item.statusLabel
+        : pipelineStatusLabel(item.pipelineStatus),
     lastUpdated: item.lastUpdated,
     primaryColor: item.primaryColor,
     logoName: item.logoName,

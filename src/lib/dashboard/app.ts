@@ -18,6 +18,7 @@ import { mapPreparedWebsiteToDashboard } from './map-local';
 
 import { formatDuration, pipelineStatusLabel, runLocalPublication } from './publish-client';
 import { enrichDashboardModel, mapStoredToCard } from './website-list';
+import { loadWebsiteList } from './website-list.storage';
 import { loadWebsiteFromD1 } from '../builder/publish/save-client';
 import { mapLoadResultToDashboard } from './map-load-result';
 
@@ -81,7 +82,10 @@ function resolveSection(value: string | null | undefined): DashboardSection {
     'overview',
     'websites',
     'concepts',
+    'in_review',
     'published',
+    'change_requests',
+    'change_request_new',
     'stats',
     'website',
     'pages',
@@ -223,6 +227,22 @@ function render(): void {
 
   bindEvents();
 
+}
+
+
+
+async function ensureChangeRequestsLoaded(): Promise<void> {
+  if (!ctx.model) return;
+  if (ctx.section !== 'change_requests' && ctx.section !== 'overview') return;
+  const { fetchCustomerChangeRequests } = await import('./change-requests-ui');
+  ctx.model.changeRequests = await fetchCustomerChangeRequests();
+}
+
+
+
+async function renderAsync(): Promise<void> {
+  await ensureChangeRequestsLoaded();
+  render();
 }
 
 
@@ -401,11 +421,20 @@ function bindEvents(): void {
 
       ctx.section = section;
 
-      render();
+      void renderAsync();
 
     });
 
   });
+
+  if (ctx.section === 'change_request_new') {
+    void import('./change-requests-ui').then(({ bindChangeRequestForm }) => {
+      bindChangeRequestForm(root, () => {
+        ctx.section = 'change_requests';
+        void renderAsync();
+      });
+    });
+  }
 
 
 
@@ -447,6 +476,14 @@ function bindEvents(): void {
     void handlePublish(true);
   });
 
+  root.querySelectorAll('[data-premium-upgrade]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      window.alert(
+        'Premium wordt binnenkort beschikbaar. U hoort van ons zodra u kunt upgraden — er is nog geen betaalfunctionaliteit actief.',
+      );
+    });
+  });
+
   root.querySelectorAll('[data-open-publish-section]').forEach((btn) => {
     btn.addEventListener('click', () => {
       ctx.section = 'publish';
@@ -462,6 +499,28 @@ export async function initDashboard(options: DashboardInitOptions = {}): Promise
   const session = loadDashboardSession();
 
   let model = resolveInitialModel(options.initialData);
+
+  try {
+    const customerResponse = await fetch('/api/customer/websites/', { headers: { Accept: 'application/json' } });
+    if (customerResponse.ok) {
+      const customerData = (await customerResponse.json()) as {
+        ok: boolean;
+        customer?: { businessName: string; email: string };
+        websites?: DashboardViewModel['websiteList'];
+      };
+      if (customerData.ok && customerData.websites) {
+        model = {
+          ...(model ?? createPortfolioModel()),
+          websiteList: customerData.websites,
+          customerBusinessName: customerData.customer?.businessName,
+          customerEmail: customerData.customer?.email,
+          canPublish: false,
+        };
+      }
+    }
+  } catch {
+    // Fallback to existing model resolution
+  }
 
   const tenantId = options.tenantId ?? model?.tenantId ?? session?.tenantId ?? null;
 
@@ -522,7 +581,7 @@ export async function initDashboard(options: DashboardInitOptions = {}): Promise
 
   syncTenantQueryParam(ctx.model);
 
-  render();
+  await renderAsync();
 
 }
 

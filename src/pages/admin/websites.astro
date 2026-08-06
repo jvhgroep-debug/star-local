@@ -1,0 +1,21 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+export const prerender = false;
+---
+
+<AdminLayout
+  title="Website-goedkeuring | Star Local Admin"
+  description="Beheer en keur websites goed voordat ze live gaan."
+  canonical="/admin/websites/"
+>
+  <div class="container dashboard-page-container">
+    <p class="admin-dev-banner" role="status">Lokale beheermodule — alleen voor Star Local ontwikkeling en test.</p>
+    <div id="admin-root" class="admin-root" aria-live="polite"></div>
+  </div>
+</AdminLayout>
+
+<script>
+  import { initAdminWebsites } from '../../lib/admin/app';
+  void initAdminWebsites();
+</script>

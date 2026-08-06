@@ -1,5 +1,6 @@
 ---
 import SeoHead from '../components/SeoHead.astro';
+import StagingBanner from '../components/StagingBanner.astro';
 import '../styles/global.css';
 import '../styles/auth.css';
 
@@ -24,6 +25,7 @@ const {
     <SeoHead locale="nl" {title} {description} canonicalPath={canonical} noindex={true} />
   </head>
   <body class="auth-page-body">
+    <StagingBanner />
     <a href="#auth-main" class="skip-link">Ga naar inhoud</a>
     <header class="auth-page-header">
       <div class="container auth-page-header__inner">

@@ -28,6 +28,7 @@ function mapMagicLinkRow(row: MagicLinkRow): MagicLink {
     id: row.id,
     userId: row.user_id,
     tenantId: row.tenant_id,
+    customerId: row.customer_id ?? null,
     tokenHash: row.token_hash,
     expiresAt: row.expires_at,
     usedAt: row.used_at,
@@ -40,6 +41,7 @@ function mapSessionRow(row: SessionRow): SessionRecord {
     id: row.id,
     userId: row.user_id,
     tenantId: row.tenant_id,
+    customerId: row.customer_id ?? null,
     tokenHash: row.token_hash,
     expiresAt: row.expires_at,
     createdAt: row.created_at,
@@ -92,10 +94,10 @@ export class AuthRepository {
   async createMagicLink(input: CreateMagicLinkInputDb): Promise<MagicLink> {
     await this.db
       .prepare(
-        `INSERT INTO magic_links (id, user_id, tenant_id, token_hash, expires_at, used_at, created_at)
-         VALUES (?, ?, ?, ?, ?, NULL, ?)`,
+        `INSERT INTO magic_links (id, user_id, tenant_id, customer_id, token_hash, expires_at, used_at, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, NULL, ?)`,
       )
-      .bind(input.id, input.userId, input.tenantId, input.tokenHash, input.expiresAt, input.createdAt)
+      .bind(input.id, input.userId, input.tenantId, input.customerId ?? null, input.tokenHash, input.expiresAt, input.createdAt)
       .run();
     const row = await this.db.prepare('SELECT * FROM magic_links WHERE id = ? LIMIT 1').bind(input.id).first<MagicLinkRow>();
     if (!row) throw new Error('Failed to create magic link');
@@ -147,13 +149,39 @@ export class AuthRepository {
     });
   }
 
+  async deleteMagicLinksForUser(userId: string): Promise<void> {
+    await this.db.prepare('DELETE FROM magic_links WHERE user_id = ?').bind(userId).run();
+  }
+
+  async purgeExpiredMagicLinks(): Promise<void> {
+    await this.db.prepare('DELETE FROM magic_links WHERE expires_at < ?').bind(new Date().toISOString()).run();
+  }
+
+  async revokeMagicLinksForCustomer(customerId: string): Promise<number> {
+    const result = await this.db.prepare('DELETE FROM magic_links WHERE customer_id = ?').bind(customerId).run();
+    return result.meta.changes != null ? Number(result.meta.changes) : 0;
+  }
+
+  async listSessionsForCustomer(customerId: string): Promise<SessionRecord[]> {
+    const { results = [] } = await this.db
+      .prepare('SELECT * FROM sessions WHERE customer_id = ? ORDER BY created_at DESC')
+      .bind(customerId)
+      .all<SessionRow>();
+    return results.map(mapSessionRow);
+  }
+
+  async revokeSessionsForCustomer(customerId: string): Promise<number> {
+    const result = await this.db.prepare('DELETE FROM sessions WHERE customer_id = ?').bind(customerId).run();
+    return result.meta.changes != null ? Number(result.meta.changes) : 0;
+  }
+
   async createSession(input: CreateSessionInputDb): Promise<SessionRecord> {
     await this.db
       .prepare(
-        `INSERT INTO sessions (id, user_id, tenant_id, token_hash, expires_at, created_at)
-         VALUES (?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO sessions (id, user_id, tenant_id, customer_id, token_hash, expires_at, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
       )
-      .bind(input.id, input.userId, input.tenantId, input.tokenHash, input.expiresAt, input.createdAt)
+      .bind(input.id, input.userId, input.tenantId, input.customerId ?? null, input.tokenHash, input.expiresAt, input.createdAt)
       .run();
     const row = await this.db.prepare('SELECT * FROM sessions WHERE id = ? LIMIT 1').bind(input.id).first<SessionRow>();
     if (!row) throw new Error('Failed to create session');

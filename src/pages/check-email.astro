@@ -5,6 +5,7 @@ import AuthLayout from '../layouts/AuthLayout.astro';
 import { AUTH_ROUTES } from '../lib/auth/constants';
 
 const email = Astro.url.searchParams.get('email')?.trim().toLowerCase() ?? '';
+const emailSent = Astro.url.searchParams.get('emailSent') !== '0';
 ---
 
 <AuthLayout
@@ -23,9 +24,33 @@ const email = Astro.url.searchParams.get('email')?.trim().toLowerCase() ?? '';
     ) : (
       <p>We hebben een inloglink naar uw e-mailadres gestuurd. Klik op de link om uw dashboard te openen.</p>
     )}
+    {!emailSent ? (
+      <div class="auth-dev-panel" id="auth-dev-panel" hidden>
+        <p class="auth-dev-panel__label">Lokale ontwikkelmodus</p>
+        <p class="auth-dev-panel__text">
+          E-mailverzending is lokaal niet actief. Gebruik onderstaande inloglink om uw dashboard te testen.
+        </p>
+        <a class="btn btn-primary auth-dev-panel__link" id="auth-dev-magic-link" href="#">Naar inloglink</a>
+      </div>
+    ) : null}
     <p class="auth-muted">De link is 30 minuten geldig en kan maar één keer gebruikt worden. Controleer ook uw spammap.</p>
     <div class="auth-actions">
       <a class="btn btn-secondary" href={AUTH_ROUTES.login}>Andere e-mail gebruiken</a>
     </div>
   </section>
 </AuthLayout>
+
+{!emailSent ? (
+  <script>
+    const DEV_MAGIC_KEY = 'starlocal-dev-magic-url';
+    const panel = document.getElementById('auth-dev-panel');
+    const link = document.getElementById('auth-dev-magic-link') as HTMLAnchorElement | null;
+    const devMagicUrl = sessionStorage.getItem(DEV_MAGIC_KEY);
+
+    if (panel && link && devMagicUrl) {
+      link.href = devMagicUrl;
+      panel.removeAttribute('hidden');
+      sessionStorage.removeItem(DEV_MAGIC_KEY);
+    }
+  </script>
+) : null}

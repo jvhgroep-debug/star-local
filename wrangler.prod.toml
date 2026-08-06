@@ -1,0 +1,45 @@
+# Star Local — PRODUCTIE Cloudflare Pages configuratie
+# Gebruik: wrangler pages deploy dist --config wrangler.prod.toml
+# NIET committen met echte secrets — database_id via Dashboard / CLI invullen.
+
+name = "star-local"
+compatibility_date = "2026-07-19"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "dist"
+
+# ---------------------------------------------------------------------------
+# D1 — één productiedatabase voor alle tenants
+# Aanmaken:  wrangler d1 create star-local-saas-prod
+# Migraties:  wrangler d1 migrations apply star-local-saas-prod --remote --config wrangler.prod.toml
+# ---------------------------------------------------------------------------
+[[d1_databases]]
+binding = "DB"
+database_name = "star-local-saas-prod"
+database_id = "d58a4699-131e-403d-8ea7-65ef928a72d7"
+migrations_dir = "migrations"
+
+# ---------------------------------------------------------------------------
+# R2 — één bucket: media + gepubliceerde sites + pakketarchief
+# Aanmaken: wrangler r2 bucket create star-local-saas-media-prod
+# ---------------------------------------------------------------------------
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "star-local-saas-media-prod"
+
+# ---------------------------------------------------------------------------
+# Plain-text environment variables (geen secrets)
+# Secrets via: wrangler pages secret put --config wrangler.prod.toml
+# ---------------------------------------------------------------------------
+[vars]
+APP_BASE_URL = "https://www.starlocal.nl"
+DASHBOARD_BASE_URL = "https://app.starlocal.nl"
+TENANT_BASE_DOMAIN = "starlocal.nl"
+ENVIRONMENT = "production"
+# Optioneel — leeg tot CDN actief; media via R2-binding
+MEDIA_PUBLIC_BASE_URL = ""
+
+# Secrets (NOOIT in dit bestand — alleen via Dashboard / CLI):
+#   RESEND_API_KEY
+#   FROM_EMAIL
+#   CONTACT_TO_EMAIL
+#   ADMIN_NOTIFICATION_EMAIL  (optioneel — admin goedkeuring/publicatie)

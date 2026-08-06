@@ -5,11 +5,11 @@ import { EDITOR_PATH } from '../editor/constants';
 export const DASHBOARD_PATH = '/dashboard/';
 
 export const DASHBOARD_HUB_SECTIONS: { id: DashboardSection; label: string; icon: string; description: string; href?: string }[] = [
-  { id: 'websites', label: 'Mijn Websites', icon: '🌐', description: 'Al uw websites op één plek' },
-  { id: 'overview', label: 'Nieuwe Website', icon: '✨', description: 'Start de website builder', href: BUILDER_START_PATH },
+  { id: 'websites', label: 'Mijn websites', icon: '🌐', description: 'Al uw websites op één plek' },
   { id: 'concepts', label: 'Concepten', icon: '📝', description: 'Websites in voorbereiding' },
-  { id: 'published', label: 'Gepubliceerd', icon: '🚀', description: 'Live of klaar voor publicatie' },
-  { id: 'stats', label: 'Statistieken', icon: '📊', description: 'Bezoekers en prestaties' },
+  { id: 'in_review', label: 'In review', icon: '🔍', description: 'Wachten op goedkeuring' },
+  { id: 'change_requests', label: 'Mijn wijzigingsverzoeken', icon: '📋', description: 'Status van uw aanvragen' },
+  { id: 'published', label: 'Gepubliceerd', icon: '🚀', description: 'Live websites' },
   { id: 'settings', label: 'Instellingen', icon: '⚙', description: 'Account en voorkeuren' },
 ];
 
@@ -17,7 +17,10 @@ export const DASHBOARD_SECTIONS: { id: DashboardSection; label: string }[] = [
   { id: 'overview', label: 'Dashboard' },
   { id: 'websites', label: 'Mijn Websites' },
   { id: 'concepts', label: 'Concepten' },
+  { id: 'in_review', label: 'In review' },
   { id: 'published', label: 'Gepubliceerd' },
+  { id: 'change_requests', label: 'Wijzigingsverzoeken' },
+  { id: 'change_request_new', label: 'Wijziging aanvragen' },
   { id: 'stats', label: 'Statistieken' },
   { id: 'website', label: 'Website details' },
   { id: 'pages', label: "Pagina's" },

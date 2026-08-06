@@ -1,9 +1,5 @@
-import {
-  ACCEPTED_IMAGE_TYPES,
-  MAX_LOGO_SIZE,
-  MAX_PHOTOS,
-  MAX_PHOTO_SIZE,
-} from './constants';
+import { MAX_PHOTOS } from './constants';
+import { validateImageUpload } from './upload-validation';
 
 export interface BuilderFiles {
   logoUrl: string | null;
@@ -42,18 +38,8 @@ export function revokeAllFiles(files: BuilderFiles): void {
   files.photoUrls.forEach(revokeObjectUrl);
 }
 
-function validateImageFile(file: File, maxSize: number): string | null {
-  if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
-    return 'Alleen JPG, PNG of WebP is toegestaan.';
-  }
-  if (file.size > maxSize) {
-    return 'Bestand is te groot. Maximaal 5 MB toegestaan.';
-  }
-  return null;
-}
-
 export function setLogoFile(files: BuilderFiles, file: File): string | null {
-  const error = validateImageFile(file, MAX_LOGO_SIZE);
+  const error = validateImageUpload(file);
   if (error) return error;
 
   revokeObjectUrl(files.logoUrl);
@@ -63,7 +49,7 @@ export function setLogoFile(files: BuilderFiles, file: File): string | null {
 }
 
 export function setHeroFile(files: BuilderFiles, file: File): string | null {
-  const error = validateImageFile(file, MAX_PHOTO_SIZE);
+  const error = validateImageUpload(file);
   if (error) return error;
 
   revokeObjectUrl(files.heroUrl);
@@ -79,7 +65,7 @@ export function removeHeroFile(files: BuilderFiles): void {
 }
 
 export function replacePhotoFile(files: BuilderFiles, index: number, file: File): string | null {
-  const error = validateImageFile(file, MAX_PHOTO_SIZE);
+  const error = validateImageUpload(file);
   if (error) return error;
   if (index < 0 || index >= files.photoUrls.length) return 'Foto niet gevonden.';
 
@@ -88,12 +74,13 @@ export function replacePhotoFile(files: BuilderFiles, index: number, file: File)
   files.photoNames[index] = file.name;
   return null;
 }
+
 export function addPhotoFile(files: BuilderFiles, file: File): string | null {
   if (files.photoUrls.length >= MAX_PHOTOS) {
     return 'U kunt maximaal vijf bedrijfsfoto’s uploaden.';
   }
 
-  const error = validateImageFile(file, MAX_PHOTO_SIZE);
+  const error = validateImageUpload(file);
   if (error) return error;
 
   files.photoUrls.push(URL.createObjectURL(file));
@@ -117,7 +104,7 @@ export function movePhoto(files: BuilderFiles, index: number, direction: -1 | 1)
 }
 
 export function setSocialImageFile(files: BuilderFiles, file: File): string | null {
-  const error = validateImageFile(file, MAX_LOGO_SIZE);
+  const error = validateImageUpload(file);
   if (error) return error;
 
   revokeObjectUrl(files.socialImageUrl);

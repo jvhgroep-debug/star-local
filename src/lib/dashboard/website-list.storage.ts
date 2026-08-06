@@ -1,5 +1,6 @@
 import type { DashboardViewModel } from '../../types/dashboard';
 import type { PublicationPipelineStatus } from '../../types/publication';
+import type { ApprovalStatus } from '../../types/approval';
 
 export interface StoredWebsiteSummary {
   id: string;
@@ -11,6 +12,7 @@ export interface StoredWebsiteSummary {
   url: string;
   status: string;
   statusLabel: string;
+  approvalStatus?: ApprovalStatus;
   pipelineStatus: PublicationPipelineStatus;
   lastUpdated: string | null;
   primaryColor: string;
@@ -79,6 +81,7 @@ export function syncSavedToWebsiteList(
     url: result.url,
     status: 'draft',
     statusLabel: 'Concept',
+    approvalStatus: 'concept',
     pipelineStatus: 'draft',
     lastUpdated: result.savedAt,
     primaryColor: state.branding.primaryColor,

@@ -1,0 +1,223 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FAQSection from '../components/FAQSection.astro';
+import { SITE } from '../data/site';
+import { IMAGES } from '../data/images';
+import {
+  ONBOARDING_FAQS,
+  ONBOARDING_INCLUDED,
+  ONBOARDING_INTRO,
+  ONBOARDING_TITLE,
+  ONBOARDING_WIZARD_NOTE,
+} from '../data/offers/gratis-website-onboarding';
+
+const canonicalPath = '/gratis-website/';
+const pageUrl = `${SITE.url}${canonicalPath}`;
+const startHref = '/gratis-website/start/';
+
+const seoTitle = 'Welkom bij Star Local Website Builder | Gratis starten';
+const seoDescription =
+  'In slechts 3 minuten maakt ons systeem een professionele website voor uw bedrijf. Gratis starten, geen technische kennis nodig.';
+
+const included = [...ONBOARDING_INCLUDED];
+const faqs = ONBOARDING_FAQS.map((faq) => ({ question: faq.question, answer: faq.answer }));
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: seoTitle,
+  description: seoDescription,
+  url: pageUrl,
+  inLanguage: 'nl-NL',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: SITE.url,
+  },
+};
+---
+
+<BaseLayout
+  locale="nl"
+  title={seoTitle}
+  description={seoDescription}
+  canonical={canonicalPath}
+  image={IMAGES.serviceWebsiteDesign}
+  schema={webPageSchema}
+  fullWidth
+  hero={{
+    title: ONBOARDING_TITLE,
+    intro: ONBOARDING_INTRO,
+    ariaLabel: ONBOARDING_TITLE,
+    backgroundImage: IMAGES.serviceWebsiteDesign,
+    ctas: [{ label: 'Start gratis', href: startHref, variant: 'primary' }],
+    usps: ['Binnen 3 minuten', 'Geen technische kennis', '7 onderdelen inbegrepen', 'Gratis starten'],
+  }}
+>
+  <div class="container page-top">
+    <Breadcrumbs
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Gratis website' },
+      ]}
+    />
+  </div>
+
+  <section class="section onboarding-included" id="wat-u-krijgt" aria-labelledby="included-title">
+    <div class="container onboarding-included__inner">
+      <h2 id="included-title" class="onboarding-section-title">Wat u krijgt</h2>
+      <p class="onboarding-section-lead">
+        Uw website wordt compleet opgeleverd met alles wat u nodig heeft om professioneel online te gaan.
+      </p>
+      <ul class="onboarding-checklist">
+        {included.map((item) => (
+          <li class="onboarding-checklist__item">
+            <span class="onboarding-checklist__icon" aria-hidden="true">✓</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section onboarding-wizard alt-section" aria-labelledby="wizard-note-title">
+    <div class="container onboarding-wizard__inner">
+      <h2 id="wizard-note-title" class="visually-hidden">Over de wizard</h2>
+      <div class="onboarding-wizard__card">
+        <p class="onboarding-wizard__text">{ONBOARDING_WIZARD_NOTE}</p>
+        <a class="btn btn-primary btn-lg onboarding-wizard__cta" href={startHref}>Start gratis</a>
+      </div>
+    </div>
+  </section>
+
+  <FAQSection title="Veelgestelde vragen" faqs={faqs} />
+</BaseLayout>
+
+<style>
+  .page-top {
+    padding-top: 1.25rem;
+  }
+
+  .alt-section {
+    background: rgba(205, 184, 128, 0.03);
+    border-block: 1px solid var(--border);
+  }
+
+  .onboarding-section-title {
+    color: var(--gold);
+    text-align: center;
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.45rem, 3vw, 2rem);
+  }
+
+  .onboarding-section-lead {
+    text-align: center;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+    font-size: 1.02rem;
+  }
+
+  .onboarding-included__inner {
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  .onboarding-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem 1.25rem;
+  }
+
+  .onboarding-checklist__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.15rem;
+    background: rgba(205, 184, 128, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-weight: 600;
+    line-height: 1.45;
+    transition: transform var(--transition), border-color var(--transition);
+  }
+
+  .onboarding-checklist__item:hover {
+    transform: translateY(-1px);
+    border-color: var(--border-strong);
+  }
+
+  .onboarding-checklist__icon {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: rgba(37, 211, 102, 0.12);
+    color: #25d366;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .onboarding-wizard__inner {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .onboarding-wizard__card {
+    text-align: center;
+    padding: 2rem 1.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(205, 184, 128, 0.08), rgba(37, 211, 102, 0.04));
+  }
+
+  .onboarding-wizard__text {
+    margin: 0 0 1.5rem;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+
+  .onboarding-wizard__cta {
+    min-width: 220px;
+  }
+
+  .btn-lg {
+    padding: 0.95rem 2rem;
+    font-size: 1.05rem;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 720px) {
+    .onboarding-checklist {
+      grid-template-columns: 1fr;
+    }
+
+    .onboarding-wizard__card {
+      padding: 1.75rem 1.25rem;
+    }
+
+    .onboarding-wizard__cta {
+      width: 100%;
+    }
+  }
+</style>

@@ -1,0 +1,8 @@
+---
+import { renderPublishedSiteResponse } from '../../../lib/publication-engine/site-route';
+export const prerender = false;
+const pathParam = Astro.params.path;
+const pathSegments = Array.isArray(pathParam) ? pathParam : pathParam ? [pathParam] : [];
+const subPath = pathSegments.length ? `/${pathSegments.join('/')}/` : '/';
+return renderPublishedSiteResponse(Astro, subPath);
+---

@@ -51,7 +51,11 @@ if (tenantId && db) {
 </DashboardLayout>
 
 <script define:vars={{ initialData, tenantId }}>
+  window.__DASHBOARD_INIT__ = { initialData, tenantId };
+</script>
+<script>
   import { initDashboard } from '../lib/dashboard/app';
 
-  initDashboard({ initialData, tenantId });
+  const boot = window.__DASHBOARD_INIT__ ?? {};
+  initDashboard({ initialData: boot.initialData, tenantId: boot.tenantId });
 </script>

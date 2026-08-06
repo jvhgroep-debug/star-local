@@ -6,6 +6,7 @@ import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n';
 import { route } from '../i18n/routes';
 import { getServices } from '../data/services';
+import { GRATIS_WEBSITE_SERVICE_CARD } from '../data/offers/gratis-website-service-card';
 
 interface Props {
   locale: Locale;
@@ -29,6 +30,14 @@ const services = getServices(locale);
   <section class="section">
     <div class="container">
       <div class="grid-3">
+        <ServiceCard
+          title={GRATIS_WEBSITE_SERVICE_CARD.title}
+          description={GRATIS_WEBSITE_SERVICE_CARD.description}
+          href={GRATIS_WEBSITE_SERVICE_CARD.href}
+          image={GRATIS_WEBSITE_SERVICE_CARD.image}
+          imageAlt={GRATIS_WEBSITE_SERVICE_CARD.imageAlt}
+          learnMore={GRATIS_WEBSITE_SERVICE_CARD.ctaLabel}
+        />
         {services.map((service) => (
           <ServiceCard
             title={service.h1}
@@ -43,5 +52,10 @@ const services = getServices(locale);
     </div>
   </section>
 
-  <CTASection locale={locale} />
+  <CTASection
+    locale={locale}
+    showFreeWebsite={true}
+    title={dict.servicesPage.freeWebsiteCtaTitle}
+    text={dict.servicesPage.freeWebsiteCtaText}
+  />
 </BaseLayout>

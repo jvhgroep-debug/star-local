@@ -1,6 +1,7 @@
 import type { BuilderState } from '../../types/builder';
 import type { SaveWebsiteMediaFile, SaveWebsitePayload, SaveWebsiteResponse } from '../../types/save';
 import type { BuilderFiles } from '../files';
+import { buildPublicationSnapshot, serializePublicationSnapshot } from '../../publication-engine/snapshot';
 import { ACCEPTED_IMAGE_TYPES, MAX_LOGO_SIZE, MAX_PHOTO_SIZE } from '../constants';
 
 async function fileToBase64(file: File): Promise<string> {
@@ -112,6 +113,12 @@ export async function buildSavePayload(
     }
   }
 
+  const publicSiteBaseUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin.replace(/\/$/, '')}/sites/preview`
+      : '/sites/preview';
+  const snapshot = buildPublicationSnapshot(state, files, { publicSiteBaseUrl });
+
   const payload: SaveWebsitePayload = {
     business: state.business,
     contact: state.contact,
@@ -128,6 +135,7 @@ export async function buildSavePayload(
     heroSubtitle: state.heroSubtitle.trim(),
     seoMetaDescription: state.seoMetaDescription.trim(),
     enabledPages: state.enabledPages,
+    configSnapshotJson: serializePublicationSnapshot(snapshot),
   };
 
   return { payload, errors };

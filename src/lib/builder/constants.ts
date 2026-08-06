@@ -5,8 +5,9 @@ export { DEFAULT_DESIGN_SETTINGS };
 
 export const BUILDER_STORAGE_KEY = 'starlocal-website-builder-v1';
 
-export const MAX_LOGO_SIZE = 5 * 1024 * 1024;
-export const MAX_PHOTO_SIZE = 5 * 1024 * 1024;
+export const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
+export const MAX_LOGO_SIZE = MAX_IMAGE_SIZE_BYTES;
+export const MAX_PHOTO_SIZE = MAX_IMAGE_SIZE_BYTES;
 export const MAX_PHOTOS = 5;
 export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 

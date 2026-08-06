@@ -1,0 +1,11 @@
+---
+/** Visible only when ENVIRONMENT=staging — never on production. */
+const environment = (import.meta.env.ENVIRONMENT as string | undefined)?.trim();
+const isStaging = environment === 'staging';
+---
+
+{isStaging && (
+  <div class="staging-banner" role="status" aria-live="polite">
+    Star Local Website Builder — Staging
+  </div>
+)}

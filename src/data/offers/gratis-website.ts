@@ -6,13 +6,21 @@ export const GRATIS_WEBSITE_STEPS = [
     text: 'Vul uw bedrijfsgegevens in.',
   },
   {
-    title: 'Logo en foto’s uploaden',
-    text: 'Upload uw logo en maximaal vijf foto’s.',
+    title: 'Stijl kiezen',
+    text: 'Kies uw stijl.',
   },
   {
-    title: 'Website automatisch opgebouwd',
+    title: 'Automatisch opgebouwd',
     text: 'Ons systeem bouwt automatisch uw website.',
   },
+] as const;
+
+export const GRATIS_WEBSITE_BENEFITS = [
+  'Gratis',
+  'Mobiel vriendelijk',
+  'Professioneel ontwerp',
+  'Eigen dashboard',
+  'Later uit te breiden',
 ] as const;
 
 export const GRATIS_WEBSITE_PAGES = [
@@ -72,7 +80,7 @@ export const GRATIS_WEBSITE_FAQS: FAQ[] = [
   {
     question: 'Hoe lang duurt het voordat mijn website klaar is?',
     answer:
-      'In ongeveer 5 minuten kunt u uw gegevens invullen en ziet u het resultaat. Ons systeem verwerkt uw input direct en bouwt uw website automatisch op.',
+      'In ongeveer 3 minuten kunt u uw gegevens invullen en ziet u het resultaat. Ons systeem verwerkt uw input direct en bouwt uw website automatisch op.',
   },
   {
     question: 'Wat heb ik nodig om te beginnen?',

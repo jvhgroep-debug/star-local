@@ -1,0 +1,28 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+export const prerender = false;
+---
+
+<AdminLayout
+  title="Wijzigingsverzoeken | Star Local Admin"
+  description="Beheer klant-wijzigingsverzoeken en foto-aanvragen."
+  canonical="/admin/change-requests/"
+>
+  <div class="container dashboard-page-container">
+    <p class="admin-dev-banner" role="status">Lokale beheermodule — wijzigingen worden handmatig verwerkt (geen auto-publish).</p>
+    <header class="dashboard-panel__head">
+      <div>
+        <p class="eyebrow">Admin</p>
+        <h1>Wijzigingsverzoeken</h1>
+        <p class="dashboard-lead">Bekijk, keur goed of wijs af. Live websites worden niet automatisch gewijzigd.</p>
+      </div>
+    </header>
+    <div id="admin-change-requests-root" class="admin-root" aria-live="polite"></div>
+  </div>
+</AdminLayout>
+
+<script>
+  import { initAdminChangeRequests } from '../../lib/admin/change-requests-app';
+  void initAdminChangeRequests();
+</script>

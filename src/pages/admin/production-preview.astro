@@ -1,0 +1,113 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+export const prerender = false;
+---
+
+<AdminLayout
+  title="Productiepreview | Star Local Admin"
+  description="Preview van het gegenereerde publicatiepakket — exact wat later online komt."
+  canonical="/admin/production-preview/"
+>
+  <div class="admin-preview-shell" id="admin-production-preview-root">
+    <header class="admin-preview-bar admin-preview-bar--production">
+      <div class="admin-preview-bar__meta">
+        <p class="eyebrow">Productiepreview · noindex</p>
+        <h1 id="admin-prod-preview-title">Pakket laden…</h1>
+        <p id="admin-prod-preview-subtitle" class="admin-preview-bar__subtitle"></p>
+      </div>
+      <div class="admin-preview-bar__actions">
+        <a class="btn btn-secondary" href="/admin/websites/">Terug naar wachtrij</a>
+      </div>
+    </header>
+    <nav class="admin-preview-tabs" id="admin-prod-preview-tabs" aria-label="Pagina's"></nav>
+    <iframe
+      id="admin-prod-preview-frame"
+      class="admin-preview-frame admin-preview-frame--iframe"
+      title="Productiepreview"
+      sandbox="allow-scripts allow-same-origin"
+    ></iframe>
+  </div>
+</AdminLayout>
+
+<script>
+  import { fetchAdminWebsite } from '../../lib/admin/admin-api.client';
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id') ?? '';
+  const version = params.get('version') ?? '';
+  const title = document.getElementById('admin-prod-preview-title');
+  const subtitle = document.getElementById('admin-prod-preview-subtitle');
+  const tabs = document.getElementById('admin-prod-preview-tabs');
+  const frame = document.getElementById('admin-prod-preview-frame') as HTMLIFrameElement | null;
+
+  async function initProductionPreview() {
+    if (!id || !title || !subtitle || !tabs || !frame) {
+      if (title) title.textContent = 'Preview niet beschikbaar';
+      return;
+    }
+
+    const manifestRes = await fetch(
+      `/api/admin/publication/manifest/?id=${encodeURIComponent(id)}${version ? `&version=${encodeURIComponent(version)}` : ''}`,
+    );
+    const manifestData = (await manifestRes.json()) as {
+      ok: boolean;
+      manifest?: {
+        version: string;
+        domain: string;
+        canonicalBaseUrl: string;
+        pageCount: number;
+        assetCount: number;
+        totalSizeBytes: number;
+      };
+      pages?: Array<{ id: string; label: string; file: string }>;
+      message?: string;
+    };
+
+    if (!manifestRes.ok || !manifestData.ok || !manifestData.manifest || !manifestData.pages) {
+      title.textContent = 'Geen publicatiepakket';
+      subtitle.textContent = manifestData.message ?? 'Genereer eerst een publicatiepakket via het admin-dashboard.';
+      return;
+    }
+
+    let recordName = manifestData.manifest.domain;
+    try {
+      const loaded = await fetchAdminWebsite(id);
+      recordName = loaded.record.businessName;
+    } catch {
+      /* use domain */
+    }
+
+    title.textContent = recordName;
+    subtitle.textContent = `${manifestData.manifest.domain} · ${manifestData.manifest.version} · ${manifestData.manifest.pageCount} pagina's · ${manifestData.manifest.assetCount} assets · productiepreview (noindex)`;
+
+    let currentFile = manifestData.pages[0]?.file ?? 'index.html';
+
+    const loadFrame = () => {
+      const fileParam = encodeURIComponent(currentFile);
+      const versionParam = version ? `&version=${encodeURIComponent(version)}` : '';
+      frame.src = `/api/admin/publication/file/?id=${encodeURIComponent(id)}&path=${fileParam}${versionParam}`;
+    };
+
+    tabs.innerHTML = manifestData.pages
+      .map(
+        (page) =>
+          `<button type="button" class="admin-preview-tabs__btn${page.file === currentFile ? ' is-active' : ''}" data-prod-preview-tab="${page.file}">${page.label}</button>`,
+      )
+      .join('');
+
+    tabs.querySelectorAll('[data-prod-preview-tab]').forEach((button) => {
+      button.addEventListener('click', () => {
+        currentFile = (button as HTMLButtonElement).dataset.prodPreviewTab ?? 'index.html';
+        tabs.querySelectorAll('[data-prod-preview-tab]').forEach((el) => {
+          el.classList.toggle('is-active', (el as HTMLButtonElement).dataset.prodPreviewTab === currentFile);
+        });
+        loadFrame();
+      });
+    });
+
+    loadFrame();
+  }
+
+  void initProductionPreview();
+</script>

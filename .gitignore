@@ -3,8 +3,16 @@ dist/
 .astro/
 .env
 .env.*
+!.env.example
 .wrangler/
 .vercel/
+
+# Staging IDs (lokaal gegenereerd door setup-script)
+wrangler.staging.local.toml
+
+# Local publication packages and test uploads (never commit)
+publications/
+.acceptance-test-assets/
 
 # Local build/audit logs (never commit)
 *.log

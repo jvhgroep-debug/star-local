@@ -19,7 +19,17 @@ function escapeHtml(value: string): string {
 }
 
 function fieldError(errors: Record<string, string>, key: string): string {
-  return errors[key] ? `<p class="builder-error" id="error-${key}" role="alert">${escapeHtml(errors[key])}</p>` : '';
+  if (!errors[key]) return '';
+  return `
+    <p class="builder-error" id="error-${key}" role="alert" aria-live="polite">
+      <span class="builder-error__icon" aria-hidden="true">!</span>
+      <span class="builder-error__text">${escapeHtml(errors[key])}</span>
+    </p>
+  `;
+}
+
+function inputErrorState(errors: Record<string, string>, key: string): string {
+  return errors[key] ? ' aria-invalid="true" class="has-error"' : '';
 }
 
 function fontLabel(fontFamily: BuilderFontFamily): string {
@@ -81,7 +91,7 @@ export function renderStep1(state: BuilderState, errors: Record<string, string>)
       <p class="builder-hint">Vul de basisgegevens van uw bedrijf in. Uw website-adres wordt automatisch gegenereerd.</p>
       <div class="builder-form">
         <label for="business-name">Bedrijfsnaam *
-          <input id="business-name" name="business-name" type="text" value="${escapeHtml(state.business.name)}" placeholder="Uw bedrijfsnaam" autocomplete="organization" required aria-describedby="slug-preview ${errors.name ? 'error-name' : ''}" />
+          <input id="business-name" name="business-name" type="text" value="${escapeHtml(state.business.name)}" placeholder="Uw bedrijfsnaam" autocomplete="organization" required aria-describedby="slug-preview ${errors.name ? 'error-name' : ''}"${inputErrorState(errors, 'name')} />
         </label>
         ${fieldError(errors, 'name')}
         <div id="slug-preview">${slugHtml}</div>
@@ -98,7 +108,7 @@ export function renderStep1(state: BuilderState, errors: Record<string, string>)
             role="combobox"
             aria-expanded="false"
             aria-controls="industry-options"
-            aria-describedby="${errors.industry ? 'error-industry' : ''}"
+            aria-describedby="${errors.industry ? 'error-industry' : ''}"${inputErrorState(errors, 'industry')}
           />
           <ul id="industry-options" class="builder-industry-list" role="listbox" hidden></ul>
         </div>
@@ -106,23 +116,23 @@ export function renderStep1(state: BuilderState, errors: Record<string, string>)
 
         <div class="builder-form-grid">
           <label for="contact-phone">Telefoon *
-            <input id="contact-phone" name="contact-phone" type="tel" value="${escapeHtml(state.contact.phone)}" autocomplete="tel" aria-describedby="${errors.phone ? 'error-phone' : ''}" />
+            <input id="contact-phone" name="contact-phone" type="tel" value="${escapeHtml(state.contact.phone)}" autocomplete="tel" aria-describedby="${errors.phone ? 'error-phone' : ''}"${inputErrorState(errors, 'phone')} />
           </label>
           ${fieldError(errors, 'phone')}
 
           <label for="contact-email">E-mail *
-            <input id="contact-email" name="contact-email" type="email" value="${escapeHtml(state.contact.email)}" autocomplete="email" required aria-describedby="${errors.email ? 'error-email' : ''}" />
+            <input id="contact-email" name="contact-email" type="email" value="${escapeHtml(state.contact.email)}" autocomplete="email" required aria-describedby="${errors.email ? 'error-email' : ''}"${inputErrorState(errors, 'email')} />
           </label>
           ${fieldError(errors, 'email')}
         </div>
 
         <label for="contact-website">Website (optioneel)
-          <input id="contact-website" name="contact-website" type="url" value="${escapeHtml(state.contact.website)}" placeholder="www.uwbedrijf.nl" autocomplete="url" aria-describedby="${errors.website ? 'error-website' : ''}" />
+          <input id="contact-website" name="contact-website" type="url" value="${escapeHtml(state.contact.website)}" placeholder="www.uwbedrijf.nl" autocomplete="url" aria-describedby="${errors.website ? 'error-website' : ''}"${inputErrorState(errors, 'website')} />
         </label>
         ${fieldError(errors, 'website')}
 
         <label for="contact-street">Adres (straat en huisnummer) *
-          <input id="contact-street" name="contact-street" type="text" value="${escapeHtml(state.contact.street)}" autocomplete="street-address" aria-describedby="${errors.street ? 'error-street' : ''}" />
+          <input id="contact-street" name="contact-street" type="text" value="${escapeHtml(state.contact.street)}" autocomplete="street-address" aria-describedby="${errors.street ? 'error-street' : ''}"${inputErrorState(errors, 'street')} />
         </label>
         ${fieldError(errors, 'street')}
 
@@ -131,7 +141,7 @@ export function renderStep1(state: BuilderState, errors: Record<string, string>)
             <input id="contact-postcode" name="contact-postcode" type="text" value="${escapeHtml(state.contact.postcode)}" autocomplete="postal-code" />
           </label>
           <label for="contact-city">Plaats *
-            <input id="contact-city" name="contact-city" type="text" value="${escapeHtml(state.contact.city)}" autocomplete="address-level2" aria-describedby="${errors.city ? 'error-city' : ''}" />
+            <input id="contact-city" name="contact-city" type="text" value="${escapeHtml(state.contact.city)}" autocomplete="address-level2" aria-describedby="${errors.city ? 'error-city' : ''}"${inputErrorState(errors, 'city')} />
           </label>
           ${fieldError(errors, 'city')}
         </div>
@@ -204,6 +214,7 @@ export function renderStep2(
             <label for="builder-hero">Hero uploaden
               <input id="builder-hero" name="builder-hero" type="file" accept="image/jpeg,image/png,image/webp" />
             </label>
+            ${fieldError(errors, 'hero')}
             ${files.heroUrl ? `
               <div class="builder-photo-card">
                 <img src="${files.heroUrl}" alt="Hero preview" />
@@ -409,19 +420,19 @@ export function renderStep6(
       <p class="builder-hint">Optimaliseer hoe uw website verschijnt in Google en op social media.</p>
       <div class="builder-form">
         <label for="seo-title">SEO-titel *
-          <input id="seo-title" name="seo-title" type="text" value="${escapeHtml(state.heroTitle)}" placeholder="${escapeHtml(copy.seoTitle)}" maxlength="70" aria-describedby="seo-title-hint ${errors.seoTitle ? 'error-seoTitle' : ''}" />
+          <input id="seo-title" name="seo-title" type="text" value="${escapeHtml(state.heroTitle)}" placeholder="${escapeHtml(copy.seoTitle)}" maxlength="70" aria-describedby="seo-title-hint ${errors.seoTitle ? 'error-seoTitle' : ''}"${inputErrorState(errors, 'seoTitle')} />
         </label>
         <p id="seo-title-hint" class="builder-char-count ${seoTitleLen > 70 ? 'is-over' : ''}">${seoTitleLen}/70 tekens</p>
         ${fieldError(errors, 'seoTitle')}
 
         <label for="seo-meta-description">Meta description *
-          <textarea id="seo-meta-description" name="seo-meta-description" rows="3" maxlength="160" placeholder="Korte beschrijving voor zoekmachines…" aria-describedby="seo-meta-hint ${errors.seoMetaDescription ? 'error-seoMetaDescription' : ''}">${escapeHtml(state.seoMetaDescription)}</textarea>
+          <textarea id="seo-meta-description" name="seo-meta-description" rows="3" maxlength="160" placeholder="Korte beschrijving voor zoekmachines…" aria-describedby="seo-meta-hint ${errors.seoMetaDescription ? 'error-seoMetaDescription' : ''}"${inputErrorState(errors, 'seoMetaDescription')}>${escapeHtml(state.seoMetaDescription)}</textarea>
         </label>
         <p id="seo-meta-hint" class="builder-char-count ${metaLen > 160 ? 'is-over' : ''}">${metaLen}/160 tekens</p>
         ${fieldError(errors, 'seoMetaDescription')}
 
         <label for="business-description">Bedrijfsomschrijving *
-          <textarea id="business-description" name="business-description" rows="4" placeholder="Beschrijf uw bedrijf in 2–3 zinnen…" aria-describedby="${errors.businessDescription ? 'error-businessDescription' : ''}">${escapeHtml(state.business.description)}</textarea>
+          <textarea id="business-description" name="business-description" rows="4" placeholder="Beschrijf uw bedrijf in 2–3 zinnen…" aria-describedby="${errors.businessDescription ? 'error-businessDescription' : ''}"${inputErrorState(errors, 'businessDescription')}>${escapeHtml(state.business.description)}</textarea>
         </label>
         ${fieldError(errors, 'businessDescription')}
 

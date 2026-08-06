@@ -8,7 +8,14 @@ import {
   normalizeEmail,
   sanitizeAuthRedirectPath,
 } from '../../../lib/auth';
+import { readCsrfCookie, validateCsrfToken } from '../../../lib/customer-portal/csrf';
 import { AUTH_ROUTES } from '../../../lib/auth/constants';
+import {
+  AUTH_MAGIC_LINK_FAILED_MESSAGE,
+  AUTH_UNAVAILABLE_MESSAGE,
+  sanitizeAuthOperationError,
+} from '../../../lib/auth/user-messages';
+import { buildMagicLinkUrl } from '../../../lib/email/magic-link-template';
 
 export const prerender = false;
 
@@ -33,7 +40,7 @@ function getDatabase(locals: App.Locals): D1Database | null {
 export const POST: APIRoute = async ({ request, locals }) => {
   const db = getDatabase(locals);
   if (!db) {
-    return json({ ok: false, message: 'Database niet beschikbaar.' }, 503);
+    return json({ ok: false, message: AUTH_UNAVAILABLE_MESSAGE }, 503);
   }
 
   let payload: MagicLinkPayload;
@@ -51,13 +58,18 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return json({ ok: false, message: 'Voer een e-mailadres in.' }, 400);
   }
 
+  if (!validateCsrfToken(request, readCsrfCookie(request))) {
+    return json({ ok: false, message: 'Beveiligingscontrole mislukt. Vernieuw de pagina en probeer opnieuw.' }, 403);
+  }
+
   const auth = createAuthServiceFromEnv(db, request, {
     resendApiKey: RESEND_API_KEY,
     fromEmail: FROM_EMAIL,
   });
 
   try {
-    const { emailSent } = await auth.requestMagicLink({ email, tenantId, origin: new URL(request.url).origin });
+    const origin = new URL(request.url).origin;
+    const { emailSent, plainToken } = await auth.requestMagicLink({ email, tenantId, origin }, request);
     const headers = new Headers({ 'Content-Type': 'application/json' });
     if (nextPath) {
       headers.append(
@@ -65,20 +77,36 @@ export const POST: APIRoute = async ({ request, locals }) => {
         `${AUTH_NEXT_COOKIE}=${encodeURIComponent(nextPath)}; Path=/; Max-Age=1800; SameSite=Lax${new URL(request.url).protocol === 'https:' ? '; Secure' : ''}`,
       );
     }
-    return new Response(
-      JSON.stringify({
-        ok: true,
-        emailSent,
-        redirect: `${AUTH_ROUTES.checkEmail}?email=${encodeURIComponent(normalizeEmail(email))}`,
-      }),
-      { status: 200, headers },
-    );
+
+    const redirectParams = new URLSearchParams({ email: normalizeEmail(email) });
+    if (!emailSent) {
+      redirectParams.set('emailSent', '0');
+    }
+
+    const body: Record<string, unknown> = {
+      ok: true,
+      emailSent,
+      redirect: `${AUTH_ROUTES.checkEmail}?${redirectParams.toString()}`,
+    };
+
+    if (import.meta.env.DEV && !emailSent) {
+      const devMagicUrl = buildMagicLinkUrl(origin, plainToken);
+      console.info('[auth/dev] Magic link (e-mail niet verzonden):', devMagicUrl);
+      body.devMagicUrl = devMagicUrl;
+      body.devNotice =
+        'Lokale ontwikkelmodus: e-mail is niet verzonden. Gebruik de inloglink op de volgende pagina om te testen.';
+    }
+
+    return new Response(JSON.stringify(body), { status: 200, headers });
   } catch (error) {
     if (error instanceof AuthValidationError) {
       return json({ ok: false, message: error.message }, 400);
     }
     return json(
-      { ok: false, message: error instanceof Error ? error.message : 'Inloglink verzenden mislukt.' },
+      {
+        ok: false,
+        message: sanitizeAuthOperationError(error, AUTH_MAGIC_LINK_FAILED_MESSAGE),
+      },
       500,
     );
   }

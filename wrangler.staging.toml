@@ -1,0 +1,46 @@
+# Star Local — STAGING / PREVIEW Cloudflare Pages configuratie
+# Setup:  node scripts/setup-cloudflare-staging.mjs  (na wrangler login)
+# Deploy: npx wrangler pages deploy dist --project-name star-local-staging --config wrangler.staging.toml
+# NIET gebruiken voor starlocal.nl productie.
+
+name = "star-local-staging"
+compatibility_date = "2026-07-19"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "dist"
+
+# ---------------------------------------------------------------------------
+# D1 — staging database (apart van productie)
+# Aanmaken:  wrangler d1 create star-local-saas-staging
+# Migraties:  wrangler d1 migrations apply star-local-saas-staging --remote --config wrangler.staging.toml
+# ---------------------------------------------------------------------------
+[[d1_databases]]
+binding = "DB"
+database_name = "star-local-saas-staging"
+database_id = "4e039d50-cf4f-42c5-bed8-aea0aa3469e9"
+migrations_dir = "migrations"
+
+# ---------------------------------------------------------------------------
+# R2 — staging bucket (apart van productie)
+# Aanmaken: wrangler r2 bucket create star-local-saas-media-staging
+# ---------------------------------------------------------------------------
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "star-local-saas-media-staging"
+
+# ---------------------------------------------------------------------------
+# Staging environment — banner zichtbaar wanneer ENVIRONMENT=staging
+# APP_BASE_URL na deploy bijwerken naar preview-URL (setup-script doet dit)
+# ---------------------------------------------------------------------------
+[vars]
+ENVIRONMENT = "staging"
+APP_BASE_URL = "https://star-local-staging.pages.dev"
+DASHBOARD_BASE_URL = "https://star-local-staging.pages.dev"
+TENANT_BASE_DOMAIN = "starlocal.nl"
+# Leeg laten op staging — media via R2-binding, geen CDN nodig
+MEDIA_PUBLIC_BASE_URL = ""
+
+# Secrets via Dashboard / CLI (niet in dit bestand):
+#   RESEND_API_KEY
+#   FROM_EMAIL
+#   CONTACT_TO_EMAIL
+#   ADMIN_NOTIFICATION_EMAIL

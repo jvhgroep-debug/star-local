@@ -3,7 +3,7 @@ import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n';
 import { route } from '../i18n/routes';
 import { getMainNav } from '../data/navigation';
-import { SITE } from '../data/site';
+import { SITE, FREE_WEBSITE_START_PATH } from '../data/site';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 
 interface Props {
@@ -15,7 +15,7 @@ const dict = useTranslations(locale);
 const mainNav = getMainNav(locale, dict);
 const currentPath = Astro.url.pathname;
 const homeHref = route('home', locale);
-const gratisWebsiteHref = '/gratis-website/';
+const gratisWebsiteHref = FREE_WEBSITE_START_PATH;
 ---
 
 <header class="site-header" id="site-header">
@@ -141,6 +141,8 @@ const gratisWebsiteHref = '/gratis-website/';
     display: flex;
     align-items: center;
     gap: 1.25rem;
+    flex-shrink: 1;
+    min-width: 0;
   }
 
   .desktop-nav > a,
@@ -149,6 +151,7 @@ const gratisWebsiteHref = '/gratis-website/';
     text-decoration: none;
     font-weight: 600;
     font-size: 0.92rem;
+    white-space: nowrap;
     background: none;
     border: none;
     cursor: pointer;
@@ -272,6 +275,22 @@ const gratisWebsiteHref = '/gratis-website/';
 
     .header-actions > :global(.lang-switcher) {
       display: none;
+    }
+  }
+
+  @media (min-width: 1025px) and (max-width: 1280px) {
+    .desktop-nav {
+      gap: 0.85rem;
+    }
+
+    .desktop-nav > a,
+    .nav-dropdown-trigger {
+      font-size: 0.85rem;
+    }
+
+    .header-cta {
+      padding: 0.6rem 0.95rem;
+      font-size: 0.85rem;
     }
   }
 </style>

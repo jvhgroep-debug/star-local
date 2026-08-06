@@ -33,6 +33,7 @@ export interface Session {
   id: string;
   userId: string;
   tenantId: string | null;
+  customerId: string | null;
   expiresAt: IsoDateTime;
   createdAt: IsoDateTime;
 }
@@ -41,6 +42,7 @@ export interface Session {
 export interface CreateSessionInput {
   userId: string;
   tenantId?: string | null;
+  customerId?: string | null;
   ttlSeconds?: number;
 }
 

@@ -1,0 +1,49 @@
+---
+export const prerender = false;
+
+import DashboardLayout from '../../../layouts/DashboardLayout.astro';
+import { isAuthRedirect, requireAuthSession } from '../../../lib/auth';
+import type { D1Database } from '../../../lib/db/d1';
+
+const db = Astro.locals.runtime?.env?.DB as D1Database | undefined;
+const authResult = await requireAuthSession(Astro.request, db, Astro.url);
+
+if (isAuthRedirect(authResult)) {
+  return Astro.redirect(authResult.redirect);
+}
+
+const tenantId = Astro.url.searchParams.get('tenantId') ?? '';
+const websiteId = Astro.url.searchParams.get('websiteId') ?? '';
+
+if (!tenantId || !websiteId) {
+  return Astro.redirect('/dashboard/');
+}
+---
+
+<DashboardLayout
+  title="Website bewerken | Star Local"
+  description="Bewerk bedrijfsgegevens, contact, diensten en teksten van uw Star Local website."
+  canonical="/dashboard/website/"
+  userEmail={authResult.session.user.email}
+>
+  <div class="container dashboard-page-container">
+    <header class="dashboard-panel__head">
+      <div>
+        <p class="eyebrow">Klantportaal</p>
+        <h1>Website bewerken</h1>
+        <p class="dashboard-lead">Wijzig bedrijfsgegevens, openingstijden, contact en teksten. Publiceren blijft voor Star Local admin.</p>
+      </div>
+    </header>
+    <div id="customer-edit-root" class="dashboard-root" aria-live="polite"></div>
+  </div>
+</DashboardLayout>
+
+<script define:vars={{ tenantId, websiteId }}>
+  window.__CUSTOMER_EDIT_INIT__ = { tenantId, websiteId };
+</script>
+<script>
+  import { initCustomerWebsiteEdit } from '../../../lib/customer-portal/edit-app';
+
+  const boot = window.__CUSTOMER_EDIT_INIT__ ?? {};
+  void initCustomerWebsiteEdit(boot.tenantId, boot.websiteId);
+</script>

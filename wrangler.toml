@@ -1,3 +1,7 @@
+# Star Local — LOKALE ONTWIKKELING (wrangler.toml)
+# Productie: gebruik wrangler.prod.toml — NIET deze file voor deploy.
+# Zie docs/cloudflare-production-checklist.md
+
 name = "star-local"
 compatibility_date = "2026-07-19"
 compatibility_flags = ["nodejs_compat"]
@@ -8,6 +12,7 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "star-local-saas-dev"
+database_id = "00000000-0000-4000-8000-000000000001"
 migrations_dir = "migrations"
 
 # Development R2 (local: wrangler r2 object put/get against star-local-saas-media-dev)

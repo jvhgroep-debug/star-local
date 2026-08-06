@@ -1,8 +1,8 @@
 export const SESSION_COOKIE_NAME = 'starlocal_session';
 export const AUTH_NEXT_COOKIE = 'starlocal_auth_next';
 
-/** Magic link validity — 30 minutes. */
-export const MAGIC_LINK_TTL_SECONDS = 30 * 60;
+/** Magic link validity — 15 minutes (OPDRACHT 80). */
+export const MAGIC_LINK_TTL_SECONDS = 15 * 60;
 
 /** Session cookie validity — 30 days. */
 export const SESSION_TTL_SECONDS = 30 * 24 * 60 * 60;

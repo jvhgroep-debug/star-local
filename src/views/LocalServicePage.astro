@@ -11,7 +11,7 @@ import { getLocalServiceImagePath } from '../data/local-services/config';
 import { getLocalServicePath } from '../data/local-services/config';
 import { getIndustryLinksForLocalService } from '../data/local-industries/registry';
 import { IMAGES } from '../data/images';
-import { SITE } from '../data/site';
+import { SITE, FREE_WEBSITE_START_PATH } from '../data/site';
 
 interface Props {
   content: LocalServicePageContent;
@@ -80,8 +80,8 @@ const serviceSchema = {
     ariaLabel: content.hero.h1,
     backgroundImage: IMAGES.heroHomeReference,
     ctas: [
-      { label: 'Gratis advies aanvragen', href: '/contact/', variant: 'primary' },
-      { label: 'Bekijk onze werkwijze', href: '/werkwijze/', variant: 'secondary' },
+      { label: 'Gratis website maken', href: FREE_WEBSITE_START_PATH, variant: 'primary' },
+      { label: 'Gratis advies aanvragen', href: '/contact/', variant: 'secondary' },
     ],
   }}
 >
@@ -248,7 +248,8 @@ const serviceSchema = {
       <h2 id="local-service-bottom-cta-title">{content.bottomCta.title}</h2>
       <p>{content.bottomCta.text}</p>
       <div class="cta-actions">
-        <a href="/contact/" class="btn btn-primary">{content.bottomCta.primaryLabel}</a>
+        <a href={FREE_WEBSITE_START_PATH} class="btn btn-primary">Gratis website maken</a>
+        <a href="/contact/" class="btn btn-secondary">{content.bottomCta.primaryLabel}</a>
         <a href="/werkwijze/" class="btn btn-secondary">{content.bottomCta.secondaryLabel}</a>
       </div>
     </div>

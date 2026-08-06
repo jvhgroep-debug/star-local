@@ -27,6 +27,36 @@ export default defineConfig({
         access: 'secret',
         optional: true,
       }),
+      ADMIN_NOTIFICATION_EMAIL: envField.string({
+        context: 'server',
+        access: 'secret',
+        optional: true,
+      }),
+      APP_BASE_URL: envField.string({
+        context: 'server',
+        access: 'public',
+        optional: true,
+      }),
+      DASHBOARD_BASE_URL: envField.string({
+        context: 'server',
+        access: 'public',
+        optional: true,
+      }),
+      TENANT_BASE_DOMAIN: envField.string({
+        context: 'server',
+        access: 'public',
+        optional: true,
+      }),
+      ENVIRONMENT: envField.string({
+        context: 'server',
+        access: 'public',
+        optional: true,
+      }),
+      MEDIA_PUBLIC_BASE_URL: envField.string({
+        context: 'server',
+        access: 'public',
+        optional: true,
+      }),
     },
   },
   redirects: {
@@ -70,4 +100,11 @@ export default defineConfig({
         !page.includes('/logout'),
     }),
   ],
+  vite: {
+    server: {
+      watch: {
+        ignored: ['**/publications/**'],
+      },
+    },
+  },
 });

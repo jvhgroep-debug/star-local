@@ -6,7 +6,7 @@ import {
   buildPublishPayload,
   clearPreparedWebsite,
   executePublication,
-  getActivePreparedWebsite,
+  loadPreparedWebsite,
   prepareSiteArtifactsForPublish,
   publishWebsiteToD1,
 } from './publish';
@@ -38,12 +38,12 @@ import { renderSaveSuccess } from './render-save-success';
 import { renderGenerateSuccess } from './render-generate-success';
 import {
   autoGenerateWebsite,
-  syncGeneratedToWebsiteList,
+  submitGeneratedToAdminQueue,
   type AutoGenerateSummary,
 } from './generator/auto-generate.service';
 import { buildSavePayload, saveWebsiteToD1 } from './publish/save-client';
 import { renderTenantPreview, renderExampleDomainBar } from './render-preview';
-import { bindPreviewInteractions } from './preview-interactions';
+import { bindPreviewInteractions, resetPreviewOverlayState } from './preview-interactions';
 import {
   renderProgress,
   renderPreviewPageTabs,
@@ -65,8 +65,9 @@ import {
   saveState,
 } from './storage';
 import { loadFilesFromStorage, saveFilesToStorage } from './media-storage';
+import { IMAGE_STORAGE_QUOTA_ERROR, validateImageUpload } from './upload-validation';
 import { applyPreviewSeo, applyPreparedPreviewSeo, futureDomain, generateCopy, renderPremiumBlock, resetPreviewSeo } from './templates';
-import { saveDashboardSession, persistSaveResult, loadPersistedSaveResult } from '../dashboard/storage';
+import { saveDashboardSession, persistSaveResult, loadPersistedSaveResult, clearPersistedSaveResult } from '../dashboard/storage';
 import { syncSavedToWebsiteList } from '../dashboard/website-list.storage';
 import { formatSlugPreviewHtml, getSlugPreview } from './slug';
 import {
@@ -96,12 +97,80 @@ interface AppContext {
   magicLinkSent: boolean;
   usePreparedSite: boolean;
   previewViewport: 'desktop' | 'tablet' | 'mobile';
+  isGenerating: boolean;
 }
 
 let ctx: AppContext;
 let previewTimer: ReturnType<typeof setTimeout> | null = null;
 let eventsAbort: AbortController | null = null;
 let mediaPersistTimer: ReturnType<typeof setTimeout> | null = null;
+let wizardRecoveryGuardsReady = false;
+let wizardLeaveGuardReady = false;
+
+function removeGeneratingOverlay(): void {
+  document.querySelectorAll('.builder-generating-overlay').forEach((element) => element.remove());
+}
+
+function resetBodyBlockingStyles(): void {
+  document.body.style.overflow = '';
+  document.body.style.pointerEvents = '';
+  document.documentElement.style.overflow = '';
+  document.body.removeAttribute('aria-busy');
+  document.documentElement.removeAttribute('aria-busy');
+}
+
+function forceMediaUploadCleanup(): void {
+  if (typeof ctx !== 'undefined') {
+    ctx.isGenerating = false;
+  }
+  removeGeneratingOverlay();
+  resetPreviewOverlayState();
+  resetBodyBlockingStyles();
+}
+
+function clearBlockingUi(options?: { resetGenerating?: boolean }): void {
+  removeGeneratingOverlay();
+  resetPreviewOverlayState();
+  resetBodyBlockingStyles();
+  if (options?.resetGenerating !== false && typeof ctx !== 'undefined') {
+    ctx.isGenerating = false;
+  }
+}
+
+function restoreWizardSession(): void {
+  if (mediaPersistTimer) clearTimeout(mediaPersistTimer);
+  if (previewTimer) clearTimeout(previewTimer);
+  eventsAbort?.abort();
+
+  clearBlockingUi();
+
+  if (typeof ctx !== 'undefined') {
+    revokeAllFiles(ctx.files);
+  }
+
+  clearState();
+  clearFilesStorage();
+  clearPreparedWebsite();
+  clearPersistedSaveResult();
+
+  ctx = {
+    state: createDefaultState(),
+    files: createEmptyFiles(),
+    errors: {},
+    fileWarning: null,
+    preparedWebsite: null,
+    d1PublishResult: null,
+    saveResult: null,
+    saveMagicLinkSent: false,
+    generateSummary: null,
+    magicLinkSent: false,
+    usePreparedSite: false,
+    previewViewport: 'desktop',
+    isGenerating: false,
+  };
+
+  render();
+}
 
 function getRoot(): HTMLElement {
   const root = document.getElementById('website-builder-root');
@@ -118,8 +187,106 @@ function syncCityFromContact(): void {
 function scheduleFilesPersist(): void {
   if (mediaPersistTimer) clearTimeout(mediaPersistTimer);
   mediaPersistTimer = setTimeout(() => {
-    void saveFilesToStorage(ctx.files);
-  }, 300);
+    void saveFilesToStorage(ctx.files).then((result) => {
+      if (result !== 'quota' && result !== 'partial') return;
+      ctx.fileWarning =
+        result === 'quota'
+          ? IMAGE_STORAGE_QUOTA_ERROR
+          : 'Sommige afbeeldingen zijn verkleind voor lokale opslag. Tijdens deze sessie blijven uw uploads gewoon zichtbaar.';
+      clearBlockingUi();
+      if (ctx.state.view === 'builder' && ctx.state.currentStep === 2) {
+        queueMicrotask(() => render());
+      }
+    });
+  }, 400);
+}
+
+function deferUiRefresh(): void {
+  queueMicrotask(() => {
+    render();
+  });
+}
+
+function focusUploadError(errorKey: string): void {
+  queueMicrotask(() => {
+    if (!ctx.errors[errorKey]) return;
+    const errorEl = document.getElementById(`error-${errorKey}`);
+    errorEl?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+}
+
+function handleSingleFileUpload(
+  event: Event,
+  options: {
+    errorKey: string;
+    apply: (file: File) => string | null;
+  },
+): void {
+  event.stopPropagation();
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+
+  try {
+    if (!file) return;
+
+    const validationError = validateImageUpload(file);
+    if (validationError) {
+      ctx.errors[options.errorKey] = validationError;
+      return;
+    }
+
+    const error = options.apply(file);
+    if (error) {
+      ctx.errors[options.errorKey] = error;
+    } else {
+      ctx.errors[options.errorKey] = '';
+      persist();
+    }
+  } catch {
+    ctx.errors[options.errorKey] = 'Upload mislukt. Probeer het opnieuw.';
+  } finally {
+    input.value = '';
+    forceMediaUploadCleanup();
+    deferUiRefresh();
+    focusUploadError(options.errorKey);
+    queueMicrotask(() => forceMediaUploadCleanup());
+  }
+}
+
+function handleGalleryUpload(event: Event): void {
+  event.stopPropagation();
+  const input = event.target as HTMLInputElement;
+  const selected = [...(input.files ?? [])];
+
+  try {
+    if (selected.length === 0) return;
+
+    let error: string | null = null;
+    for (const file of selected) {
+      const validationError = validateImageUpload(file);
+      if (validationError) {
+        error = validationError;
+        break;
+      }
+      error = addPhotoFile(ctx.files, file);
+      if (error) break;
+    }
+
+    if (error) {
+      ctx.errors.photos = error;
+    } else {
+      ctx.errors.photos = '';
+      persist();
+    }
+  } catch {
+    ctx.errors.photos = 'Upload mislukt. Probeer het opnieuw.';
+  } finally {
+    input.value = '';
+    forceMediaUploadCleanup();
+    deferUiRefresh();
+    focusUploadError('photos');
+    queueMicrotask(() => forceMediaUploadCleanup());
+  }
 }
 
 function persist(): void {
@@ -214,6 +381,7 @@ function readAllStepsFromDom(): void {
 }
 
 function refreshLivePreviewPanel(): void {
+  forceMediaUploadCleanup();
   const root = getRoot();
   const frame = root.querySelector('#builder-live-preview-frame');
   if (!frame) return;
@@ -234,6 +402,7 @@ function refreshLivePreviewPanel(): void {
   } else {
     applyPreviewSeo(ctx.state, ctx.files);
   }
+  forceMediaUploadCleanup();
 }
 
 function updateSeoCharCounts(): void {
@@ -514,6 +683,7 @@ function renderBuilderShell(): string {
           }
 
           <div class="builder-toolbar">
+            <button type="button" class="builder-text-btn" data-restore-wizard>Wizard herstellen</button>
             <button type="button" class="builder-text-btn" data-reset-builder>Opnieuw beginnen</button>
           </div>
         </div>
@@ -573,62 +743,190 @@ function renderPreviewShell(): string {
 }
 
 function render(): void {
-  const root = getRoot();
-  const { view } = ctx.state;
+  try {
+    const root = getRoot();
+    const { view } = ctx.state;
 
-  if (view === 'publish') {
-    root.innerHTML = renderPublishForm(ctx.state, ctx.errors);
-  } else if (view === 'publish-success') {
-    const generation = ctx.preparedWebsite?.generation
-      ? {
-          pageCount: ctx.preparedWebsite.generation.pageCount,
-          documentPaths: ctx.preparedWebsite.generation.documentPaths,
-          sitemapPath: ctx.preparedWebsite.generation.sitemapPath,
-          robotsPath: ctx.preparedWebsite.generation.robotsPath,
-          manifestPath: ctx.preparedWebsite.generation.manifestPath,
-          faviconPath: ctx.preparedWebsite.generation.faviconPath,
-        }
-      : undefined;
-
-    const previewOptions =
-      ctx.preparedWebsite && ctx.usePreparedSite
+    if (view === 'publish') {
+      root.innerHTML = renderPublishForm(ctx.state, ctx.errors);
+    } else if (view === 'publish-success') {
+      const generation = ctx.preparedWebsite?.generation
         ? {
-            previewHtml: getPreviewHtml(ctx.state.previewPage),
-            domain: ctx.preparedWebsite.config.slug.domain,
-            publishEmail: ctx.state.publishEmailConfirmed || ctx.d1PublishResult?.publishEmail,
-            magicLinkSent: ctx.magicLinkSent,
-            generation,
+            pageCount: ctx.preparedWebsite.generation.pageCount,
+            documentPaths: ctx.preparedWebsite.generation.documentPaths,
+            sitemapPath: ctx.preparedWebsite.generation.sitemapPath,
+            robotsPath: ctx.preparedWebsite.generation.robotsPath,
+            manifestPath: ctx.preparedWebsite.generation.manifestPath,
+            faviconPath: ctx.preparedWebsite.generation.faviconPath,
           }
-        : {
-            domain: ctx.preparedWebsite?.config.slug.domain ?? '',
-            publishEmail: ctx.state.publishEmailConfirmed || ctx.d1PublishResult?.publishEmail,
-            magicLinkSent: ctx.magicLinkSent,
-            generation,
-          };
-    root.innerHTML = ctx.d1PublishResult
-      ? renderPublishSuccessD1(ctx.d1PublishResult, previewOptions)
-      : renderBuilderShell();
-    if (ctx.usePreparedSite && ctx.preparedWebsite) {
-      applyPreparedPreviewSeo(ctx.preparedWebsite, ctx.state.previewPage);
-    }
-  } else if (view === 'save-success' && ctx.saveResult) {
-    root.innerHTML = renderSaveSuccess(ctx.saveResult, ctx.saveMagicLinkSent);
-  } else if (view === 'generate-success' && ctx.generateSummary) {
-    root.innerHTML = renderGenerateSuccess(ctx.generateSummary);
-  } else if (view === 'preview') {
-    root.innerHTML = renderPreviewShell();
-    if (ctx.usePreparedSite && ctx.preparedWebsite) {
-      applyPreparedPreviewSeo(ctx.preparedWebsite, ctx.state.previewPage);
+        : undefined;
+
+      const previewOptions =
+        ctx.preparedWebsite && ctx.usePreparedSite
+          ? {
+              previewHtml: getPreviewHtml(ctx.state.previewPage),
+              domain: ctx.preparedWebsite.config.slug.domain,
+              publishEmail: ctx.state.publishEmailConfirmed || ctx.d1PublishResult?.publishEmail,
+              magicLinkSent: ctx.magicLinkSent,
+              generation,
+            }
+          : {
+              domain: ctx.preparedWebsite?.config.slug.domain ?? '',
+              publishEmail: ctx.state.publishEmailConfirmed || ctx.d1PublishResult?.publishEmail,
+              magicLinkSent: ctx.magicLinkSent,
+              generation,
+            };
+      root.innerHTML = ctx.d1PublishResult
+        ? renderPublishSuccessD1(ctx.d1PublishResult, previewOptions)
+        : renderBuilderShell();
+      if (ctx.usePreparedSite && ctx.preparedWebsite) {
+        applyPreparedPreviewSeo(ctx.preparedWebsite, ctx.state.previewPage);
+      }
+    } else if (view === 'save-success' && ctx.saveResult) {
+      root.innerHTML = renderSaveSuccess(ctx.saveResult, ctx.saveMagicLinkSent);
+    } else if (view === 'generate-success' && ctx.generateSummary) {
+      root.innerHTML = renderGenerateSuccess(ctx.generateSummary);
+    } else if (view === 'preview') {
+      root.innerHTML = renderPreviewShell();
+      if (ctx.usePreparedSite && ctx.preparedWebsite) {
+        applyPreparedPreviewSeo(ctx.preparedWebsite, ctx.state.previewPage);
+      } else {
+        applyPreviewSeo(ctx.state, ctx.files);
+      }
     } else {
-      applyPreviewSeo(ctx.state, ctx.files);
+      root.innerHTML = renderBuilderShell();
+      resetPreviewSeo();
+      refreshLivePreviewPanel();
     }
-  } else {
-    root.innerHTML = renderBuilderShell();
-    resetPreviewSeo();
-    refreshLivePreviewPanel();
+
+    bindEvents();
+  } catch (error) {
+    ctx.isGenerating = false;
+    ctx.errors = {
+      bootstrap:
+        error instanceof Error
+          ? error.message
+          : 'De wizard kon niet worden geladen. Gebruik Wizard herstellen.',
+    };
+
+    try {
+      const root = getRoot();
+      root.innerHTML = `
+        <div class="builder-bootstrap-error">
+          <p class="builder-error" role="alert">
+            <span class="builder-error__icon" aria-hidden="true">!</span>
+            <span class="builder-error__text">${ctx.errors.bootstrap}</span>
+          </p>
+          <button type="button" class="btn btn-primary" data-restore-wizard>Wizard herstellen</button>
+        </div>
+      `;
+      root.querySelector('[data-restore-wizard]')?.addEventListener('click', () => restoreWizardSession());
+    } catch {
+      clearBlockingUi();
+    }
+  } finally {
+    if (ctx?.isGenerating) {
+      syncGeneratingOverlay();
+    } else {
+      forceMediaUploadCleanup();
+    }
+  }
+}
+
+function renderGeneratingOverlayHtml(): string {
+  return `
+    <div class="builder-generating-overlay" role="dialog" aria-modal="true" aria-labelledby="builder-generating-title" aria-busy="true">
+      <div class="builder-generating-overlay__card">
+        <div class="builder-generating-spinner" aria-hidden="true"></div>
+        <h2 id="builder-generating-title" class="builder-generating-overlay__title">Website genereren…</h2>
+        <p class="builder-generating-overlay__text">Even geduld — uw pagina's worden samengesteld.</p>
+        <button type="button" class="btn btn-secondary builder-generating-overlay__restore" data-restore-wizard>Wizard herstellen</button>
+      </div>
+    </div>
+  `;
+}
+
+function syncGeneratingOverlay(): void {
+  if (!ctx?.isGenerating) {
+    forceMediaUploadCleanup();
+    return;
   }
 
-  bindEvents();
+  resetPreviewOverlayState();
+  removeGeneratingOverlay();
+  resetBodyBlockingStyles();
+  document.body.insertAdjacentHTML('beforeend', renderGeneratingOverlayHtml());
+}
+
+function hasUnsavedWizardProgress(): boolean {
+  if (ctx.state.view === 'save-success' || ctx.state.view === 'generate-success') return false;
+  if (ctx.saveResult || ctx.generateSummary) return false;
+  if (ctx.state.view !== 'builder') return false;
+
+  const { state, files } = ctx;
+  if (state.currentStep > 1) return true;
+  if (state.business.name.trim()) return true;
+  if (state.business.industry.trim()) return true;
+  if (state.contact.phone.replace(/\D/g, '').length >= 9) return true;
+  if (state.contact.email.trim()) return true;
+  if (state.contact.street.trim()) return true;
+  if (state.contact.city.trim()) return true;
+  if (files.logoUrl || files.heroUrl || files.photoUrls.length > 0) return true;
+
+  return false;
+}
+
+function confirmLeaveWizard(): boolean {
+  return window.confirm(
+    'Uw gegevens zijn nog niet opgeslagen. Weet u zeker dat u de wizard wilt verlaten?',
+  );
+}
+
+function setupWizardLeaveGuard(): void {
+  if (wizardLeaveGuardReady) return;
+  wizardLeaveGuardReady = true;
+
+  window.addEventListener('beforeunload', (event) => {
+    if (!hasUnsavedWizardProgress()) return;
+    event.preventDefault();
+    event.returnValue = '';
+  });
+
+  document.querySelector('.builder-page-back')?.addEventListener('click', (event) => {
+    if (!hasUnsavedWizardProgress()) return;
+    if (!confirmLeaveWizard()) {
+      event.preventDefault();
+    }
+  });
+
+  document.querySelector('.builder-page-brand')?.addEventListener('click', (event) => {
+    if (!hasUnsavedWizardProgress()) return;
+    if (!confirmLeaveWizard()) {
+      event.preventDefault();
+    }
+  });
+}
+
+function setupWizardRecoveryGuards(): void {
+  if (wizardRecoveryGuardsReady) return;
+  wizardRecoveryGuardsReady = true;
+
+  window.addEventListener('pageshow', (event) => {
+    if (typeof ctx !== 'undefined') {
+      ctx.isGenerating = false;
+    }
+    clearBlockingUi();
+    if (event.persisted && typeof ctx !== 'undefined') {
+      render();
+    }
+  });
+
+  document.addEventListener('click', (event) => {
+    const target = (event.target as HTMLElement).closest('[data-restore-wizard]');
+    if (!target) return;
+    event.preventDefault();
+    restoreWizardSession();
+  });
 }
 
 function goToStep(step: BuilderStep): void {
@@ -639,22 +937,23 @@ function goToStep(step: BuilderStep): void {
   render();
 }
 
-function handleGenerateWebsite(): void {
-  const root = getRoot();
+async function handleGenerateWebsite(): Promise<void> {
   readAllStepsFromDom();
+  ctx.isGenerating = true;
+  ctx.errors = {};
+  render();
 
-  const buttons = root.querySelectorAll('[data-generate-website]');
-  buttons.forEach((button) => {
-    (button as HTMLButtonElement).disabled = true;
-    button.textContent = 'Genereren…';
-  });
+  await new Promise((resolve) => setTimeout(resolve, 850));
+
+  const root = getRoot();
 
   try {
     const result = autoGenerateWebsite(ctx.state, ctx.files);
     if (!result.ok) {
+      ctx.isGenerating = false;
       ctx.errors = {
         ...result.errors,
-        generate: 'Controleer de verplichte velden en probeer opnieuw.',
+        generate: 'Niet alle verplichte velden zijn ingevuld. Controleer de gemarkeerde velden en probeer opnieuw.',
       };
       if (result.errors.name || result.errors.industry) ctx.state.currentStep = 1;
       else if (result.errors.services) ctx.state.currentStep = 4;
@@ -667,6 +966,8 @@ function handleGenerateWebsite(): void {
       return;
     }
 
+    await submitGeneratedToAdminQueue(ctx.state, ctx.files, result.generated);
+
     ctx.preparedWebsite = result.generated;
     ctx.usePreparedSite = true;
     ctx.generateSummary = result.summary;
@@ -675,18 +976,22 @@ function handleGenerateWebsite(): void {
     ctx.state.currentStep = 7;
     ctx.state.view = 'generate-success';
     ctx.errors = {};
-    syncGeneratedToWebsiteList(result.generated);
     persist();
+    ctx.isGenerating = false;
     render();
     refreshLivePreviewPanel();
     if (ctx.preparedWebsite) {
       applyPreparedPreviewSeo(ctx.preparedWebsite, ctx.state.previewPage);
     }
+  } catch (error) {
+    ctx.isGenerating = false;
+    const message = error instanceof Error ? error.message : 'Er ging iets mis bij het genereren. Probeer het opnieuw.';
+    ctx.errors = { generate: message };
+    render();
+    root.querySelector('.builder-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   } finally {
-    buttons.forEach((button) => {
-      (button as HTMLButtonElement).disabled = false;
-      button.textContent = 'Website genereren';
-    });
+    ctx.isGenerating = false;
+    syncGeneratingOverlay();
   }
 }
 
@@ -858,96 +1163,71 @@ function bindEvents(): void {
 
   bindIndustryPicker(root, signal);
 
-  root.querySelector('.builder-body')?.addEventListener('input', scheduleLivePreview);
-  root.querySelector('.builder-body')?.addEventListener('change', scheduleLivePreview);
-
-  root.querySelector('#builder-logo')?.addEventListener('change', (event) => {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-    const error = setLogoFile(ctx.files, file);
-    ctx.errors.logo = error ?? '';
-    if (!error) persist();
-    render();
-    scheduleLivePreview();
-  });
-
-  root.querySelector('#builder-hero')?.addEventListener('change', (event) => {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-    const error = setHeroFile(ctx.files, file);
-    ctx.errors.photos = error ?? '';
-    if (!error) persist();
-    render();
+  root.querySelector('.builder-body')?.addEventListener('input', scheduleLivePreview, { signal });
+  root.querySelector('.builder-body')?.addEventListener('change', (event) => {
+    if ((event.target as HTMLElement).matches('input[type="file"]')) return;
     scheduleLivePreview();
   }, { signal });
 
+  root.querySelector('#builder-logo')?.addEventListener('change', (event) => {
+    handleSingleFileUpload(event, {
+      errorKey: 'logo',
+      apply: (file) => setLogoFile(ctx.files, file),
+    });
+  }, { signal });
+
+  root.querySelector('#builder-hero')?.addEventListener('change', (event) => {
+    handleSingleFileUpload(event, {
+      errorKey: 'hero',
+      apply: (file) => setHeroFile(ctx.files, file),
+    });
+  }, { signal });
+
   root.querySelector('#builder-hero-replace')?.addEventListener('change', (event) => {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-    const error = setHeroFile(ctx.files, file);
-    ctx.errors.photos = error ?? '';
-    if (!error) persist();
-    (event.target as HTMLInputElement).value = '';
-    render();
-    scheduleLivePreview();
+    handleSingleFileUpload(event, {
+      errorKey: 'hero',
+      apply: (file) => setHeroFile(ctx.files, file),
+    });
   }, { signal });
 
   root.querySelector('[data-remove-hero]')?.addEventListener('click', () => {
     removeHeroFile(ctx.files);
     persist();
-    render();
-    scheduleLivePreview();
-  });
+    forceMediaUploadCleanup();
+    deferUiRefresh();
+    queueMicrotask(() => forceMediaUploadCleanup());
+  }, { signal });
 
-  root.querySelector('#builder-photos-add')?.addEventListener('change', (event) => {
-    const input = event.target as HTMLInputElement;
-    const selected = [...(input.files ?? [])];
-    let error: string | null = null;
-    for (const file of selected) {
-      error = addPhotoFile(ctx.files, file);
-      if (error) break;
-    }
-    if (error) ctx.errors.photos = error;
-    else {
-      ctx.errors.photos = '';
-      persist();
-    }
-    input.value = '';
-    render();
-    scheduleLivePreview();
-  });
+  root.querySelector('#builder-photos-add')?.addEventListener('change', handleGalleryUpload, { signal });
 
   root.querySelectorAll('[data-remove-photo]').forEach((button) => {
     button.addEventListener('click', () => {
       const index = Number((button as HTMLElement).dataset.removePhoto);
       removePhoto(ctx.files, index);
       persist();
-      render();
-      scheduleLivePreview();
-    });
+      forceMediaUploadCleanup();
+      deferUiRefresh();
+      queueMicrotask(() => forceMediaUploadCleanup());
+    }, { signal });
   });
 
   root.querySelectorAll('[data-replace-photo]').forEach((input) => {
     input.addEventListener('change', (event) => {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (!file) return;
-      const index = Number((event.target as HTMLElement).dataset.replacePhoto);
-      const error = replacePhotoFile(ctx.files, index, file);
-      if (!error) persist();
-      (event.target as HTMLInputElement).value = '';
-      render();
-      scheduleLivePreview();
-    });
+      handleSingleFileUpload(event, {
+        errorKey: 'photos',
+        apply: (file) => {
+          const index = Number((event.target as HTMLElement).dataset.replacePhoto);
+          return replacePhotoFile(ctx.files, index, file);
+        },
+      });
+    }, { signal });
   });
 
   root.querySelector('#builder-social-image')?.addEventListener('change', (event) => {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-    const error = setSocialImageFile(ctx.files, file);
-    ctx.errors.socialImage = error ?? '';
-    if (!error) persist();
-    render();
-    scheduleLivePreview();
+    handleSingleFileUpload(event, {
+      errorKey: 'socialImage',
+      apply: (file) => setSocialImageFile(ctx.files, file),
+    });
   }, { signal });
 
   root.querySelectorAll('[data-color-preset]').forEach((button) => {
@@ -1263,57 +1543,78 @@ function attachPreviewFrame(frame: Element): void {
 }
 
 export function initWebsiteBuilder(): void {
-  const storedFiles = loadFilesFromStorage();
+  clearBlockingUi({ resetGenerating: false });
 
-  ctx = {
-    state: loadState(),
-    files: storedFiles ?? createEmptyFiles(),
-    errors: {},
-    fileWarning: null,
-    preparedWebsite: getActivePreparedWebsite(),
-    d1PublishResult: null,
-    saveResult: null,
-    saveMagicLinkSent: false,
-    generateSummary: null,
-    magicLinkSent: false,
-    usePreparedSite: Boolean(getActivePreparedWebsite()),
-    previewViewport: 'desktop',
-  };
+  try {
+    const storedFiles = loadFilesFromStorage();
 
-  const storedUploads = hasStoredUploadMeta(ctx.state);
-  const hasRestoredMedia = Boolean(
-    storedFiles?.logoUrl || storedFiles?.heroUrl || (storedFiles?.photoUrls.length ?? 0) > 0,
-  );
-  if (!hasRestoredMedia && (storedUploads.logo || storedUploads.hero || storedUploads.photos)) {
-    ctx.fileWarning =
-      'Eerder gekozen afbeeldingen zijn na het verversen van de pagina niet meer beschikbaar. Upload ze opnieuw in stap 2 (Huisstijl).';
-  }
+    ctx = {
+      state: loadState(),
+      files: storedFiles ?? createEmptyFiles(),
+      errors: {},
+      fileWarning: null,
+      preparedWebsite: loadPreparedWebsite(storedFiles),
+      d1PublishResult: null,
+      saveResult: null,
+      saveMagicLinkSent: false,
+      generateSummary: null,
+      magicLinkSent: false,
+      usePreparedSite: Boolean(loadPreparedWebsite(storedFiles)),
+      previewViewport: 'desktop',
+      isGenerating: false,
+    };
 
-  if (ctx.state.currentStep > 8) {
-    ctx.state.currentStep = 8;
-  }
+    const storedUploads = hasStoredUploadMeta(ctx.state);
+    const hasRestoredMedia = Boolean(
+      storedFiles?.logoUrl || storedFiles?.heroUrl || (storedFiles?.photoUrls.length ?? 0) > 0,
+    );
+    if (!hasRestoredMedia && (storedUploads.logo || storedUploads.hero || storedUploads.photos)) {
+      ctx.fileWarning =
+        'Eerder gekozen afbeeldingen zijn na het verversen van de pagina niet meer beschikbaar. Upload ze opnieuw in stap 2 (Huisstijl).';
+    }
 
-  if (ctx.state.view === 'preview' || ctx.state.view === 'publish' || ctx.state.view === 'publish-success') {
-    ctx.state.view = 'builder';
-  }
-  if (ctx.state.view !== 'save-success') {
-    ctx.saveResult = null;
-    ctx.saveMagicLinkSent = false;
-  } else if (!ctx.saveResult) {
-    const persisted = loadPersistedSaveResult();
-    if (persisted) {
-      ctx.saveResult = persisted.result;
-      ctx.saveMagicLinkSent = Boolean(persisted.magicLinkSent);
+    if (ctx.state.currentStep > 8) {
+      ctx.state.currentStep = 8;
+    }
+
+    if (ctx.state.view === 'preview' || ctx.state.view === 'publish' || ctx.state.view === 'publish-success') {
+      ctx.state.view = 'builder';
+    }
+
+    if (ctx.state.view === 'generate-success') {
+      if (ctx.preparedWebsite) {
+        ctx.state.view = 'builder';
+        ctx.state.currentStep = 7;
+        ctx.usePreparedSite = true;
+      } else {
+        ctx.state.view = 'builder';
+        ctx.state.currentStep = 1;
+        ctx.usePreparedSite = false;
+      }
+      ctx.generateSummary = null;
+    }
+
+    if (ctx.state.view !== 'save-success') {
+      ctx.saveResult = null;
+      ctx.saveMagicLinkSent = false;
+    } else if (!ctx.saveResult) {
+      const persisted = loadPersistedSaveResult();
+      if (persisted) {
+        ctx.saveResult = persisted.result;
+        ctx.saveMagicLinkSent = Boolean(persisted.magicLinkSent);
+      }
+    }
+
+    ctx.isGenerating = false;
+    syncCityFromContact();
+    setupWizardRecoveryGuards();
+    setupWizardLeaveGuard();
+    render();
+  } finally {
+    clearBlockingUi();
+    if (typeof ctx !== 'undefined') {
+      ctx.isGenerating = false;
+      syncGeneratingOverlay();
     }
   }
-  if (ctx.state.view !== 'generate-success') {
-    ctx.generateSummary = null;
-  } else if (!ctx.generateSummary && ctx.preparedWebsite) {
-    ctx.state.view = 'builder';
-    ctx.state.currentStep = 7;
-    ctx.usePreparedSite = true;
-  }
-
-  syncCityFromContact();
-  render();
 }

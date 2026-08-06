@@ -2,7 +2,7 @@
 import type { Locale } from '../i18n/config';
 import { useTranslations } from '../i18n';
 import { route } from '../i18n/routes';
-import { SITE } from '../data/site';
+import { SITE, FREE_WEBSITE_START_PATH } from '../data/site';
 
 interface Props {
   locale: Locale;
@@ -11,6 +11,8 @@ interface Props {
   showWhatsapp?: boolean;
   whatsappUrl?: string;
   consultationHref?: string;
+  showFreeWebsite?: boolean;
+  freeWebsiteHref?: string;
 }
 
 const {
@@ -20,6 +22,8 @@ const {
   showWhatsapp = true,
   whatsappUrl = SITE.whatsappUrl,
   consultationHref,
+  showFreeWebsite = false,
+  freeWebsiteHref = FREE_WEBSITE_START_PATH,
 } = Astro.props;
 
 const dict = useTranslations(locale);
@@ -31,7 +35,14 @@ const primaryHref = consultationHref ?? route('contact', locale);
     <h2 id="cta-section-title">{title ?? dict.cta.title}</h2>
     <p>{text ?? dict.cta.text}</p>
     <div class="cta-actions">
-      <a href={primaryHref} class="btn btn-primary">{dict.buttons.freeConsultation}</a>
+      {showFreeWebsite ? (
+        <>
+          <a href={freeWebsiteHref} class="btn btn-primary">{dict.nav.freeWebsiteCta}</a>
+          <a href={primaryHref} class="btn btn-secondary">{dict.buttons.freeConsultation}</a>
+        </>
+      ) : (
+        <a href={primaryHref} class="btn btn-primary">{dict.buttons.freeConsultation}</a>
+      )}
       {showWhatsapp && (
         <a href={whatsappUrl} class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
           {dict.buttons.whatsappDirect}

@@ -1,0 +1,28 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+export const prerender = false;
+---
+
+<AdminLayout
+  title="Klanten | Star Local Admin"
+  description="Bekijk klanten, gekoppelde websites en beheer magic links en sessies."
+  canonical="/admin/customers/"
+>
+  <div class="container dashboard-page-container">
+    <p class="admin-dev-banner" role="status">Lokale beheermodule — alleen voor Star Local ontwikkeling en test.</p>
+    <header class="dashboard-panel__head">
+      <div>
+        <p class="eyebrow">Admin</p>
+        <h1>Klanten</h1>
+        <p class="dashboard-lead">Bekijk klanten, gekoppelde websites en beëindig magic links of sessies.</p>
+      </div>
+    </header>
+    <div id="admin-customers-root" class="admin-root" aria-live="polite"></div>
+  </div>
+</AdminLayout>
+
+<script>
+  import { initAdminCustomers } from '../../lib/admin/customers-app';
+  void initAdminCustomers();
+</script>

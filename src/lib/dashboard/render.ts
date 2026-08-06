@@ -2,7 +2,18 @@ import type { DashboardSection, DashboardViewModel, DashboardWebsiteCardItem } f
 import type { PublicationLogEntry } from '../../types/publication';
 import { BUILDER_START_PATH, DASHBOARD_HUB_SECTIONS, EDITOR_PATH, DASHBOARD_SECTIONS } from './constants';
 import { formatLastUpdated } from './get-dashboard-data';
+import {
+  previewLinkAttrs,
+  resolveMyWebsiteContext,
+  type MyWebsiteContext,
+} from './my-website';
 import { formatDuration, formatLogTime, pipelineStatusBadgeClass } from './publish-client';
+import {
+  bindChangeRequestForm,
+  fetchCustomerChangeRequests,
+  renderChangeRequestForm,
+  renderChangeRequestsList,
+} from './change-requests-ui';
 
 function escapeHtml(value: string): string {
   return value
@@ -32,7 +43,208 @@ function renderField(label: string, value: string): string {
   `;
 }
 
-function renderBetaStatusCard(): string {
+function statusGroupBadgeClass(group: string): string {
+  switch (group) {
+    case 'Gepubliceerd':
+      return 'dashboard-status-badge--published';
+    case 'In review':
+      return 'dashboard-status-badge--review';
+    default:
+      return 'dashboard-status-badge--concept';
+  }
+}
+
+function renderMyWebsiteHero(ctx: MyWebsiteContext): string {
+  const { site, stats } = ctx;
+  const initial = (site.businessName.trim()[0] ?? 'W').toUpperCase();
+
+  return `
+    <section class="dashboard-my-website" aria-labelledby="my-website-title">
+      <div class="dashboard-my-website__hero">
+        <div class="dashboard-my-website__identity">
+          <div class="dashboard-my-website__logo" style="--site-color: ${escapeHtml(site.primaryColor)}">
+            <span aria-hidden="true">${escapeHtml(initial)}</span>
+          </div>
+          <div>
+            <p class="dashboard-my-website__eyebrow">Mijn website</p>
+            <h2 id="my-website-title">${escapeHtml(site.businessName)}</h2>
+            <p class="dashboard-my-website__domain">${escapeHtml(site.subdomain)}</p>
+          </div>
+        </div>
+        <div class="dashboard-my-website__status-wrap">
+          <span class="dashboard-status-badge ${statusGroupBadgeClass(stats.statusGroup)}">${escapeHtml(stats.statusGroup)}</span>
+          <p class="dashboard-my-website__status-detail">${escapeHtml(stats.statusLabel)}</p>
+          <button type="button" class="btn btn-primary dashboard-my-website__cta" data-dashboard-section="change_request_new">Wijziging aanvragen</button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderMyWebsiteStats(ctx: MyWebsiteContext): string {
+  const { stats } = ctx;
+  const cards = [
+    { icon: 'pages', label: "Pagina's", value: stats.pageCount, placeholder: false },
+    { icon: 'photos', label: "Foto's", value: stats.photoCount, placeholder: false },
+    { icon: 'clock', label: 'Laatste wijziging', value: stats.lastUpdated, placeholder: false },
+    { icon: 'status', label: 'Status', value: stats.statusGroup, placeholder: false },
+    { icon: 'seo', label: 'SEO-score', value: stats.seoScore, placeholder: stats.seoScore === '—' },
+    { icon: 'visitors', label: 'Bezoekers', value: stats.visitors, placeholder: true },
+  ];
+
+  return `
+    <section class="dashboard-my-website__stats" aria-label="Website statistieken">
+      <h3 class="dashboard-section-title">Statistieken</h3>
+      <div class="dashboard-metric-grid">
+        ${cards
+          .map(
+            (card) => `
+          <article class="dashboard-metric-card${card.placeholder ? ' dashboard-metric-card--placeholder' : ''}">
+            <span class="dashboard-metric-card__icon dashboard-metric-card__icon--${card.icon}" aria-hidden="true"></span>
+            <span class="dashboard-metric-card__value">${escapeHtml(card.value)}</span>
+            <span class="dashboard-metric-card__label">${escapeHtml(card.label)}</span>
+          </article>
+        `,
+          )
+          .join('')}
+      </div>
+    </section>
+  `;
+}
+
+function renderQuickActions(ctx: MyWebsiteContext): string {
+  const { site, viewUrl, editUrl } = ctx;
+  const previewAttrs = previewLinkAttrs(site);
+  const actions = [
+    {
+      id: 'view',
+      label: 'Website bekijken',
+      description: 'Open preview of live site',
+      href: viewUrl,
+      attrs: previewAttrs,
+      icon: 'view',
+      primary: true,
+    },
+    {
+      id: 'edit',
+      label: 'Website bewerken',
+      description: 'Open de website-editor',
+      href: editUrl,
+      attrs: '',
+      icon: 'edit',
+      primary: true,
+    },
+    {
+      id: 'data',
+      label: 'Gegevens wijzigen',
+      description: 'Contact, openingstijden en teksten',
+      href: editUrl,
+      attrs: '',
+      icon: 'data',
+      primary: false,
+    },
+    {
+      id: 'request',
+      label: 'Nieuw verzoek indienen',
+      description: 'Dien wijzigingen in voor review',
+      href: '',
+      attrs: '',
+      icon: 'request',
+      primary: false,
+      section: 'change_request_new' as const,
+    },
+    {
+      id: 'contact',
+      label: 'Contact opnemen',
+      description: 'Star Local support',
+      href: '/contact/',
+      attrs: '',
+      icon: 'contact',
+      primary: false,
+    },
+    {
+      id: 'logout',
+      label: 'Uitloggen',
+      description: 'Veilig afmelden',
+      href: '/logout/',
+      attrs: '',
+      icon: 'logout',
+      primary: false,
+    },
+  ];
+
+  return `
+    <section class="dashboard-quick-actions" aria-label="Snelle acties">
+      <h3 class="dashboard-section-title">Snelle acties</h3>
+      <div class="dashboard-quick-actions__grid">
+        ${actions
+          .map((action) => {
+            const cls = `dashboard-action-card${action.primary ? ' dashboard-action-card--primary' : ''}`;
+            const inner = `
+            <span class="dashboard-action-card__icon dashboard-action-card__icon--${action.icon}" aria-hidden="true"></span>
+            <span class="dashboard-action-card__label">${escapeHtml(action.label)}</span>
+            <span class="dashboard-action-card__desc">${escapeHtml(action.description)}</span>`;
+            if ('section' in action && action.section) {
+              return `<button type="button" class="${cls}" data-dashboard-section="${action.section}">${inner}</button>`;
+            }
+            return `<a class="${cls}" href="${escapeHtml(action.href)}" ${action.attrs}>${inner}</a>`;
+          })
+          .join('')}
+      </div>
+    </section>
+  `;
+}
+
+function renderPremiumUpgradeBlock(): string {
+  const features = [
+    'Eigen domein',
+    'Eigen kleuren',
+    'Meer pagina\'s',
+    'Prioriteit support',
+    'Extra SEO',
+    'Professionele uitstraling',
+  ];
+
+  return `
+    <aside class="dashboard-premium-block" aria-label="Premium upgrade">
+      <div class="dashboard-premium-block__content">
+        <p class="dashboard-premium-block__eyebrow">Premium</p>
+        <h3 class="dashboard-premium-block__title">Upgrade naar Premium</h3>
+        <p class="dashboard-premium-block__lead">
+          Geef uw website een professionele uitstraling met een eigen domein, volledige huisstijl en extra SEO.
+        </p>
+        <ul class="dashboard-premium-block__features">
+          ${features.map((feature) => `<li><span aria-hidden="true">✦</span> ${escapeHtml(feature)}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="dashboard-premium-block__cta">
+        <button type="button" class="btn btn-primary dashboard-premium-block__button" data-premium-upgrade>
+          Upgrade naar Premium
+        </button>
+        <p class="dashboard-premium-block__note">Betaalfunctionaliteit volgt in een latere fase.</p>
+      </div>
+    </aside>
+  `;
+}
+
+function renderMyWebsitePanel(model: DashboardViewModel): string {
+  const ctx = resolveMyWebsiteContext(model);
+  if (!ctx) return '';
+
+  return `
+    ${renderMyWebsiteHero(ctx)}
+    ${renderMyWebsiteStats(ctx)}
+    ${renderQuickActions(ctx)}
+    ${renderPremiumUpgradeBlock()}
+  `;
+}
+
+function renderBetaStatusCard(model: DashboardViewModel): string {
+  const primary = resolveMyWebsiteContext(model);
+  const isPublished = primary?.stats.statusGroup === 'Gepubliceerd';
+
+  if (isPublished) return '';
+
   return `
     <aside class="dashboard-beta-card" role="status" aria-label="Bèta status">
       <p class="dashboard-beta-card__label">Bèta status</p>
@@ -64,20 +276,25 @@ function renderOverview(model: DashboardViewModel): string {
     `;
   }).join('');
 
-  const conceptCount = model.websiteList.filter(
-    (item) => item.status === 'draft' || item.pipelineStatus === 'draft' || item.pipelineStatus === 'failed',
+  const conceptCount = model.websiteList.filter((item) => item.status === 'concept' || item.status === 'rejected').length;
+  const inReviewCount = model.websiteList.filter(
+    (item) =>
+      item.status === 'pending_review' ||
+      item.status === 'approved' ||
+      item.pendingChangesStatus === 'in_review',
   ).length;
-  const publishedCount = model.websiteList.filter(
-    (item) => item.status === 'published' || item.pipelineStatus === 'published',
-  ).length;
+  const publishedCount = model.websiteList.filter((item) => item.status === 'published').length;
+  const welcomeName = model.customerBusinessName || model.businessName || 'ondernemer';
 
   return `
     <section class="dashboard-panel dashboard-panel--hub">
-      <header class="dashboard-panel__head">
+      ${renderMyWebsitePanel(model)}
+      ${!resolveMyWebsiteContext(model) ? renderPremiumUpgradeBlock() : ''}
+      <header class="dashboard-panel__head dashboard-panel__head--compact">
         <div>
-          <p class="eyebrow">Welkom terug</p>
-          <h2>Website Builder</h2>
-          <p class="dashboard-lead">Beheer al uw websites vanuit één professioneel dashboard.</p>
+          <p class="eyebrow">Overzicht</p>
+          <h2>Welkom ${escapeHtml(welcomeName)}</h2>
+          <p class="dashboard-lead">Beheer al uw websites vanuit uw Star Local klantportaal.</p>
         </div>
       </header>
       <div class="dashboard-hub-grid">${hubCards}</div>
@@ -91,12 +308,12 @@ function renderOverview(model: DashboardViewModel): string {
           <span class="dashboard-stat-card__label">Concepten</span>
         </article>
         <article class="dashboard-stat-card">
+          <span class="dashboard-stat-card__value">${inReviewCount}</span>
+          <span class="dashboard-stat-card__label">In review</span>
+        </article>
+        <article class="dashboard-stat-card">
           <span class="dashboard-stat-card__value">${publishedCount}</span>
           <span class="dashboard-stat-card__label">Gepubliceerd</span>
-        </article>
-        <article class="dashboard-stat-card dashboard-stat-card--placeholder">
-          <span class="dashboard-stat-card__value">—</span>
-          <span class="dashboard-stat-card__label">Bezoekers (binnenkort)</span>
         </article>
       </div>
       ${model.websiteList.length > 0 ? `
@@ -116,60 +333,86 @@ function renderWebsiteCardLogo(site: DashboardWebsiteCardItem): string {
   `;
 }
 
-function renderWebsiteCard(site: DashboardWebsiteCardItem): string {
-  const editorUrl = site.tenantId ? `${EDITOR_PATH}?tenantId=${encodeURIComponent(site.tenantId)}` : BUILDER_START_PATH;
-  const isPublished = site.status === 'published' || site.pipelineStatus === 'published';
-  const previewUrl = isPublished
-    ? site.url.startsWith('http')
-      ? site.url
-      : `https://${site.subdomain}`
-    : BUILDER_START_PATH;
-  const previewAttrs = isPublished ? ' target="_blank" rel="noopener noreferrer"' : '';
-  const previewLabel = isPublished ? 'Live preview' : 'Open wizard';
-  const statusClass = site.pipelineStatus === 'published' ? 'builder-status-badge--published' : statusBadgeClass(site.status);
+function renderWebsiteCard(site: DashboardWebsiteCardItem, options?: { hidePublish?: boolean }): string {
+  const editorUrl = site.editPath || (site.tenantId ? `/dashboard/website/?tenantId=${encodeURIComponent(site.tenantId)}&websiteId=${encodeURIComponent(site.websiteId ?? site.id)}` : BUILDER_START_PATH);
+  const previewUrl = site.previewPath || (site.status === 'published' ? site.liveUrl || `/sites/${site.slug}/` : `/admin/preview/?id=${encodeURIComponent(site.websiteId ?? site.id)}`);
+  const previewAttrs = site.status === 'published' ? ' target="_blank" rel="noopener noreferrer"' : '';
+  const statusClass = site.status === 'published' ? 'builder-status-badge--published' : statusBadgeClass(site.status);
 
   return `
     <article class="dashboard-website-card" data-website-id="${escapeHtml(site.id)}">
       ${renderWebsiteCardLogo(site)}
       <div class="dashboard-website-card__body">
         <h3>${escapeHtml(site.businessName)}</h3>
-        <p class="dashboard-website-card__domain">${escapeHtml(site.subdomain)}</p>
+        <p class="dashboard-website-card__domain">${escapeHtml(site.slug)}.starlocal.nl</p>
         <p class="dashboard-website-card__meta">
-          <span class="builder-status-badge ${statusClass}">${escapeHtml(site.pipelineLabel || site.statusLabel)}</span>
+          <span class="builder-status-badge ${statusClass}">${escapeHtml(site.statusLabel || site.pipelineLabel)}</span>
           <span class="dashboard-muted">${escapeHtml(formatLastUpdated({ lastUpdated: site.lastUpdated } as DashboardViewModel))}</span>
         </p>
       </div>
       <div class="dashboard-website-card__actions">
         <a class="btn btn-secondary btn-sm" href="${editorUrl}">Bewerken</a>
-        <a class="btn btn-secondary btn-sm" href="${previewUrl}"${previewAttrs}>${previewLabel}</a>
-        <button type="button" class="btn btn-primary btn-sm" data-open-publish-section>Publiceren</button>
+        <a class="btn btn-secondary btn-sm" href="${previewUrl}"${previewAttrs}>Preview</a>
+        ${options?.hidePublish === false ? `<button type="button" class="btn btn-primary btn-sm" data-open-publish-section>Publiceren</button>` : ''}
       </div>
     </article>
   `;
 }
 
-function renderWebsiteList(model: DashboardViewModel, filter?: 'concepts' | 'published'): string {
+function renderWebsiteList(model: DashboardViewModel, filter?: 'concepts' | 'in_review' | 'published'): string {
   let list = model.websiteList;
   if (filter === 'concepts') {
+    list = list.filter((item) => item.status === 'concept' || item.status === 'rejected');
+  }
+  if (filter === 'in_review') {
     list = list.filter(
       (item) =>
-        item.status === 'draft' ||
-        item.pipelineStatus === 'draft' ||
-        item.pipelineStatus === 'failed',
+        item.status === 'pending_review' ||
+        item.status === 'approved' ||
+        item.pendingChangesStatus === 'in_review',
     );
   }
   if (filter === 'published') {
-    list = list.filter(
-      (item) => item.status === 'published' || item.pipelineStatus === 'published',
-    );
+    list = list.filter((item) => item.status === 'published');
   }
 
-  const title = filter === 'concepts' ? 'Concepten' : filter === 'published' ? 'Gepubliceerd' : 'Mijn Websites';
-  const empty = filter === 'concepts'
-    ? 'Geen concepten gevonden. Start een nieuwe website via de builder.'
-    : filter === 'published'
-      ? 'Nog geen gepubliceerde websites.'
-      : 'Nog geen websites. Maak uw eerste website aan.';
+  const title =
+    filter === 'concepts'
+      ? 'Concepten'
+      : filter === 'in_review'
+        ? 'In review'
+        : filter === 'published'
+          ? 'Gepubliceerd'
+          : 'Mijn websites';
+  const emptyMarkup =
+    filter === undefined
+      ? `
+        <div class="dashboard-empty dashboard-empty--websites">
+          <div class="dashboard-empty__icon" aria-hidden="true">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="10" width="44" height="36" rx="6" stroke="currentColor" stroke-width="2"/>
+              <path d="M6 20h44" stroke="currentColor" stroke-width="2"/>
+              <circle cx="14" cy="15" r="2" fill="currentColor"/>
+              <circle cx="20" cy="15" r="2" fill="currentColor"/>
+              <circle cx="26" cy="15" r="2" fill="currentColor"/>
+              <path d="M16 32h24M16 38h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="dashboard-empty__title">Nog geen websites?</h3>
+          <p class="dashboard-empty__text">Maak nu gratis uw eerste website.</p>
+          <a class="btn btn-primary dashboard-empty__cta" href="${BUILDER_START_PATH}">Gratis website maken</a>
+        </div>
+      `
+      : `
+        <div class="dashboard-empty dashboard-empty--inline">
+          <p class="dashboard-lead">${
+            filter === 'concepts'
+              ? 'Geen concepten gevonden. Start een nieuwe website via de builder.'
+              : 'Nog geen gepubliceerde websites.'
+          }</p>
+          <a class="btn btn-primary" href="${BUILDER_START_PATH}">Website maken</a>
+        </div>
+      `;
 
   return `
     <section class="dashboard-panel">
@@ -177,35 +420,36 @@ function renderWebsiteList(model: DashboardViewModel, filter?: 'concepts' | 'pub
         <h2>${title}</h2>
         <a class="btn btn-primary" href="${BUILDER_START_PATH}">+ Nieuwe website</a>
       </div>
-      ${list.length === 0 ? `
-        <div class="dashboard-empty dashboard-empty--inline">
-          <p class="dashboard-lead">${empty}</p>
-          <a class="btn btn-primary" href="${BUILDER_START_PATH}">Website maken</a>
-        </div>
-      ` : `<div class="dashboard-website-grid">${list.map((site) => renderWebsiteCard(site)).join('')}</div>`}
+      ${filter === undefined ? renderMyWebsitePanel(model) : ''}
+      ${list.length === 0 ? emptyMarkup : `<div class="dashboard-website-grid">${list.map((site) => renderWebsiteCard(site)).join('')}</div>`}
     </section>
   `;
 }
 
-function renderStatsPlaceholder(): string {
+function renderStatsPlaceholder(model: DashboardViewModel): string {
+  const ctx = resolveMyWebsiteContext(model);
+  const statsBlock = ctx ? renderMyWebsiteStats(ctx) : '';
+
   return `
     <section class="dashboard-panel">
       <h2>Statistieken</h2>
       <p class="dashboard-lead">Bezoekers, paginaweergaven en SEO-prestaties volgen in een latere fase.</p>
+      ${statsBlock}
       <div class="dashboard-stats-placeholder">
-        <article class="dashboard-stat-card dashboard-stat-card--large">
+        <article class="dashboard-stat-card dashboard-stat-card--large dashboard-stat-card--placeholder">
           <span class="dashboard-stat-card__value">—</span>
           <span class="dashboard-stat-card__label">Bezoekers (30 dagen)</span>
         </article>
-        <article class="dashboard-stat-card dashboard-stat-card--large">
+        <article class="dashboard-stat-card dashboard-stat-card--large dashboard-stat-card--placeholder">
           <span class="dashboard-stat-card__value">—</span>
           <span class="dashboard-stat-card__label">Paginaweergaven</span>
         </article>
-        <article class="dashboard-stat-card dashboard-stat-card--large">
+        <article class="dashboard-stat-card dashboard-stat-card--large dashboard-stat-card--placeholder">
           <span class="dashboard-stat-card__value">—</span>
           <span class="dashboard-stat-card__label">Gemiddelde SEO-score</span>
         </article>
       </div>
+      ${renderPremiumUpgradeBlock()}
     </section>
   `;
 }
@@ -582,10 +826,12 @@ function renderSection(section: DashboardSection, model: DashboardViewModel): st
       return renderWebsiteList(model);
     case 'concepts':
       return renderWebsiteList(model, 'concepts');
+    case 'in_review':
+      return renderWebsiteList(model, 'in_review');
     case 'published':
       return renderWebsiteList(model, 'published');
     case 'stats':
-      return renderStatsPlaceholder();
+      return renderStatsPlaceholder(model);
     case 'website':
       return renderWebsite(model);
     case 'pages':
@@ -604,6 +850,10 @@ function renderSection(section: DashboardSection, model: DashboardViewModel): st
       return renderPublish(model);
     case 'settings':
       return renderSettings(model);
+    case 'change_requests':
+      return renderChangeRequestsList(model.changeRequests ?? []);
+    case 'change_request_new':
+      return renderChangeRequestForm(model.websiteList);
     default:
       return renderOverview(model);
   }
@@ -641,12 +891,22 @@ export function renderDashboardShell(section: DashboardSection, model: Dashboard
     return `<button type="button" class="dashboard-nav__link${active}" data-dashboard-section="${item.id}">${escapeHtml(item.label)}</button>`;
   }).join('');
 
+  const primaryCtx = resolveMyWebsiteContext(model);
+  const topbarTitle =
+    section === 'overview' && primaryCtx ? primaryCtx.site.businessName : sectionTitle(section);
+  const topbarEyebrow = section === 'overview' && primaryCtx ? 'Mijn website' : 'Klantendashboard';
+  const topbarStatus = primaryCtx ? primaryCtx.stats.statusGroup : model.statusLabel;
+  const topbarDomain = primaryCtx ? primaryCtx.site.subdomain : model.subdomain;
+  const topbarBadgeClass = primaryCtx
+    ? statusGroupBadgeClass(primaryCtx.stats.statusGroup)
+    : statusBadgeClass(model.status);
+
   return `
     <div class="dashboard-shell">
       <aside class="dashboard-sidebar" aria-label="Dashboard menu">
         <div class="dashboard-sidebar__brand">
           <span>Star Local</span>
-          <small>${escapeHtml(model.businessName)}</small>
+          <small>${escapeHtml(primaryCtx?.site.businessName ?? model.businessName)}</small>
         </div>
         <nav class="dashboard-nav">${nav}</nav>
         <div class="dashboard-sidebar__footer">
@@ -656,15 +916,15 @@ export function renderDashboardShell(section: DashboardSection, model: Dashboard
       <div class="dashboard-main">
         <header class="dashboard-topbar">
           <div>
-            <p class="dashboard-topbar__eyebrow">Klantendashboard</p>
-            <h1>${escapeHtml(sectionTitle(section))}</h1>
+            <p class="dashboard-topbar__eyebrow">${escapeHtml(topbarEyebrow)}</p>
+            <h1>${escapeHtml(topbarTitle)}</h1>
           </div>
           <div class="dashboard-topbar__meta">
-            <span class="builder-status-badge ${statusBadgeClass(model.status)}">${escapeHtml(model.statusLabel)}</span>
-            <span class="dashboard-topbar__domain">${escapeHtml(model.subdomain)}</span>
+            <span class="dashboard-status-badge ${topbarBadgeClass}">${escapeHtml(topbarStatus)}</span>
+            <span class="dashboard-topbar__domain">${escapeHtml(topbarDomain)}</span>
           </div>
         </header>
-        ${renderBetaStatusCard()}
+        ${renderBetaStatusCard(model)}
         <div class="dashboard-content">${renderSection(section, model)}</div>
       </div>
     </div>

@@ -1,0 +1,48 @@
+---
+import SeoHead from '../components/SeoHead.astro';
+import StagingBanner from '../components/StagingBanner.astro';
+import '../styles/global.css';
+import '../styles/builder.css';
+import '../styles/dashboard.css';
+import '../styles/admin.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+}
+
+const { title, description, canonical = Astro.url.pathname } = Astro.props;
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <SeoHead locale="nl" {title} {description} canonicalPath={canonical} noindex={true} />
+  </head>
+  <body class="dashboard-page-body admin-page-body">
+    <StagingBanner />
+    <a href="#admin-main" class="skip-link">Ga naar admin</a>
+    <header class="dashboard-page-header">
+      <div class="container dashboard-page-header__inner">
+        <a href="/admin/websites/" class="dashboard-page-brand" aria-label="Star Local admin">
+          <span>Star Local Admin</span>
+        </a>
+        <div class="dashboard-page-header__actions">
+          <a href="/admin/websites/" class="dashboard-page-back">Websites</a>
+          <a href="/admin/change-requests/" class="dashboard-page-back">Wijzigingsverzoeken</a>
+          <a href="/admin/customers/" class="dashboard-page-back">Klanten</a>
+          <a href="/dashboard/" class="dashboard-page-back">Klantendashboard</a>
+        </div>
+      </div>
+    </header>
+    <main id="admin-main" class="dashboard-page-main">
+      <slot />
+    </main>
+    <footer class="dashboard-page-footer">
+      <div class="container">
+        <p>Star Local — website-goedkeuring (ontwikkeling)</p>
+      </div>
+    </footer>
+  </body>
+</html>
