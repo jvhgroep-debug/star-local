@@ -14,7 +14,7 @@ export type {
   ValidateMagicLinkResult,
 } from './types';
 
-export { AUTH_ROUTES, SESSION_COOKIE_NAME, AUTH_NEXT_COOKIE, MAGIC_LINK_TTL_SECONDS } from './constants';
+export { AUTH_ROUTES, SESSION_COOKIE_NAME, AUTH_NEXT_COOKIE, AUTH_ADMIN_NEXT_COOKIE, MAGIC_LINK_TTL_SECONDS } from './constants';
 export { AuthService, createAuthService, sanitizeAuthRedirectPath } from './auth.service';
 export { AuthValidationError, MagicLinkExpiredError, MagicLinkInvalidError } from './errors';
 export { createMagicLink, validateMagicLink } from './magic-link';
@@ -24,11 +24,14 @@ export { requireAuthSession, isAuthRedirect } from './guard';
 export {
   requireAdminSession,
   isAdminForbidden,
+  isAdminAuthRedirect,
   isAdminEmail,
-  guardAdminRequest,
   isAdminPagePath,
   isAdminApiPath,
+  isAdminPublicAuthPath,
   adminForbiddenRedirect,
+  buildAdminLoginRedirect,
+  sanitizeAdminRedirectPath,
 } from './admin-guard';
 export {
   buildSessionCookie,

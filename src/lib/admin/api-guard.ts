@@ -2,16 +2,17 @@ import type { D1Database } from '../db/d1';
 import {
   adminForbiddenJson,
   adminUnauthorizedJson,
+  isAdminAuthRedirect,
   isAdminForbidden,
   requireAdminSession,
 } from '../auth/admin-guard';
-import { isAuthRedirect, type RequireAuthResult } from '../auth/guard';
+import type { AuthSessionContext } from '../auth/types';
 
 export function getAdminApiDatabase(locals: App.Locals): D1Database | null {
   return (locals.runtime as { env?: { DB?: D1Database } })?.env?.DB ?? null;
 }
 
-export type AdminApiAccess = { db: D1Database; session: RequireAuthResult };
+export type AdminApiAccess = { db: D1Database; session: { session: AuthSessionContext; tenantId: null } };
 
 export async function requireAdminApiAccess(
   request: Request,
@@ -24,7 +25,7 @@ export async function requireAdminApiAccess(
   }
 
   const auth = await requireAdminSession(request, db, url);
-  if (isAuthRedirect(auth)) return adminUnauthorizedJson();
+  if (isAdminAuthRedirect(auth)) return adminUnauthorizedJson();
   if (isAdminForbidden(auth)) return adminForbiddenJson();
 
   return { db, session: auth };

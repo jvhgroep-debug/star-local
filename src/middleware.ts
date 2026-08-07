@@ -5,11 +5,12 @@ import {
   adminForbiddenJson,
   adminUnauthorizedJson,
   isAdminApiPath,
+  isAdminAuthRedirect,
   isAdminForbidden,
   isAdminPagePath,
+  isAdminPublicAuthPath,
   requireAdminSession,
 } from './lib/auth/admin-guard';
-import { isAuthRedirect } from './lib/auth/guard';
 import {
   getSubdomainFromHostname,
   isPotentialTenantHostname,
@@ -26,14 +27,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const url = new URL(context.request.url);
   const db = context.locals.runtime?.env?.DB as D1Database | undefined;
 
-  if (isAdminPagePath(url.pathname) || isAdminApiPath(url.pathname)) {
+  if (
+    (isAdminPagePath(url.pathname) || isAdminApiPath(url.pathname)) &&
+    !isAdminPublicAuthPath(url.pathname)
+  ) {
     const auth = await requireAdminSession(context.request, db, url);
 
     if (isAdminApiPath(url.pathname)) {
-      if (isAuthRedirect(auth)) return adminUnauthorizedJson();
+      if (isAdminAuthRedirect(auth)) return adminUnauthorizedJson();
       if (isAdminForbidden(auth)) return adminForbiddenJson();
     } else {
-      if (isAuthRedirect(auth)) return context.redirect(auth.redirect);
+      if (isAdminAuthRedirect(auth)) return context.redirect(auth.redirect);
       if (isAdminForbidden(auth)) return context.redirect(adminForbiddenRedirect());
     }
   }

@@ -3,7 +3,7 @@ import { createResendEmailService } from '../email/resend';
 import { renderMagicLinkEmail, buildMagicLinkUrl } from '../email/magic-link-template';
 import { CustomerRepository, WebsitePermissionRepository } from '../customer-portal/repositories';
 import { AuthRateLimitService, clientIp } from '../customer-portal/rate-limit';
-import { isAdminEmail } from './admin-guard';
+import { isAdminEmail, sanitizeAdminRedirectPath } from './admin-guard';
 import { AUTH_ROUTES, EMAIL_PATTERN, MAGIC_LINK_TTL_SECONDS, SESSION_COOKIE_NAME, SESSION_TTL_SECONDS } from './constants';
 import { generateSecureToken, hashSecret, normalizeEmail } from './crypto';
 import { AuthValidationError, MagicLinkExpiredError, MagicLinkInvalidError } from './errors';
@@ -65,6 +65,10 @@ export class AuthService {
 
     await this.repo.purgeExpiredMagicLinks();
 
+    if (input.adminOnly) {
+      return this.requestAdminMagicLink(email, input);
+    }
+
     if (input.existingCustomerOnly) {
       return this.requestExistingCustomerMagicLink(email, input);
     }
@@ -78,36 +82,51 @@ export class AuthService {
     input: CreateMagicLinkInput,
   ): Promise<CreateMagicLinkResult> {
     const eligibleCustomer = await this.customers.findLoginEligibleByEmail(email);
-    const adminEligible = isAdminEmail(email);
 
-    if (!eligibleCustomer && !adminEligible) {
+    if (!eligibleCustomer) {
       await delayForLoginTiming();
       return { magicLink: null, plainToken: null, emailSent: true, suppressed: true };
     }
 
     await delayForLoginTiming();
 
-    let user: User;
-    let customerId: string | null = null;
-
-    if (eligibleCustomer) {
-      user = eligibleCustomer.userId
-        ? (await this.repo.findUserById(eligibleCustomer.userId)) ?? (await this.repo.upsertUserByEmail(email))
-        : await this.repo.upsertUserByEmail(email);
-      if (!eligibleCustomer.userId) {
-        await this.customers.linkUserToCustomer(eligibleCustomer.id, user.id);
-      }
-      customerId = eligibleCustomer.id;
-    } else {
-      user = await this.repo.upsertUserByEmail(email);
+    const user = eligibleCustomer.userId
+      ? (await this.repo.findUserById(eligibleCustomer.userId)) ?? (await this.repo.upsertUserByEmail(email))
+      : await this.repo.upsertUserByEmail(email);
+    if (!eligibleCustomer.userId) {
+      await this.customers.linkUserToCustomer(eligibleCustomer.id, user.id);
     }
 
     return this.issueMagicLink({
       user,
       email,
       tenantId: input.tenantId ?? null,
-      customerId,
+      customerId: eligibleCustomer.id,
       origin: input.origin,
+      magicRoute: AUTH_ROUTES.magic,
+    });
+  }
+
+  /** /admin/login/ — only allowlisted admin e-mails; privacy-safe suppression otherwise. */
+  private async requestAdminMagicLink(
+    email: string,
+    input: CreateMagicLinkInput,
+  ): Promise<CreateMagicLinkResult> {
+    if (!isAdminEmail(email)) {
+      await delayForLoginTiming();
+      return { magicLink: null, plainToken: null, emailSent: true, suppressed: true };
+    }
+
+    await delayForLoginTiming();
+    const user = await this.repo.upsertUserByEmail(email);
+
+    return this.issueMagicLink({
+      user,
+      email,
+      tenantId: null,
+      customerId: null,
+      origin: input.origin,
+      magicRoute: AUTH_ROUTES.adminMagic,
     });
   }
 
@@ -129,6 +148,7 @@ export class AuthService {
       tenantId: input.tenantId ?? null,
       customerId: customer.id,
       origin: input.origin,
+      magicRoute: AUTH_ROUTES.magic,
     });
   }
 
@@ -138,6 +158,7 @@ export class AuthService {
     tenantId: string | null;
     customerId: string | null;
     origin?: string;
+    magicRoute: string;
   }): Promise<CreateMagicLinkResult> {
     await this.repo.deleteMagicLinksForUser(input.user.id);
 
@@ -160,6 +181,7 @@ export class AuthService {
       input.email,
       plainToken,
       input.origin ?? this.options.origin ?? 'https://www.starlocal.nl',
+      input.magicRoute,
     );
 
     const emailSent = Boolean(this.options.resendApiKey?.trim() && this.options.fromEmail?.trim());
@@ -263,22 +285,12 @@ export class AuthService {
     fallbackRedirectPath?: string | null,
   ): Promise<{ session: CreateSessionResult; redirectPath: string }> {
     const { user, magicLink } = await this.validateMagicLink({ plainToken });
-    const customer = await this.customers.findByEmail(user.email);
-    const isAdmin = isAdminEmail(user.email);
 
-    if (isAdmin) {
-      const session = await this.createSession({
-        userId: user.id,
-        tenantId: magicLink.tenantId,
-        customerId: customer?.id ?? magicLink.customerId ?? null,
-      });
-      const redirectPath =
-        sanitizeAuthRedirectPath(fallbackRedirectPath) ??
-        (magicLink.tenantId
-          ? `${AUTH_ROUTES.dashboard}?tenantId=${encodeURIComponent(magicLink.tenantId)}`
-          : AUTH_ROUTES.dashboard);
-      return { session, redirectPath };
+    if (isAdminEmail(user.email)) {
+      throw new MagicLinkInvalidError();
     }
+
+    const customer = await this.customers.findByEmail(user.email);
 
     if (!customer || customer.status !== 'active') {
       throw new MagicLinkInvalidError();
@@ -311,7 +323,34 @@ export class AuthService {
     return { session, redirectPath };
   }
 
-  private async sendMagicLinkEmail(to: string, plainToken: string, origin: string): Promise<void> {
+  async activateAdminFromMagicLink(
+    plainToken: string,
+    fallbackRedirectPath?: string | null,
+  ): Promise<{ session: CreateSessionResult; redirectPath: string }> {
+    const { user } = await this.validateMagicLink({ plainToken });
+
+    if (!isAdminEmail(user.email)) {
+      throw new MagicLinkInvalidError();
+    }
+
+    const session = await this.createSession({
+      userId: user.id,
+      tenantId: null,
+      customerId: null,
+    });
+
+    const redirectPath =
+      sanitizeAdminRedirectPath(fallbackRedirectPath) ?? AUTH_ROUTES.adminDefault;
+
+    return { session, redirectPath };
+  }
+
+  private async sendMagicLinkEmail(
+    to: string,
+    plainToken: string,
+    origin: string,
+    magicRoute: string,
+  ): Promise<void> {
     const apiKey = this.options.resendApiKey?.trim();
     const fromEmail = this.options.fromEmail?.trim();
     if (!apiKey || !fromEmail) {
@@ -319,7 +358,7 @@ export class AuthService {
       return;
     }
 
-    const magicUrl = buildMagicLinkUrl(origin, plainToken);
+    const magicUrl = buildMagicLinkUrl(origin, plainToken, magicRoute);
     const content = renderMagicLinkEmail({ magicUrl, minutesValid: MAGIC_LINK_TTL_SECONDS / 60 });
     const mailer = createResendEmailService(apiKey, fromEmail);
     await mailer.send({ to, subject: content.subject, html: content.html, text: content.text });

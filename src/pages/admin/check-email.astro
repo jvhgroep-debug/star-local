@@ -1,0 +1,59 @@
+---
+export const prerender = false;
+
+import AuthLayout from '../../layouts/AuthLayout.astro';
+import { AUTH_ROUTES } from '../../lib/auth/constants';
+
+const email = Astro.url.searchParams.get('email')?.trim().toLowerCase() ?? '';
+const emailSent = Astro.url.searchParams.get('emailSent') !== '0';
+---
+
+<AuthLayout
+  title="Controleer uw e-mail | Star Local Admin"
+  description="Admin magic link verificatie voor het Star Local beheerpaneel."
+  canonical="/admin/check-email/"
+>
+  <section class="auth-card" aria-labelledby="admin-check-email-title">
+    <div class="auth-card__icon auth-card__icon--info" aria-hidden="true">📬</div>
+    <h1 id="admin-check-email-title">Controleer uw e-mail</h1>
+    {email ? (
+      <p>
+        Als <span class="auth-email-highlight">{email}</span> een geautoriseerd beheerdersadres is, ontvangt u een
+        admin-inloglink per e-mail. Klik op de link om het beheerpaneel te openen.
+      </p>
+    ) : (
+      <p>
+        Als dit e-mailadres geautoriseerd is, ontvangt u een admin-inloglink. Klik op de link om het beheerpaneel te
+        openen.
+      </p>
+    )}
+    {!emailSent ? (
+      <div class="auth-dev-panel" id="auth-admin-dev-panel" hidden>
+        <p class="auth-dev-panel__label">Lokale ontwikkelmodus</p>
+        <p class="auth-dev-panel__text">
+          E-mailverzending is lokaal niet actief. Gebruik onderstaande admin-inloglink om te testen.
+        </p>
+        <a class="btn btn-primary auth-dev-panel__link" id="auth-admin-dev-magic-link" href="#">Naar admin-inloglink</a>
+      </div>
+    ) : null}
+    <p class="auth-muted">De link is 15 minuten geldig en kan maar één keer gebruikt worden.</p>
+    <div class="auth-actions">
+      <a class="btn btn-secondary" href={AUTH_ROUTES.adminLogin}>Andere e-mail gebruiken</a>
+    </div>
+  </section>
+</AuthLayout>
+
+{!emailSent ? (
+  <script>
+    const DEV_MAGIC_KEY = 'starlocal-dev-admin-magic-url';
+    const panel = document.getElementById('auth-admin-dev-panel');
+    const link = document.getElementById('auth-admin-dev-magic-link') as HTMLAnchorElement | null;
+    const devMagicUrl = sessionStorage.getItem(DEV_MAGIC_KEY);
+
+    if (panel && link && devMagicUrl) {
+      link.href = devMagicUrl;
+      panel.removeAttribute('hidden');
+      sessionStorage.removeItem(DEV_MAGIC_KEY);
+    }
+  </script>
+) : null}

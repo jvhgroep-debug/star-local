@@ -1,0 +1,88 @@
+---
+export const prerender = false;
+
+import AuthLayout from '../../layouts/AuthLayout.astro';
+import { FROM_EMAIL, RESEND_API_KEY } from 'astro:env/server';
+import type { D1Database } from '../../lib/db/d1';
+import {
+  AUTH_ROUTES,
+  AUTH_ADMIN_NEXT_COOKIE,
+  MagicLinkExpiredError,
+  MagicLinkInvalidError,
+  SESSION_COOKIE_NAME,
+  createAuthServiceFromEnv,
+} from '../../lib/auth';
+
+const token = Astro.url.searchParams.get('token')?.trim() ?? '';
+const db = Astro.locals.runtime?.env?.DB as D1Database | undefined;
+
+type AdminMagicView = 'missing' | 'expired' | 'invalid' | 'error';
+
+let view: AdminMagicView = 'missing';
+
+if (!token) {
+  view = 'missing';
+} else if (!db) {
+  view = 'error';
+} else {
+  const auth = createAuthServiceFromEnv(db, Astro.request, {
+    resendApiKey: RESEND_API_KEY,
+    fromEmail: FROM_EMAIL,
+  });
+
+  try {
+    const nextPath = Astro.cookies.get(AUTH_ADMIN_NEXT_COOKIE)?.value ?? null;
+    const { session, redirectPath } = await auth.activateAdminFromMagicLink(token, nextPath);
+    const secure = Astro.url.protocol === 'https:' || Astro.request.headers.get('x-forwarded-proto') === 'https';
+
+    Astro.cookies.set(SESSION_COOKIE_NAME, session.sessionToken, {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'lax',
+      secure,
+      maxAge: 30 * 24 * 60 * 60,
+    });
+
+    Astro.cookies.delete(AUTH_ADMIN_NEXT_COOKIE, { path: '/' });
+
+    return Astro.redirect(redirectPath);
+  } catch (error) {
+    if (error instanceof MagicLinkExpiredError) view = 'expired';
+    else if (error instanceof MagicLinkInvalidError) view = 'invalid';
+    else view = 'error';
+  }
+}
+
+const titles: Record<AdminMagicView, string> = {
+  missing: 'Admin magic link ongeldig | Star Local',
+  expired: 'Admin magic link verlopen | Star Local',
+  invalid: 'Admin magic link ongeldig | Star Local',
+  error: 'Admin-inloggen mislukt | Star Local',
+};
+---
+
+<AuthLayout title={titles[view]} description="Admin magic link verificatie." canonical="/auth/admin-magic/">
+  {view === 'expired' ? (
+    <section class="auth-card" aria-labelledby="admin-magic-expired-title">
+      <div class="auth-card__icon auth-card__icon--warning" aria-hidden="true">⏱</div>
+      <h1 id="admin-magic-expired-title">Admin-inloglink verlopen</h1>
+      <p>Deze inloglink is niet meer geldig. Vraag een nieuwe admin-inloglink aan.</p>
+      <div class="auth-actions">
+        <a class="btn btn-primary" href={AUTH_ROUTES.adminLogin}>Nieuwe admin-inloglink</a>
+      </div>
+    </section>
+  ) : (
+    <section class="auth-card" aria-labelledby="admin-magic-invalid-title">
+      <div class="auth-card__icon auth-card__icon--error" aria-hidden="true">!</div>
+      <h1 id="admin-magic-invalid-title">Admin-inloglink ongeldig</h1>
+      <p>
+        {view === 'error'
+          ? 'We konden uw admin-inloglink niet verwerken. Probeer opnieuw in te loggen.'
+          : 'Deze admin-inloglink is ongeldig of al gebruikt. Vraag een nieuwe link aan.'}
+      </p>
+      <div class="auth-actions">
+        <a class="btn btn-primary" href={AUTH_ROUTES.adminLogin}>Naar admin-inloggen</a>
+      </div>
+    </section>
+  )}
+</AuthLayout>

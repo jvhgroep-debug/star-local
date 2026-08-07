@@ -7,8 +7,10 @@ export interface CreateMagicLinkInput {
   tenantId?: string;
   redirectPath?: string;
   origin?: string;
-  /** When true (public /login/), only existing active customers with websites — or admins — receive a link. */
+  /** When true (public /login/), only existing active customers with websites receive a link. */
   existingCustomerOnly?: boolean;
+  /** When true (/admin/login/), only allowlisted admin e-mails receive a link. */
+  adminOnly?: boolean;
 }
 
 /** Result of creating a magic link (plain token only returned to mail layer, never stored). */

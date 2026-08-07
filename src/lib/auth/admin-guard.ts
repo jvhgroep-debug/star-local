@@ -2,9 +2,13 @@ import { ADMIN_ALLOWED_EMAILS, ADMIN_NOTIFICATION_EMAIL } from 'astro:env/server
 import type { D1Database } from '../db/d1';
 import { AUTH_ROUTES } from './constants';
 import { normalizeEmail } from './crypto';
-import { isAuthRedirect, requireAuthSession, type AuthGuardResult, type RequireAuthResult } from './guard';
+import { getAuthSession, getSessionTokenFromRequest } from './server';
+import type { AuthSessionContext } from './types';
 
-export type AdminGuardResult = RequireAuthResult | { redirect: string } | { forbidden: true };
+export type AdminGuardResult =
+  | { session: AuthSessionContext; tenantId: null }
+  | { redirect: string }
+  | { forbidden: true };
 
 function parseAdminAllowedEmails(): Set<string> {
   const raw = ADMIN_ALLOWED_EMAILS?.trim() || ADMIN_NOTIFICATION_EMAIL?.trim() || '';
@@ -22,29 +26,81 @@ export function isAdminEmail(email: string): boolean {
   return allowed.has(normalizeEmail(email));
 }
 
+export function isAdminLoginPath(pathname: string): boolean {
+  return pathname === '/admin/login' || pathname.startsWith('/admin/login/');
+}
+
+export function isAdminCheckEmailPath(pathname: string): boolean {
+  return pathname === '/admin/check-email' || pathname.startsWith('/admin/check-email/');
+}
+
+/** Admin login/check-email — no session required. */
+export function isAdminPublicAuthPath(pathname: string): boolean {
+  return isAdminLoginPath(pathname) || isAdminCheckEmailPath(pathname);
+}
+
+export function isAdminPagePath(pathname: string): boolean {
+  return pathname === '/admin' || pathname.startsWith('/admin/');
+}
+
+export function isAdminApiPath(pathname: string): boolean {
+  return pathname === '/api/admin' || pathname.startsWith('/api/admin/');
+}
+
+export function buildAdminLoginRedirect(url: URL): string {
+  const next = `${url.pathname}${url.search}`;
+  return `${AUTH_ROUTES.adminLogin}?next=${encodeURIComponent(next)}`;
+}
+
+function sanitizeRelativeRedirectPath(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const path = value.trim();
+  if (!path.startsWith('/') || path.startsWith('//')) return null;
+  return path;
+}
+
+export function sanitizeAdminRedirectPath(value: string | null | undefined): string | null {
+  const path = sanitizeRelativeRedirectPath(value);
+  if (!path) return null;
+  if (path === '/admin' || path.startsWith('/admin/')) {
+    if (isAdminPublicAuthPath(path)) return AUTH_ROUTES.adminDefault;
+    return path;
+  }
+  return AUTH_ROUTES.adminDefault;
+}
+
 export async function requireAdminSession(
   request: Request,
   db: D1Database | null | undefined,
   url: URL,
 ): Promise<AdminGuardResult> {
-  const auth = await requireAuthSession(request, db, url);
-  if (isAuthRedirect(auth)) {
-    return auth;
+  if (!db) {
+    return { redirect: `${AUTH_ROUTES.adminLogin}?error=unavailable` };
   }
 
-  if (!isAdminEmail(auth.session.user.email)) {
+  const sessionToken = getSessionTokenFromRequest(request);
+  const authSession = sessionToken ? await getAuthSession(db, sessionToken) : null;
+  if (!authSession) {
+    return { redirect: buildAdminLoginRedirect(url) };
+  }
+
+  if (!isAdminEmail(authSession.user.email)) {
     return { forbidden: true };
   }
 
-  return auth;
+  return { session: authSession, tenantId: null };
 }
 
 export function isAdminForbidden(value: AdminGuardResult): value is { forbidden: true } {
   return 'forbidden' in value;
 }
 
+export function isAdminAuthRedirect(value: AdminGuardResult): value is { redirect: string } {
+  return 'redirect' in value;
+}
+
 export function adminForbiddenRedirect(): string {
-  return `${AUTH_ROUTES.dashboard}?error=admin_forbidden`;
+  return `${AUTH_ROUTES.adminLogin}?error=forbidden`;
 }
 
 export function adminUnauthorizedJson(): Response {
@@ -59,45 +115,4 @@ export function adminForbiddenJson(): Response {
     status: 403,
     headers: { 'Content-Type': 'application/json' },
   });
-}
-
-export function isAdminPagePath(pathname: string): boolean {
-  return pathname === '/admin' || pathname.startsWith('/admin/');
-}
-
-export function isAdminApiPath(pathname: string): boolean {
-  return pathname === '/api/admin' || pathname.startsWith('/api/admin/');
-}
-
-export async function guardAdminRequest(
-  request: Request,
-  db: D1Database | null | undefined,
-  url: URL,
-): Promise<Response | null> {
-  if (!isAdminPagePath(url.pathname) && !isAdminApiPath(url.pathname)) {
-    return null;
-  }
-
-  const auth = await requireAdminSession(request, db, url);
-
-  if (isAdminApiPath(url.pathname)) {
-    if (isAuthRedirect(auth)) return adminUnauthorizedJson();
-    if (isAdminForbidden(auth)) return adminForbiddenJson();
-    return null;
-  }
-
-  if (isAuthRedirect(auth)) {
-    return Response.redirect(auth.redirect, 302);
-  }
-  if (isAdminForbidden(auth)) {
-    return Response.redirect(adminForbiddenRedirect(), 302);
-  }
-
-  return null;
-}
-
-/** Narrow auth guard result after admin checks (for route handlers). */
-export function assertAdminSession(value: AuthGuardResult | AdminGuardResult): RequireAuthResult | null {
-  if (isAuthRedirect(value) || isAdminForbidden(value)) return null;
-  return value;
 }

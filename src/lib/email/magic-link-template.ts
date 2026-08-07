@@ -1,8 +1,8 @@
 import { AUTH_ROUTES } from '../auth/constants';
 
-export function buildMagicLinkUrl(origin: string, plainToken: string): string {
+export function buildMagicLinkUrl(origin: string, plainToken: string, magicRoute = AUTH_ROUTES.magic): string {
   const base = origin.replace(/\/$/, '');
-  return `${base}${AUTH_ROUTES.magic}?token=${encodeURIComponent(plainToken)}`;
+  return `${base}${magicRoute}?token=${encodeURIComponent(plainToken)}`;
 }
 
 export function renderMagicLinkEmail(options: { magicUrl: string; minutesValid: number }): { subject: string; html: string; text: string } {

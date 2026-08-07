@@ -6,7 +6,7 @@ import '../styles/builder.css';
 import '../styles/dashboard.css';
 import '../styles/admin.css';
 import type { D1Database } from '../lib/db/d1';
-import { adminForbiddenRedirect, isAdminForbidden, isAuthRedirect, requireAdminSession } from '../lib/auth';
+import { adminForbiddenRedirect, isAdminAuthRedirect, isAdminForbidden, requireAdminSession } from '../lib/auth';
 
 interface Props {
   title: string;
@@ -19,7 +19,7 @@ const { title, description, canonical = Astro.url.pathname } = Astro.props;
 const db = Astro.locals.runtime?.env?.DB as D1Database | undefined;
 const authResult = await requireAdminSession(Astro.request, db, Astro.url);
 
-if (isAuthRedirect(authResult)) {
+if (isAdminAuthRedirect(authResult)) {
   return Astro.redirect(authResult.redirect);
 }
 if (isAdminForbidden(authResult)) {

@@ -1,0 +1,126 @@
+---
+export const prerender = false;
+
+import AuthLayout from '../../layouts/AuthLayout.astro';
+import { AUTH_ROUTES } from '../../lib/auth/constants';
+import { sanitizeAdminRedirectPath } from '../../lib/auth/admin-guard';
+
+const nextParam = Astro.url.searchParams.get('next');
+const next = sanitizeAdminRedirectPath(nextParam) ?? AUTH_ROUTES.adminDefault;
+const error = Astro.url.searchParams.get('error');
+const prefilledEmail = Astro.url.searchParams.get('email') ?? '';
+---
+
+<AuthLayout
+  title="Admin inloggen | Star Local"
+  description="Beveiligde admin-inlog voor het Star Local beheerpaneel."
+  canonical="/admin/login/"
+>
+  <section class="auth-card" aria-labelledby="admin-login-title">
+    <div class="auth-card__icon auth-card__icon--info" aria-hidden="true">⚙</div>
+    <h1 id="admin-login-title">Star Local Admin</h1>
+    <p>
+      Vul uw beheerders-e-mailadres in. Als dit adres is geautoriseerd, ontvangt u een beveiligde inloglink
+      (15 minuten geldig).
+    </p>
+
+    {error === 'unavailable' ? (
+      <p class="auth-alert auth-alert--error" role="alert">Admin-inloggen is tijdelijk niet beschikbaar. Probeer het later opnieuw.</p>
+    ) : null}
+
+    {error === 'forbidden' ? (
+      <p class="auth-alert auth-alert--error" role="alert">Dit account heeft geen toegang tot het beheerpaneel.</p>
+    ) : null}
+
+    <form class="auth-form" id="admin-login-form" method="post" action="/api/auth/admin-magic-link/">
+      <label for="admin-login-email">
+        Beheerders-e-mailadres
+        <input
+          id="admin-login-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          value={prefilledEmail}
+          placeholder="admin@starlocal.nl"
+        />
+      </label>
+      <input type="hidden" name="next" value={next} />
+      <p class="auth-alert auth-alert--error" id="admin-login-error" hidden role="alert"></p>
+      <button type="submit" class="btn btn-primary" id="admin-login-submit">Admin-inloglink versturen</button>
+    </form>
+
+    <p class="auth-muted" style="margin-top: 1rem;">
+      Alleen geautoriseerde Star Local-beheerders. Klanten loggen in via
+      <a href={AUTH_ROUTES.login}>het klantendashboard</a>.
+    </p>
+  </section>
+</AuthLayout>
+
+<script>
+  const form = document.getElementById('admin-login-form') as HTMLFormElement | null;
+  const errorEl = document.getElementById('admin-login-error');
+  const submitBtn = document.getElementById('admin-login-submit') as HTMLButtonElement | null;
+  let csrfToken = '';
+
+  void fetch('/api/customer/csrf/', { headers: { Accept: 'application/json' } })
+    .then((response) => response.json())
+    .then((data: { token?: string }) => {
+      csrfToken = data.token ?? '';
+    })
+    .catch(() => undefined);
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form || !submitBtn) return;
+
+    const emailInput = form.querySelector('#admin-login-email') as HTMLInputElement | null;
+    const email = emailInput?.value.trim() ?? '';
+    if (!email) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Versturen…';
+    errorEl?.setAttribute('hidden', '');
+
+    try {
+      const nextInput = form.querySelector('input[name="next"]') as HTMLInputElement | null;
+      const next = nextInput?.value ?? '';
+      const response = await fetch('/api/auth/admin-magic-link/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(csrfToken ? { 'x-csrf-token': csrfToken } : {}),
+        },
+        body: JSON.stringify({ email, next: next || undefined }),
+      });
+      const data = (await response.json()) as {
+        ok: boolean;
+        message?: string;
+        redirect?: string;
+        devMagicUrl?: string;
+      };
+
+      if (!response.ok || !data.ok) {
+        if (errorEl) {
+          errorEl.textContent = data.message ?? 'Inloglink versturen mislukt.';
+          errorEl.removeAttribute('hidden');
+        }
+        return;
+      }
+
+      if (data.devMagicUrl) {
+        sessionStorage.setItem('starlocal-dev-admin-magic-url', data.devMagicUrl);
+      }
+
+      window.location.href = data.redirect ?? `/admin/check-email/?email=${encodeURIComponent(email.toLowerCase())}`;
+    } catch {
+      if (errorEl) {
+        errorEl.textContent = 'Verbinding mislukt. Probeer het opnieuw.';
+        errorEl.removeAttribute('hidden');
+      }
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Admin-inloglink versturen';
+    }
+  });
+</script>
