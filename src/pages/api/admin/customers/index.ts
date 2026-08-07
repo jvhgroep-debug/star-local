@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
-import type { D1Database } from '../../../../lib/db/d1';
 import { AuthRepository } from '../../../../lib/auth/repository';
+import { isAdminApiDenied, requireAdminApiAccess } from '../../../../lib/admin/api-guard';
 import { CustomerRepository, WebsitePermissionRepository } from '../../../../lib/customer-portal/repositories';
 
 export const prerender = false;
@@ -12,13 +12,10 @@ function json(body: Record<string, unknown>, status = 200): Response {
   });
 }
 
-function getDatabase(locals: App.Locals): D1Database | null {
-  return (locals.runtime as { env?: { DB?: D1Database } })?.env?.DB ?? null;
-}
-
-export const GET: APIRoute = async ({ locals }) => {
-  const db = getDatabase(locals);
-  if (!db) return json({ ok: false, message: 'Database niet beschikbaar.' }, 503);
+export const GET: APIRoute = async ({ locals, request, url }) => {
+  const access = await requireAdminApiAccess(request, locals, url);
+  if (isAdminApiDenied(access)) return access;
+  const { db } = access;
 
   const customers = new CustomerRepository(db);
   const permissions = new WebsitePermissionRepository(db);
@@ -40,9 +37,10 @@ export const GET: APIRoute = async ({ locals }) => {
   return json({ ok: true, items });
 };
 
-export const POST: APIRoute = async ({ request, locals }) => {
-  const db = getDatabase(locals);
-  if (!db) return json({ ok: false, message: 'Database niet beschikbaar.' }, 503);
+export const POST: APIRoute = async ({ request, locals, url }) => {
+  const access = await requireAdminApiAccess(request, locals, url);
+  if (isAdminApiDenied(access)) return access;
+  const { db } = access;
 
   let body: { customerId?: string; action?: 'revoke_magic_links' | 'revoke_sessions' };
   try {

@@ -1,4 +1,6 @@
 import { defineMiddleware } from 'astro:middleware';
+import type { D1Database } from './lib/db/d1';
+import { guardAdminRequest } from './lib/auth/admin-guard';
 import {
   getSubdomainFromHostname,
   isPotentialTenantHostname,
@@ -12,6 +14,11 @@ const isDev = import.meta.env.DEV;
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const host = context.request.headers.get('host') ?? '';
+  const url = new URL(context.request.url);
+  const db = context.locals.runtime?.env?.DB as D1Database | undefined;
+
+  const adminBlock = await guardAdminRequest(context.request, db, url);
+  if (adminBlock) return adminBlock;
 
   // app.starlocal.nl / app.localhost → dashboard (redirect root to /dashboard/)
   if (isStarLocalAppHostname(host)) {
@@ -27,11 +34,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   const slug = getSubdomainFromHostname(host);
-  const db = context.locals.runtime?.env?.DB;
+  const tenantDb = context.locals.runtime?.env?.DB;
   const media = context.locals.runtime?.env?.MEDIA;
 
-  if (db && media) {
-    return serveTenantSiteRequest(context.request, db, media);
+  if (tenantDb && media) {
+    return serveTenantSiteRequest(context.request, tenantDb, media);
   }
 
   // Dev preview without D1/R2 (e.g. bakkerij-de-markt.localhost:4322)

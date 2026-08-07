@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
-import type { D1Database } from '../../../../lib/db/d1';
 import { ChangeRequestService } from '../../../../lib/change-requests/service';
+import { isAdminApiDenied, requireAdminApiAccess } from '../../../../lib/admin/api-guard';
 import {
   CHANGE_REQUEST_STATUS_LABELS,
   CHANGE_REQUEST_TYPE_LABELS,
@@ -18,13 +18,10 @@ function json(body: Record<string, unknown>, status = 200): Response {
   });
 }
 
-function getDb(locals: App.Locals): D1Database | null {
-  return (locals.runtime as { env?: { DB?: D1Database } })?.env?.DB ?? null;
-}
-
-export const GET: APIRoute = async ({ locals, url }) => {
-  const db = getDb(locals);
-  if (!db) return json({ ok: false, message: 'Database niet beschikbaar.' }, 503);
+export const GET: APIRoute = async ({ locals, url, request }) => {
+  const access = await requireAdminApiAccess(request, locals, url);
+  if (isAdminApiDenied(access)) return access;
+  const { db } = access;
 
   const service = new ChangeRequestService(db);
   const id = url.searchParams.get('id');
@@ -46,9 +43,10 @@ export const GET: APIRoute = async ({ locals, url }) => {
   });
 };
 
-export const PATCH: APIRoute = async ({ request, locals }) => {
-  const db = getDb(locals);
-  if (!db) return json({ ok: false, message: 'Database niet beschikbaar.' }, 503);
+export const PATCH: APIRoute = async ({ request, locals, url }) => {
+  const access = await requireAdminApiAccess(request, locals, url);
+  if (isAdminApiDenied(access)) return access;
+  const { db } = access;
 
   let body: { id?: string; status?: ChangeRequestStatus; adminNotes?: string };
   try {

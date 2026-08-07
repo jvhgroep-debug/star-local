@@ -1,19 +1,13 @@
 import type { APIRoute } from 'astro';
-import type { D1Database } from '../../../../lib/db/d1';
+import { isAdminApiDenied, requireAdminApiAccess } from '../../../../lib/admin/api-guard';
 import { loadActivePublicationPackage, readPublicationBinary, readPublicationFile } from '../../../../lib/publication/package-reader';
 
 export const prerender = false;
 
-function getDatabase(locals: App.Locals): D1Database | null {
-  const runtime = locals.runtime as { env?: { DB?: D1Database } } | undefined;
-  return runtime?.env?.DB ?? null;
-}
-
-export const GET: APIRoute = async ({ url, locals }) => {
-  const db = getDatabase(locals);
-  if (!db) {
-    return new Response(JSON.stringify({ ok: false, message: 'Database niet beschikbaar.' }), { status: 503 });
-  }
+export const GET: APIRoute = async ({ url, locals, request }) => {
+  const access = await requireAdminApiAccess(request, locals, url);
+  if (isAdminApiDenied(access)) return access;
+  const { db } = access;
 
   const websiteId = url.searchParams.get('id')?.trim();
   const filePath = url.searchParams.get('path')?.trim() ?? 'index.html';

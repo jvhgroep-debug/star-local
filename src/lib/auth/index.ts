@@ -22,6 +22,15 @@ export { createSession, destroySession } from './session';
 export { normalizeEmail } from './crypto';
 export { requireAuthSession, isAuthRedirect } from './guard';
 export {
+  requireAdminSession,
+  isAdminForbidden,
+  isAdminEmail,
+  guardAdminRequest,
+  isAdminPagePath,
+  isAdminApiPath,
+  adminForbiddenRedirect,
+} from './admin-guard';
+export {
   buildSessionCookie,
   clearSessionCookie,
   createAuthServiceFromEnv,

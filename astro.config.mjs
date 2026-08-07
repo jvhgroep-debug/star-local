@@ -32,6 +32,11 @@ export default defineConfig({
         access: 'secret',
         optional: true,
       }),
+      ADMIN_ALLOWED_EMAILS: envField.string({
+        context: 'server',
+        access: 'secret',
+        optional: true,
+      }),
       APP_BASE_URL: envField.string({
         context: 'server',
         access: 'public',

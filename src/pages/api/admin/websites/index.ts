@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro';
 import { RESEND_API_KEY, FROM_EMAIL } from 'astro:env/server';
 import type { ApprovalStatus } from '../../../../types/approval';
-import type { D1Database } from '../../../../lib/db/d1';
 import { AdminQueueRepository } from '../../../../lib/admin/admin-queue.repository';
+import { isAdminApiDenied, requireAdminApiAccess } from '../../../../lib/admin/api-guard';
 import { sendAdminApprovalNotification } from '../../../../lib/email/admin-notifications';
 
 export const prerender = false;
@@ -14,16 +14,10 @@ function json(body: Record<string, unknown>, status = 200): Response {
   });
 }
 
-function getDatabase(locals: App.Locals): D1Database | null {
-  const runtime = locals.runtime as { env?: { DB?: D1Database } } | undefined;
-  return runtime?.env?.DB ?? null;
-}
-
-export const GET: APIRoute = async ({ url, locals }) => {
-  const db = getDatabase(locals);
-  if (!db) {
-    return json({ ok: false, message: 'Database niet beschikbaar.' }, 503);
-  }
+export const GET: APIRoute = async ({ url, locals, request }) => {
+  const access = await requireAdminApiAccess(request, locals, url);
+  if (isAdminApiDenied(access)) return access;
+  const { db } = access;
 
   const repo = new AdminQueueRepository(db);
   const id = url.searchParams.get('id');
@@ -41,11 +35,10 @@ export const GET: APIRoute = async ({ url, locals }) => {
   return json({ ok: true, items });
 };
 
-export const PATCH: APIRoute = async ({ request, locals }) => {
-  const db = getDatabase(locals);
-  if (!db) {
-    return json({ ok: false, message: 'Database niet beschikbaar.' }, 503);
-  }
+export const PATCH: APIRoute = async ({ request, locals, url }) => {
+  const access = await requireAdminApiAccess(request, locals, url);
+  if (isAdminApiDenied(access)) return access;
+  const { db } = access;
 
   let body: {
     id?: string;
@@ -92,11 +85,10 @@ export const PATCH: APIRoute = async ({ request, locals }) => {
   return json({ ok: true, item });
 };
 
-export const DELETE: APIRoute = async ({ request, locals }) => {
-  const db = getDatabase(locals);
-  if (!db) {
-    return json({ ok: false, message: 'Database niet beschikbaar.' }, 503);
-  }
+export const DELETE: APIRoute = async ({ request, locals, url }) => {
+  const access = await requireAdminApiAccess(request, locals, url);
+  if (isAdminApiDenied(access)) return access;
+  const { db } = access;
 
   let body: { id?: string };
   try {

@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import type { D1Database } from '../../../../lib/db/d1';
 import { AdminQueueRepository } from '../../../../lib/admin/admin-queue.repository';
+import { isAdminApiDenied, requireAdminApiAccess } from '../../../../lib/admin/api-guard';
 import { parsePublicationSteps } from '../../../../lib/admin/admin-publication.service';
 
 export const prerender = false;
@@ -17,11 +18,10 @@ function getDatabase(locals: App.Locals): D1Database | null {
   return runtime?.env?.DB ?? null;
 }
 
-export const GET: APIRoute = async ({ url, locals }) => {
-  const db = getDatabase(locals);
-  if (!db) {
-    return json({ ok: false, message: 'Database niet beschikbaar.' }, 503);
-  }
+export const GET: APIRoute = async ({ url, locals, request }) => {
+  const access = await requireAdminApiAccess(request, locals, url);
+  if (isAdminApiDenied(access)) return access;
+  const { db } = access;
 
   const id = url.searchParams.get('id')?.trim();
   if (!id) {

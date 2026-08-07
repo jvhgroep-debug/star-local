@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
-import type { D1Database } from '../../../../lib/db/d1';
 import type { R2Bucket } from '../../../../lib/media/r2';
 import { AdminQueueRepository } from '../../../../lib/admin/admin-queue.repository';
+import { isAdminApiDenied, requireAdminApiAccess } from '../../../../lib/admin/api-guard';
 import { runAdminPublicationOnServer } from '../../../../lib/admin/admin-publication.service';
 
 export const prerender = false;
@@ -13,19 +13,13 @@ function json(body: Record<string, unknown>, status = 200): Response {
   });
 }
 
-function getRuntimeEnv(locals: App.Locals): { db: D1Database | null; media: R2Bucket | null } {
-  const runtime = locals.runtime as { env?: { DB?: D1Database; MEDIA?: R2Bucket } } | undefined;
-  return {
-    db: runtime?.env?.DB ?? null,
-    media: runtime?.env?.MEDIA ?? null,
-  };
-}
+export const POST: APIRoute = async ({ request, locals, url }) => {
+  const access = await requireAdminApiAccess(request, locals, url);
+  if (isAdminApiDenied(access)) return access;
 
-export const POST: APIRoute = async ({ request, locals }) => {
-  const { db, media } = getRuntimeEnv(locals);
-  if (!db) {
-    return json({ ok: false, message: 'Database niet beschikbaar.' }, 503);
-  }
+  const { db } = access;
+  const runtime = locals.runtime as { env?: { MEDIA?: R2Bucket } } | undefined;
+  const media = runtime?.env?.MEDIA ?? null;
 
   let body: { id?: string };
   try {
