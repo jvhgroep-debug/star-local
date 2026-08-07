@@ -7,9 +7,9 @@ import {
   isAdminApiPath,
   isAdminForbidden,
   isAdminPagePath,
-  isAuthRedirect,
   requireAdminSession,
 } from './lib/auth/admin-guard';
+import { isAuthRedirect } from './lib/auth/guard';
 import {
   getSubdomainFromHostname,
   isPotentialTenantHostname,
