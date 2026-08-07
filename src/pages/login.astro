@@ -18,7 +18,7 @@ const prefilledEmail = Astro.url.searchParams.get('email') ?? '';
   <section class="auth-card" aria-labelledby="login-title">
     <div class="auth-card__icon auth-card__icon--info" aria-hidden="true">✉</div>
     <h1 id="login-title">Inloggen op uw dashboard</h1>
-    <p>Vul uw e-mailadres in. U ontvangt een beveiligde inloglink die 15 minuten geldig is.</p>
+    <p>Vul uw e-mailadres in. Als dit e-mailadres bij ons bekend is, ontvangt u een beveiligde inloglink die 15 minuten geldig is.</p>
 
     {loggedOut ? (
       <p class="auth-alert auth-alert--success" role="status">U bent succesvol uitgelogd.</p>

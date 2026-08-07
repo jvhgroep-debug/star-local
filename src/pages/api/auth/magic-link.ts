@@ -69,7 +69,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
   try {
     const origin = new URL(request.url).origin;
-    const { emailSent, plainToken } = await auth.requestMagicLink({ email, tenantId, origin }, request);
+    const { emailSent, plainToken, suppressed } = await auth.requestMagicLink(
+      { email, tenantId, origin, existingCustomerOnly: true },
+      request,
+    );
     const headers = new Headers({ 'Content-Type': 'application/json' });
     if (nextPath) {
       headers.append(
@@ -89,7 +92,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       redirect: `${AUTH_ROUTES.checkEmail}?${redirectParams.toString()}`,
     };
 
-    if (import.meta.env.DEV && !emailSent) {
+    if (import.meta.env.DEV && !emailSent && !suppressed && plainToken) {
       const devMagicUrl = buildMagicLinkUrl(origin, plainToken);
       console.info('[auth/dev] Magic link (e-mail niet verzonden):', devMagicUrl);
       body.devMagicUrl = devMagicUrl;

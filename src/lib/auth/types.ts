@@ -7,14 +7,18 @@ export interface CreateMagicLinkInput {
   tenantId?: string;
   redirectPath?: string;
   origin?: string;
+  /** When true (public /login/), only existing active customers with websites — or admins — receive a link. */
+  existingCustomerOnly?: boolean;
 }
 
 /** Result of creating a magic link (plain token only returned to mail layer, never stored). */
 export interface CreateMagicLinkResult {
-  magicLink: MagicLink;
+  magicLink: MagicLink | null;
   /** One-time plaintext token for e-mail delivery. Must not be persisted in D1. */
-  plainToken: string;
+  plainToken: string | null;
   emailSent: boolean;
+  /** Login attempt for unknown/ineligible e-mail — respond generically, no side effects. */
+  suppressed?: boolean;
 }
 
 /** Input for validating a magic link token from a verification URL. */

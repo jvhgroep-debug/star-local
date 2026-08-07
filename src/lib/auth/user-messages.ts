@@ -19,3 +19,7 @@ export const AUTH_UNAVAILABLE_MESSAGE =
 
 export const AUTH_MAGIC_LINK_FAILED_MESSAGE =
   'Inloglink verzenden mislukt. Probeer het opnieuw.';
+
+/** Generic success copy — same for known and unknown e-mail addresses (privacy). */
+export const AUTH_MAGIC_LINK_GENERIC_SUCCESS =
+  'Als dit e-mailadres bij ons bekend is, ontvangt u een inloglink.';

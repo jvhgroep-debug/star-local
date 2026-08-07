@@ -18,11 +18,11 @@ const emailSent = Astro.url.searchParams.get('emailSent') !== '0';
     <h1 id="check-email-title">Controleer uw e-mail</h1>
     {email ? (
       <p>
-        We hebben een inloglink gestuurd naar <span class="auth-email-highlight">{email}</span>.
-        Klik op de link in de e-mail om uw dashboard te openen.
+        Als <span class="auth-email-highlight">{email}</span> bij ons bekend is, ontvangt u een inloglink per e-mail.
+        Klik op de link om uw dashboard te openen.
       </p>
     ) : (
-      <p>We hebben een inloglink naar uw e-mailadres gestuurd. Klik op de link om uw dashboard te openen.</p>
+      <p>Als dit e-mailadres bij ons bekend is, ontvangt u een inloglink. Klik op de link om uw dashboard te openen.</p>
     )}
     {!emailSent ? (
       <div class="auth-dev-panel" id="auth-dev-panel" hidden>

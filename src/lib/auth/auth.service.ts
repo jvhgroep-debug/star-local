@@ -1,8 +1,9 @@
 import type { D1Database } from '../db/d1';
 import { createResendEmailService } from '../email/resend';
 import { renderMagicLinkEmail, buildMagicLinkUrl } from '../email/magic-link-template';
-import { CustomerRepository } from '../customer-portal/repositories';
+import { CustomerRepository, WebsitePermissionRepository } from '../customer-portal/repositories';
 import { AuthRateLimitService, clientIp } from '../customer-portal/rate-limit';
+import { isAdminEmail } from './admin-guard';
 import { AUTH_ROUTES, EMAIL_PATTERN, MAGIC_LINK_TTL_SECONDS, SESSION_COOKIE_NAME, SESSION_TTL_SECONDS } from './constants';
 import { generateSecureToken, hashSecret, normalizeEmail } from './crypto';
 import { AuthValidationError, MagicLinkExpiredError, MagicLinkInvalidError } from './errors';
@@ -17,6 +18,9 @@ import type {
   ValidateMagicLinkInput,
   ValidateMagicLinkResult,
 } from './types';
+import type { User } from '../../types/auth';
+
+const LOGIN_TIMING_DELAY_MS = 400;
 
 export interface AuthServiceOptions {
   resendApiKey?: string;
@@ -27,6 +31,7 @@ export interface AuthServiceOptions {
 export class AuthService {
   private readonly repo: AuthRepository;
   private readonly customers: CustomerRepository;
+  private readonly permissions: WebsitePermissionRepository;
   private readonly rateLimit: AuthRateLimitService;
 
   constructor(
@@ -35,6 +40,7 @@ export class AuthService {
   ) {
     this.repo = new AuthRepository(db);
     this.customers = new CustomerRepository(db);
+    this.permissions = new WebsitePermissionRepository(db);
     this.rateLimit = new AuthRateLimitService(db);
   }
 
@@ -59,6 +65,57 @@ export class AuthService {
 
     await this.repo.purgeExpiredMagicLinks();
 
+    if (input.existingCustomerOnly) {
+      return this.requestExistingCustomerMagicLink(email, input);
+    }
+
+    return this.requestOnboardingMagicLink(email, input);
+  }
+
+  /** Public /login/ — no auto-registration; privacy-safe suppression for unknown e-mails. */
+  private async requestExistingCustomerMagicLink(
+    email: string,
+    input: CreateMagicLinkInput,
+  ): Promise<CreateMagicLinkResult> {
+    const eligibleCustomer = await this.customers.findLoginEligibleByEmail(email);
+    const adminEligible = isAdminEmail(email);
+
+    if (!eligibleCustomer && !adminEligible) {
+      await delayForLoginTiming();
+      return { magicLink: null, plainToken: null, emailSent: true, suppressed: true };
+    }
+
+    await delayForLoginTiming();
+
+    let user: User;
+    let customerId: string | null = null;
+
+    if (eligibleCustomer) {
+      user = eligibleCustomer.userId
+        ? (await this.repo.findUserById(eligibleCustomer.userId)) ?? (await this.repo.upsertUserByEmail(email))
+        : await this.repo.upsertUserByEmail(email);
+      if (!eligibleCustomer.userId) {
+        await this.customers.linkUserToCustomer(eligibleCustomer.id, user.id);
+      }
+      customerId = eligibleCustomer.id;
+    } else {
+      user = await this.repo.upsertUserByEmail(email);
+    }
+
+    return this.issueMagicLink({
+      user,
+      email,
+      tenantId: input.tenantId ?? null,
+      customerId,
+      origin: input.origin,
+    });
+  }
+
+  /** Website save/publish onboarding — may create user + customer records. */
+  private async requestOnboardingMagicLink(
+    email: string,
+    input: CreateMagicLinkInput,
+  ): Promise<CreateMagicLinkResult> {
     const user = await this.repo.upsertUserByEmail(email);
     const customer = await this.customers.upsertFromUser({ userId: user.id, email });
 
@@ -66,7 +123,23 @@ export class AuthService {
       await this.repo.ensureTenantOwner(input.tenantId, user.id);
     }
 
-    await this.repo.deleteMagicLinksForUser(user.id);
+    return this.issueMagicLink({
+      user,
+      email,
+      tenantId: input.tenantId ?? null,
+      customerId: customer.id,
+      origin: input.origin,
+    });
+  }
+
+  private async issueMagicLink(input: {
+    user: User;
+    email: string;
+    tenantId: string | null;
+    customerId: string | null;
+    origin?: string;
+  }): Promise<CreateMagicLinkResult> {
+    await this.repo.deleteMagicLinksForUser(input.user.id);
 
     const plainToken = generateSecureToken(32);
     const tokenHash = await hashSecret(plainToken);
@@ -75,15 +148,19 @@ export class AuthService {
 
     const magicLink = await this.repo.createMagicLink({
       id: crypto.randomUUID(),
-      userId: user.id,
-      tenantId: input.tenantId ?? null,
-      customerId: customer.id,
+      userId: input.user.id,
+      tenantId: input.tenantId,
+      customerId: input.customerId,
       tokenHash,
       expiresAt,
       createdAt: now.toISOString(),
     });
 
-    await this.sendMagicLinkEmail(email, plainToken, input.origin ?? this.options.origin ?? 'https://www.starlocal.nl');
+    await this.sendMagicLinkEmail(
+      input.email,
+      plainToken,
+      input.origin ?? this.options.origin ?? 'https://www.starlocal.nl',
+    );
 
     const emailSent = Boolean(this.options.resendApiKey?.trim() && this.options.fromEmail?.trim());
 
@@ -186,18 +263,50 @@ export class AuthService {
     fallbackRedirectPath?: string | null,
   ): Promise<{ session: CreateSessionResult; redirectPath: string }> {
     const { user, magicLink } = await this.validateMagicLink({ plainToken });
-    const customer = await this.customers.upsertFromUser({ userId: user.id, email: user.email });
+    const customer = await this.customers.findByEmail(user.email);
+    const isAdmin = isAdminEmail(user.email);
+
+    if (isAdmin) {
+      const session = await this.createSession({
+        userId: user.id,
+        tenantId: magicLink.tenantId,
+        customerId: customer?.id ?? magicLink.customerId ?? null,
+      });
+      const redirectPath =
+        sanitizeAuthRedirectPath(fallbackRedirectPath) ??
+        (magicLink.tenantId
+          ? `${AUTH_ROUTES.dashboard}?tenantId=${encodeURIComponent(magicLink.tenantId)}`
+          : AUTH_ROUTES.dashboard);
+      return { session, redirectPath };
+    }
+
+    if (!customer || customer.status !== 'active') {
+      throw new MagicLinkInvalidError();
+    }
+
+    const websites = await this.permissions.listWebsitesForCustomer(customer.id);
+    if (websites.length === 0) {
+      throw new MagicLinkInvalidError();
+    }
+
+    if (!customer.userId) {
+      await this.customers.linkUserToCustomer(customer.id, user.id);
+    }
+
+    const tenantId =
+      magicLink.tenantId && websites.some((site) => site.tenantId === magicLink.tenantId)
+        ? magicLink.tenantId
+        : websites[0]?.tenantId ?? null;
+
     const session = await this.createSession({
       userId: user.id,
-      tenantId: magicLink.tenantId,
+      tenantId,
       customerId: customer.id,
     });
 
     const redirectPath =
       sanitizeAuthRedirectPath(fallbackRedirectPath) ??
-      (magicLink.tenantId
-        ? `${AUTH_ROUTES.dashboard}?tenantId=${encodeURIComponent(magicLink.tenantId)}`
-        : AUTH_ROUTES.dashboard);
+      (tenantId ? `${AUTH_ROUTES.dashboard}?tenantId=${encodeURIComponent(tenantId)}` : AUTH_ROUTES.dashboard);
 
     return { session, redirectPath };
   }
@@ -227,4 +336,8 @@ export function sanitizeAuthRedirectPath(value: string | null | undefined): stri
   const path = value.trim();
   if (!path.startsWith('/') || path.startsWith('//')) return null;
   return path;
+}
+
+function delayForLoginTiming(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, LOGIN_TIMING_DELAY_MS));
 }

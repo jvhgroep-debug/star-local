@@ -39,6 +39,26 @@ export class CustomerRepository {
     return row ? mapCustomer(row) : null;
   }
 
+  async findLoginEligibleByEmail(email: string): Promise<CustomerRecord | null> {
+    const customer = await this.findByEmail(email);
+    if (!customer || customer.status !== 'active') return null;
+
+    const row = await this.db
+      .prepare('SELECT COUNT(*) AS count FROM website_permissions WHERE customer_id = ?')
+      .bind(customer.id)
+      .first<{ count: number }>();
+
+    if (!row || Number(row.count) < 1) return null;
+    return customer;
+  }
+
+  async linkUserToCustomer(customerId: string, userId: string): Promise<void> {
+    await this.db
+      .prepare('UPDATE customers SET user_id = ?, updated_at = ? WHERE id = ?')
+      .bind(userId, new Date().toISOString(), customerId)
+      .run();
+  }
+
   async upsertFromUser(input: {
     userId: string;
     email: string;
