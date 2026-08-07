@@ -1,6 +1,15 @@
 import { defineMiddleware } from 'astro:middleware';
 import type { D1Database } from './lib/db/d1';
-import { guardAdminRequest } from './lib/auth/admin-guard';
+import {
+  adminForbiddenRedirect,
+  adminForbiddenJson,
+  adminUnauthorizedJson,
+  isAdminApiPath,
+  isAdminForbidden,
+  isAdminPagePath,
+  isAuthRedirect,
+  requireAdminSession,
+} from './lib/auth/admin-guard';
 import {
   getSubdomainFromHostname,
   isPotentialTenantHostname,
@@ -17,8 +26,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const url = new URL(context.request.url);
   const db = context.locals.runtime?.env?.DB as D1Database | undefined;
 
-  const adminBlock = await guardAdminRequest(context.request, db, url);
-  if (adminBlock) return adminBlock;
+  if (isAdminPagePath(url.pathname) || isAdminApiPath(url.pathname)) {
+    const auth = await requireAdminSession(context.request, db, url);
+
+    if (isAdminApiPath(url.pathname)) {
+      if (isAuthRedirect(auth)) return adminUnauthorizedJson();
+      if (isAdminForbidden(auth)) return adminForbiddenJson();
+    } else {
+      if (isAuthRedirect(auth)) return context.redirect(auth.redirect);
+      if (isAdminForbidden(auth)) return context.redirect(adminForbiddenRedirect());
+    }
+  }
 
   // app.starlocal.nl / app.localhost → dashboard (redirect root to /dashboard/)
   if (isStarLocalAppHostname(host)) {
