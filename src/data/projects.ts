@@ -41,7 +41,7 @@ export const projects: Project[] = [
     image: '/images/projects/project-star-local.webp',
     fallbackImage: IMAGES.heroHome,
     featured: true,
-    status: 'development',
+    status: 'live',
     filters: ['website', 'seo', 'platform'],
   },
   {
@@ -151,8 +151,26 @@ export const projects: Project[] = [
     image: '/images/projects/project-city-ticket-go.webp',
     fallbackImage: IMAGES.heroGoogleBusiness,
     featured: true,
-    status: 'development',
+    status: 'live',
     filters: ['platform'],
+  },
+  {
+    name: 'Dakvakmannen.nl',
+    slug: 'dakvakmannen',
+    categoryNl: 'Leadplatform & lokale SEO',
+    categoryEn: 'Lead platform & local SEO',
+    descriptionNl:
+      'Een platform dat huiseigenaren en bedrijven koppelt aan betrouwbare dakvakmannen in hun regio, met duidelijke aanvragen en lokale vindbaarheid.',
+    descriptionEn:
+      'A platform connecting homeowners and businesses with trusted roofing professionals in their area, with clear requests and local visibility.',
+    website: 'https://dakvakmannen.nl/',
+    displayUrl: 'dakvakmannen.nl',
+    image: '/images/projects/project-dakvakmannen.webp',
+    fallbackImage: IMAGES.heroSeo,
+    pendingScreenshot: true,
+    featured: true,
+    status: 'live',
+    filters: ['platform', 'website', 'seo'],
   },
   {
     name: 'BMD House Dubai',
