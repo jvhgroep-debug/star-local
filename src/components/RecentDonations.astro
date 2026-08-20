@@ -1,0 +1,121 @@
+---
+import type { RecentDonation } from '../data/donations';
+import { formatDonationDate, formatEuro } from '../data/donations';
+
+interface Props {
+  donations: RecentDonation[];
+}
+
+const { donations } = Astro.props;
+---
+
+{
+  donations.length > 0 && (
+    <section class="recent-donations" aria-label="Recente donaties">
+      <div class="container recent-donations__inner">
+        <h2 class="recent-donations__title">Recente donaties ❤️</h2>
+        <ul class="recent-donations__list">
+          {donations.map((donation) => (
+            <li class="recent-donations__item">
+              <span class="recent-donations__name">{donation.name}</span>
+              <span class="recent-donations__sep" aria-hidden="true">
+                —
+              </span>
+              <span class="recent-donations__amount">{formatEuro(donation.amount)}</span>
+              <span class="recent-donations__sep" aria-hidden="true">
+                —
+              </span>
+              <time class="recent-donations__date" datetime={donation.date}>
+                {formatDonationDate(donation.date)}
+              </time>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .recent-donations {
+    padding: 0 0 2rem;
+  }
+
+  .recent-donations__inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.75rem 1.5rem;
+    background: rgba(205, 184, 128, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .recent-donations__title {
+    margin: 0 0 1.25rem;
+    color: var(--gold);
+    font-size: clamp(1.2rem, 2.5vw, 1.45rem);
+    line-height: 1.35;
+  }
+
+  .recent-donations__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .recent-donations__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.45rem 0.55rem;
+    padding: 0.85rem 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: 0.98rem;
+    line-height: 1.5;
+  }
+
+  .recent-donations__name {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .recent-donations__amount {
+    color: var(--gold-light);
+    font-weight: 700;
+  }
+
+  .recent-donations__date {
+    color: var(--text-soft);
+    font-size: 0.92rem;
+  }
+
+  .recent-donations__sep {
+    color: var(--text-soft);
+    user-select: none;
+  }
+
+  @media (max-width: 600px) {
+    .recent-donations {
+      padding-bottom: 1.5rem;
+    }
+
+    .recent-donations__inner {
+      padding: 1.35rem 1.15rem;
+    }
+
+    .recent-donations__item {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .recent-donations__sep {
+      display: none;
+    }
+  }
+</style>

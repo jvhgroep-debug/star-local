@@ -1,0 +1,205 @@
+---
+import type { DonationCampaign } from '../data/donations';
+import { getDonationProgress, STRIPE_PUBLISHABLE_KEY } from '../data/donations';
+
+interface Props {
+  campaign: DonationCampaign;
+}
+
+const { campaign } = Astro.props;
+const { percent, percentFormatted, raisedFormatted, goalFormatted } = getDonationProgress(campaign);
+const hasStripeBuyButton = campaign.stripeBuyButtonId.trim().length > 0;
+---
+
+<article class="donation-card" aria-labelledby={`donation-${campaign.id}-title`}>
+  <div class="donation-card__media">
+    <img
+      src={campaign.image}
+      alt={campaign.imageAlt}
+      width="800"
+      height="800"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+
+  <div class="donation-card__body">
+    <h2 id={`donation-${campaign.id}-title`} class="donation-card__title">{campaign.title}</h2>
+    <p class="donation-card__desc">{campaign.shortDescription}</p>
+
+    <div class="donation-card__stats" aria-label="Voortgang van de inzamelingsactie">
+      <p class="donation-card__amounts">
+        <strong>{raisedFormatted}</strong> opgehaald van <span>{goalFormatted}</span>
+      </p>
+      <p class="donation-card__percent">{percentFormatted}% van het doel bereikt</p>
+    </div>
+
+    <div
+      class="donation-card__progress"
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={percent}
+      aria-label={`${percentFormatted}% van het doel bereikt`}
+    >
+      <div class="donation-card__progress-fill" style={`width: ${percent}%`}></div>
+    </div>
+
+    {
+      hasStripeBuyButton ? (
+        <div class="donation-card__cta-wrap">
+          <stripe-buy-button
+            buy-button-id={campaign.stripeBuyButtonId}
+            publishable-key={STRIPE_PUBLISHABLE_KEY}
+          />
+        </div>
+      ) : (
+        <span class="btn btn-primary donation-card__cta donation-card__cta--disabled" aria-disabled="true">
+          Doneer nu
+        </span>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .donation-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: 0;
+    background: rgba(205, 184, 128, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .donation-card__media {
+    background: #070a0f;
+    min-height: 220px;
+  }
+
+  .donation-card__media img {
+    width: 100%;
+    height: 100%;
+    min-height: 220px;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .donation-card__body {
+    padding: 1.75rem 1.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .donation-card__title {
+    margin: 0;
+    color: var(--gold);
+    font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+    line-height: 1.3;
+  }
+
+  .donation-card__desc {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-size: 0.98rem;
+  }
+
+  .donation-card__stats {
+    margin-top: 0.25rem;
+  }
+
+  .donation-card__amounts {
+    margin: 0 0 0.35rem;
+    color: var(--text);
+    font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+    line-height: 1.4;
+  }
+
+  .donation-card__amounts strong {
+    color: var(--gold-light);
+    font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+  }
+
+  .donation-card__amounts span {
+    color: var(--text-muted);
+  }
+
+  .donation-card__percent {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+
+  .donation-card__progress {
+    width: 100%;
+    height: 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .donation-card__progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--gold-muted), var(--gold-light));
+    transition: width 0.4s ease;
+  }
+
+  .donation-card__cta-wrap {
+    width: 100%;
+    margin-top: 0.5rem;
+    min-height: 52px;
+  }
+
+  .donation-card__cta-wrap :global(stripe-buy-button) {
+    display: block;
+    width: 100%;
+  }
+
+  .donation-card__cta {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 1rem 1.5rem;
+    font-size: 1.05rem;
+    min-height: 52px;
+  }
+
+  .donation-card__cta--disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    .donation-card {
+      grid-template-columns: 1fr;
+    }
+
+    .donation-card__media {
+      min-height: 200px;
+    }
+
+    .donation-card__body {
+      padding: 1.35rem 1.25rem 1.5rem;
+    }
+
+    .donation-card__cta-wrap {
+      min-height: 56px;
+    }
+
+    .donation-card__cta {
+      min-height: 56px;
+      font-size: 1.1rem;
+    }
+
+    .donation-card__progress {
+      height: 14px;
+    }
+  }
+</style>
