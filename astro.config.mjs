@@ -5,6 +5,9 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   site: 'https://www.starlocal.nl',
   output: 'static',
+  session: {
+    driver: 'unstorage/drivers/null',
+  },
   adapter: cloudflare({
     platformProxy: {
       enabled: true,
