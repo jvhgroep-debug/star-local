@@ -11,8 +11,8 @@ pages_build_output_dir = "dist"
 # Production database_id is intentionally not configured in this phase.
 [[d1_databases]]
 binding = "DB"
-database_name = "star-local-saas-dev"
-database_id = "00000000-0000-4000-8000-000000000001"
+database_name = "star-local-saas-prod"
+database_id = "d58a4699-131e-403d-8ea7-65ef928a72d7"
 migrations_dir = "migrations"
 
 # Development R2 (local: wrangler r2 object put/get against star-local-saas-media-dev)
