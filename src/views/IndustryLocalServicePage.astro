@@ -1,4 +1,6 @@
 ---
+import SeoPrioritySection from '../components/SeoPrioritySection.astro';
+import { improveIndustryService } from '../data/seo-priorities';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import SectionHeading from '../components/SectionHeading.astro';
@@ -16,7 +18,8 @@ interface Props {
   content: IndustryLocalServicePageContent;
 }
 
-const { content } = Astro.props;
+const { content: originalContent } = Astro.props;
+const content = improveIndustryService(originalContent);
 const canonicalPath = getLocalIndustryPath(content.citySlug, content.serviceSlug, content.industrySlug);
 const pageUrl = `${SITE.url}${canonicalPath}`;
 const servicePageUrl = getLocalServicePath(content.citySlug, content.serviceSlug);
@@ -95,6 +98,8 @@ const serviceSchema = {
       ]}
     />
   </div>
+
+  <SeoPrioritySection path={canonicalPath} />
 
   <section class="section section-flow">
     <div class="container service-intro-grid">
