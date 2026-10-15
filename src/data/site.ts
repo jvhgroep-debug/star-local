@@ -11,7 +11,7 @@ export const SITE = {
   defaultDescription:
     'Star Local bouwt professionele websites en helpt bedrijven beter gevonden te worden in Google.',
   logo: IMAGES.logo,
-  ogImage: IMAGES.heroHome,
+  ogImage: '/images/projects/project-star-local.png',
 } as const;
 
 /** Website Builder entry — all marketing CTAs point here (OPDRACHT 81). */

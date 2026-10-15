@@ -27,7 +27,11 @@ const {
 } = Astro.props;
 
 const canonicalUrl = canonical(canonicalPath);
-const ogImage = image.startsWith('http') ? image : `${SITE.url}${image}`;
+const requestedImage = image.startsWith('http') ? image : `${SITE.url}${image}`;
+// Link-preview crawlers need a raster image rather than the site's SVG illustrations.
+const ogImage = /\.svg(?:[?#]|$)/i.test(requestedImage) ? `${SITE.url}${SITE.ogImage}` : requestedImage;
+const isDefaultShareImage = ogImage === `${SITE.url}${SITE.ogImage}`;
+const imageType = /\.png(?:[?#]|$)/i.test(ogImage) ? 'image/png' : /\.jpe?g(?:[?#]|$)/i.test(ogImage) ? 'image/jpeg' : /\.webp(?:[?#]|$)/i.test(ogImage) ? 'image/webp' : undefined;
 const { ogLocale, hreflang } = localeLabels[locale];
 
 const organizationSchema = {
@@ -77,6 +81,10 @@ const defaultPath = equivalentPath(canonicalPath, 'nl');
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
 <meta property="og:image" content={ogImage} />
+<meta property="og:image:secure_url" content={ogImage} />
+{imageType && <meta property="og:image:type" content={imageType} />}
+{isDefaultShareImage && <><meta property="og:image:width" content="1889" /><meta property="og:image:height" content="863" /></>}
+<meta property="og:image:alt" content={title} />
 <meta property="og:locale" content={ogLocale} />
 {locales.filter((l) => l !== locale).map((l) => (
   <meta property="og:locale:alternate" content={localeLabels[l].ogLocale} />
@@ -86,5 +94,6 @@ const defaultPath = equivalentPath(canonicalPath, 'nl');
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={title} />
 
 <script type="application/ld+json" set:html={JSON.stringify(schemas)} />
