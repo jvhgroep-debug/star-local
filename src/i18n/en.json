@@ -13,7 +13,7 @@
     "blog": "Blog",
     "contact": "Contact",
     "freeAdvice": "Free consultation",
-    "freeWebsiteCta": "Create free website",
+    "freeWebsiteCta": "Request a quote",
     "mainNav": "Main navigation",
     "mobileNav": "Mobile menu",
     "openMenu": "Open menu",
@@ -35,9 +35,9 @@
     "company": "Company",
     "legal": "Legal",
     "copyright": "Star Local. All rights reserved.",
-    "freeWebsiteLink": "Create free website",
-    "freeWebsitePromo": "Free professional website in about 3 minutes.",
-    "freeWebsiteStart": "Start for free"
+    "freeWebsiteLink": "Request a quote",
+    "freeWebsitePromo": "A professional website, built for your business.",
+    "freeWebsiteStart": "Contact us"
   },
   "footerBar": {
     "copyright": "Star Local. All rights reserved.",
@@ -165,8 +165,8 @@
     "ourApproach": "Our approach",
     "whyStarLocal": "Why Star Local?",
     "relatedServices": "Related services",
-    "freeWebsiteCtaTitle": "Create your professional website for free",
-    "freeWebsiteCtaText": "Start in minutes with our free website builder. Five complete pages, automatically built with your business details."
+    "freeWebsiteCtaTitle": "A website that helps your business grow",
+    "freeWebsiteCtaText": "Tell us what you need and receive a personal proposal."
   },
   "portfolioPage": {
     "title": "Portfolio | Star Local",

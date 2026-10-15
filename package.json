@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/generate-gemeente-page.mjs && astro build && node scripts/alias-sitemap.mjs",
+    "build": "node scripts/generate-gemeente-page.mjs && astro build && node scripts/alias-sitemap.mjs && node scripts/remove-retired-builder.mjs",
     "preview": "astro preview",
     "test:publish": "npx --yes tsx scripts/test-local-publish-direct.ts",
     "test:generate": "npx --yes tsx scripts/test-auto-generate-direct.ts",

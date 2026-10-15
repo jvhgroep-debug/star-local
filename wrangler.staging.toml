@@ -23,14 +23,7 @@ migrations_dir = "migrations"
 # R2 — staging bucket (apart van productie)
 # Aanmaken: wrangler r2 bucket create star-local-saas-media-staging
 # ---------------------------------------------------------------------------
-[[r2_buckets]]
-binding = "MEDIA"
-bucket_name = "star-local-saas-media-staging"
 
-# ---------------------------------------------------------------------------
-# Staging environment — banner zichtbaar wanneer ENVIRONMENT=staging
-# APP_BASE_URL na deploy bijwerken naar preview-URL (setup-script doet dit)
-# ---------------------------------------------------------------------------
 [vars]
 ENVIRONMENT = "staging"
 APP_BASE_URL = "https://star-local-staging.pages.dev"

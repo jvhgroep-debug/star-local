@@ -22,14 +22,7 @@ migrations_dir = "migrations"
 # R2 — één bucket: media + gepubliceerde sites + pakketarchief
 # Aanmaken: wrangler r2 bucket create star-local-saas-media-prod
 # ---------------------------------------------------------------------------
-[[r2_buckets]]
-binding = "MEDIA"
-bucket_name = "star-local-saas-media-prod"
 
-# ---------------------------------------------------------------------------
-# Plain-text environment variables (geen secrets)
-# Secrets via: wrangler pages secret put --config wrangler.prod.toml
-# ---------------------------------------------------------------------------
 [vars]
 APP_BASE_URL = "https://www.starlocal.nl"
 DASHBOARD_BASE_URL = "https://app.starlocal.nl"

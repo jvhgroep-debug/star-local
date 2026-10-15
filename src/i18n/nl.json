@@ -13,7 +13,7 @@
     "blog": "Blog",
     "contact": "Contact",
     "freeAdvice": "Gratis advies",
-    "freeWebsiteCta": "Gratis website maken",
+    "freeWebsiteCta": "Offerte aanvragen",
     "mainNav": "Hoofdnavigatie",
     "mobileNav": "Mobiel menu",
     "openMenu": "Menu openen",
@@ -35,9 +35,9 @@
     "company": "Bedrijf",
     "legal": "Juridisch",
     "copyright": "Star Local. Alle rechten voorbehouden.",
-    "freeWebsiteLink": "Gratis website maken",
-    "freeWebsitePromo": "Gratis professionele website in ongeveer 3 minuten.",
-    "freeWebsiteStart": "Start gratis"
+    "freeWebsiteLink": "Offerte aanvragen",
+    "freeWebsitePromo": "Een professionele website, op maat voor jouw bedrijf.",
+    "freeWebsiteStart": "Neem contact op"
   },
   "footerBar": {
     "copyright": "Star Local. Alle rechten voorbehouden.",
@@ -165,8 +165,8 @@
     "ourApproach": "Onze aanpak",
     "whyStarLocal": "Waarom Star Local?",
     "relatedServices": "Gerelateerde diensten",
-    "freeWebsiteCtaTitle": "Maak gratis uw professionele website",
-    "freeWebsiteCtaText": "Start binnen enkele minuten met onze gratis website builder. Vijf complete pagina’s, automatisch opgebouwd met uw bedrijfsgegevens."
+    "freeWebsiteCtaTitle": "Een website die jouw bedrijf verder helpt",
+    "freeWebsiteCtaText": "Vertel ons je wensen en ontvang een persoonlijk voorstel."
   },
   "portfolioPage": {
     "title": "Portfolio | Star Local",
