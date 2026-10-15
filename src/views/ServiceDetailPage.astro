@@ -57,6 +57,14 @@ const serviceSchema = {
 
   <Hero title={service.h1} intro={service.intro} />
 
+  {locale === 'nl' && ['google-bedrijfsprofiel', 'conversie-optimalisatie', 'website-laten-maken'].includes(service.slug) && (
+    <section class="section"><div class="container"><h2>Bekijk onze aanpak voor jouw situatie</h2><ul>
+      {service.slug === 'google-bedrijfsprofiel' && <><li><a href="/zeist/google-bedrijfsprofiel/">Google Bedrijfsprofiel optimaliseren in Zeist</a></li><li><a href="/nijmegen/google-bedrijfsprofiel/">Google Bedrijfsprofiel verbeteren in Nijmegen</a></li></>}
+      {service.slug === 'conversie-optimalisatie' && <li><a href="/helmond/conversie-optimalisatie/">Conversie-optimalisatie voor bedrijven in Helmond</a></li>}
+      {service.slug === 'website-laten-maken' && <li><a href="/doetinchem/website-laten-maken/restaurants/">Een horecawebsite laten maken in Doetinchem</a></li>}
+    </ul></div></section>
+  )}
+
   <section class="section">
     <div class="container content-grid">
       <div>

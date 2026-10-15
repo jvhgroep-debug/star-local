@@ -1,0 +1,7 @@
+---
+import { getPrioritySection } from '../data/seo-priorities';
+interface Props { path: string }
+const section = getPrioritySection(Astro.props.path);
+---
+{section && <section class="section priority-section"><div class="container"><h2>{section.title}</h2>{section.paragraphs.map(text => <p>{text}</p>)}<ul>{section.checklist.map(text => <li>{text}</li>)}</ul><nav aria-label="Meer informatie over deze dienst"><ul>{section.links.map(link => <li><a href={link.href}>{link.label}</a></li>)}</ul></nav></div></section>}
+<style>.priority-section{background:var(--bg-secondary,#f6f7f8)}p,li{max-width:80ch}p{line-height:1.8}li{margin:.65rem 0}a{text-decoration:underline;text-underline-offset:.2em}h2{max-width:35ch}</style>

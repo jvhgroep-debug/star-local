@@ -110,3 +110,11 @@ export function translatePath(pathname: string, targetLocale: Locale): string {
   if (targetLocale === 'en') return '/en/';
   return '/';
 }
+
+/** An equivalent page, without the homepage fallback used by navigation. */
+export function equivalentPath(pathname: string, targetLocale: Locale): string | undefined {
+ const currentLocale = getLocaleFromPath(pathname);
+ if(currentLocale === targetLocale) return pathname;
+ const matched = matchRoute(pathname, currentLocale === 'nl' ? nlToKey : enToKey);
+ return matched ? route(matched.key, targetLocale, matched.params) : undefined;
+}
