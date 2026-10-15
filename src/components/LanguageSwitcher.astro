@@ -1,7 +1,7 @@
 ---
 import type { Locale } from '../i18n/config';
 import { localeLabels } from '../i18n/config';
-import { translatePath } from '../i18n/routes';
+import { translatePath, equivalentPath } from '../i18n/routes';
 
 interface Props {
   locale: Locale;
@@ -15,7 +15,7 @@ const currentPath = Astro.url.pathname;
   <a
     href={translatePath(currentPath, 'nl')}
     class:list={['lang-option', { active: locale === 'nl' }]}
-    hreflang="nl-NL"
+    hreflang={equivalentPath(currentPath, 'nl') ? 'nl-NL' : undefined}
     lang="nl"
     data-locale="nl"
     aria-current={locale === 'nl' ? 'true' : undefined}
@@ -26,7 +26,7 @@ const currentPath = Astro.url.pathname;
   <a
     href={translatePath(currentPath, 'en')}
     class:list={['lang-option', { active: locale === 'en' }]}
-    hreflang="en"
+    hreflang={equivalentPath(currentPath, 'en') ? 'en' : undefined}
     lang="en"
     data-locale="en"
     aria-current={locale === 'en' ? 'true' : undefined}
