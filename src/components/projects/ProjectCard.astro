@@ -36,6 +36,13 @@ const Tag = hasLink ? 'a' : 'article';
   aria-label={hasLink ? `${project.name} – ${viewWebsite}` : project.name}
 >
   <div class="project-card-media">
+    {project.cover ? (
+      <div class="project-cover" style={`--cover-color: ${project.cover.color}`}>
+        <span class="cover-eyebrow">{lang === 'nl' ? 'Projectoverzicht' : 'Project overview'}</span>
+        <span class="cover-mark" aria-hidden="true">{project.cover.mark}</span>
+        <span class="cover-name">{project.name}</span>
+      </div>
+    ) : (
     <img
       src={preferredImage}
       alt={imageAlt}
@@ -47,6 +54,7 @@ const Tag = hasLink ? 'a' : 'article';
       data-fallback={fallbackImage}
       style={project.imagePosition ? `object-position: ${project.imagePosition}` : undefined}
     />
+    )}
     {showPlaceholderNote && <span class="placeholder-note">{placeholderNote}</span>}
     {project.status && (
       <div class="status-wrap">
@@ -92,6 +100,15 @@ const Tag = hasLink ? 'a' : 'article';
 </script>
 
 <style>
+  .project-cover {
+    height: 100%; padding: 22px 26px; display: flex; flex-direction: column;
+    justify-content: space-between; overflow: hidden; color: #fff;
+    background: radial-gradient(ellipse at 100% 0%, #ffffff24, transparent 65%), linear-gradient(125deg, var(--cover-color), #101820);
+  }
+  .cover-eyebrow { font-size: .65rem; text-transform: uppercase; letter-spacing: .16em; opacity: .8; }
+  .cover-mark { font-size: clamp(2.6rem, 5vw, 4.2rem); letter-spacing: -.05em; font-weight: 800; line-height: 1; }
+  .cover-name { font-size: .9rem; font-weight: 600; max-width: 90%; line-height: 1.35; }
+
   .project-card {
     display: flex;
     flex-direction: column;
