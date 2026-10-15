@@ -1,4 +1,6 @@
 ---
+import SeoPrioritySection from '../components/SeoPrioritySection.astro';
+import { improveLocalService } from '../data/seo-priorities';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import SectionHeading from '../components/SectionHeading.astro';
@@ -17,7 +19,8 @@ interface Props {
   content: LocalServicePageContent;
 }
 
-const { content } = Astro.props;
+const { content: originalContent } = Astro.props;
+const content = improveLocalService(originalContent);
 const canonicalPath = getLocalServicePath(content.citySlug, content.serviceSlug);
 const pageUrl = `${SITE.url}${canonicalPath}`;
 const nationalServiceUrl = `/diensten/${content.nationalServiceSlug}/`;
@@ -80,7 +83,7 @@ const serviceSchema = {
     ariaLabel: content.hero.h1,
     backgroundImage: IMAGES.heroHomeReference,
     ctas: [
-      { label: 'Website offerte aanvragen', href: FREE_WEBSITE_START_PATH, variant: 'primary' },
+      { label: content.serviceSlug === 'website-laten-maken' ? 'Website offerte aanvragen' : 'Analyse aanvragen', href: '/contact/', variant: 'primary' },
       { label: 'Gratis advies aanvragen', href: '/contact/', variant: 'secondary' },
     ],
   }}
@@ -94,6 +97,8 @@ const serviceSchema = {
       ]}
     />
   </div>
+
+  <SeoPrioritySection path={canonicalPath} />
 
   <section class="section section-flow">
     <div class="container service-intro-grid">
