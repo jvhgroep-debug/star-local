@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectsGrid from '../components/projects/ProjectsGrid.astro';
+import { getProjects } from '../data/projects';
 import PortfolioCard from '../components/PortfolioCard.astro';
 import CTASection from '../components/CTASection.astro';
 import type { Locale } from '../i18n/config';
@@ -13,7 +15,9 @@ interface Props {
 
 const { locale } = Astro.props;
 const dict = useTranslations(locale);
-const projects = getPortfolioProjects(locale);
+const projects = getProjects();
+const legacyStories = getPortfolioProjects(locale).filter(story => !projects.some(project => project.slug === story.slug));
+const page = dict.projectsPage;
 ---
 
 <BaseLayout
@@ -27,20 +31,26 @@ const projects = getPortfolioProjects(locale);
   }}
 >
   <section class="section">
-    <div class="container grid-3">
-      {projects.map((project) => (
-        <PortfolioCard
-          name={project.name}
-          type={project.type}
-          summary={project.summary}
-          href={route('portfolioItem', locale, { slug: project.slug })}
-          image={project.image}
-          imageAlt={project.imageAlt}
-          viewProject={dict.buttons.viewProject}
-        />
-      ))}
+    <div class="container">
+      <ProjectsGrid
+        projects={projects}
+        lang={locale}
+        labels={{ all: page.filters.all, website: page.filters.website, webshop: page.filters.webshop, seo: page.filters.seo, platform: page.filters.platform, viewWebsite: page.viewWebsite, placeholderNote: page.placeholderNote }}
+      />
     </div>
   </section>
+
+  {legacyStories.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <h2>{locale === 'nl' ? 'Eerdere portfolioverhalen' : 'Earlier portfolio stories'}</h2>
+        <p>{locale === 'nl' ? 'Meer voorbeelden van websites en online projecten uit ons portfolio.' : 'More examples of websites and online projects from our portfolio.'}</p>
+        <div class="grid-3">
+          {legacyStories.map(project => <PortfolioCard name={project.name} type={project.type} summary={project.summary} href={route('portfolioItem', locale, { slug: project.slug })} image={project.image} imageAlt={project.imageAlt} viewProject={dict.buttons.viewProject} />)}
+        </div>
+      </div>
+    </section>
+  )}
 
   <CTASection locale={locale} />
 </BaseLayout>
