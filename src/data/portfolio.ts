@@ -1,3 +1,4 @@
+import { getProjects } from './projects';
 import { IMAGES } from './images';
 import type { Locale } from '../i18n/config';
 import { portfolioEn } from '../i18n/data/portfolio.en';
@@ -148,7 +149,22 @@ const portfolioByLocale: Record<Locale, PortfolioProject[]> = {
 };
 
 export function getPortfolioProjects(locale: Locale): PortfolioProject[] {
-  return portfolioByLocale[locale];
+  const current = getProjects();
+  const labels = locale === 'nl'
+    ? { live: 'Live', development: 'In ontwikkeling', preview: 'Preview' }
+    : { live: 'Live', development: 'In development', preview: 'Preview' };
+  return portfolioByLocale[locale].map(story => {
+    const project = current.find(item => item.slug === story.slug);
+    if (!project) return story;
+    return {
+      ...story,
+      name: project.name,
+      type: locale === 'nl' ? project.categoryNl : project.categoryEn,
+      summary: locale === 'nl' ? project.descriptionNl : project.descriptionEn,
+      website: project.website,
+      status: project.status ? [labels[project.status]] : story.status,
+    };
+  });
 }
 
 export function getPortfolioProject(slug: string, locale: Locale = 'nl'): PortfolioProject | undefined {
