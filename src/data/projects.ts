@@ -195,11 +195,10 @@ export const projects: Project[] = [
     "categoryEn": "International deals & discovery platform",
     "descriptionNl": "Een meertalig platform voor lokale bedrijven, restaurants, activiteiten en aanbiedingen in meerdere landen.",
     "descriptionEn": "A multilingual platform for local businesses, restaurants, activities and offers across multiple countries.",
-    "image": "/images/projects/placeholder.svg",
-    "cover": {
-      "color": "#12645b",
-      "mark": "SLD"
-    },
+    "imageAltNl": "Websitebeeld van Star Local Deals",
+    "imageAltEn": "Website image for Star Local Deals",
+    "imagePosition": "center top",
+    "image": "/images/projects/project-star-local-deals-capture.svg",
     "status": "live",
     "featured": true,
     "filters": [
@@ -217,11 +216,10 @@ export const projects: Project[] = [
     "categoryEn": "Restaurant website & venue hire",
     "descriptionNl": "Een restaurantwebsite met menukaart, zaalverhuur, catering, lokale SEO en directe WhatsApp-aanvragen.",
     "descriptionEn": "A restaurant website with menu links, venue hire, catering, local SEO and direct WhatsApp enquiries.",
-    "image": "/images/projects/placeholder.svg",
-    "cover": {
-      "color": "#8a4c25",
-      "mark": "TB"
-    },
+    "imageAltNl": "Websitebeeld van Tropicana Breda",
+    "imageAltEn": "Website image for Tropicana Breda",
+    "imagePosition": "center top",
+    "image": "/images/projects/project-tropicana-breda-capture.svg",
     "status": "live",
     "featured": true,
     "filters": [
@@ -238,11 +236,10 @@ export const projects: Project[] = [
     "categoryEn": "Local services & lead platform",
     "descriptionNl": "Een platform met lokale loodgieterpagina’s, regionale partners en duidelijke aanvraagroutes.",
     "descriptionEn": "A platform with local plumbing pages, regional partners and clear enquiry routes.",
-    "image": "/images/projects/placeholder.svg",
-    "cover": {
-      "color": "#185381",
-      "mark": "LV"
-    },
+    "imageAltNl": "Websitebeeld van Loodgieter Vakmannen",
+    "imageAltEn": "Website image for Loodgieter Vakmannen",
+    "imagePosition": "center top",
+    "image": "/images/projects/project-loodgietervakmannen-capture.svg",
     "status": "live",
     "featured": true,
     "filters": [
@@ -260,11 +257,10 @@ export const projects: Project[] = [
     "categoryEn": "Cleaning platform & local SEO",
     "descriptionNl": "Een lokaal dienstenplatform voor schoonmaakbedrijven, met regiopagina’s en aanvragen via WhatsApp.",
     "descriptionEn": "A local services platform for cleaning companies, with regional pages and WhatsApp enquiries.",
-    "image": "/images/projects/placeholder.svg",
-    "cover": {
-      "color": "#1d6873",
-      "mark": "SV"
-    },
+    "imageAltNl": "Websitebeeld van SchoonVakmannen",
+    "imageAltEn": "Website image for SchoonVakmannen",
+    "imagePosition": "center top",
+    "image": "/images/projects/project-schoonvakmannen-capture.svg",
     "status": "live",
     "featured": true,
     "filters": [
@@ -280,14 +276,13 @@ export const projects: Project[] = [
     "slug": "slyce-pizza-cafe",
     "categoryNl": "Restaurantwebsite in Dubai",
     "categoryEn": "Dubai restaurant website",
-    "descriptionNl": "Een restaurantwebsite met menukaart, contactinformatie en lokale landingspagina’s. Bekijk de gepubliceerde preview.",
-    "descriptionEn": "A restaurant website with menu, contact information and local landing pages. View the published preview.",
-    "image": "/images/projects/placeholder.svg",
-    "cover": {
-      "color": "#984021",
-      "mark": "SLYCE"
-    },
-    "status": "preview",
+    "descriptionNl": "Een restaurantwebsite met menukaart, contactinformatie en lokale landingspagina’s.",
+    "descriptionEn": "A restaurant website with menu, contact information and local landing pages.",
+    "imageAltNl": "Foto uit de website van SLYCE Pizza Cafe Dubai",
+    "imageAltEn": "Photo from the website of SLYCE Pizza Cafe Dubai",
+    "imagePosition": "center top",
+    "image": "/images/projects/project-slyce-pizza-cafe-capture.svg",
+    "status": "live",
     "featured": true,
     "filters": [
       "website",
@@ -302,11 +297,10 @@ export const projects: Project[] = [
     "categoryEn": "Product website & WhatsApp ordering",
     "descriptionNl": "Een productwebsite voor slagroompatronen, met WhatsApp-bestellingen en informatie over bezorging in Dubai.",
     "descriptionEn": "A cream charger product website with WhatsApp ordering and delivery information for Dubai.",
-    "image": "/images/projects/placeholder.svg",
-    "cover": {
-      "color": "#364f6c",
-      "mark": "SW"
-    },
+    "imageAltNl": "Websitebeeld van Smartwhip Dubai",
+    "imageAltEn": "Website image for Smartwhip Dubai",
+    "imagePosition": "center top",
+    "image": "/images/projects/project-smartwhip-dubai-capture.svg",
     "status": "live",
     "featured": true,
     "filters": [
@@ -322,11 +316,10 @@ export const projects: Project[] = [
     "categoryEn": "B2B ordering portal · prototype",
     "descriptionNl": "Een ontwerp-prototype met voorbeeldgegevens voor een zakelijk bestelportaal met klantprijzen, betaalafspraken en een beheeromgeving.",
     "descriptionEn": "A design prototype with sample data for a B2B ordering portal with customer pricing, payment terms and an administration area.",
-    "image": "/images/projects/placeholder.svg",
-    "cover": {
-      "color": "#24426f",
-      "mark": "B2B"
-    },
+    "imageAltNl": "Websitebeeld van Dutch Food Dubai · B2B Bestelportaal",
+    "imageAltEn": "Website image for Dutch Food Dubai · B2B Bestelportaal",
+    "imagePosition": "center top",
+    "image": "/images/projects/project-dutch-food-dubai-b2b-capture.svg",
     "status": "preview",
     "featured": true,
     "filters": [
@@ -398,11 +391,10 @@ export const projects: Project[] = [
     "categoryEn": "Business website · in development",
     "descriptionNl": "Een bedrijfswebsite in ontwikkeling voor De Palletman. Meer informatie volgt na oplevering.",
     "descriptionEn": "A business website in development for De Palletman. More information will follow after completion.",
-    "image": "/images/projects/placeholder.svg",
-    "cover": {
-      "color": "#6d4e35",
-      "mark": "PM"
-    },
+    "imageAltNl": "Foto uit de website van De Palletman",
+    "imageAltEn": "Photo from the website of De Palletman",
+    "imagePosition": "center top",
+    "image": "/images/projects/project-de-palletman-capture.svg",
     "status": "development",
     "featured": true,
     "filters": [
