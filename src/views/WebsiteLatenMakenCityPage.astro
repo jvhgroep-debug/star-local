@@ -5,6 +5,7 @@ import FAQSection from '../components/FAQSection.astro';
 import type { WebsiteLatenMakenCityContent } from '../data/location-engine';
 import { WEBSITE_OFFER_IMAGES } from '../data/offers/website-laten-maken';
 import { SITE } from '../data/site';
+import { municipalPosts } from '../data/blog/municipal-posts';
 
 interface Props {
   content: WebsiteLatenMakenCityContent;
@@ -12,6 +13,7 @@ interface Props {
 
 const { content } = Astro.props;
 const m = content.municipality;
+const relatedArticles = municipalPosts.filter(post => post.municipality === m.naam);
 const pkg = content.package;
 const cityHero = WEBSITE_OFFER_IMAGES.cityHero;
 const cityCta = WEBSITE_OFFER_IMAGES.cta;
@@ -259,6 +261,7 @@ const cityHeroAlt = `Professionele website laten maken voor ondernemers in ${m.n
       </figure>
     </div>
   </section>
+  {relatedArticles.length > 0 && <section class="section"><div class="container"><h2>Praktische voorbereiding voor uw website in {m.naam}</h2><ul>{relatedArticles.map(post => <li><a href={post.canonicalPath}>{post.title}</a></li>)}</ul></div></section>}
 </BaseLayout>
 
 <style>

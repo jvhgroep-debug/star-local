@@ -1,6 +1,7 @@
 ---
 import { SITE } from '../data/site';
 const en = Astro.url.pathname.startsWith('/en/');
+const article = Astro.url.pathname.startsWith('/blog/') && Astro.url.pathname !== '/blog/';
 const copy = en ? {
  title: 'How can we help you?', intro: 'Answer a few short questions and continue in WhatsApp.', topic: 'What do you need?', options: ['A new website', 'A webshop', 'SEO / Google visibility', 'Website maintenance', 'Other question'], company: 'Company name', website: 'Your website (optional)', message: 'Your question', send: 'Continue in WhatsApp', close: 'Close', label: 'Contact Star Local on WhatsApp', greeting: 'Hello Star Local, I have an enquiry via www.starlocal.nl.', page: 'Page', name: 'Company', interest: 'Interested in', question: 'Question'
 } : {
@@ -18,6 +19,10 @@ const copy = en ? {
   <form data-wa-form data-number={SITE.phoneRaw.replace(/\D/g, '')} data-copy={JSON.stringify(copy)}>
     <label>{copy.topic}<select name="topic" required>{copy.options.map(option => <option value={option}>{option}</option>)}</select></label>
     <label>{copy.company}<input name="company" autocomplete="organization" maxlength="120" required /></label>
+    {article && <>
+      <label>Gemeente<input name="municipality" maxlength="100" required /></label>
+      <label>Wat wilt u met uw website?<select name="goal"><option>Een nieuwe website</option><option>Mijn bestaande website verbeteren</option><option>Ik wil eerst advies</option></select></label>
+    </>}
     <label>{copy.website}<input name="website" inputmode="url" maxlength="200" placeholder="www.example.com" /></label>
     <label>{copy.message}<textarea name="question" rows="3" maxlength="1500" required></textarea></label>
     <button class="wa-send" type="submit">{copy.send} ↗</button>
@@ -25,22 +30,39 @@ const copy = en ? {
 </dialog>
 <script>
 function setupWhatsApp() {
- const trigger = document.querySelector<HTMLAnchorElement>('[data-wa-open]');
+ const triggers = document.querySelectorAll<HTMLAnchorElement>('[data-wa-open]');
  const dialog = document.querySelector<HTMLDialogElement>('[data-wa-dialog]');
  const form = document.querySelector<HTMLFormElement>('[data-wa-form]');
- if (!trigger || !dialog || !form || trigger.dataset.ready) return;
- trigger.dataset.ready = 'true';
- trigger.addEventListener('click', event => { event.preventDefault(); dialog.showModal(); });
+ if (!triggers.length || !dialog || !form) return;
+ let lastTrigger: HTMLAnchorElement | null = null;
+ triggers.forEach(trigger => {
+  if (trigger.dataset.ready) return;
+  trigger.dataset.ready = 'true';
+  trigger.addEventListener('click', event => {
+   event.preventDefault(); lastTrigger = trigger;
+   const municipality = form.elements.namedItem('municipality') as HTMLInputElement | null;
+   if (municipality && trigger.dataset.waMunicipality) municipality.value = trigger.dataset.waMunicipality;
+   dialog.showModal();
+  });
+ });
+ if (form.dataset.ready) return;
+ form.dataset.ready = 'true';
  dialog.querySelector('[data-wa-close]')?.addEventListener('click', () => dialog.close());
  dialog.addEventListener('click', event => { if(event.target === dialog) { const r=dialog.getBoundingClientRect(); if(event.clientX<r.left || event.clientX>r.right || event.clientY<r.top || event.clientY>r.bottom) dialog.close(); } });
- dialog.addEventListener('close', () => trigger.focus());
+ dialog.addEventListener('close', () => lastTrigger?.focus());
  form.addEventListener('submit', event => {
   event.preventDefault();
   if(!form.reportValidity()) return;
   const data = new FormData(form); const c = JSON.parse(form.dataset.copy || '{}');
   const lines = [c.greeting, '', c.interest + ': ' + data.get('topic'), c.name + ': ' + String(data.get('company') || '').trim()];
   const website = String(data.get('website') || '').trim();
+  const municipality = String(data.get('municipality') || '').trim();
+  if (municipality) lines.push('Gemeente: ' + municipality);
+  if (data.get('goal')) lines.push('Websitewens: ' + data.get('goal'));
   if (website) lines.push('Website: ' + website);
+  const articleTitle = document.querySelector('article h1')?.textContent?.trim();
+  if (articleTitle) lines.push('Artikel: ' + articleTitle);
+  if (location.pathname.startsWith('/blog/')) lines.push('Herkomst: via StarLocal.nl');
   lines.push(c.question + ': ' + String(data.get('question') || '').trim(), c.page + ': https://www.starlocal.nl' + location.pathname);
   const url = 'https://wa.me/' + form.dataset.number + '?text=' + encodeURIComponent(lines.join('\n'));
   window.location.assign(url);

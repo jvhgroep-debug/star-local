@@ -19,4 +19,8 @@ export interface BlogPostMeta {
   author: string;
   authorBio: string;
   faqs: FAQ[];
+  bodyHtml?: string;
+  municipality?: string;
+  imageCaption?: string;
+  imageSource?: string;
 }

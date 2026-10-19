@@ -1,5 +1,6 @@
 ---
 import BlogPostPage from '../../views/BlogPostPage.astro';
+import MunicipalBlogPostPage from '../../views/MunicipalBlogPostPage.astro';
 import { blogPosts, getBlogPost } from '../../data/blog/posts';
 
 export function getStaticPaths() {
@@ -17,4 +18,4 @@ if (!post) {
 }
 ---
 
-<BlogPostPage post={post} />
+{post.bodyHtml ? <MunicipalBlogPostPage post={post} /> : <BlogPostPage post={post} />}
