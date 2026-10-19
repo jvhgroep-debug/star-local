@@ -1,8 +1,10 @@
 import type { BlogPostMeta } from './types';
+import { municipalPosts } from './municipal-posts';
 
 export const BLOG_IMAGE = '/images/blog/blog-autoverhuur-website-boekingssysteem.png';
 
 export const blogPosts: BlogPostMeta[] = [
+  ...municipalPosts,
   {
     slug: 'autoverhuur-website-met-boekingssysteem-en-app',
     title: 'Meer boekingen met een autoverhuurwebsite en app',

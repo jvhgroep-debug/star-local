@@ -71,7 +71,7 @@ const blogSchema = {
           />
         ))}
       </div>
-      <p class="note">{dict.blog.note}</p>
+      {publishedPosts.length === 0 && <p class="note">{dict.blog.note}</p>}
     </div>
   </section>
 

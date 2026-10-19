@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import type { BlogPostMeta } from '../data/blog/types';
+import { SITE } from '../data/site';
+const { post } = Astro.props as { post: BlogPostMeta };
+const url = SITE.url + post.canonicalPath;
+const schema = {
+  '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.h1,
+  description: post.seoDescription, image: SITE.url + post.image,
+  datePublished: post.publishedAt, dateModified: post.updatedAt,
+  author: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url }, url, inLanguage: 'nl-NL',
+};
+---
+<BaseLayout locale="nl" title={post.seoTitle} description={post.seoDescription} canonical={post.canonicalPath} image={post.image} schema={schema} fullWidth>
+  <article class="municipal-article container">
+    <Breadcrumbs items={[{label:'Home',href:'/'},{label:'Blog',href:'/blog/'},{label:post.title}]} />
+    <header><p class="eyebrow">{post.category} · {post.municipality}</p><h1>{post.h1}</h1>
+      <p>{post.author} · <time datetime={post.publishedAt}>{new Date(post.publishedAt).toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'})}</time></p>
+      <p class="intro">{post.excerpt}</p>
+    </header>
+    <figure><img src={post.image} alt={post.imageAlt} width={post.imageWidth} height={post.imageHeight} loading="eager" decoding="async" /><figcaption>{post.imageCaption} <a href={post.imageSource}>Beeldbron</a>.</figcaption></figure>
+    <div class="prose" set:html={post.bodyHtml} />
+    <aside class="quote-box" aria-labelledby="quote-title">
+      <h2 id="quote-title">Bespreek uw website met Star Local</h2>
+      <p>Vertel wat uw bedrijf in {post.municipality} nodig heeft. Star Local kan uw website met SEO verzorgen. In een gratis, vrijblijvende offerte leggen we de werkzaamheden, eventuele aanvullende diensten en kosten vast.</p>
+      <div class="actions"><a class="btn btn-primary" href={'/contact/?onderwerp='+encodeURIComponent(post.title)}>Vraag een gratis, vrijblijvende offerte aan</a>
+        <a class="wa-quote" href="https://wa.me/31684002350" data-wa-open data-wa-municipality={post.municipality} aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.4-4.1A8 8 0 1 1 20 11.5Z"/><path d="M9 8c0 3 2 5 5 6l1-2-2-1-1 1-2-2 1-1-1-2Z"/></svg>Vraag vrijblijvend een website-offerte via WhatsApp</a></div>
+    </aside>
+    <nav class="related" aria-label="Verder lezen"><h2>Verder lezen</h2><ul><li><a href="/blog/">Alle artikelen over websites en SEO</a></li><li><a href="/diensten/website-laten-maken/">Website laten maken door Star Local</a></li><li><a href="/diensten/lokale-seo/">Onze aanpak voor lokale SEO</a></li></ul></nav>
+  </article>
+</BaseLayout>
+<style>
+.municipal-article{max-width:900px;padding-top:2rem;padding-bottom:4rem}header{margin:2rem 0}h1{font-size:clamp(1.9rem,5vw,3rem);line-height:1.17;color:var(--gold)}.eyebrow{color:var(--gold);font-weight:600}.intro{font-size:1.15rem;line-height:1.7}figure{margin:2rem 0}figure img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--border)}figcaption{font-size:.85rem;color:var(--text-muted);line-height:1.5;margin-top:.7rem}.prose :global(p),.prose :global(li){line-height:1.8;color:var(--text-muted)}.prose :global(h2){margin-top:2rem;line-height:1.3;color:var(--gold)}.prose :global(li){margin-bottom:.6rem}.prose :global(a),figcaption a,.related a{color:var(--gold);text-decoration:underline}.quote-box{margin:2.5rem 0;padding:1.5rem;border:1px solid var(--gold);border-radius:16px;background:rgba(205,184,128,.06)}.quote-box p{line-height:1.7}.actions{display:flex;flex-wrap:wrap;gap:1rem}.wa-quote{display:inline-flex;align-items:center;gap:.6rem;background:#128c4b;color:#fff;padding:.9rem 1rem;border-radius:9px;text-decoration:none;font-weight:600}.wa-quote svg{flex-shrink:0}.wa-quote:focus-visible{outline:3px solid #fff;outline-offset:3px}.related{border-top:1px solid var(--border);padding-top:1rem}.related li{margin:.7rem 0}@media(max-width:600px){.quote-box{padding:1rem}.actions>a{width:100%;box-sizing:border-box}}
+</style>
