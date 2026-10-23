@@ -1,4 +1,5 @@
 import type { BlogPostMeta } from './types';
+import additionalPosts from './municipal-oct21-23.json';
 
 const shared = {
   category: 'Webdesign & SEO', publishedAt: '2026-10-19T15:23:13+04:00', updatedAt: '2026-10-19T15:23:13+04:00',
@@ -7,6 +8,7 @@ const shared = {
 };
 
 export const municipalPosts: BlogPostMeta[] = [
+  ...additionalPosts,
   {
     ...shared, municipality: 'Oisterwijk', slug: 'oisterwijk-eigen-website-naast-sociale-media',
     title: 'Ondernemen in Oisterwijk: wat voegt een eigen website toe naast sociale media?',
