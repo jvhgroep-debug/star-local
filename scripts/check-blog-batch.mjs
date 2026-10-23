@@ -8,7 +8,7 @@ assert.equal(new Set(ledger.slots.map(s=>s.key)).size,96);
 const index=readFileSync('dist/blog/index.html','utf8');
 const sitemap=readFileSync('dist/sitemap-0.xml','utf8');
 const titles=new Set();
-for(const slot of ledger.slots.slice(0,3)){
+for(const slot of ledger.slots.filter(slot => slot.slug && Date.parse(slot.originalPlannedAt) <= Date.now())){
  const route='/blog/'+slot.slug+'/';
  const html=readFileSync('dist'+route+'index.html','utf8');
  assert.equal((html.match(/<h1[\s>]/g)||[]).length,1,route+' H1');
@@ -17,7 +17,8 @@ for(const slot of ledger.slots.slice(0,3)){
  const title=html.match(/<title>(.*?)<\/title>/s)?.[1]; assert(title); assert(!titles.has(title));titles.add(title);
  assert.match(html,/<meta name="description" content="[^"]+"/);
  assert.match(html,/"@type":"BlogPosting"/);
- assert.match(html,/2026-10-19T/);
+ const actualPublishedAt=html.match(/"datePublished":"([^"]+)"/)?.[1];
+ assert(actualPublishedAt && Date.parse(actualPublishedAt)<=Date.now(),route+' actual publication date');
  assert.equal((html.match(/<dialog /g)||[]).length,1);
  assert.equal((html.match(/class="whatsapp-float"/g)||[]).length,1);
  assert.equal((html.match(/<a[^>]*\sdata-wa-open[\s>]/g)||[]).length,2);
@@ -36,7 +37,10 @@ for(const slot of ledger.slots.slice(0,3)){
  console.log('PASS HTML/SEO/assets/links/WhatsApp/index/sitemap: '+slot.municipality);
 }
 assert(existsSync('dist/blog/autoverhuur-website-met-boekingssysteem-en-app/index.html'));
-for(const slot of ledger.slots.slice(3)){assert.equal(slot.published,false);assert.equal(slot.status,'planned');}
+for(const slot of ledger.slots.filter(slot => Date.parse(slot.originalPlannedAt)>Date.now())){
+ assert.equal(slot.published,false);assert.equal(slot.status,'planned');
+ if(slot.slug)assert(!existsSync('dist/blog/'+slot.slug+'/index.html'));
+}
 
 // Exercise actual component code with in-memory DOM events. No browser/network send.
 const raw=readFileSync('src/components/WhatsAppButton.astro','utf8').match(/<script>([\s\S]*?)<\/script>/)[1];

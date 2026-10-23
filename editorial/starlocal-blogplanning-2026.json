@@ -112,17 +112,21 @@
       "website": "starlocal.nl",
       "municipality": "Dongen",
       "originalPlannedAt": "2026-10-21T15:00:00+04:00",
-      "topic": null,
-      "title": null,
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "topic": "Mobiele contactervaring voor een dienstverlener op locatie",
+      "title": "Mobiele contactknoppen: zo vindt een klant uit Dongen de juiste route",
+      "slug": "dongen-mobiele-contactknoppen-website",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-captain-crabbys.webp",
+      "photoType": "Existing portfolio website capture containing photography; not a local case",
+      "status": "source_committed",
       "published": false,
-      "sourceCommitted": false,
+      "sourceCommitted": true,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": true,
+      "imageApproved": true,
+      "publicUrl": "https://www.starlocal.nl/blog/dongen-mobiele-contactknoppen-website/",
+      "whatsappNumber": "31684002350",
+      "whatsappVerification": "Shared component event test passed; per-article HTML trigger, municipality, fields, number and CTA verified; no real message or form submitted."
     },
     {
       "slot": 5,
@@ -130,17 +134,21 @@
       "website": "starlocal.nl",
       "municipality": "Woerden",
       "originalPlannedAt": "2026-10-21T15:00:00+04:00",
-      "topic": null,
-      "title": null,
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "topic": "Inhoud, grenzen en voorbereiding van een adviesdienst",
+      "title": "Dienstinformatie voor Woerden: wat moet een klant vóór de prijs weten?",
+      "slug": "woerden-dienstenpagina-wat-is-inbegrepen",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-dutch-food-dubai.webp",
+      "photoType": "Existing portfolio website capture containing photography; not a local case",
+      "status": "source_committed",
       "published": false,
-      "sourceCommitted": false,
+      "sourceCommitted": true,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": true,
+      "imageApproved": true,
+      "publicUrl": "https://www.starlocal.nl/blog/woerden-dienstenpagina-wat-is-inbegrepen/",
+      "whatsappNumber": "31684002350",
+      "whatsappVerification": "Shared component event test passed; per-article HTML trigger, municipality, fields, number and CTA verified; no real message or form submitted."
     },
     {
       "slot": 6,
@@ -148,17 +156,21 @@
       "website": "starlocal.nl",
       "municipality": "Tilburg",
       "originalPlannedAt": "2026-10-21T15:00:00+04:00",
-      "topic": null,
-      "title": null,
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "topic": "Werkgebied versus bezoekadres voor een bedrijf op locatie",
+      "title": "Uw werkgebied uitleggen: duidelijke informatie voor klanten in Tilburg",
+      "slug": "tilburg-werkgebied-website-duidelijk-uitleggen",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-captain-crabbys.webp",
+      "photoType": "Existing portfolio website capture containing photography; not a local case",
+      "status": "source_committed",
       "published": false,
-      "sourceCommitted": false,
+      "sourceCommitted": true,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": true,
+      "imageApproved": true,
+      "publicUrl": "https://www.starlocal.nl/blog/tilburg-werkgebied-website-duidelijk-uitleggen/",
+      "whatsappNumber": "31684002350",
+      "whatsappVerification": "Shared component event test passed; per-article HTML trigger, municipality, fields, number and CTA verified; no real message or form submitted."
     },
     {
       "slot": 7,
@@ -166,17 +178,21 @@
       "website": "starlocal.nl",
       "municipality": "Zundert",
       "originalPlannedAt": "2026-10-23T15:00:00+04:00",
-      "topic": null,
-      "title": null,
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "topic": "Fotolijst voor een productmaker zonder fictieve klantcases",
+      "title": "Bedrijfsfoto’s kiezen in Zundert: wat moet een bezoeker kunnen zien?",
+      "slug": "zundert-echte-fotos-kiezen-bedrijfswebsite",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-dutch-food-dubai.webp",
+      "photoType": "Existing portfolio website capture containing photography; not a local case",
+      "status": "source_committed",
       "published": false,
-      "sourceCommitted": false,
+      "sourceCommitted": true,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": true,
+      "imageApproved": true,
+      "publicUrl": "https://www.starlocal.nl/blog/zundert-echte-fotos-kiezen-bedrijfswebsite/",
+      "whatsappNumber": "31684002350",
+      "whatsappVerification": "Shared component event test passed; per-article HTML trigger, municipality, fields, number and CTA verified; no real message or form submitted."
     },
     {
       "slot": 8,
@@ -184,17 +200,21 @@
       "website": "starlocal.nl",
       "municipality": "Houten",
       "originalPlannedAt": "2026-10-23T15:00:00+04:00",
-      "topic": null,
-      "title": null,
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "topic": "Beslisboom voor afspraakverzoeken bij een praktijk of persoonlijke dienst",
+      "title": "Afspraak aanvragen of direct boeken? Een websitekeuze voor ondernemers in Houten",
+      "slug": "houten-afspraakaanvraag-of-direct-boeken",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-aurora-salon.webp",
+      "photoType": "Existing portfolio website capture containing photography; not a local case",
+      "status": "source_committed",
       "published": false,
-      "sourceCommitted": false,
+      "sourceCommitted": true,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": true,
+      "imageApproved": true,
+      "publicUrl": "https://www.starlocal.nl/blog/houten-afspraakaanvraag-of-direct-boeken/",
+      "whatsappNumber": "31684002350",
+      "whatsappVerification": "Shared component event test passed; per-article HTML trigger, municipality, fields, number and CTA verified; no real message or form submitted."
     },
     {
       "slot": 9,
@@ -202,17 +222,21 @@
       "website": "starlocal.nl",
       "municipality": "Eindhoven",
       "originalPlannedAt": "2026-10-23T15:00:00+04:00",
-      "topic": null,
-      "title": null,
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "topic": "FAQ-selectie uit echte gesprekken voor een specialistische ondernemer",
+      "title": "Veelgestelde vragen op uw website: zo kiest een ondernemer in Eindhoven de juiste",
+      "slug": "eindhoven-veelgestelde-vragen-website-klantvragen",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-dutch-food-dubai.webp",
+      "photoType": "Existing portfolio website capture containing photography; not a local case",
+      "status": "source_committed",
       "published": false,
-      "sourceCommitted": false,
+      "sourceCommitted": true,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": true,
+      "imageApproved": true,
+      "publicUrl": "https://www.starlocal.nl/blog/eindhoven-veelgestelde-vragen-website-klantvragen/",
+      "whatsappNumber": "31684002350",
+      "whatsappVerification": "Shared component event test passed; per-article HTML trigger, municipality, fields, number and CTA verified; no real message or form submitted."
     },
     {
       "slot": 10,
@@ -220,8 +244,8 @@
       "website": "starlocal.nl",
       "municipality": "Druten",
       "originalPlannedAt": "2026-10-26T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Navigatie voor meerdere doelgroepen",
+      "title": "Druten: Vind de juiste dienst zonder een lang menu",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -230,7 +254,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Vind de juiste dienst zonder een lang menu"
     },
     {
       "slot": 11,
@@ -238,8 +263,8 @@
       "website": "starlocal.nl",
       "municipality": "Harderwijk",
       "originalPlannedAt": "2026-10-26T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Eigen domein en herkenbaar bedrijfscontact",
+      "title": "Harderwijk: Een herkenbare domeinnaam en zakelijke contactroute kiezen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -248,7 +273,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen"
     },
     {
       "slot": 12,
@@ -256,8 +282,8 @@
       "website": "starlocal.nl",
       "municipality": "Utrecht",
       "originalPlannedAt": "2026-10-26T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Dienstinformatie voor maatwerkproducten",
+      "title": "Utrecht: Welke informatie helpt bij een maatwerkaanvraag?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -266,7 +292,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?"
     },
     {
       "slot": 13,
@@ -274,8 +301,8 @@
       "website": "starlocal.nl",
       "municipality": "Bunnik",
       "originalPlannedAt": "2026-10-28T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Offertevoorbereiding bij websitebouw",
+      "title": "Bunnik: Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -284,7 +311,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies"
     },
     {
       "slot": 14,
@@ -292,8 +320,8 @@
       "website": "starlocal.nl",
       "municipality": "Roermond",
       "originalPlannedAt": "2026-10-28T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Seizoensaanbod actueel houden",
+      "title": "Roermond: Een tijdelijk aanbod publiceren en later netjes opruimen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -302,7 +330,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen"
     },
     {
       "slot": 15,
@@ -310,8 +339,8 @@
       "website": "starlocal.nl",
       "municipality": "Rotterdam",
       "originalPlannedAt": "2026-10-28T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Afhalen versus bezorgen uitleggen",
+      "title": "Rotterdam: Laat klanten de juiste bestelroute kiezen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -320,7 +349,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Laat klanten de juiste bestelroute kiezen"
     },
     {
       "slot": 16,
@@ -328,8 +358,8 @@
       "website": "starlocal.nl",
       "municipality": "Montfoort",
       "originalPlannedAt": "2026-10-30T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Kostenfactoren van een website",
+      "title": "Montfoort: Welke keuzes bepalen het werk aan een bedrijfswebsite?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -338,7 +368,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?"
     },
     {
       "slot": 17,
@@ -346,8 +377,8 @@
       "website": "starlocal.nl",
       "municipality": "Voerendaal",
       "originalPlannedAt": "2026-10-30T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Aanbod voor particuliere en zakelijke klanten",
+      "title": "Voerendaal: Twee klantgroepen helder helpen op één website",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -356,7 +387,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Twee klantgroepen helder helpen op één website"
     },
     {
       "slot": 18,
@@ -364,8 +396,8 @@
       "website": "starlocal.nl",
       "municipality": "Meerssen",
       "originalPlannedAt": "2026-10-30T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Vertrouwen met controleerbare bedrijfsinformatie",
+      "title": "Meerssen: Wat kan een onbekende bezoeker over uw bedrijf controleren?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -374,7 +406,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?"
     },
     {
       "slot": 19,
@@ -382,8 +415,8 @@
       "website": "starlocal.nl",
       "municipality": "Heemstede",
       "originalPlannedAt": "2026-11-02T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Contact voor bestaande klanten",
+      "title": "Heemstede: Geef bestaande klanten een eigen herkenbare contactroute",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -392,7 +425,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute"
     },
     {
       "slot": 20,
@@ -400,8 +434,8 @@
       "website": "starlocal.nl",
       "municipality": "Opmeer",
       "originalPlannedAt": "2026-11-02T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Voorraad en beschikbaarheid communiceren",
+      "title": "Opmeer: Vermeld wat een productpagina wel en niet kan bevestigen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -410,7 +444,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen"
     },
     {
       "slot": 21,
@@ -418,8 +453,8 @@
       "website": "starlocal.nl",
       "municipality": "Oisterwijk",
       "originalPlannedAt": "2026-11-02T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Website-inhoud verdelen over hoofddiensten",
+      "title": "Oisterwijk: Wanneer verdient een dienst een eigen pagina?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -428,7 +463,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?"
     },
     {
       "slot": 22,
@@ -436,8 +472,8 @@
       "website": "starlocal.nl",
       "municipality": "Etten-Leur",
       "originalPlannedAt": "2026-11-04T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Starten met een klein productassortiment",
+      "title": "Etten-Leur: Een overzichtelijk online assortiment voorbereiden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -446,7 +482,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden"
     },
     {
       "slot": 23,
@@ -454,8 +491,8 @@
       "website": "starlocal.nl",
       "municipality": "Breda",
       "originalPlannedAt": "2026-11-04T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Onderhoud en eigenaarschap afspreken",
+      "title": "Breda: Wie houdt welke website-informatie bij?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -464,7 +501,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wie houdt welke website-informatie bij?"
     },
     {
       "slot": 24,
@@ -472,8 +510,8 @@
       "website": "starlocal.nl",
       "municipality": "Dongen",
       "originalPlannedAt": "2026-11-04T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Foto en tekst op mobiel afstemmen",
+      "title": "Dongen: Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -482,7 +520,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?"
     },
     {
       "slot": 25,
@@ -490,8 +529,8 @@
       "website": "starlocal.nl",
       "municipality": "Woerden",
       "originalPlannedAt": "2026-11-06T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Nieuwsarchief actueel organiseren",
+      "title": "Woerden: Oude nieuwsberichten bruikbaar houden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -500,7 +539,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Oude nieuwsberichten bruikbaar houden"
     },
     {
       "slot": 26,
@@ -508,8 +548,8 @@
       "website": "starlocal.nl",
       "municipality": "Tilburg",
       "originalPlannedAt": "2026-11-06T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Branchewoorden begrijpelijk maken",
+      "title": "Tilburg: Vertaal uw vaktaal naar herkenbare klantvragen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -518,7 +558,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen"
     },
     {
       "slot": 27,
@@ -526,8 +567,8 @@
       "website": "starlocal.nl",
       "municipality": "Zundert",
       "originalPlannedAt": "2026-11-06T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Verwijzingen vanaf drukwerk",
+      "title": "Zundert: Een QR-code naar een bruikbare websitebestemming laten leiden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -536,7 +577,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden"
     },
     {
       "slot": 28,
@@ -544,8 +586,8 @@
       "website": "starlocal.nl",
       "municipality": "Houten",
       "originalPlannedAt": "2026-11-09T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Prijsaanvraag versus productbestelling",
+      "title": "Houten: Kies een duidelijke vervolgstap voor een product op maat",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -554,7 +596,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat"
     },
     {
       "slot": 29,
@@ -562,8 +605,8 @@
       "website": "starlocal.nl",
       "municipality": "Eindhoven",
       "originalPlannedAt": "2026-11-09T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Talen op een bedrijfswebsite",
+      "title": "Eindhoven: Wanneer heeft uw klant een tweede taal nodig?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -572,7 +615,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?"
     },
     {
       "slot": 30,
@@ -580,8 +624,8 @@
       "website": "starlocal.nl",
       "municipality": "Druten",
       "originalPlannedAt": "2026-11-09T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Voorbereiding van een zakelijke kennismaking",
+      "title": "Druten: Welke informatie wil een zakelijke opdrachtgever eerst zien?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -590,7 +634,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?"
     },
     {
       "slot": 31,
@@ -598,8 +643,8 @@
       "website": "starlocal.nl",
       "municipality": "Harderwijk",
       "originalPlannedAt": "2026-11-11T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Openingstijden en afspraken",
+      "title": "Harderwijk: Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -608,7 +653,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven"
     },
     {
       "slot": 32,
@@ -616,8 +662,8 @@
       "website": "starlocal.nl",
       "municipality": "Utrecht",
       "originalPlannedAt": "2026-11-11T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Een lege portfoliosectie voorkomen",
+      "title": "Utrecht: Wat toont een starter zonder openbare klantcases?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -626,7 +672,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wat toont een starter zonder openbare klantcases?"
     },
     {
       "slot": 33,
@@ -634,8 +681,8 @@
       "website": "starlocal.nl",
       "municipality": "Bunnik",
       "originalPlannedAt": "2026-11-11T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Navigatie voor meerdere doelgroepen",
+      "title": "Bunnik: Vind de juiste dienst zonder een lang menu",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -644,7 +691,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Vind de juiste dienst zonder een lang menu"
     },
     {
       "slot": 34,
@@ -652,8 +700,8 @@
       "website": "starlocal.nl",
       "municipality": "Roermond",
       "originalPlannedAt": "2026-11-13T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Eigen domein en herkenbaar bedrijfscontact",
+      "title": "Roermond: Een herkenbare domeinnaam en zakelijke contactroute kiezen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -662,7 +710,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen"
     },
     {
       "slot": 35,
@@ -670,8 +719,8 @@
       "website": "starlocal.nl",
       "municipality": "Rotterdam",
       "originalPlannedAt": "2026-11-13T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Dienstinformatie voor maatwerkproducten",
+      "title": "Rotterdam: Welke informatie helpt bij een maatwerkaanvraag?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -680,7 +729,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?"
     },
     {
       "slot": 36,
@@ -688,8 +738,8 @@
       "website": "starlocal.nl",
       "municipality": "Montfoort",
       "originalPlannedAt": "2026-11-13T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Offertevoorbereiding bij websitebouw",
+      "title": "Montfoort: Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -698,7 +748,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies"
     },
     {
       "slot": 37,
@@ -706,8 +757,8 @@
       "website": "starlocal.nl",
       "municipality": "Voerendaal",
       "originalPlannedAt": "2026-11-16T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Seizoensaanbod actueel houden",
+      "title": "Voerendaal: Een tijdelijk aanbod publiceren en later netjes opruimen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -716,7 +767,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen"
     },
     {
       "slot": 38,
@@ -724,8 +776,8 @@
       "website": "starlocal.nl",
       "municipality": "Meerssen",
       "originalPlannedAt": "2026-11-16T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Afhalen versus bezorgen uitleggen",
+      "title": "Meerssen: Laat klanten de juiste bestelroute kiezen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -734,7 +786,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Laat klanten de juiste bestelroute kiezen"
     },
     {
       "slot": 39,
@@ -742,8 +795,8 @@
       "website": "starlocal.nl",
       "municipality": "Heemstede",
       "originalPlannedAt": "2026-11-16T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Kostenfactoren van een website",
+      "title": "Heemstede: Welke keuzes bepalen het werk aan een bedrijfswebsite?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -752,7 +805,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?"
     },
     {
       "slot": 40,
@@ -760,8 +814,8 @@
       "website": "starlocal.nl",
       "municipality": "Opmeer",
       "originalPlannedAt": "2026-11-18T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Aanbod voor particuliere en zakelijke klanten",
+      "title": "Opmeer: Twee klantgroepen helder helpen op één website",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -770,7 +824,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Twee klantgroepen helder helpen op één website"
     },
     {
       "slot": 41,
@@ -778,8 +833,8 @@
       "website": "starlocal.nl",
       "municipality": "Oisterwijk",
       "originalPlannedAt": "2026-11-18T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Vertrouwen met controleerbare bedrijfsinformatie",
+      "title": "Oisterwijk: Wat kan een onbekende bezoeker over uw bedrijf controleren?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -788,7 +843,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?"
     },
     {
       "slot": 42,
@@ -796,8 +852,8 @@
       "website": "starlocal.nl",
       "municipality": "Etten-Leur",
       "originalPlannedAt": "2026-11-18T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Contact voor bestaande klanten",
+      "title": "Etten-Leur: Geef bestaande klanten een eigen herkenbare contactroute",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -806,7 +862,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute"
     },
     {
       "slot": 43,
@@ -814,8 +871,8 @@
       "website": "starlocal.nl",
       "municipality": "Breda",
       "originalPlannedAt": "2026-11-20T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Voorraad en beschikbaarheid communiceren",
+      "title": "Breda: Vermeld wat een productpagina wel en niet kan bevestigen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -824,7 +881,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen"
     },
     {
       "slot": 44,
@@ -832,8 +890,8 @@
       "website": "starlocal.nl",
       "municipality": "Dongen",
       "originalPlannedAt": "2026-11-20T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Website-inhoud verdelen over hoofddiensten",
+      "title": "Dongen: Wanneer verdient een dienst een eigen pagina?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -842,7 +900,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?"
     },
     {
       "slot": 45,
@@ -850,8 +909,8 @@
       "website": "starlocal.nl",
       "municipality": "Woerden",
       "originalPlannedAt": "2026-11-20T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Starten met een klein productassortiment",
+      "title": "Woerden: Een overzichtelijk online assortiment voorbereiden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -860,7 +919,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden"
     },
     {
       "slot": 46,
@@ -868,8 +928,8 @@
       "website": "starlocal.nl",
       "municipality": "Tilburg",
       "originalPlannedAt": "2026-11-23T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Onderhoud en eigenaarschap afspreken",
+      "title": "Tilburg: Wie houdt welke website-informatie bij?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -878,7 +938,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wie houdt welke website-informatie bij?"
     },
     {
       "slot": 47,
@@ -886,8 +947,8 @@
       "website": "starlocal.nl",
       "municipality": "Zundert",
       "originalPlannedAt": "2026-11-23T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Foto en tekst op mobiel afstemmen",
+      "title": "Zundert: Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -896,7 +957,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?"
     },
     {
       "slot": 48,
@@ -904,8 +966,8 @@
       "website": "starlocal.nl",
       "municipality": "Houten",
       "originalPlannedAt": "2026-11-23T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Nieuwsarchief actueel organiseren",
+      "title": "Houten: Oude nieuwsberichten bruikbaar houden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -914,7 +976,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Oude nieuwsberichten bruikbaar houden"
     },
     {
       "slot": 49,
@@ -922,8 +985,8 @@
       "website": "starlocal.nl",
       "municipality": "Eindhoven",
       "originalPlannedAt": "2026-11-25T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Branchewoorden begrijpelijk maken",
+      "title": "Eindhoven: Vertaal uw vaktaal naar herkenbare klantvragen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -932,7 +995,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen"
     },
     {
       "slot": 50,
@@ -940,8 +1004,8 @@
       "website": "starlocal.nl",
       "municipality": "Druten",
       "originalPlannedAt": "2026-11-25T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Verwijzingen vanaf drukwerk",
+      "title": "Druten: Een QR-code naar een bruikbare websitebestemming laten leiden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -950,7 +1014,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden"
     },
     {
       "slot": 51,
@@ -958,8 +1023,8 @@
       "website": "starlocal.nl",
       "municipality": "Harderwijk",
       "originalPlannedAt": "2026-11-25T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Prijsaanvraag versus productbestelling",
+      "title": "Harderwijk: Kies een duidelijke vervolgstap voor een product op maat",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -968,7 +1033,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat"
     },
     {
       "slot": 52,
@@ -976,8 +1042,8 @@
       "website": "starlocal.nl",
       "municipality": "Utrecht",
       "originalPlannedAt": "2026-11-27T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Talen op een bedrijfswebsite",
+      "title": "Utrecht: Wanneer heeft uw klant een tweede taal nodig?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -986,7 +1052,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?"
     },
     {
       "slot": 53,
@@ -994,8 +1061,8 @@
       "website": "starlocal.nl",
       "municipality": "Bunnik",
       "originalPlannedAt": "2026-11-27T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Voorbereiding van een zakelijke kennismaking",
+      "title": "Bunnik: Welke informatie wil een zakelijke opdrachtgever eerst zien?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1004,7 +1071,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?"
     },
     {
       "slot": 54,
@@ -1012,8 +1080,8 @@
       "website": "starlocal.nl",
       "municipality": "Roermond",
       "originalPlannedAt": "2026-11-27T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Openingstijden en afspraken",
+      "title": "Roermond: Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1022,7 +1090,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven"
     },
     {
       "slot": 55,
@@ -1030,8 +1099,8 @@
       "website": "starlocal.nl",
       "municipality": "Rotterdam",
       "originalPlannedAt": "2026-11-30T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Een lege portfoliosectie voorkomen",
+      "title": "Rotterdam: Wat toont een starter zonder openbare klantcases?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1040,7 +1109,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wat toont een starter zonder openbare klantcases?"
     },
     {
       "slot": 56,
@@ -1048,8 +1118,8 @@
       "website": "starlocal.nl",
       "municipality": "Montfoort",
       "originalPlannedAt": "2026-11-30T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Navigatie voor meerdere doelgroepen",
+      "title": "Montfoort: Vind de juiste dienst zonder een lang menu",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1058,7 +1128,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Vind de juiste dienst zonder een lang menu"
     },
     {
       "slot": 57,
@@ -1066,8 +1137,8 @@
       "website": "starlocal.nl",
       "municipality": "Voerendaal",
       "originalPlannedAt": "2026-11-30T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Eigen domein en herkenbaar bedrijfscontact",
+      "title": "Voerendaal: Een herkenbare domeinnaam en zakelijke contactroute kiezen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1076,7 +1147,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen"
     },
     {
       "slot": 58,
@@ -1084,8 +1156,8 @@
       "website": "starlocal.nl",
       "municipality": "Meerssen",
       "originalPlannedAt": "2026-12-02T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Dienstinformatie voor maatwerkproducten",
+      "title": "Meerssen: Welke informatie helpt bij een maatwerkaanvraag?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1094,7 +1166,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?"
     },
     {
       "slot": 59,
@@ -1102,8 +1175,8 @@
       "website": "starlocal.nl",
       "municipality": "Heemstede",
       "originalPlannedAt": "2026-12-02T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Offertevoorbereiding bij websitebouw",
+      "title": "Heemstede: Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1112,7 +1185,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies"
     },
     {
       "slot": 60,
@@ -1120,8 +1194,8 @@
       "website": "starlocal.nl",
       "municipality": "Opmeer",
       "originalPlannedAt": "2026-12-02T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Seizoensaanbod actueel houden",
+      "title": "Opmeer: Een tijdelijk aanbod publiceren en later netjes opruimen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1130,7 +1204,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen"
     },
     {
       "slot": 61,
@@ -1138,8 +1213,8 @@
       "website": "starlocal.nl",
       "municipality": "Oisterwijk",
       "originalPlannedAt": "2026-12-04T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Afhalen versus bezorgen uitleggen",
+      "title": "Oisterwijk: Laat klanten de juiste bestelroute kiezen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1148,7 +1223,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Laat klanten de juiste bestelroute kiezen"
     },
     {
       "slot": 62,
@@ -1156,8 +1232,8 @@
       "website": "starlocal.nl",
       "municipality": "Etten-Leur",
       "originalPlannedAt": "2026-12-04T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Kostenfactoren van een website",
+      "title": "Etten-Leur: Welke keuzes bepalen het werk aan een bedrijfswebsite?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1166,7 +1242,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?"
     },
     {
       "slot": 63,
@@ -1174,8 +1251,8 @@
       "website": "starlocal.nl",
       "municipality": "Breda",
       "originalPlannedAt": "2026-12-04T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Aanbod voor particuliere en zakelijke klanten",
+      "title": "Breda: Twee klantgroepen helder helpen op één website",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1184,7 +1261,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Twee klantgroepen helder helpen op één website"
     },
     {
       "slot": 64,
@@ -1192,8 +1270,8 @@
       "website": "starlocal.nl",
       "municipality": "Dongen",
       "originalPlannedAt": "2026-12-07T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Vertrouwen met controleerbare bedrijfsinformatie",
+      "title": "Dongen: Wat kan een onbekende bezoeker over uw bedrijf controleren?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1202,7 +1280,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?"
     },
     {
       "slot": 65,
@@ -1210,8 +1289,8 @@
       "website": "starlocal.nl",
       "municipality": "Woerden",
       "originalPlannedAt": "2026-12-07T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Contact voor bestaande klanten",
+      "title": "Woerden: Geef bestaande klanten een eigen herkenbare contactroute",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1220,7 +1299,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute"
     },
     {
       "slot": 66,
@@ -1228,8 +1308,8 @@
       "website": "starlocal.nl",
       "municipality": "Tilburg",
       "originalPlannedAt": "2026-12-07T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Voorraad en beschikbaarheid communiceren",
+      "title": "Tilburg: Vermeld wat een productpagina wel en niet kan bevestigen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1238,7 +1318,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen"
     },
     {
       "slot": 67,
@@ -1246,8 +1327,8 @@
       "website": "starlocal.nl",
       "municipality": "Zundert",
       "originalPlannedAt": "2026-12-09T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Website-inhoud verdelen over hoofddiensten",
+      "title": "Zundert: Wanneer verdient een dienst een eigen pagina?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1256,7 +1337,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?"
     },
     {
       "slot": 68,
@@ -1264,8 +1346,8 @@
       "website": "starlocal.nl",
       "municipality": "Houten",
       "originalPlannedAt": "2026-12-09T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Starten met een klein productassortiment",
+      "title": "Houten: Een overzichtelijk online assortiment voorbereiden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1274,7 +1356,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden"
     },
     {
       "slot": 69,
@@ -1282,8 +1365,8 @@
       "website": "starlocal.nl",
       "municipality": "Eindhoven",
       "originalPlannedAt": "2026-12-09T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Onderhoud en eigenaarschap afspreken",
+      "title": "Eindhoven: Wie houdt welke website-informatie bij?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1292,7 +1375,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wie houdt welke website-informatie bij?"
     },
     {
       "slot": 70,
@@ -1300,8 +1384,8 @@
       "website": "starlocal.nl",
       "municipality": "Druten",
       "originalPlannedAt": "2026-12-11T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Foto en tekst op mobiel afstemmen",
+      "title": "Druten: Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1310,7 +1394,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?"
     },
     {
       "slot": 71,
@@ -1318,8 +1403,8 @@
       "website": "starlocal.nl",
       "municipality": "Harderwijk",
       "originalPlannedAt": "2026-12-11T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Nieuwsarchief actueel organiseren",
+      "title": "Harderwijk: Oude nieuwsberichten bruikbaar houden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1328,7 +1413,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Oude nieuwsberichten bruikbaar houden"
     },
     {
       "slot": 72,
@@ -1336,8 +1422,8 @@
       "website": "starlocal.nl",
       "municipality": "Utrecht",
       "originalPlannedAt": "2026-12-11T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Branchewoorden begrijpelijk maken",
+      "title": "Utrecht: Vertaal uw vaktaal naar herkenbare klantvragen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1346,7 +1432,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen"
     },
     {
       "slot": 73,
@@ -1354,8 +1441,8 @@
       "website": "starlocal.nl",
       "municipality": "Bunnik",
       "originalPlannedAt": "2026-12-14T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Verwijzingen vanaf drukwerk",
+      "title": "Bunnik: Een QR-code naar een bruikbare websitebestemming laten leiden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1364,7 +1451,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden"
     },
     {
       "slot": 74,
@@ -1372,8 +1460,8 @@
       "website": "starlocal.nl",
       "municipality": "Roermond",
       "originalPlannedAt": "2026-12-14T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Prijsaanvraag versus productbestelling",
+      "title": "Roermond: Kies een duidelijke vervolgstap voor een product op maat",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1382,7 +1470,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat"
     },
     {
       "slot": 75,
@@ -1390,8 +1479,8 @@
       "website": "starlocal.nl",
       "municipality": "Rotterdam",
       "originalPlannedAt": "2026-12-14T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Talen op een bedrijfswebsite",
+      "title": "Rotterdam: Wanneer heeft uw klant een tweede taal nodig?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1400,7 +1489,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?"
     },
     {
       "slot": 76,
@@ -1408,8 +1498,8 @@
       "website": "starlocal.nl",
       "municipality": "Montfoort",
       "originalPlannedAt": "2026-12-16T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Voorbereiding van een zakelijke kennismaking",
+      "title": "Montfoort: Welke informatie wil een zakelijke opdrachtgever eerst zien?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1418,7 +1508,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?"
     },
     {
       "slot": 77,
@@ -1426,8 +1517,8 @@
       "website": "starlocal.nl",
       "municipality": "Voerendaal",
       "originalPlannedAt": "2026-12-16T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Openingstijden en afspraken",
+      "title": "Voerendaal: Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1436,7 +1527,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven"
     },
     {
       "slot": 78,
@@ -1444,8 +1536,8 @@
       "website": "starlocal.nl",
       "municipality": "Meerssen",
       "originalPlannedAt": "2026-12-16T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Een lege portfoliosectie voorkomen",
+      "title": "Meerssen: Wat toont een starter zonder openbare klantcases?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1454,7 +1546,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wat toont een starter zonder openbare klantcases?"
     },
     {
       "slot": 79,
@@ -1462,8 +1555,8 @@
       "website": "starlocal.nl",
       "municipality": "Heemstede",
       "originalPlannedAt": "2026-12-18T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Navigatie voor meerdere doelgroepen",
+      "title": "Heemstede: Vind de juiste dienst zonder een lang menu",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1472,7 +1565,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Vind de juiste dienst zonder een lang menu"
     },
     {
       "slot": 80,
@@ -1480,8 +1574,8 @@
       "website": "starlocal.nl",
       "municipality": "Opmeer",
       "originalPlannedAt": "2026-12-18T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Eigen domein en herkenbaar bedrijfscontact",
+      "title": "Opmeer: Een herkenbare domeinnaam en zakelijke contactroute kiezen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1490,7 +1584,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen"
     },
     {
       "slot": 81,
@@ -1498,8 +1593,8 @@
       "website": "starlocal.nl",
       "municipality": "Oisterwijk",
       "originalPlannedAt": "2026-12-18T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Dienstinformatie voor maatwerkproducten",
+      "title": "Oisterwijk: Welke informatie helpt bij een maatwerkaanvraag?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1508,7 +1603,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?"
     },
     {
       "slot": 82,
@@ -1516,8 +1612,8 @@
       "website": "starlocal.nl",
       "municipality": "Etten-Leur",
       "originalPlannedAt": "2026-12-21T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Offertevoorbereiding bij websitebouw",
+      "title": "Etten-Leur: Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1526,7 +1622,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies"
     },
     {
       "slot": 83,
@@ -1534,8 +1631,8 @@
       "website": "starlocal.nl",
       "municipality": "Breda",
       "originalPlannedAt": "2026-12-21T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Seizoensaanbod actueel houden",
+      "title": "Breda: Een tijdelijk aanbod publiceren en later netjes opruimen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1544,7 +1641,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen"
     },
     {
       "slot": 84,
@@ -1552,8 +1650,8 @@
       "website": "starlocal.nl",
       "municipality": "Dongen",
       "originalPlannedAt": "2026-12-21T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Afhalen versus bezorgen uitleggen",
+      "title": "Dongen: Laat klanten de juiste bestelroute kiezen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1562,7 +1660,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Laat klanten de juiste bestelroute kiezen"
     },
     {
       "slot": 85,
@@ -1570,8 +1669,8 @@
       "website": "starlocal.nl",
       "municipality": "Woerden",
       "originalPlannedAt": "2026-12-23T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Kostenfactoren van een website",
+      "title": "Woerden: Welke keuzes bepalen het werk aan een bedrijfswebsite?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1580,7 +1679,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?"
     },
     {
       "slot": 86,
@@ -1588,8 +1688,8 @@
       "website": "starlocal.nl",
       "municipality": "Tilburg",
       "originalPlannedAt": "2026-12-23T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Aanbod voor particuliere en zakelijke klanten",
+      "title": "Tilburg: Twee klantgroepen helder helpen op één website",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1598,7 +1698,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Twee klantgroepen helder helpen op één website"
     },
     {
       "slot": 87,
@@ -1606,8 +1707,8 @@
       "website": "starlocal.nl",
       "municipality": "Zundert",
       "originalPlannedAt": "2026-12-23T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Vertrouwen met controleerbare bedrijfsinformatie",
+      "title": "Zundert: Wat kan een onbekende bezoeker over uw bedrijf controleren?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1616,7 +1717,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?"
     },
     {
       "slot": 88,
@@ -1624,8 +1726,8 @@
       "website": "starlocal.nl",
       "municipality": "Houten",
       "originalPlannedAt": "2026-12-25T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Contact voor bestaande klanten",
+      "title": "Houten: Geef bestaande klanten een eigen herkenbare contactroute",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1634,7 +1736,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute"
     },
     {
       "slot": 89,
@@ -1642,8 +1745,8 @@
       "website": "starlocal.nl",
       "municipality": "Eindhoven",
       "originalPlannedAt": "2026-12-25T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Voorraad en beschikbaarheid communiceren",
+      "title": "Eindhoven: Vermeld wat een productpagina wel en niet kan bevestigen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1652,7 +1755,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen"
     },
     {
       "slot": 90,
@@ -1660,8 +1764,8 @@
       "website": "starlocal.nl",
       "municipality": "Druten",
       "originalPlannedAt": "2026-12-25T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Website-inhoud verdelen over hoofddiensten",
+      "title": "Druten: Wanneer verdient een dienst een eigen pagina?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1670,7 +1774,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?"
     },
     {
       "slot": 91,
@@ -1678,8 +1783,8 @@
       "website": "starlocal.nl",
       "municipality": "Harderwijk",
       "originalPlannedAt": "2026-12-28T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Starten met een klein productassortiment",
+      "title": "Harderwijk: Een overzichtelijk online assortiment voorbereiden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1688,7 +1793,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden"
     },
     {
       "slot": 92,
@@ -1696,8 +1802,8 @@
       "website": "starlocal.nl",
       "municipality": "Utrecht",
       "originalPlannedAt": "2026-12-28T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Onderhoud en eigenaarschap afspreken",
+      "title": "Utrecht: Wie houdt welke website-informatie bij?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1706,7 +1812,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wie houdt welke website-informatie bij?"
     },
     {
       "slot": 93,
@@ -1714,8 +1821,8 @@
       "website": "starlocal.nl",
       "municipality": "Bunnik",
       "originalPlannedAt": "2026-12-28T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Foto en tekst op mobiel afstemmen",
+      "title": "Bunnik: Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1724,7 +1831,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?"
     },
     {
       "slot": 94,
@@ -1732,8 +1840,8 @@
       "website": "starlocal.nl",
       "municipality": "Roermond",
       "originalPlannedAt": "2026-12-30T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Nieuwsarchief actueel organiseren",
+      "title": "Roermond: Oude nieuwsberichten bruikbaar houden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1742,7 +1850,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Oude nieuwsberichten bruikbaar houden"
     },
     {
       "slot": 95,
@@ -1750,8 +1859,8 @@
       "website": "starlocal.nl",
       "municipality": "Rotterdam",
       "originalPlannedAt": "2026-12-30T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Branchewoorden begrijpelijk maken",
+      "title": "Rotterdam: Vertaal uw vaktaal naar herkenbare klantvragen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1760,7 +1869,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen"
     },
     {
       "slot": 96,
@@ -1768,8 +1878,8 @@
       "website": "starlocal.nl",
       "municipality": "Montfoort",
       "originalPlannedAt": "2026-12-30T15:00:00+04:00",
-      "topic": null,
-      "title": null,
+      "topic": "Verwijzingen vanaf drukwerk",
+      "title": "Montfoort: Een QR-code naar een bruikbare websitebestemming laten leiden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1778,7 +1888,8 @@
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false
+      "whatsappChecked": false,
+      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden"
     }
   ]
 }
