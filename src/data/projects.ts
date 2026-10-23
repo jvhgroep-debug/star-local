@@ -29,6 +29,26 @@ const PLACEHOLDER = '/images/projects/placeholder.svg';
 
 export const projects: Project[] = [
   {
+    "name": "Super Pasta Dubai",
+    "slug": "super-pasta-dubai",
+    "categoryNl": "Restaurantwebsite in Dubai",
+    "categoryEn": "Dubai restaurant website",
+    "descriptionNl": "Een restaurantwebsite voor Super Pasta in Meydan, Dubai, met menukaart, bestelknoppen, blog en direct contact via WhatsApp.",
+    "descriptionEn": "A restaurant website for Super Pasta in Meydan, Dubai, with a menu, ordering links, a blog and direct WhatsApp contact.",
+    "website": "https://www.superpastadubai.com/",
+    "displayUrl": "superpastadubai.com",
+    "image": "/images/projects/project-super-pasta-dubai.webp",
+    "imageAltNl": "Website van Super Pasta Dubai met menukaart en pasta",
+    "imageAltEn": "Super Pasta Dubai website with menu and pasta",
+    "imagePosition": "center top",
+    "status": "live",
+    "featured": true,
+    "filters": [
+      "website",
+      "seo"
+    ]
+  },
+  {
     name: 'Star Local',
     slug: 'star-local',
     categoryNl: 'Webdesign & SEO-platform',
