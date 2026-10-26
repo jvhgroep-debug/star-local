@@ -28,6 +28,25 @@ export interface Project {
 const PLACEHOLDER = '/images/projects/placeholder.svg';
 
 export const projects: Project[] = [
+{
+  "name": "FlikMart",
+  "slug": "flikmart",
+  "categoryNl": "Winkelwebsite in de Verenigde Arabische Emiraten",
+  "categoryEn": "UAE convenience store website",
+  "descriptionNl": "Een Engelstalige website met eigen winkelfoto’s, assortimentinformatie en campuslocaties in Al Ain en Dubai. Domeinkoppeling en hosting worden afgerond.",
+  "descriptionEn": "An English-language website with original store photography, product categories and campus locations in Al Ain and Dubai. Domain and hosting setup is being completed.",
+  "displayUrl": "flikmart.ae",
+  "image": "/images/projects/placeholder.svg",
+  "cover": {
+    "color": "#ed6008",
+    "mark": "FM"
+  },
+  "status": "development",
+  "featured": true,
+  "filters": [
+    "website"
+  ]
+},
   {
     "name": "Super Pasta Dubai",
     "slug": "super-pasta-dubai",
