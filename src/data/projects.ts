@@ -33,14 +33,12 @@ export const projects: Project[] = [
   "slug": "flikmart",
   "categoryNl": "Winkelwebsite in de Verenigde Arabische Emiraten",
   "categoryEn": "UAE convenience store website",
-  "descriptionNl": "Een Engelstalige website met eigen winkelfoto’s, assortimentinformatie en campuslocaties in Al Ain en Dubai. Domeinkoppeling en hosting worden afgerond.",
-  "descriptionEn": "An English-language website with original store photography, product categories and campus locations in Al Ain and Dubai. Domain and hosting setup is being completed.",
+  "descriptionNl": "Een tweetalige website in het Engels en Arabisch met eigen winkelfoto’s, assortimentinformatie en campuslocaties in Al Ain en Dubai. Domeinkoppeling en hosting worden afgerond.",
+  "descriptionEn": "A bilingual English and Arabic website with original store photography, product categories and campus locations in Al Ain and Dubai. Domain and hosting setup is being completed.",
   "displayUrl": "flikmart.ae",
-  "image": "/images/projects/placeholder.svg",
-  "cover": {
-    "color": "#ed6008",
-    "mark": "FM"
-  },
+  "image": "/images/projects/project-flikmart.svg",
+  "imageAltNl": "Originele foto van de oranje FlikMart winkelgevel",
+  "imageAltEn": "Original photograph of the orange FlikMart storefront",
   "status": "development",
   "featured": true,
   "filters": [
