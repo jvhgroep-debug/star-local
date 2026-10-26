@@ -35,7 +35,7 @@ const dict = useTranslations(locale);
     />
   </div>
 
-  <Hero title={project.name} intro={project.summary} />
+  <Hero title={project.name} intro={project.summary} backgroundImage={project.slug === 'aj-taxi' ? project.image : undefined} />
 
   <section class="section">
     <div class="container content">

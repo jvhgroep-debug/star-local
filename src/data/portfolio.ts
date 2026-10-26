@@ -114,8 +114,8 @@ export const portfolioProjects: PortfolioProject[] = [
     approach: 'We bouwden een mobielvriendelijke site met duidelijke call-to-actions.',
     work: ['websiteontwikkeling', 'content'],
     status: ['websiteontwikkeling'],
-    image: IMAGES.heroWebdesign,
-    imageAlt: 'AJ Taxi website project',
+    image: '/images/projects/project-aj-taxi.webp',
+    imageAlt: 'AJ Taxi website met zwarte taxi en blauwe kentekenplaat',
   },
   {
     slug: 'taxi-breda-schiphol',

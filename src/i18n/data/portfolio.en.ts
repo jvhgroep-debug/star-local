@@ -98,8 +98,8 @@ export const portfolioEn: PortfolioProject[] = [
     approach: 'We built a mobile-friendly site with clear calls to action.',
     work: ['website development', 'content'],
     status: ['website development'],
-    image: IMAGES.heroWebdesign,
-    imageAlt: 'AJ Taxi website project',
+    image: '/images/projects/project-aj-taxi.webp',
+    imageAlt: 'AJ Taxi website met zwarte taxi en blauwe kentekenplaat',
   },
   {
     slug: 'taxi-breda-schiphol',
