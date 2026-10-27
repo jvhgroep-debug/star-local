@@ -8,7 +8,7 @@ assert.equal(new Set(ledger.slots.map(s=>s.key)).size,96);
 const index=readFileSync('dist/blog/index.html','utf8');
 const sitemap=readFileSync('dist/sitemap-0.xml','utf8');
 const titles=new Set();
-for(const slot of ledger.slots.filter(slot => slot.slug && Date.parse(slot.originalPlannedAt) <= Date.now())){
+for(const slot of ledger.slots.filter(slot => slot.slug && Date.parse(slot.scheduledAt ?? slot.originalPlannedAt) <= Date.now())){
  const route='/blog/'+slot.slug+'/';
  const html=readFileSync('dist'+route+'index.html','utf8');
  assert.equal((html.match(/<h1[\s>]/g)||[]).length,1,route+' H1');
@@ -37,7 +37,7 @@ for(const slot of ledger.slots.filter(slot => slot.slug && Date.parse(slot.origi
  console.log('PASS HTML/SEO/assets/links/WhatsApp/index/sitemap: '+slot.municipality);
 }
 assert(existsSync('dist/blog/autoverhuur-website-met-boekingssysteem-en-app/index.html'));
-for(const slot of ledger.slots.filter(slot => Date.parse(slot.originalPlannedAt)>Date.now())){
+for(const slot of ledger.slots.filter(slot => Date.parse(slot.scheduledAt ?? slot.originalPlannedAt)>Date.now())){
  assert.equal(slot.published,false);assert.equal(slot.status,'planned');
  if(slot.slug)assert(!existsSync('dist/blog/'+slot.slug+'/index.html'));
 }
