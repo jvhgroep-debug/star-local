@@ -1,6 +1,6 @@
 {
   "website": "starlocal.nl",
-  "cadence": "MO/WE/FR: 3 total",
+  "cadence": "TU/TH/SU: 3 total per publication day, 9 per complete week",
   "endDate": "2026-12-30",
   "rotation": [
     "Oisterwijk",
@@ -275,17 +275,21 @@
       "municipality": "Druten",
       "originalPlannedAt": "2026-10-26T15:00:00+04:00",
       "topic": "Navigatie voor meerdere doelgroepen",
-      "title": "Druten: Vind de juiste dienst zonder een lang menu",
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "title": "Een kort menu voor meerdere doelgroepen: keuzes voor ondernemers in Druten",
+      "slug": "druten-navigatie-meerdere-doelgroepen-website",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-dutch-food-dubai.webp",
+      "photoType": "Existing portfolio website capture containing real company photography, not a local case",
+      "status": "validated-awaiting-deployment",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
-      "whatsappChecked": false,
-      "editorialIntent": "Vind de juiste dienst zonder een lang menu"
+      "whatsappChecked": true,
+      "editorialIntent": "Vind de juiste dienst zonder een lang menu",
+      "scheduledAt": "2026-10-27T04:00:00+04:00",
+      "batchSlot": 1,
+      "imageApproved": true,
+      "whatsappNumber": "31684002350"
     },
     {
       "slot": 11,
@@ -304,7 +308,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen"
+      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen",
+      "scheduledAt": "2026-10-27T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 12,
@@ -323,7 +329,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?"
+      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?",
+      "scheduledAt": "2026-10-27T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 13,
@@ -342,7 +350,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies"
+      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
+      "scheduledAt": "2026-10-29T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 14,
@@ -361,7 +371,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen"
+      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen",
+      "scheduledAt": "2026-10-29T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 15,
@@ -380,7 +392,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Laat klanten de juiste bestelroute kiezen"
+      "editorialIntent": "Laat klanten de juiste bestelroute kiezen",
+      "scheduledAt": "2026-10-29T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 16,
@@ -399,7 +413,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?"
+      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?",
+      "scheduledAt": "2026-11-01T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 17,
@@ -418,7 +434,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Twee klantgroepen helder helpen op één website"
+      "editorialIntent": "Twee klantgroepen helder helpen op één website",
+      "scheduledAt": "2026-11-01T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 18,
@@ -437,7 +455,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?"
+      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?",
+      "scheduledAt": "2026-11-01T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 19,
@@ -456,7 +476,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute"
+      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute",
+      "scheduledAt": "2026-11-03T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 20,
@@ -475,7 +497,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen"
+      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen",
+      "scheduledAt": "2026-11-03T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 21,
@@ -494,7 +518,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?"
+      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?",
+      "scheduledAt": "2026-11-03T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 22,
@@ -513,7 +539,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden"
+      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden",
+      "scheduledAt": "2026-11-05T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 23,
@@ -532,7 +560,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wie houdt welke website-informatie bij?"
+      "editorialIntent": "Wie houdt welke website-informatie bij?",
+      "scheduledAt": "2026-11-05T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 24,
@@ -551,7 +581,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?"
+      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
+      "scheduledAt": "2026-11-05T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 25,
@@ -570,7 +602,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Oude nieuwsberichten bruikbaar houden"
+      "editorialIntent": "Oude nieuwsberichten bruikbaar houden",
+      "scheduledAt": "2026-11-08T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 26,
@@ -589,7 +623,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen"
+      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen",
+      "scheduledAt": "2026-11-08T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 27,
@@ -608,7 +644,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden"
+      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden",
+      "scheduledAt": "2026-11-08T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 28,
@@ -627,7 +665,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat"
+      "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat",
+      "scheduledAt": "2026-11-10T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 29,
@@ -646,7 +686,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?"
+      "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?",
+      "scheduledAt": "2026-11-10T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 30,
@@ -665,7 +707,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?"
+      "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?",
+      "scheduledAt": "2026-11-10T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 31,
@@ -684,7 +728,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven"
+      "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
+      "scheduledAt": "2026-11-12T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 32,
@@ -703,7 +749,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat toont een starter zonder openbare klantcases?"
+      "editorialIntent": "Wat toont een starter zonder openbare klantcases?",
+      "scheduledAt": "2026-11-12T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 33,
@@ -722,7 +770,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vind de juiste dienst zonder een lang menu"
+      "editorialIntent": "Vind de juiste dienst zonder een lang menu",
+      "scheduledAt": "2026-11-12T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 34,
@@ -741,7 +791,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen"
+      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen",
+      "scheduledAt": "2026-11-15T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 35,
@@ -760,7 +812,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?"
+      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?",
+      "scheduledAt": "2026-11-15T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 36,
@@ -779,7 +833,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies"
+      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
+      "scheduledAt": "2026-11-15T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 37,
@@ -798,7 +854,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen"
+      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen",
+      "scheduledAt": "2026-11-17T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 38,
@@ -817,7 +875,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Laat klanten de juiste bestelroute kiezen"
+      "editorialIntent": "Laat klanten de juiste bestelroute kiezen",
+      "scheduledAt": "2026-11-17T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 39,
@@ -836,7 +896,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?"
+      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?",
+      "scheduledAt": "2026-11-17T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 40,
@@ -855,7 +917,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Twee klantgroepen helder helpen op één website"
+      "editorialIntent": "Twee klantgroepen helder helpen op één website",
+      "scheduledAt": "2026-11-19T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 41,
@@ -874,7 +938,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?"
+      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?",
+      "scheduledAt": "2026-11-19T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 42,
@@ -893,7 +959,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute"
+      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute",
+      "scheduledAt": "2026-11-19T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 43,
@@ -912,7 +980,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen"
+      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen",
+      "scheduledAt": "2026-11-22T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 44,
@@ -931,7 +1001,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?"
+      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?",
+      "scheduledAt": "2026-11-22T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 45,
@@ -950,7 +1022,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden"
+      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden",
+      "scheduledAt": "2026-11-22T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 46,
@@ -969,7 +1043,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wie houdt welke website-informatie bij?"
+      "editorialIntent": "Wie houdt welke website-informatie bij?",
+      "scheduledAt": "2026-11-24T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 47,
@@ -988,7 +1064,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?"
+      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
+      "scheduledAt": "2026-11-24T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 48,
@@ -1007,7 +1085,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Oude nieuwsberichten bruikbaar houden"
+      "editorialIntent": "Oude nieuwsberichten bruikbaar houden",
+      "scheduledAt": "2026-11-24T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 49,
@@ -1026,7 +1106,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen"
+      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen",
+      "scheduledAt": "2026-11-26T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 50,
@@ -1045,7 +1127,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden"
+      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden",
+      "scheduledAt": "2026-11-26T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 51,
@@ -1064,7 +1148,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat"
+      "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat",
+      "scheduledAt": "2026-11-26T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 52,
@@ -1083,7 +1169,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?"
+      "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?",
+      "scheduledAt": "2026-11-29T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 53,
@@ -1102,7 +1190,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?"
+      "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?",
+      "scheduledAt": "2026-11-29T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 54,
@@ -1121,7 +1211,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven"
+      "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
+      "scheduledAt": "2026-11-29T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 55,
@@ -1140,7 +1232,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat toont een starter zonder openbare klantcases?"
+      "editorialIntent": "Wat toont een starter zonder openbare klantcases?",
+      "scheduledAt": "2026-12-01T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 56,
@@ -1159,7 +1253,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vind de juiste dienst zonder een lang menu"
+      "editorialIntent": "Vind de juiste dienst zonder een lang menu",
+      "scheduledAt": "2026-12-01T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 57,
@@ -1178,7 +1274,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen"
+      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen",
+      "scheduledAt": "2026-12-01T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 58,
@@ -1197,7 +1295,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?"
+      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?",
+      "scheduledAt": "2026-12-03T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 59,
@@ -1216,7 +1316,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies"
+      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
+      "scheduledAt": "2026-12-03T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 60,
@@ -1235,7 +1337,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen"
+      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen",
+      "scheduledAt": "2026-12-03T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 61,
@@ -1254,7 +1358,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Laat klanten de juiste bestelroute kiezen"
+      "editorialIntent": "Laat klanten de juiste bestelroute kiezen",
+      "scheduledAt": "2026-12-06T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 62,
@@ -1273,7 +1379,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?"
+      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?",
+      "scheduledAt": "2026-12-06T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 63,
@@ -1292,7 +1400,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Twee klantgroepen helder helpen op één website"
+      "editorialIntent": "Twee klantgroepen helder helpen op één website",
+      "scheduledAt": "2026-12-06T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 64,
@@ -1311,7 +1421,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?"
+      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?",
+      "scheduledAt": "2026-12-08T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 65,
@@ -1330,7 +1442,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute"
+      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute",
+      "scheduledAt": "2026-12-08T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 66,
@@ -1349,7 +1463,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen"
+      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen",
+      "scheduledAt": "2026-12-08T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 67,
@@ -1368,7 +1484,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?"
+      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?",
+      "scheduledAt": "2026-12-10T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 68,
@@ -1387,7 +1505,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden"
+      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden",
+      "scheduledAt": "2026-12-10T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 69,
@@ -1406,7 +1526,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wie houdt welke website-informatie bij?"
+      "editorialIntent": "Wie houdt welke website-informatie bij?",
+      "scheduledAt": "2026-12-10T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 70,
@@ -1425,7 +1547,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?"
+      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
+      "scheduledAt": "2026-12-13T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 71,
@@ -1444,7 +1568,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Oude nieuwsberichten bruikbaar houden"
+      "editorialIntent": "Oude nieuwsberichten bruikbaar houden",
+      "scheduledAt": "2026-12-13T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 72,
@@ -1463,7 +1589,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen"
+      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen",
+      "scheduledAt": "2026-12-13T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 73,
@@ -1482,7 +1610,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden"
+      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden",
+      "scheduledAt": "2026-12-15T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 74,
@@ -1501,7 +1631,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat"
+      "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat",
+      "scheduledAt": "2026-12-15T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 75,
@@ -1520,7 +1652,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?"
+      "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?",
+      "scheduledAt": "2026-12-15T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 76,
@@ -1539,7 +1673,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?"
+      "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?",
+      "scheduledAt": "2026-12-17T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 77,
@@ -1558,7 +1694,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven"
+      "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
+      "scheduledAt": "2026-12-17T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 78,
@@ -1577,7 +1715,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat toont een starter zonder openbare klantcases?"
+      "editorialIntent": "Wat toont een starter zonder openbare klantcases?",
+      "scheduledAt": "2026-12-17T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 79,
@@ -1596,7 +1736,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vind de juiste dienst zonder een lang menu"
+      "editorialIntent": "Vind de juiste dienst zonder een lang menu",
+      "scheduledAt": "2026-12-20T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 80,
@@ -1615,7 +1757,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen"
+      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen",
+      "scheduledAt": "2026-12-20T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 81,
@@ -1634,7 +1778,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?"
+      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?",
+      "scheduledAt": "2026-12-20T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 82,
@@ -1653,7 +1799,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies"
+      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
+      "scheduledAt": "2026-12-22T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 83,
@@ -1672,7 +1820,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen"
+      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen",
+      "scheduledAt": "2026-12-22T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 84,
@@ -1691,7 +1841,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Laat klanten de juiste bestelroute kiezen"
+      "editorialIntent": "Laat klanten de juiste bestelroute kiezen",
+      "scheduledAt": "2026-12-22T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 85,
@@ -1710,7 +1862,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?"
+      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?",
+      "scheduledAt": "2026-12-24T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 86,
@@ -1729,7 +1883,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Twee klantgroepen helder helpen op één website"
+      "editorialIntent": "Twee klantgroepen helder helpen op één website",
+      "scheduledAt": "2026-12-24T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 87,
@@ -1748,7 +1904,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?"
+      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?",
+      "scheduledAt": "2026-12-24T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 88,
@@ -1767,7 +1925,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute"
+      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute",
+      "scheduledAt": "2026-12-27T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 89,
@@ -1786,7 +1946,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen"
+      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen",
+      "scheduledAt": "2026-12-27T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 90,
@@ -1805,7 +1967,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?"
+      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?",
+      "scheduledAt": "2026-12-27T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 91,
@@ -1824,7 +1988,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden"
+      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden",
+      "scheduledAt": "2026-12-29T04:00:00+04:00",
+      "batchSlot": 1
     },
     {
       "slot": 92,
@@ -1843,7 +2009,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wie houdt welke website-informatie bij?"
+      "editorialIntent": "Wie houdt welke website-informatie bij?",
+      "scheduledAt": "2026-12-29T04:00:00+04:00",
+      "batchSlot": 2
     },
     {
       "slot": 93,
@@ -1862,7 +2030,9 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?"
+      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
+      "scheduledAt": "2026-12-29T04:00:00+04:00",
+      "batchSlot": 3
     },
     {
       "slot": 94,
@@ -1881,7 +2051,10 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Oude nieuwsberichten bruikbaar houden"
+      "editorialIntent": "Oude nieuwsberichten bruikbaar houden",
+      "scheduledAt": null,
+      "batchSlot": 1,
+      "scheduleDisposition": "outside remaining calendar; no extra articles authorised"
     },
     {
       "slot": 95,
@@ -1900,7 +2073,10 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen"
+      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen",
+      "scheduledAt": null,
+      "batchSlot": 2,
+      "scheduleDisposition": "outside remaining calendar; no extra articles authorised"
     },
     {
       "slot": 96,
@@ -1919,7 +2095,13 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden"
+      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden",
+      "scheduledAt": null,
+      "batchSlot": 3,
+      "scheduleDisposition": "outside remaining calendar; no extra articles authorised"
     }
-  ]
+  ],
+  "timezone": "Asia/Dubai",
+  "scheduleEffectiveFrom": "2026-10-26",
+  "sharedExternalLockVerified": false
 }

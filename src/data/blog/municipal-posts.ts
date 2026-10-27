@@ -1,3 +1,4 @@
+import october27Posts from './municipal-oct27.json';
 import type { BlogPostMeta } from './types';
 import additionalPosts from './municipal-oct21-23.json';
 
@@ -8,6 +9,7 @@ const shared = {
 };
 
 export const municipalPosts: BlogPostMeta[] = [
+  ...october27Posts,
   ...additionalPosts,
   {
     ...shared, municipality: 'Oisterwijk', slug: 'oisterwijk-eigen-website-naast-sociale-media',
