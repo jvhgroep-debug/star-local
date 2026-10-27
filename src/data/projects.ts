@@ -29,6 +29,26 @@ const PLACEHOLDER = '/images/projects/placeholder.svg';
 
 export const projects: Project[] = [
 {
+  "name": "StarTransfer",
+  "slug": "startransfer",
+  "categoryNl": "Website voor partybussen & evenementenvervoer",
+  "categoryEn": "Party bus & event transport website",
+  "descriptionNl": "Een website voor StarTransfer met het wagenpark, partybussen, vervoer voor festivals en feesten en een uitgebreid offerteformulier.",
+  "descriptionEn": "A website for StarTransfer featuring the fleet, party buses, transport for festivals and celebrations, and a detailed quotation form.",
+  "website": "https://startransfer.nl/",
+  "displayUrl": "startransfer.nl",
+  "image": "/images/projects/project-startransfer.webp",
+  "imageAltNl": "The Experience-partybus van StarTransfer bij zonsondergang",
+  "imageAltEn": "StarTransfer’s The Experience party bus at sunset",
+  "imagePosition": "center center",
+  "pendingScreenshot": false,
+  "featured": true,
+  "status": "live",
+  "filters": [
+    "website"
+  ]
+},
+{
   "name": "FlikMart",
   "slug": "flikmart",
   "categoryNl": "Winkelwebsite in de Verenigde Arabische Emiraten",
