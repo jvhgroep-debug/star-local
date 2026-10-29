@@ -1,3 +1,4 @@
+import october29Posts from './municipal-oct29.json';
 import october27Posts from './municipal-oct27.json';
 import type { BlogPostMeta } from './types';
 import additionalPosts from './municipal-oct21-23.json';
@@ -9,6 +10,7 @@ const shared = {
 };
 
 export const municipalPosts: BlogPostMeta[] = [
+  ...october29Posts,
   ...october27Posts,
   ...additionalPosts,
   {
