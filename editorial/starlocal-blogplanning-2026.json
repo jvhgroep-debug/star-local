@@ -391,11 +391,11 @@
       "municipality": "Roermond",
       "originalPlannedAt": "2026-10-28T15:00:00+04:00",
       "topic": "Seizoensaanbod actueel houden",
-      "title": "Roermond: Een tijdelijk aanbod publiceren en later netjes opruimen",
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "title": "Tijdelijk aanbod op uw website: publicatie en afloop voor ondernemers in Roermond",
+      "slug": "roermond-tijdelijk-aanbod-website-actueel-houden",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-aurora-salon.webp",
+      "photoType": "existing-portfolio-capture-with-real-photography",
+      "status": "draft",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -403,7 +403,8 @@
       "whatsappChecked": false,
       "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen",
       "scheduledAt": "2026-10-29T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "imageApproved": true
     },
     {
       "slot": 15,
