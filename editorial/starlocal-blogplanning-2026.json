@@ -417,11 +417,11 @@
       "municipality": "Rotterdam",
       "originalPlannedAt": "2026-10-28T15:00:00+04:00",
       "topic": "Afhalen versus bezorgen uitleggen",
-      "title": "Rotterdam: Laat klanten de juiste bestelroute kiezen",
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "title": "Afhalen of bezorgen: duidelijke bestelroutes voor ondernemers in Rotterdam",
+      "slug": "rotterdam-afhalen-bezorgen-bestelroute-website",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-dutch-food-dubai.webp",
+      "photoType": "existing-portfolio-capture-with-real-photography",
+      "status": "draft",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -429,7 +429,8 @@
       "whatsappChecked": false,
       "editorialIntent": "Laat klanten de juiste bestelroute kiezen",
       "scheduledAt": "2026-10-29T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "imageApproved": true
     },
     {
       "slot": 16,
