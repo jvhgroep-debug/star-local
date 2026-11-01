@@ -447,12 +447,12 @@
       "slug": "montfoort-website-offerte-werkzaamheden-vergelijken",
       "imageSource": "https://www.starlocal.nl/images/projects/project-captain-crabbys.webp",
       "photoType": "Existing authorised portfolio website capture with restaurant photography; not a local case",
-      "status": "source-written",
-      "published": false,
-      "sourceCommitted": false,
-      "deploymentConfirmed": false,
-      "liveChecked": false,
-      "whatsappChecked": false,
+      "status": "public-verified",
+      "published": true,
+      "sourceCommitted": true,
+      "deploymentConfirmed": true,
+      "liveChecked": true,
+      "whatsappChecked": true,
       "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?",
       "scheduledAt": "2026-11-01T04:00:00+04:00",
       "batchSlot": 1,
@@ -468,7 +468,13 @@
         "ownRun": "e3948f68-529c-8330-8cd3-e72cb7c0e5be",
         "previousRunCompleted": true,
         "checkedAt": "2026-11-01T04:08:21.379841+04:00"
-      }
+      },
+      "sourceCommit": "04e64d843fe9a361aba8fae72ae8e99053e1fc04",
+      "productionCommit": "ce0f9b100325d6dbcb087261dd336637a6df8615",
+      "deploymentId": "7e8d42a3-8271-4250-8a2c-25d52cae9a9f",
+      "publicUrl": "https://www.starlocal.nl/blog/montfoort-website-offerte-werkzaamheden-vergelijken/",
+      "liveVerifiedAt": "2026-11-01T00:14:26.772Z",
+      "liveVerificationMethod": "Actual domain browser: article/H1/canonical, 1200px loaded image, blog overview, municipality context and sitemap-0.xml containing exact URL; one dialog and inline CTA opened, correct number and fields. Component URL encoding test passed; no messages sent."
     },
     {
       "slot": 17,
