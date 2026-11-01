@@ -521,19 +521,34 @@
       "municipality": "Meerssen",
       "originalPlannedAt": "2026-10-30T15:00:00+04:00",
       "topic": "Vertrouwen met controleerbare bedrijfsinformatie",
-      "title": "Meerssen: Wat kan een onbekende bezoeker over uw bedrijf controleren?",
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "title": "Controleerbare bedrijfsinformatie: wat kunt u op uw website aantonen?",
+      "slug": "meerssen-bedrijfsclaims-website-onderbouwen",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-aurora-salon.webp",
+      "photoType": "Existing permitted Aurora Salon portfolio capture; visually inspected; no local case or result asserted",
+      "status": "source-written",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?",
+      "editorialIntent": "Hoe controleert een ondernemer de onderbouwing van bedrijfsclaims voordat de website wordt geschreven?",
       "scheduledAt": "2026-11-01T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "imageApproved": true,
+      "imagePermission": "Johan 30 October existing own portfolio permission; no visible provenance caption",
+      "actualPublicationAt": "2026-11-02T02:42:59.566662+04:00",
+      "language": "nl-NL",
+      "sources": [
+        "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+        "existing Star Local business and portfolio sources"
+      ],
+      "priorCheck": {
+        "main": "b430b612e807a8ac68a75fb8e8e9e7b52ea705da",
+        "previousSlot": 17,
+        "previousSlotPublicVerified": true,
+        "previousRegistrationBuild": "completed/success",
+        "checkedAt": "2026-11-02T02:42:59.566662+04:00"
+      }
     },
     {
       "slot": 19,
