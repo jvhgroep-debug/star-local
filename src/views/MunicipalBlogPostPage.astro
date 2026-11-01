@@ -21,7 +21,7 @@ const schema = {
       <p>{post.author} · <time datetime={post.publishedAt}>{new Date(post.publishedAt).toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'})}</time></p>
       <p class="intro">{post.excerpt}</p>
     </header>
-    <figure><img src={post.image} alt={post.imageAlt} width={post.imageWidth} height={post.imageHeight} loading="eager" decoding="async" /><figcaption>{post.imageCaption} <a href={post.imageSource}>Beeldbron</a>.</figcaption></figure>
+    <figure><img src={post.image} alt={post.imageAlt} width={post.imageWidth} height={post.imageHeight} loading="eager" decoding="async" />{post.imageCaption && <figcaption>{post.imageCaption} <a href={post.imageSource}>Beeldbron</a>.</figcaption>}</figure>
     <div class="prose" set:html={post.bodyHtml} />
     <aside class="quote-box" aria-labelledby="quote-title">
       <h2 id="quote-title">Bespreek uw website met Star Local</h2>
