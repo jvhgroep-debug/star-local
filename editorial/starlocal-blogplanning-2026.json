@@ -525,12 +525,12 @@
       "slug": "meerssen-bedrijfsclaims-website-onderbouwen",
       "imageSource": "https://www.starlocal.nl/images/projects/project-aurora-salon.webp",
       "photoType": "Existing permitted Aurora Salon portfolio capture; visually inspected; no local case or result asserted",
-      "status": "source-written",
-      "published": false,
-      "sourceCommitted": false,
-      "deploymentConfirmed": false,
-      "liveChecked": false,
-      "whatsappChecked": false,
+      "status": "public-verified",
+      "published": true,
+      "sourceCommitted": true,
+      "deploymentConfirmed": true,
+      "liveChecked": true,
+      "whatsappChecked": true,
       "editorialIntent": "Hoe controleert een ondernemer de onderbouwing van bedrijfsclaims voordat de website wordt geschreven?",
       "scheduledAt": "2026-11-01T04:00:00+04:00",
       "batchSlot": 3,
@@ -548,7 +548,12 @@
         "previousSlotPublicVerified": true,
         "previousRegistrationBuild": "completed/success",
         "checkedAt": "2026-11-02T02:42:59.566662+04:00"
-      }
+      },
+      "publicVerifiedAt": "2026-11-01T22:49:12Z",
+      "sourceCommit": "20172661faa1f1722dd17ed0df544326c00cae5b",
+      "deploymentCommit": "a46e3ce157cdf54036b0e8cd27e6392a75704ec8",
+      "deploymentId": "e12b05c7-e368-4083-8387-3af416198b01",
+      "publicUrl": "https://www.starlocal.nl/blog/meerssen-bedrijfsclaims-website-onderbouwen/"
     },
     {
       "slot": 19,
