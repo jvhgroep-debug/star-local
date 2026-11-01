@@ -18,7 +18,7 @@ const schema = {
   <article class="municipal-article container">
     <Breadcrumbs items={[{label:'Home',href:'/'},{label:'Blog',href:'/blog/'},{label:post.title}]} />
     <header><p class="eyebrow">{post.category} · {post.municipality}</p><h1>{post.h1}</h1>
-      <p>{post.author} · <time datetime={post.publishedAt}>{new Date(post.publishedAt).toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'})}</time></p>
+      <p>{post.author} · <time datetime={post.publishedAt}>{new Date(post.publishedAt).toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric',timeZone:post.displayTimezone})}</time></p>
       <p class="intro">{post.excerpt}</p>
     </header>
     <figure><img src={post.image} alt={post.imageAlt} width={post.imageWidth} height={post.imageHeight} loading="eager" decoding="async" />{post.imageCaption && <figcaption>{post.imageCaption} <a href={post.imageSource}>Beeldbron</a>.</figcaption>}</figure>

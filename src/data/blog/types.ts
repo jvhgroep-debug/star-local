@@ -15,6 +15,7 @@ export interface BlogPostMeta {
   ogDescription: string;
   canonicalPath: string;
   publishedAt: string;
+  displayTimezone?: string;
   updatedAt: string;
   author: string;
   authorBio: string;
