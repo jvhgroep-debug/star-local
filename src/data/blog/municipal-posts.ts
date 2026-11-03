@@ -1,3 +1,4 @@
+import november3Posts from './municipal-nov03.json';
 import november1Posts from './municipal-nov01.json';
 import october29Posts from './municipal-oct29.json';
 import october27Posts from './municipal-oct27.json';
@@ -11,6 +12,7 @@ const shared = {
 };
 
 export const municipalPosts: BlogPostMeta[] = [
+  ...november3Posts.filter(post => Date.parse(post.publishedAt) <= Date.now()),
   ...november1Posts.filter(post => Date.parse(post.publishedAt) <= Date.now()),
   ...october29Posts,
   ...october27Posts,
