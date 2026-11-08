@@ -8,7 +8,8 @@
     "preview": "astro preview",
     "test:publish": "npx --yes tsx scripts/test-local-publish-direct.ts",
     "test:generate": "npx --yes tsx scripts/test-auto-generate-direct.ts",
-    "generate:gemeentes": "node scripts/generate-gemeentes.mjs && node scripts/generate-gemeente-page.mjs"
+    "generate:gemeentes": "node scripts/generate-gemeentes.mjs && node scripts/generate-gemeente-page.mjs",
+    "prebuild": "node scripts/validate-blog-calendar.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.13",

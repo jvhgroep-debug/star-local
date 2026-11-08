@@ -1,6 +1,7 @@
 import type { FAQ } from '../services';
 
 export interface BlogPostMeta {
+  slotKey?: string;
   slug: string;
   title: string;
   h1: string;

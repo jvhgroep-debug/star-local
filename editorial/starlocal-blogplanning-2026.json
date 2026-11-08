@@ -1,6 +1,6 @@
 {
   "website": "starlocal.nl",
-  "cadence": "TU/TH/SU: 3 total per publication day, 9 per complete week",
+  "cadence": "TU/TH/SU: 1 per publication day, 3 per complete week from 2026-11-08",
   "endDate": "2026-12-30",
   "rotation": [
     "Oisterwijk",
@@ -766,19 +766,39 @@
       "municipality": "Woerden",
       "originalPlannedAt": "2026-11-06T15:00:00+04:00",
       "topic": "Nieuwsarchief actueel organiseren",
-      "title": "Woerden: Oude nieuwsberichten bruikbaar houden",
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "title": "Oud nieuws op uw website: bewaren, bijwerken of uit het overzicht halen?",
+      "slug": "woerden-oude-nieuwsberichten-website-archief",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-super-pasta-dubai.webp",
+      "photoType": "Existing approved portfolio capture with product photography; illustrative website example, no Woerden case or results claim",
+      "status": "source-written",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Oude nieuwsberichten bruikbaar houden",
+      "editorialIntent": "Hoe onderscheid ik historische nieuwsberichten, blijvende uitleg en actueel aanbod zonder oude uitnodigingen opnieuw te laten gelden?",
       "scheduledAt": "2026-11-08T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Woerden",
+        "topic": "Nieuwsarchief actueel organiseren",
+        "title": "Woerden: Oude nieuwsberichten bruikbaar houden",
+        "editorialIntent": "Oude nieuwsberichten bruikbaar houden"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Woerden|2026-11-06T15:00:00+04:00",
+      "scheduleActive": true,
+      "actualPublishedAt": "2026-11-08T04:10:53.805378+04:00",
+      "publicationReady": true,
+      "imageApproved": true,
+      "photoPermission": "Johan 30 October 2026, existing portfolio imagery permitted; visually inspected; no caption",
+      "sourceReviewedAt": "2026-11-08T04:10:53.805378+04:00",
+      "sourceEvidence": [
+        "Live blog overview checked 8 November; all municipal article titles and related Breda maintenance/Roermond temporary-offer content compared. Archive decisions and historical context are distinct from task ownership and expiry planning.",
+        "Current website service/municipality pages and WhatsApp component reviewed.",
+        "https://developers.google.com/search/docs/fundamentals/creating-helpful-content"
+      ],
+      "publicUrl": "https://www.starlocal.nl/blog/woerden-oude-nieuwsberichten-website-archief/",
+      "whatsappNumber": "31684002350"
     },
     {
       "slot": 26,
@@ -791,7 +811,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -799,7 +819,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen",
       "scheduledAt": "2026-11-08T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 27,
@@ -812,7 +835,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -820,16 +843,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden",
       "scheduledAt": "2026-11-08T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 28,
       "key": "starlocal.nl|Houten|2026-11-09T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Houten",
+      "municipality": "Tilburg",
       "originalPlannedAt": "2026-11-09T15:00:00+04:00",
-      "topic": "Prijsaanvraag versus productbestelling",
-      "title": "Houten: Kies een duidelijke vervolgstap voor een product op maat",
+      "topic": "Branchewoorden begrijpelijk maken",
+      "title": "Tilburg: Vertaal uw vaktaal naar herkenbare klantvragen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -839,9 +865,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat",
+      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen",
       "scheduledAt": "2026-11-10T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Houten",
+        "topic": "Prijsaanvraag versus productbestelling",
+        "title": "Houten: Kies een duidelijke vervolgstap voor een product op maat",
+        "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Tilburg|2026-11-06T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 29,
@@ -854,7 +888,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -862,7 +896,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?",
       "scheduledAt": "2026-11-10T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 30,
@@ -875,7 +912,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -883,16 +920,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?",
       "scheduledAt": "2026-11-10T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 31,
       "key": "starlocal.nl|Harderwijk|2026-11-11T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Harderwijk",
+      "municipality": "Zundert",
       "originalPlannedAt": "2026-11-11T15:00:00+04:00",
-      "topic": "Openingstijden en afspraken",
-      "title": "Harderwijk: Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
+      "topic": "Verwijzingen vanaf drukwerk",
+      "title": "Zundert: Een QR-code naar een bruikbare websitebestemming laten leiden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -902,9 +942,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
+      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden",
       "scheduledAt": "2026-11-12T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Harderwijk",
+        "topic": "Openingstijden en afspraken",
+        "title": "Harderwijk: Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
+        "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Zundert|2026-11-06T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 32,
@@ -917,7 +965,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -925,7 +973,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Wat toont een starter zonder openbare klantcases?",
       "scheduledAt": "2026-11-12T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 33,
@@ -938,7 +989,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -946,16 +997,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Vind de juiste dienst zonder een lang menu",
       "scheduledAt": "2026-11-12T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 34,
       "key": "starlocal.nl|Roermond|2026-11-13T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Roermond",
+      "municipality": "Houten",
       "originalPlannedAt": "2026-11-13T15:00:00+04:00",
-      "topic": "Eigen domein en herkenbaar bedrijfscontact",
-      "title": "Roermond: Een herkenbare domeinnaam en zakelijke contactroute kiezen",
+      "topic": "Prijsaanvraag versus productbestelling",
+      "title": "Houten: Kies een duidelijke vervolgstap voor een product op maat",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -965,9 +1019,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen",
+      "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat",
       "scheduledAt": "2026-11-15T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Roermond",
+        "topic": "Eigen domein en herkenbaar bedrijfscontact",
+        "title": "Roermond: Een herkenbare domeinnaam en zakelijke contactroute kiezen",
+        "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Houten|2026-11-09T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 35,
@@ -980,7 +1042,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -988,7 +1050,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?",
       "scheduledAt": "2026-11-15T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 36,
@@ -1001,7 +1066,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1009,16 +1074,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
       "scheduledAt": "2026-11-15T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 37,
       "key": "starlocal.nl|Voerendaal|2026-11-16T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Voerendaal",
+      "municipality": "Eindhoven",
       "originalPlannedAt": "2026-11-16T15:00:00+04:00",
-      "topic": "Seizoensaanbod actueel houden",
-      "title": "Voerendaal: Een tijdelijk aanbod publiceren en later netjes opruimen",
+      "topic": "Talen op een bedrijfswebsite",
+      "title": "Eindhoven: Wanneer heeft uw klant een tweede taal nodig?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1028,9 +1096,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen",
+      "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?",
       "scheduledAt": "2026-11-17T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Voerendaal",
+        "topic": "Seizoensaanbod actueel houden",
+        "title": "Voerendaal: Een tijdelijk aanbod publiceren en later netjes opruimen",
+        "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Eindhoven|2026-11-09T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 38,
@@ -1043,7 +1119,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1051,7 +1127,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Laat klanten de juiste bestelroute kiezen",
       "scheduledAt": "2026-11-17T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 39,
@@ -1064,7 +1143,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1072,16 +1151,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?",
       "scheduledAt": "2026-11-17T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 40,
       "key": "starlocal.nl|Opmeer|2026-11-18T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Opmeer",
+      "municipality": "Druten",
       "originalPlannedAt": "2026-11-18T15:00:00+04:00",
-      "topic": "Aanbod voor particuliere en zakelijke klanten",
-      "title": "Opmeer: Twee klantgroepen helder helpen op één website",
+      "topic": "Voorbereiding van een zakelijke kennismaking",
+      "title": "Druten: Welke informatie wil een zakelijke opdrachtgever eerst zien?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1091,9 +1173,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Twee klantgroepen helder helpen op één website",
+      "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?",
       "scheduledAt": "2026-11-19T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Opmeer",
+        "topic": "Aanbod voor particuliere en zakelijke klanten",
+        "title": "Opmeer: Twee klantgroepen helder helpen op één website",
+        "editorialIntent": "Twee klantgroepen helder helpen op één website"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Druten|2026-11-09T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 41,
@@ -1106,7 +1196,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1114,7 +1204,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?",
       "scheduledAt": "2026-11-19T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 42,
@@ -1127,7 +1220,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1135,16 +1228,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute",
       "scheduledAt": "2026-11-19T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 43,
       "key": "starlocal.nl|Breda|2026-11-20T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Breda",
+      "municipality": "Harderwijk",
       "originalPlannedAt": "2026-11-20T15:00:00+04:00",
-      "topic": "Voorraad en beschikbaarheid communiceren",
-      "title": "Breda: Vermeld wat een productpagina wel en niet kan bevestigen",
+      "topic": "Openingstijden en afspraken",
+      "title": "Harderwijk: Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1154,9 +1250,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen",
+      "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
       "scheduledAt": "2026-11-22T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Breda",
+        "topic": "Voorraad en beschikbaarheid communiceren",
+        "title": "Breda: Vermeld wat een productpagina wel en niet kan bevestigen",
+        "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Harderwijk|2026-11-11T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 44,
@@ -1169,7 +1273,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1177,7 +1281,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Wanneer verdient een dienst een eigen pagina?",
       "scheduledAt": "2026-11-22T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 45,
@@ -1190,7 +1297,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1198,16 +1305,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Een overzichtelijk online assortiment voorbereiden",
       "scheduledAt": "2026-11-22T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 46,
       "key": "starlocal.nl|Tilburg|2026-11-23T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Tilburg",
+      "municipality": "Utrecht",
       "originalPlannedAt": "2026-11-23T15:00:00+04:00",
-      "topic": "Onderhoud en eigenaarschap afspreken",
-      "title": "Tilburg: Wie houdt welke website-informatie bij?",
+      "topic": "Een lege portfoliosectie voorkomen",
+      "title": "Utrecht: Wat toont een starter zonder openbare klantcases?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1217,9 +1327,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wie houdt welke website-informatie bij?",
+      "editorialIntent": "Wat toont een starter zonder openbare klantcases?",
       "scheduledAt": "2026-11-24T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Tilburg",
+        "topic": "Onderhoud en eigenaarschap afspreken",
+        "title": "Tilburg: Wie houdt welke website-informatie bij?",
+        "editorialIntent": "Wie houdt welke website-informatie bij?"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Utrecht|2026-11-11T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 47,
@@ -1232,7 +1350,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1240,7 +1358,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
       "scheduledAt": "2026-11-24T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 48,
@@ -1253,7 +1374,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1261,16 +1382,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Oude nieuwsberichten bruikbaar houden",
       "scheduledAt": "2026-11-24T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 49,
       "key": "starlocal.nl|Eindhoven|2026-11-25T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Eindhoven",
+      "municipality": "Bunnik",
       "originalPlannedAt": "2026-11-25T15:00:00+04:00",
-      "topic": "Branchewoorden begrijpelijk maken",
-      "title": "Eindhoven: Vertaal uw vaktaal naar herkenbare klantvragen",
+      "topic": "Navigatie voor meerdere doelgroepen",
+      "title": "Bunnik: Vind de juiste dienst zonder een lang menu",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1280,9 +1404,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen",
+      "editorialIntent": "Vind de juiste dienst zonder een lang menu",
       "scheduledAt": "2026-11-26T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Eindhoven",
+        "topic": "Branchewoorden begrijpelijk maken",
+        "title": "Eindhoven: Vertaal uw vaktaal naar herkenbare klantvragen",
+        "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Bunnik|2026-11-11T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 50,
@@ -1295,7 +1427,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1303,7 +1435,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden",
       "scheduledAt": "2026-11-26T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 51,
@@ -1316,7 +1451,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1324,16 +1459,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat",
       "scheduledAt": "2026-11-26T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 52,
       "key": "starlocal.nl|Utrecht|2026-11-27T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Utrecht",
+      "municipality": "Roermond",
       "originalPlannedAt": "2026-11-27T15:00:00+04:00",
-      "topic": "Talen op een bedrijfswebsite",
-      "title": "Utrecht: Wanneer heeft uw klant een tweede taal nodig?",
+      "topic": "Eigen domein en herkenbaar bedrijfscontact",
+      "title": "Roermond: Een herkenbare domeinnaam en zakelijke contactroute kiezen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1343,9 +1481,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?",
+      "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen",
       "scheduledAt": "2026-11-29T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Utrecht",
+        "topic": "Talen op een bedrijfswebsite",
+        "title": "Utrecht: Wanneer heeft uw klant een tweede taal nodig?",
+        "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Roermond|2026-11-13T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 53,
@@ -1358,7 +1504,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1366,7 +1512,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?",
       "scheduledAt": "2026-11-29T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 54,
@@ -1379,7 +1528,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1387,7 +1536,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
       "scheduledAt": "2026-11-29T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 55,
@@ -1395,8 +1547,8 @@
       "website": "starlocal.nl",
       "municipality": "Rotterdam",
       "originalPlannedAt": "2026-11-30T15:00:00+04:00",
-      "topic": "Een lege portfoliosectie voorkomen",
-      "title": "Rotterdam: Wat toont een starter zonder openbare klantcases?",
+      "topic": "Dienstinformatie voor maatwerkproducten",
+      "title": "Rotterdam: Welke informatie helpt bij een maatwerkaanvraag?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1406,9 +1558,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat toont een starter zonder openbare klantcases?",
+      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?",
       "scheduledAt": "2026-12-01T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Rotterdam",
+        "topic": "Een lege portfoliosectie voorkomen",
+        "title": "Rotterdam: Wat toont een starter zonder openbare klantcases?",
+        "editorialIntent": "Wat toont een starter zonder openbare klantcases?"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Rotterdam|2026-11-13T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 56,
@@ -1421,7 +1581,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1429,7 +1589,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Vind de juiste dienst zonder een lang menu",
       "scheduledAt": "2026-12-01T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 57,
@@ -1442,7 +1605,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1450,16 +1613,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen",
       "scheduledAt": "2026-12-01T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 58,
       "key": "starlocal.nl|Meerssen|2026-12-02T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Meerssen",
+      "municipality": "Montfoort",
       "originalPlannedAt": "2026-12-02T15:00:00+04:00",
-      "topic": "Dienstinformatie voor maatwerkproducten",
-      "title": "Meerssen: Welke informatie helpt bij een maatwerkaanvraag?",
+      "topic": "Offertevoorbereiding bij websitebouw",
+      "title": "Montfoort: Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1469,9 +1635,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?",
+      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
       "scheduledAt": "2026-12-03T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Meerssen",
+        "topic": "Dienstinformatie voor maatwerkproducten",
+        "title": "Meerssen: Welke informatie helpt bij een maatwerkaanvraag?",
+        "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Montfoort|2026-11-13T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 59,
@@ -1484,7 +1658,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1492,7 +1666,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
       "scheduledAt": "2026-12-03T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 60,
@@ -1505,7 +1682,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1513,16 +1690,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen",
       "scheduledAt": "2026-12-03T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 61,
       "key": "starlocal.nl|Oisterwijk|2026-12-04T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Oisterwijk",
+      "municipality": "Voerendaal",
       "originalPlannedAt": "2026-12-04T15:00:00+04:00",
-      "topic": "Afhalen versus bezorgen uitleggen",
-      "title": "Oisterwijk: Laat klanten de juiste bestelroute kiezen",
+      "topic": "Seizoensaanbod actueel houden",
+      "title": "Voerendaal: Een tijdelijk aanbod publiceren en later netjes opruimen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1532,9 +1712,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Laat klanten de juiste bestelroute kiezen",
+      "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen",
       "scheduledAt": "2026-12-06T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Oisterwijk",
+        "topic": "Afhalen versus bezorgen uitleggen",
+        "title": "Oisterwijk: Laat klanten de juiste bestelroute kiezen",
+        "editorialIntent": "Laat klanten de juiste bestelroute kiezen"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Voerendaal|2026-11-16T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 62,
@@ -1547,7 +1735,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1555,7 +1743,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?",
       "scheduledAt": "2026-12-06T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 63,
@@ -1568,7 +1759,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1576,16 +1767,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Twee klantgroepen helder helpen op één website",
       "scheduledAt": "2026-12-06T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 64,
       "key": "starlocal.nl|Dongen|2026-12-07T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Dongen",
+      "municipality": "Meerssen",
       "originalPlannedAt": "2026-12-07T15:00:00+04:00",
-      "topic": "Vertrouwen met controleerbare bedrijfsinformatie",
-      "title": "Dongen: Wat kan een onbekende bezoeker over uw bedrijf controleren?",
+      "topic": "Afhalen versus bezorgen uitleggen",
+      "title": "Meerssen: Laat klanten de juiste bestelroute kiezen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1595,9 +1789,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?",
+      "editorialIntent": "Laat klanten de juiste bestelroute kiezen",
       "scheduledAt": "2026-12-08T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Dongen",
+        "topic": "Vertrouwen met controleerbare bedrijfsinformatie",
+        "title": "Dongen: Wat kan een onbekende bezoeker over uw bedrijf controleren?",
+        "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Meerssen|2026-11-16T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 65,
@@ -1610,7 +1812,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1618,7 +1820,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute",
       "scheduledAt": "2026-12-08T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 66,
@@ -1631,7 +1836,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1639,16 +1844,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen",
       "scheduledAt": "2026-12-08T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 67,
       "key": "starlocal.nl|Zundert|2026-12-09T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Zundert",
+      "municipality": "Heemstede",
       "originalPlannedAt": "2026-12-09T15:00:00+04:00",
-      "topic": "Website-inhoud verdelen over hoofddiensten",
-      "title": "Zundert: Wanneer verdient een dienst een eigen pagina?",
+      "topic": "Kostenfactoren van een website",
+      "title": "Heemstede: Welke keuzes bepalen het werk aan een bedrijfswebsite?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1658,9 +1866,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?",
+      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?",
       "scheduledAt": "2026-12-10T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Zundert",
+        "topic": "Website-inhoud verdelen over hoofddiensten",
+        "title": "Zundert: Wanneer verdient een dienst een eigen pagina?",
+        "editorialIntent": "Wanneer verdient een dienst een eigen pagina?"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Heemstede|2026-11-16T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 68,
@@ -1673,7 +1889,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1681,7 +1897,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Een overzichtelijk online assortiment voorbereiden",
       "scheduledAt": "2026-12-10T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 69,
@@ -1694,7 +1913,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1702,16 +1921,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Wie houdt welke website-informatie bij?",
       "scheduledAt": "2026-12-10T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 70,
       "key": "starlocal.nl|Druten|2026-12-11T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Druten",
+      "municipality": "Opmeer",
       "originalPlannedAt": "2026-12-11T15:00:00+04:00",
-      "topic": "Foto en tekst op mobiel afstemmen",
-      "title": "Druten: Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
+      "topic": "Aanbod voor particuliere en zakelijke klanten",
+      "title": "Opmeer: Twee klantgroepen helder helpen op één website",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1721,9 +1943,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
+      "editorialIntent": "Twee klantgroepen helder helpen op één website",
       "scheduledAt": "2026-12-13T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Druten",
+        "topic": "Foto en tekst op mobiel afstemmen",
+        "title": "Druten: Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
+        "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Opmeer|2026-11-18T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 71,
@@ -1736,7 +1966,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1744,7 +1974,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Oude nieuwsberichten bruikbaar houden",
       "scheduledAt": "2026-12-13T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 72,
@@ -1757,7 +1990,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1765,16 +1998,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen",
       "scheduledAt": "2026-12-13T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 73,
       "key": "starlocal.nl|Bunnik|2026-12-14T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Bunnik",
+      "municipality": "Oisterwijk",
       "originalPlannedAt": "2026-12-14T15:00:00+04:00",
-      "topic": "Verwijzingen vanaf drukwerk",
-      "title": "Bunnik: Een QR-code naar een bruikbare websitebestemming laten leiden",
+      "topic": "Vertrouwen met controleerbare bedrijfsinformatie",
+      "title": "Oisterwijk: Wat kan een onbekende bezoeker over uw bedrijf controleren?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1784,9 +2020,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden",
+      "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?",
       "scheduledAt": "2026-12-15T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Bunnik",
+        "topic": "Verwijzingen vanaf drukwerk",
+        "title": "Bunnik: Een QR-code naar een bruikbare websitebestemming laten leiden",
+        "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Oisterwijk|2026-11-18T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 74,
@@ -1799,7 +2043,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1807,7 +2051,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat",
       "scheduledAt": "2026-12-15T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 75,
@@ -1820,7 +2067,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1828,16 +2075,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Wanneer heeft uw klant een tweede taal nodig?",
       "scheduledAt": "2026-12-15T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 76,
       "key": "starlocal.nl|Montfoort|2026-12-16T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Montfoort",
+      "municipality": "Etten-Leur",
       "originalPlannedAt": "2026-12-16T15:00:00+04:00",
-      "topic": "Voorbereiding van een zakelijke kennismaking",
-      "title": "Montfoort: Welke informatie wil een zakelijke opdrachtgever eerst zien?",
+      "topic": "Contact voor bestaande klanten",
+      "title": "Etten-Leur: Geef bestaande klanten een eigen herkenbare contactroute",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1847,9 +2097,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?",
+      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute",
       "scheduledAt": "2026-12-17T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Montfoort",
+        "topic": "Voorbereiding van een zakelijke kennismaking",
+        "title": "Montfoort: Welke informatie wil een zakelijke opdrachtgever eerst zien?",
+        "editorialIntent": "Welke informatie wil een zakelijke opdrachtgever eerst zien?"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Etten-Leur|2026-11-18T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 77,
@@ -1862,7 +2120,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1870,7 +2128,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
       "scheduledAt": "2026-12-17T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 78,
@@ -1883,7 +2144,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1891,16 +2152,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Wat toont een starter zonder openbare klantcases?",
       "scheduledAt": "2026-12-17T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 79,
       "key": "starlocal.nl|Heemstede|2026-12-18T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Heemstede",
+      "municipality": "Breda",
       "originalPlannedAt": "2026-12-18T15:00:00+04:00",
-      "topic": "Navigatie voor meerdere doelgroepen",
-      "title": "Heemstede: Vind de juiste dienst zonder een lang menu",
+      "topic": "Voorraad en beschikbaarheid communiceren",
+      "title": "Breda: Vermeld wat een productpagina wel en niet kan bevestigen",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1910,9 +2174,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vind de juiste dienst zonder een lang menu",
+      "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen",
       "scheduledAt": "2026-12-20T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Heemstede",
+        "topic": "Navigatie voor meerdere doelgroepen",
+        "title": "Heemstede: Vind de juiste dienst zonder een lang menu",
+        "editorialIntent": "Vind de juiste dienst zonder een lang menu"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Breda|2026-11-20T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 80,
@@ -1925,7 +2197,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1933,7 +2205,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen",
       "scheduledAt": "2026-12-20T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 81,
@@ -1946,7 +2221,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1954,16 +2229,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Welke informatie helpt bij een maatwerkaanvraag?",
       "scheduledAt": "2026-12-20T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 82,
       "key": "starlocal.nl|Etten-Leur|2026-12-21T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Etten-Leur",
+      "municipality": "Dongen",
       "originalPlannedAt": "2026-12-21T15:00:00+04:00",
-      "topic": "Offertevoorbereiding bij websitebouw",
-      "title": "Etten-Leur: Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
+      "topic": "Website-inhoud verdelen over hoofddiensten",
+      "title": "Dongen: Wanneer verdient een dienst een eigen pagina?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -1973,9 +2251,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
+      "editorialIntent": "Wanneer verdient een dienst een eigen pagina?",
       "scheduledAt": "2026-12-22T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Etten-Leur",
+        "topic": "Offertevoorbereiding bij websitebouw",
+        "title": "Etten-Leur: Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies",
+        "editorialIntent": "Uw website-opdracht voorbereiden zonder een wensenlijst vol losse functies"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Dongen|2026-11-20T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 83,
@@ -1988,7 +2274,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1996,7 +2282,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen",
       "scheduledAt": "2026-12-22T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 84,
@@ -2009,7 +2298,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -2017,7 +2306,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Laat klanten de juiste bestelroute kiezen",
       "scheduledAt": "2026-12-22T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 85,
@@ -2025,8 +2317,8 @@
       "website": "starlocal.nl",
       "municipality": "Woerden",
       "originalPlannedAt": "2026-12-23T15:00:00+04:00",
-      "topic": "Kostenfactoren van een website",
-      "title": "Woerden: Welke keuzes bepalen het werk aan een bedrijfswebsite?",
+      "topic": "Starten met een klein productassortiment",
+      "title": "Woerden: Een overzichtelijk online assortiment voorbereiden",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -2036,9 +2328,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?",
+      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden",
       "scheduledAt": "2026-12-24T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Woerden",
+        "topic": "Kostenfactoren van een website",
+        "title": "Woerden: Welke keuzes bepalen het werk aan een bedrijfswebsite?",
+        "editorialIntent": "Welke keuzes bepalen het werk aan een bedrijfswebsite?"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Woerden|2026-11-20T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 86,
@@ -2051,7 +2351,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -2059,7 +2359,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Twee klantgroepen helder helpen op één website",
       "scheduledAt": "2026-12-24T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 87,
@@ -2072,7 +2375,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -2080,16 +2383,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Wat kan een onbekende bezoeker over uw bedrijf controleren?",
       "scheduledAt": "2026-12-24T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 88,
       "key": "starlocal.nl|Houten|2026-12-25T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Houten",
+      "municipality": "Tilburg",
       "originalPlannedAt": "2026-12-25T15:00:00+04:00",
-      "topic": "Contact voor bestaande klanten",
-      "title": "Houten: Geef bestaande klanten een eigen herkenbare contactroute",
+      "topic": "Onderhoud en eigenaarschap afspreken",
+      "title": "Tilburg: Wie houdt welke website-informatie bij?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -2099,9 +2405,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute",
+      "editorialIntent": "Wie houdt welke website-informatie bij?",
       "scheduledAt": "2026-12-27T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Houten",
+        "topic": "Contact voor bestaande klanten",
+        "title": "Houten: Geef bestaande klanten een eigen herkenbare contactroute",
+        "editorialIntent": "Geef bestaande klanten een eigen herkenbare contactroute"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Tilburg|2026-11-23T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 89,
@@ -2114,7 +2428,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -2122,7 +2436,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen",
       "scheduledAt": "2026-12-27T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 90,
@@ -2135,7 +2452,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -2143,16 +2460,19 @@
       "whatsappChecked": false,
       "editorialIntent": "Wanneer verdient een dienst een eigen pagina?",
       "scheduledAt": "2026-12-27T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 91,
       "key": "starlocal.nl|Harderwijk|2026-12-28T15:00:00+04:00",
       "website": "starlocal.nl",
-      "municipality": "Harderwijk",
+      "municipality": "Zundert",
       "originalPlannedAt": "2026-12-28T15:00:00+04:00",
-      "topic": "Starten met een klein productassortiment",
-      "title": "Harderwijk: Een overzichtelijk online assortiment voorbereiden",
+      "topic": "Foto en tekst op mobiel afstemmen",
+      "title": "Zundert: Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
       "slug": null,
       "imageSource": null,
       "photoType": null,
@@ -2162,9 +2482,17 @@
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een overzichtelijk online assortiment voorbereiden",
+      "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
       "scheduledAt": "2026-12-29T04:00:00+04:00",
-      "batchSlot": 1
+      "batchSlot": 1,
+      "originalEditorialAssignment": {
+        "municipality": "Harderwijk",
+        "topic": "Starten met een klein productassortiment",
+        "title": "Harderwijk: Een overzichtelijk online assortiment voorbereiden",
+        "editorialIntent": "Een overzichtelijk online assortiment voorbereiden"
+      },
+      "editorialAssignmentFromKey": "starlocal.nl|Zundert|2026-11-23T15:00:00+04:00",
+      "scheduleActive": true
     },
     {
       "slot": 92,
@@ -2177,7 +2505,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -2185,7 +2513,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Wie houdt welke website-informatie bij?",
       "scheduledAt": "2026-12-29T04:00:00+04:00",
-      "batchSlot": 2
+      "batchSlot": 2,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 93,
@@ -2198,7 +2529,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -2206,7 +2537,10 @@
       "whatsappChecked": false,
       "editorialIntent": "Wat ziet een mobiele bezoeker vóór hij moet scrollen?",
       "scheduledAt": "2026-12-29T04:00:00+04:00",
-      "batchSlot": 3
+      "batchSlot": 3,
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 94,
@@ -2219,7 +2553,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -2228,7 +2562,10 @@
       "editorialIntent": "Oude nieuwsberichten bruikbaar houden",
       "scheduledAt": null,
       "batchSlot": 1,
-      "scheduleDisposition": "outside remaining calendar; no extra articles authorised"
+      "scheduleDisposition": "outside remaining calendar; no extra articles authorised",
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 95,
@@ -2241,7 +2578,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -2250,7 +2587,10 @@
       "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen",
       "scheduledAt": null,
       "batchSlot": 2,
-      "scheduleDisposition": "outside remaining calendar; no extra articles authorised"
+      "scheduleDisposition": "outside remaining calendar; no extra articles authorised",
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     },
     {
       "slot": 96,
@@ -2263,7 +2603,7 @@
       "slug": null,
       "imageSource": null,
       "photoType": null,
-      "status": "planned",
+      "status": "cancelled-by-schedule-change",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -2272,10 +2612,15 @@
       "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden",
       "scheduledAt": null,
       "batchSlot": 3,
-      "scheduleDisposition": "outside remaining calendar; no extra articles authorised"
+      "scheduleDisposition": "outside remaining calendar; no extra articles authorised",
+      "scheduleActive": false,
+      "cancelledAt": "2026-11-08T04:09:47.786536+04:00",
+      "cancellationReason": "Johan 7 November: retain only slot 1 on TU/TH/SU from 8 November; no additional positions after 29 December. Concept content retained; never automatic backlog."
     }
   ],
   "timezone": "Asia/Dubai",
   "scheduleEffectiveFrom": "2026-10-26",
-  "sharedExternalLockVerified": false
+  "sharedExternalLockVerified": false,
+  "scheduleChangeEffectiveFrom": "2026-11-08",
+  "lastScheduledAt": "2026-12-29T04:00:00+04:00"
 }
