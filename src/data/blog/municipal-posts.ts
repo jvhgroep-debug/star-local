@@ -1,3 +1,5 @@
+import november8Posts from './municipal-nov08.json';
+import { isRenderableBlog } from './publication-selection';
 import november5Posts from './municipal-nov05.json';
 import november3Posts from './municipal-nov03.json';
 import november1Posts from './municipal-nov01.json';
@@ -12,7 +14,8 @@ const shared = {
   imageWidth: 1200, imageHeight: 900, faqs: [],
 };
 
-export const municipalPosts: BlogPostMeta[] = [
+const municipalCandidates: BlogPostMeta[] = [
+  ...november8Posts,
   ...november5Posts.filter(post => Date.parse(post.publishedAt) <= Date.now()),
   ...november3Posts.filter(post => Date.parse(post.publishedAt) <= Date.now()),
   ...november1Posts.filter(post => Date.parse(post.publishedAt) <= Date.now()),
@@ -80,3 +83,5 @@ export const municipalPosts: BlogPostMeta[] = [
 <h2>Wat kan Star Local voor uw website in Breda doen?</h2><p>Star Local kan <a href="/website-laten-maken/breda/">uw website voor Breda</a> vernieuwen met een SEO-basis en een heldere inhoudsstructuur. Neem uw URL-overzicht, toegangssituatie en gewenste functies mee naar het gesprek. We leggen in de offerte vast welke overdracht, inhoud en koppelingen bij de opdracht horen. Lees ook hoe u <a href="/blog/etten-leur-offerteformulier-betere-aanvragen/">de vragen in een offerteformulier kiest</a> als juist de aanvraagroute verbetering nodig heeft. Vraag een gratis, vrijblijvende offerte aan om uw vernieuwing concreet te bespreken.</p>`,
   },
 ];
+
+export const municipalPosts: BlogPostMeta[] = municipalCandidates.filter(post => isRenderableBlog(post));
