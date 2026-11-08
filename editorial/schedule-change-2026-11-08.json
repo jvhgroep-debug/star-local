@@ -83,5 +83,17 @@
   "priorCentralRun": "156fdfc5-ba28-8320-9e09-a70b331925a3 completed; current 7b47ddb3-9ef4-8320-9189-b439cb73476d is own run",
   "sourceCommitReviewed": "ca82efd69823eb67ef2d28b9f0d9fb5d97c13e56",
   "externalActivity": "No open PRs or Actions runs. Latest production fc8ff7cf84b337110399335b86c882a742cab036 Cloudflare completed/success; no shared lock claimed.",
-  "publicationSelection": "Calendar-aware filter shared by municipal detail, overview, city context and sitemap build. Terminal states excluded."
+  "publicationSelection": "Calendar-aware filter shared by municipal detail, overview, city context and sitemap build. Terminal states excluded.",
+  "contentCommit": "ca7aa8265d6f526478bd24285aabf2130d6ac588",
+  "productionCommit": "20838763802457c5e63f391af50fb79adb61e1b0",
+  "previewDeploymentId": "690a8de2-174f-4e20-bf30-202e4f15e8ba",
+  "productionDeploymentId": "4d0596bd-9819-43a6-8448-654975b9ab6c",
+  "productionStatus": "completed/success",
+  "publicVerifiedAt": "2026-11-08T00:17:33.988Z",
+  "publishedSlots": [
+    25
+  ],
+  "qualitySkippedSlots": [],
+  "existingPageImprovements": [],
+  "metadataCheckpointOnly": true
 }

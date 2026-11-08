@@ -770,12 +770,12 @@
       "slug": "woerden-oude-nieuwsberichten-website-archief",
       "imageSource": "https://www.starlocal.nl/images/projects/project-super-pasta-dubai.webp",
       "photoType": "Existing approved portfolio capture with product photography; illustrative website example, no Woerden case or results claim",
-      "status": "source-written",
-      "published": false,
-      "sourceCommitted": false,
-      "deploymentConfirmed": false,
-      "liveChecked": false,
-      "whatsappChecked": false,
+      "status": "public-verified",
+      "published": true,
+      "sourceCommitted": true,
+      "deploymentConfirmed": true,
+      "liveChecked": true,
+      "whatsappChecked": true,
       "editorialIntent": "Hoe onderscheid ik historische nieuwsberichten, blijvende uitleg en actueel aanbod zonder oude uitnodigingen opnieuw te laten gelden?",
       "scheduledAt": "2026-11-08T04:00:00+04:00",
       "batchSlot": 1,
@@ -798,7 +798,13 @@
         "https://developers.google.com/search/docs/fundamentals/creating-helpful-content"
       ],
       "publicUrl": "https://www.starlocal.nl/blog/woerden-oude-nieuwsberichten-website-archief/",
-      "whatsappNumber": "31684002350"
+      "whatsappNumber": "31684002350",
+      "sourceCommit": "ca7aa8265d6f526478bd24285aabf2130d6ac588",
+      "productionCommit": "20838763802457c5e63f391af50fb79adb61e1b0",
+      "deploymentId": "4d0596bd-9819-43a6-8448-654975b9ab6c",
+      "liveVerifiedAt": "2026-11-08T00:17:33.988Z",
+      "liveVerificationMethod": "Cloudflare production completed/success; real www.starlocal.nl article one H1, self canonical, BlogPosting with actual date, loaded image and OG, no caption, overview, Woerden context link and sitemap-0.xml confirmed. Questions popup opened with Woerden and all required fields; number 31684002350. No form or message sent.",
+      "whatsappVerification": "Actual component exercised in memory: company/municipality/new-or-improve/current optional URL/service/notes plus article title, source via StarLocal.nl and URL; public popup verified."
     },
     {
       "slot": 26,
