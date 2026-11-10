@@ -865,12 +865,12 @@
       "slug": "tilburg-vaktaal-website-begrijpelijk-klantvragen",
       "imageSource": "https://www.starlocal.nl/images/projects/project-star-local.webp",
       "photoType": "Existing approved portfolio capture of Star Local website; no Tilburg case, local photograph or result claim",
-      "status": "source-written",
-      "published": false,
-      "sourceCommitted": false,
-      "deploymentConfirmed": false,
-      "liveChecked": false,
-      "whatsappChecked": false,
+      "status": "public-verified",
+      "published": true,
+      "sourceCommitted": true,
+      "deploymentConfirmed": true,
+      "liveChecked": true,
+      "whatsappChecked": true,
       "editorialIntent": "Hoe leg ik noodzakelijke branchewoorden uit zodat een nieuwe klant zijn situatie kan beschrijven zonder zelf de technische oplossing te kiezen?",
       "scheduledAt": "2026-11-10T04:00:00+04:00",
       "batchSlot": 1,
@@ -890,7 +890,16 @@
       "sourceEvidence": [
         "All current blog titles and relevant Woerden service-detail/Eindhoven FAQ articles read; services.ts and municipality architecture compared. Distinct method: term/question/meaning/boundary worksheet and two-reader check, not selection of services or FAQs.",
         "Live blog overview checked10November; website/SEO offerings and existing WhatsApp source reviewed."
-      ]
+      ],
+      "sourceCommit": "c6517299c2da029f55a00e95fc41077fe1459adf",
+      "productionCommit": "091493cf09018f59a2b71c2c220365b2fcafaadc",
+      "deploymentId": "558d1e8d-d71e-4d28-a7ee-1a687b2e0032",
+      "previewDeploymentId": "cc39ed70-de28-443f-972d-3e2df07288e6",
+      "liveVerifiedAt": "2026-11-10T00:16:51.259536+00:00",
+      "publicUrl": "https://www.starlocal.nl/blog/tilburg-vaktaal-website-begrijpelijk-klantvragen/",
+      "whatsappNumber": "31684002350",
+      "liveVerificationMethod": "Preview and production Cloudflare completed/success. Real-domain singleH1/canonical/title/meta/BlogPosting actualdate, loaded1200px image/OG/no caption, overview, Tilburg context and sitemap-0.xml verified in browser. Existing questionnaire opened with Tilburg prefilled; company, new/improve, optionalURL, service and notes intact. No form or message sent.",
+      "whatsappVerification": "Actual component memory test confirms title, source via StarLocal.nl, URL, municipality and encoding; public popup and number verified."
     },
     {
       "slot": 29,
