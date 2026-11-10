@@ -861,17 +861,17 @@
       "municipality": "Tilburg",
       "originalPlannedAt": "2026-11-09T15:00:00+04:00",
       "topic": "Branchewoorden begrijpelijk maken",
-      "title": "Tilburg: Vertaal uw vaktaal naar herkenbare klantvragen",
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "title": "Vaktaal op uw website: hoe maakt u die begrijpelijk voor een nieuwe klant?",
+      "slug": "tilburg-vaktaal-website-begrijpelijk-klantvragen",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-star-local.webp",
+      "photoType": "Existing approved portfolio capture of Star Local website; no Tilburg case, local photograph or result claim",
+      "status": "source-written",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen",
+      "editorialIntent": "Hoe leg ik noodzakelijke branchewoorden uit zodat een nieuwe klant zijn situatie kan beschrijven zonder zelf de technische oplossing te kiezen?",
       "scheduledAt": "2026-11-10T04:00:00+04:00",
       "batchSlot": 1,
       "originalEditorialAssignment": {
@@ -881,7 +881,16 @@
         "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat"
       },
       "editorialAssignmentFromKey": "starlocal.nl|Tilburg|2026-11-06T15:00:00+04:00",
-      "scheduleActive": true
+      "scheduleActive": true,
+      "actualPublishedAt": "2026-11-10T04:09:22.528678+04:00",
+      "imageApproved": true,
+      "photoPermission": "Johan30October: existing portfolio imagery permitted. Visually inspected10November; provenance internal, no caption.",
+      "sourceReviewedAt": "2026-11-10T04:09:22.528678+04:00",
+      "publicationReady": true,
+      "sourceEvidence": [
+        "All current blog titles and relevant Woerden service-detail/Eindhoven FAQ articles read; services.ts and municipality architecture compared. Distinct method: term/question/meaning/boundary worksheet and two-reader check, not selection of services or FAQs.",
+        "Live blog overview checked10November; website/SEO offerings and existing WhatsApp source reviewed."
+      ]
     },
     {
       "slot": 29,
