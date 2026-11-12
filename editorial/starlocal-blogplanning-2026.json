@@ -956,17 +956,17 @@
       "municipality": "Zundert",
       "originalPlannedAt": "2026-11-11T15:00:00+04:00",
       "topic": "Verwijzingen vanaf drukwerk",
-      "title": "Zundert: Een QR-code naar een bruikbare websitebestemming laten leiden",
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "title": "Een QR-code op uw drukwerk: naar welke pagina laat u die verwijzen?",
+      "slug": "zundert-qr-code-drukwerk-websitebestemming-controleren",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-star-local.webp",
+      "photoType": "Existing Star Local website capture used as a website illustration",
+      "status": "source-written",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Een QR-code naar een bruikbare websitebestemming laten leiden",
+      "editorialIntent": "Welke websitebestemming past bij de belofte naast een QR-code op drukwerk, en wat controleer ik vóór ik laat drukken?",
       "scheduledAt": "2026-11-12T04:00:00+04:00",
       "batchSlot": 1,
       "originalEditorialAssignment": {
@@ -976,7 +976,15 @@
         "editorialIntent": "Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven"
       },
       "editorialAssignmentFromKey": "starlocal.nl|Zundert|2026-11-06T15:00:00+04:00",
-      "scheduleActive": true
+      "scheduleActive": true,
+      "actualPublishedAt": "2026-11-12T04:11:25.149691+04:00",
+      "publicationReady": true,
+      "imageApproved": true,
+      "photoPermission": "Existing approved Star Local portfolio capture, Johan30October; not a local case, no visible caption",
+      "sourceReviewedAt": "2026-11-12T04:11:25.149691+04:00",
+      "sourceEvidence": [
+        "All current blog titles, full relevant Breda renewal, Oisterwijk page-choice and Dongen mobile guides compared with services/municipality architecture and current live overview. Distinct pre-print promise/destination/proof worksheet; no QR generation or technical redirect service claim."
+      ]
     },
     {
       "slot": 32,

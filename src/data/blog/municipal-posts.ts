@@ -1,3 +1,4 @@
+import november12Posts from './municipal-nov12.json';
 import november10Posts from './municipal-nov10.json';
 import november8Posts from './municipal-nov08.json';
 import { isRenderableBlog } from './publication-selection';
@@ -16,6 +17,7 @@ const shared = {
 };
 
 const municipalCandidates: BlogPostMeta[] = [
+  ...(november12Posts as BlogPostMeta[]),
   ...november10Posts,
   ...november8Posts,
   ...november5Posts.filter(post => Date.parse(post.publishedAt) <= Date.now()),
