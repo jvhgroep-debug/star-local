@@ -960,12 +960,12 @@
       "slug": "zundert-qr-code-drukwerk-websitebestemming-controleren",
       "imageSource": "https://www.starlocal.nl/images/projects/project-star-local.webp",
       "photoType": "Existing Star Local website capture used as a website illustration",
-      "status": "source-written",
-      "published": false,
-      "sourceCommitted": false,
-      "deploymentConfirmed": false,
-      "liveChecked": false,
-      "whatsappChecked": false,
+      "status": "public-verified",
+      "published": true,
+      "sourceCommitted": true,
+      "deploymentConfirmed": true,
+      "liveChecked": true,
+      "whatsappChecked": true,
       "editorialIntent": "Welke websitebestemming past bij de belofte naast een QR-code op drukwerk, en wat controleer ik vóór ik laat drukken?",
       "scheduledAt": "2026-11-12T04:00:00+04:00",
       "batchSlot": 1,
@@ -984,7 +984,15 @@
       "sourceReviewedAt": "2026-11-12T04:11:25.149691+04:00",
       "sourceEvidence": [
         "All current blog titles, full relevant Breda renewal, Oisterwijk page-choice and Dongen mobile guides compared with services/municipality architecture and current live overview. Distinct pre-print promise/destination/proof worksheet; no QR generation or technical redirect service claim."
-      ]
+      ],
+      "sourceCommit": "2450528c215d9e2d8837ac938aab30cb13d46414",
+      "productionCommit": "b26b8c3e532b9afbaef15fba6d933a0226188759",
+      "deploymentId": "6927e670-00c6-4172-8b4f-c8c7c6998eaa",
+      "previewDeploymentId": "36a8070e-6ef8-4aec-9414-0cdf083ca729",
+      "liveVerifiedAt": "2026-11-12T00:17:02.386886+00:00",
+      "publicUrl": "https://www.starlocal.nl/blog/zundert-qr-code-drukwerk-websitebestemming-controleren/",
+      "whatsappNumber": "31684002350",
+      "liveVerificationMethod": "Cloudflare preview/production completed/success. Real-domain article oneH1/canonical/BlogPosting actualdate, loaded1200px photo/OG/no caption, overview/Zundert context/sitemap-0.xml and actual questions dialog with Zundert prefilled verified. Company/goal/optionalURL/service/question retained. No messages sent."
     },
     {
       "slot": 32,
