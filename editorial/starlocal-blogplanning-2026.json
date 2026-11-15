@@ -1049,11 +1049,11 @@
       "municipality": "Houten",
       "originalPlannedAt": "2026-11-13T15:00:00+04:00",
       "topic": "Prijsaanvraag versus productbestelling",
-      "title": "Houten: Kies een duidelijke vervolgstap voor een product op maat",
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "title": "Twee uitvoeringen van een maatwerkproduct: één duidelijke prijsaanvraag",
+      "slug": "houten-twee-uitvoeringen-een-prijsaanvraag-maatwerk",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-dutch-food-dubai.webp",
+      "photoType": "Existing permitted portfolio capture containing product photography; no Houten case or current product/price claim",
+      "status": "source-written",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1069,7 +1069,21 @@
         "editorialIntent": "Een herkenbare domeinnaam en zakelijke contactroute kiezen"
       },
       "editorialAssignmentFromKey": "starlocal.nl|Houten|2026-11-09T15:00:00+04:00",
-      "scheduleActive": true
+      "scheduleActive": true,
+      "actualPublishedAt": "2026-11-15T04:00:44.101274+04:00",
+      "datePublished": "2026-11-15T04:00:44.101274+04:00",
+      "searchIntent": "Hoe laat een maker klanten twee alternatieve uitvoeringen van één maatwerkproduct in één vergelijkbare prijsaanvraag beschrijven?",
+      "photoPermission": "Johan 30 October 2026; existing portfolio photography permitted, provenance internal only",
+      "overlapReview": "All current blog headings and service/municipality sources reviewed; full Utrecht maatwerk, Etten-Leur assortment and generic form content compared. Broad planned intent narrowed to one-base/two-alternatives comparison, either-or versus both, shared units and preserving alternative identity through follow-up. No configurator promise, product suitability or legal order rule.",
+      "priorRunCheck": {
+        "previousRun": "34858e49-0f90-832a-886f-6fa0df87b3fe completed",
+        "ownRun": "bf434476-34e4-832a-9759-e67319fa6478",
+        "main": "b18e91b2f24cc9dab931e431ae35e3f876f4d15b",
+        "lastProduction": "6927e670-00c6-4172-8b4f-c8c7c6998eaa completed/success",
+        "actions": 0,
+        "openPRs": 0,
+        "sharedLockClaimed": false
+      }
     },
     {
       "slot": 35,

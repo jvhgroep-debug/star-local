@@ -1,3 +1,4 @@
+import november15Posts from './municipal-nov15.json';
 import november12Posts from './municipal-nov12.json';
 import november10Posts from './municipal-nov10.json';
 import november8Posts from './municipal-nov08.json';
@@ -17,6 +18,7 @@ const shared = {
 };
 
 const municipalCandidates: BlogPostMeta[] = [
+  ...(november15Posts as BlogPostMeta[]),
   ...(november12Posts as BlogPostMeta[]),
   ...november10Posts,
   ...november8Posts,
