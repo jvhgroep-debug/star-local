@@ -1053,12 +1053,12 @@
       "slug": "houten-twee-uitvoeringen-een-prijsaanvraag-maatwerk",
       "imageSource": "https://www.starlocal.nl/images/projects/project-dutch-food-dubai.webp",
       "photoType": "Existing permitted portfolio capture containing product photography; no Houten case or current product/price claim",
-      "status": "source-written",
-      "published": false,
-      "sourceCommitted": false,
-      "deploymentConfirmed": false,
-      "liveChecked": false,
-      "whatsappChecked": false,
+      "status": "public-verified",
+      "published": true,
+      "sourceCommitted": true,
+      "deploymentConfirmed": true,
+      "liveChecked": true,
+      "whatsappChecked": true,
       "editorialIntent": "Kies een duidelijke vervolgstap voor een product op maat",
       "scheduledAt": "2026-11-15T04:00:00+04:00",
       "batchSlot": 1,
@@ -1083,7 +1083,13 @@
         "actions": 0,
         "openPRs": 0,
         "sharedLockClaimed": false
-      }
+      },
+      "sourceCommit": "c82f17453d6a71f97ef5ce2063a6590cd8a91aa6",
+      "productionCommit": "e998425d6fa446881119423544662ec0a50e30e0",
+      "deploymentId": "b1bf3b20-883f-4fa2-8161-adcd6fbfba4c",
+      "liveVerifiedAt": "2026-11-15T00:07:06Z",
+      "publicUrl": "https://www.starlocal.nl/blog/houten-twee-uitvoeringen-een-prijsaanvraag-maatwerk/",
+      "liveVerificationMethod": "Cloudflare preview and production completed/success. Actual canonical domain article/H1/BlogPosting actual date, loaded1200px photo/OG/no caption, overview, Houten context and actual sitemap-0.xml verified in browser. Existing inline WhatsApp opened/closed; Houten prefilled; all original questions and31684002350 retained. Original form opens; no messages or submissions. Metadata checkpoint only, no second deployment."
     },
     {
       "slot": 35,
