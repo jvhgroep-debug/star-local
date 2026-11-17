@@ -1146,11 +1146,11 @@
       "municipality": "Eindhoven",
       "originalPlannedAt": "2026-11-16T15:00:00+04:00",
       "topic": "Talen op een bedrijfswebsite",
-      "title": "Eindhoven: Wanneer heeft uw klant een tweede taal nodig?",
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "title": "Een tweede taal op uw bedrijfswebsite: welke klant moet verder kunnen?",
+      "slug": "eindhoven-tweede-taal-website-klantvraag",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-association-calista.webp",
+      "photoType": "existing-authorised-portfolio",
+      "status": "source-written",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1166,7 +1166,18 @@
         "editorialIntent": "Een tijdelijk aanbod publiceren en later netjes opruimen"
       },
       "editorialAssignmentFromKey": "starlocal.nl|Eindhoven|2026-11-09T15:00:00+04:00",
-      "scheduleActive": true
+      "scheduleActive": true,
+      "datePublished": "2026-11-18T01:17:05.445711+04:00",
+      "imagePermission": "Johan30October; existing portfolio capture with real photography, visually inspected18November; no caption/localcase/result claim.",
+      "searchIntent": "Wanneer is een tweede taal nodig en welke complete klanttaak vertaalt een ondernemer als eerste?",
+      "overlapReview": "All existing blog headings, full FAQ/intake/task-scope and service/Eindhoven/portfolio source compared; distinct language continuity from service explanation through form and actual follow-up, not easier wording or generic FAQ. Live overview consulted; cached search omits15November, current source retains it.",
+      "priorActivityCheck": {
+        "source": "937b1e36be1c205f67c84a1e8eb340c50abdd7f2",
+        "previousContent": "e998425d6fa446881119423544662ec0a50e30e0",
+        "status": "Cloudflare completed/success fresh check; Actions0; openPR0",
+        "checkedAt": "2026-11-18T01:17:05.445711+04:00",
+        "sharedLockClaimed": false
+      }
     },
     {
       "slot": 38,
