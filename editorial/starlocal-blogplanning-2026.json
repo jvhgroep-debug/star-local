@@ -1343,11 +1343,11 @@
       "municipality": "Harderwijk",
       "originalPlannedAt": "2026-11-20T15:00:00+04:00",
       "topic": "Openingstijden en afspraken",
-      "title": "Harderwijk: Bereikbaarheid tonen zonder onterechte beschikbaarheid te beloven",
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "title": "Open voor bezoek of bereikbaar voor vragen? Maak uw tijden duidelijk op de website",
+      "slug": "harderwijk-openingstijden-bereikbaarheid-afspraken-website",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-aurora-salon.webp",
+      "photoType": "existing-approved-portfolio",
+      "status": "source-written",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1363,7 +1363,13 @@
         "editorialIntent": "Vermeld wat een productpagina wel en niet kan bevestigen"
       },
       "editorialAssignmentFromKey": "starlocal.nl|Harderwijk|2026-11-11T15:00:00+04:00",
-      "scheduleActive": true
+      "scheduleActive": true,
+      "searchIntent": "Hoe vermeld ik verschillende bezoektijden, telefonische bereikbaarheid en afspraken zonder dat één open-label de verkeerde verwachting geeft?",
+      "datePublished": "2026-11-22T04:05:21.126425+04:00",
+      "imageApproved": true,
+      "photoPermission": "Johan 30 October; existing business/portfolio images approved; visually inspected. No Harderwijk case or results claimed.",
+      "qualityReview": "Existing contact-button/booking/returning-client guides concern route and confirmation, not interpreting three different time windows. Service/local landing pages mention hours generically. New article supplies three labels, an unfilled preparation example and three-reader interpretation test. No invented company hours or response guarantees.",
+      "priorActivityCheck": "Fresh main310058a, full source blobs matched, Actions0/openPR0; prior production6f0f76 check completed/success. Previous central03 run completed; current04 run is own, not competing. No shared lock asserted."
     },
     {
       "slot": 44,
