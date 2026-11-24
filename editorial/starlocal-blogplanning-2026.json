@@ -1434,11 +1434,11 @@
       "municipality": "Utrecht",
       "originalPlannedAt": "2026-11-23T15:00:00+04:00",
       "topic": "Een lege portfoliosectie voorkomen",
-      "title": "Utrecht: Wat toont een starter zonder openbare klantcases?",
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "title": "Nog geen openbare klantcases? Zo toont u als starter wat u kunt",
+      "slug": "utrecht-starter-website-zonder-openbare-klantcases",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-star-local.webp",
+      "photoType": "existing-owner-website-portfolio-image",
+      "status": "source-written",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
@@ -1454,7 +1454,24 @@
         "editorialIntent": "Wie houdt welke website-informatie bij?"
       },
       "editorialAssignmentFromKey": "starlocal.nl|Utrecht|2026-11-11T15:00:00+04:00",
-      "scheduleActive": true
+      "scheduleActive": true,
+      "datePublished": "2026-11-24T04:04:06.489621+04:00",
+      "photoPermission": "Johan30October existing owner/portfolio images approved; visually checked24November; source internally recorded; no visible provenance caption or local case claim.",
+      "photoGenerated": false,
+      "photoAlt": "Bestaand beeld van de eigen Star Local-website met diensten, uitleg en contactknoppen",
+      "searchIntent": "Wat kan een startende onderneming zonder openbare klantcases tonen om de eigen werkwijze concreet te maken?",
+      "overlapReview": "Existing photo-selection and claims-verification articles full text compared, plus all blog topics, service/Utrecht/portfolio sources. New concrete starter decision: choose one self-executed demonstration, label status/question/role/visible piece/limits and place beside the real service; omit an empty client gallery if no example exists. Does not repeat general claims audit or photograph selection, and invents no client/result.",
+      "priorPublicationCheck": {
+        "main": "67361e4b686ceedc46f19d97defd8e2e49118ad8",
+        "priorProduction": "7694056b-092c-4c80-82e6-df3103f815a4 completed/success fresh",
+        "actions": 0,
+        "openPRs": 0,
+        "previousCentralRun": "b27bc77a-ca74-8324-991b-3fc07139616b completed",
+        "ownRun": "d1084fbe-f910-8324-b0db-cc8eb3eb21cc",
+        "partybus": "fresh calendar no open slots;15cancelled retained",
+        "starLocal": "49cancelled retained,1due batchSlot1,original key preserved",
+        "sharedLockClaimed": false
+      }
     },
     {
       "slot": 47,
