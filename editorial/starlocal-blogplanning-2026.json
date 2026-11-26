@@ -1535,18 +1535,18 @@
       "website": "starlocal.nl",
       "municipality": "Bunnik",
       "originalPlannedAt": "2026-11-25T15:00:00+04:00",
-      "topic": "Navigatie voor meerdere doelgroepen",
-      "title": "Bunnik: Vind de juiste dienst zonder een lang menu",
-      "slug": null,
-      "imageSource": null,
-      "photoType": null,
-      "status": "planned",
+      "topic": "Formulierfouten begrijpelijk herstellen",
+      "title": "Een fout in uw websiteformulier: begrijpt de bezoeker hoe hij verder kan?",
+      "slug": "bunnik-formulier-foutmelding-herstellen",
+      "imageSource": "https://www.starlocal.nl/images/projects/project-star-local.webp",
+      "photoType": "existing-owner-website-image",
+      "status": "source-written",
       "published": false,
       "sourceCommitted": false,
       "deploymentConfirmed": false,
       "liveChecked": false,
       "whatsappChecked": false,
-      "editorialIntent": "Vind de juiste dienst zonder een lang menu",
+      "editorialIntent": "Welke veldfout moet een bezoeker herstellen en is de aanvraag ontvangen?",
       "scheduledAt": "2026-11-26T04:00:00+04:00",
       "batchSlot": 1,
       "originalEditorialAssignment": {
@@ -1556,7 +1556,25 @@
         "editorialIntent": "Vertaal uw vaktaal naar herkenbare klantvragen"
       },
       "editorialAssignmentFromKey": "starlocal.nl|Bunnik|2026-11-11T15:00:00+04:00",
-      "scheduleActive": true
+      "scheduleActive": true,
+      "previousEditorialAssignment": {
+        "topic": "Navigatie voor meerdere doelgroepen",
+        "title": "Bunnik: Vind de juiste dienst zonder een lang menu",
+        "editorialIntent": "Vind de juiste dienst zonder een lang menu"
+      },
+      "datePublished": "2026-11-26T04:02:25.252861+04:00",
+      "photoGenerated": false,
+      "photoPermission": "Johan30October existing owner images approved;1200x900 visually checked26November; no visible caption or fictitious Bunnik case.",
+      "searchIntent": "Hoe beoordeel ik foutmeldingen en de herstelroute van mijn websiteformulier?",
+      "overlapReview": "Planned navigation intent duplicates full Druten navigation guide and3November service-page decision guide. Reassigned only this remaining position to a distinct form-error recovery question. Full Etten-Leur intake guide and Dongen contact-button guide compared; current service and landing texts reviewed. Existing guides choose questions/routes; new article separates field error, correction, retained input and true receipt with a six-line owner worksheet. W3C primary guidance checked. No ranking, compliance or included-feature claim.",
+      "sources": [
+        "src/data/blog/municipal-oct21-23.json",
+        "src/data/blog/municipal-posts.ts",
+        "src/data/blog/municipal-nov03.json",
+        "src/data/services.ts",
+        "https://www.w3.org/WAI/tutorials/forms/notifications/"
+      ],
+      "priorActivityCheck": "Fresh main bb22ab049495c74ae6f9e6ec1c7741775a3a58c8; prior production8f1cf20e completed/success; Actions0/openPR0. Previous03run completed in conversation. Partybus latest ledger no unfinished slot,15cancellations retained; Star49cancellations retained before render. No shared lock claimed."
     },
     {
       "slot": 50,
